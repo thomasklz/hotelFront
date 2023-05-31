@@ -1,0 +1,16 @@
+h4{
+    font-size: larger;
+    color: brown;
+}
+.tamaño{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+img{
+    height: 50px;
+}
+.disabled{
+    font-weight: bold;
+    font-size: 18px;
+}

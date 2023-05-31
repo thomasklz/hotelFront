@@ -1,0 +1,23 @@
+<form class="login-form"  [formGroup]="loginForm">
+    <p class="login-text">
+        <br><br><br><br> <br><br><br><br> <br><br><br><br>
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-lock fa-stack-1x"></i>
+      </span>
+    </p> 
+    
+   
+   
+    <input type="email" class="login-username" autofocus="true" required="true" placeholder="Usuario"  formControlName="usuario"/>
+    
+    <input type="password" class="login-password" required="true" placeholder="Contraseña" formControlName="contrasena" />
+
+
+    <input type="submit" name="Login" value="Ingresar" class="login-submit" (click)="login()" />
+    
+  </form>
+  <a href="#" class="login-forgot-pass">forgot password?</a>
+  <div class="underlay-photo"> <img src="assets/img/toma1.jpg" alt=""></div>
+  <div class="underlay-black"></div> 
+  <router-outlet></router-outlet>  

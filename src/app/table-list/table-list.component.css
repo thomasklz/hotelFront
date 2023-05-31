@@ -1,0 +1,29 @@
+img{
+    height: 400px;
+    width: 350px;
+
+}
+button1{
+    color: blue;
+}
+
+button2{
+    color: red;
+}
+.heads{
+    background-color: rgb(206, 25, 25);
+}
+h5{
+    font-size: larger;
+    color: antiquewhite;
+}
+
+.disabled{
+    font-weight: bold;
+    font-size: 18px;
+}
+th{
+    color: rgb(182, 17, 17);
+    font-weight: bold;
+    font-size: 20px;
+}

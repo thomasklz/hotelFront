@@ -7,6 +7,13 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { CrearUsuarioComponent } from './paginas/crear-usuario/crear-usuario.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatTableModule} from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [
@@ -17,10 +24,18 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     ComponentsModule,
     RouterModule,
     AppRoutingModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule
+    
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
+    CrearUsuarioComponent,
+    LoginComponent,
 
   ],
   providers: [],

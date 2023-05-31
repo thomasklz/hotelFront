@@ -305,6 +305,7 @@ body{
     margin-bottom: -6px;
     position: relative;
     top: -2px;
+    
 }
 
 .image-header{
@@ -335,6 +336,7 @@ body{
     margin-bottom: 25px;
     min-height: 32px;
     font-weight: 500;
+    font-size: larger;
 }
 
 .tim-row p{
