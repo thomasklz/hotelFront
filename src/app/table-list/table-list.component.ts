@@ -79,18 +79,14 @@ menuForm!:FormGroup;
 }
 
 getAllplato(){
-  debugger
   this.MenuService.gettplato()
   .subscribe({
     next:(res)=>{
-      debugger
      // this.dataSource= new MatTableDataSource(res);
       this.dataSource = new MatTableDataSource(res.platos);
       //this.dataSource.paginator= this.paginator;
-      
     },
     error:(err)=> {
-      debugger
       alert("Error en la carga de datos")
     },
   })
