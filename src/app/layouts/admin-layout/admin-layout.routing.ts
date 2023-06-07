@@ -10,6 +10,8 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { CrearUsuarioComponent } from 'app/paginas/crear-usuario/crear-usuario.component';
 import { LoginComponent } from 'app/login/login.component';
+import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-politecnico.component';
+import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -66,5 +68,9 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'upgrade',        component: UpgradeComponent },
     { path: 'CrearUsuarioComponent',        component: CrearUsuarioComponent },
     { path: 'login',        component: LoginComponent },
+    { path: 'reportePolitecnico',        component: ReportePolitecnicoComponent },
+    { path: 'listadoUsuarios',        component: ListadoUsuariosComponent },
+
+
     
 ];

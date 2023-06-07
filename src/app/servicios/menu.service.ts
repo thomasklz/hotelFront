@@ -14,7 +14,7 @@ export class MenuService {
   }
 
   gettplato(){
-    return this.http.get<any>(' http://localhost:3000/api/mostrarplato/');
+    return this.http.get<any>('http://localhost:3000/api/mostrarplato/');
     
   }
 

@@ -1,0 +1,76 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+<div class="main-content">
+  <div class="container-fluid">
+
+
+      <div class="row">
+
+          <div class="col-md-12">
+
+              <div class="card">
+                  <div class="card-header card-header-danger">
+                      <h4 class="card-title disabled">  <img src="assets/img/usuarioss.png" class="edit" alt=""> USUARIOS</h4>
+                     
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class=" text-primary">
+                                  <th>
+                                      ID
+                                  </th>
+                                  <th>
+                                      Usuario
+                                  </th>
+                                  <th>
+                                      Contrasena
+                                  </th>
+                                  <th>
+                                      Estado
+                                  </th>
+                                  <th>
+                                    Accion
+                                </th>
+                                  
+                              </thead>
+                              <tbody  *ngFor="let item of usuariosss;let i=index ">
+                                  <tr  >
+                                      <td >
+                                        {{i+1}}
+                                      </td>
+                                      <td >
+                                        {{item.usuario}}
+                                      </td>
+                                      <td>
+                                        {{item.contrasena}}
+                                      </td>
+                                      <td>
+                                        {{item.estado}}
+                                      </td>
+                                      <td>
+                                       
+                                       <button2 > <i class="material-icons" (click)="eliminarusuario(item.id)" >delete</i></button2>
+                                    </td>
+                                    
+                                  </tr>
+                                 
+                              </tbody>
+                          </table>
+
+
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+      </div>
+  </div>
+</div>
+
+
+
+

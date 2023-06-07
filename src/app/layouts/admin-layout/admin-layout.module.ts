@@ -19,7 +19,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
-
+import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-politecnico.component';
+import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,6 +45,9 @@ import {MatIconModule} from '@angular/material/icon';
     MapsComponent,
     NotificationsComponent,
     UpgradeComponent,
+    ReportePolitecnicoComponent,
+   ListadoUsuariosComponent
+
   ]
 })
 

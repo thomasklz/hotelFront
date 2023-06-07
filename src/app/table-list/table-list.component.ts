@@ -35,17 +35,12 @@ export class TableListComponent implements OnInit {
   platosss:any[] = []; 
   tituloForm;
   constructor(private http:HttpClient,private MenuService: MenuService, private router: Router,private formBuilder: FormBuilder) {
-    this.loadTipomenu();
+
     this.loadmenuplato();
     
    }
  
-   loadTipomenu(){
-    this.http
-    .get("http://localhost:3000/api/mostrartipo_menu/").subscribe((result:any)=>{
-      this.tipomenusss= result.tipo_menus;
-    })
-   }
+
  
    loadmenuplato(){
     this.http
@@ -72,27 +67,30 @@ menuForm!:FormGroup;
   ngOnInit() {
 
     
-    this.menuForm= this.formBuilder.group({
+//     this.menuForm= this.formBuilder.group({
     
-      descripcion: new FormControl("", Validators.minLength(3)),
-      id_tipomenu: new FormControl("",Validators.maxLength(1)),
-      funcion:['']
+//       descripcion: new FormControl("", Validators.minLength(3)),
+//       id_tipomenu: new FormControl("",Validators.maxLength(1)),
+//       funcion:['']
 
- });
+//  });
  this.loadmenuplato();
- 
+ this.getAllplato();
 }
 
 getAllplato(){
+  debugger
   this.MenuService.gettplato()
   .subscribe({
     next:(res)=>{
+      debugger
      // this.dataSource= new MatTableDataSource(res);
       this.dataSource = new MatTableDataSource(res.platos);
       //this.dataSource.paginator= this.paginator;
       
     },
     error:(err)=> {
+      debugger
       alert("Error en la carga de datos")
     },
   })
@@ -103,12 +101,17 @@ getAllplato(){
  
 nuevoCurso(){
   this.tituloForm='Registro de Menu';
+  
+  
+  this.menuForm.patchValue({
+    id: 'null' ,
+    descripcion: '',
+    id_tipomenu: 'null' 
+  });
 }
 
-
-
-
 editarPlato(platoId: number) {
+  this.tituloForm='Editar  Menu';
   // Obtener los datos del plato mediante el ID utilizando un servicio
   const plato = this.platosss.find(item => item.id === platoId);
 
@@ -157,8 +160,10 @@ addMenu() {
     descripcion: this.menuForm.value.descripcion,
     id_tipomenu: this.menuForm.value.id_tipomenu,
   };
+  
 
   if (this.menuForm.value.funcion === '') {
+    
     this.MenuService.guardar(datos).subscribe(
       platos => {
         console.log(platos);
@@ -177,6 +182,7 @@ addMenu() {
         console.log(plato);
         alert('modificado correctamente');
         this.loadmenuplato();
+        window.location.reload();
       },
       error => {
         console.log(error);

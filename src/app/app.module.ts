@@ -35,7 +35,7 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     AdminLayoutComponent,
     CrearUsuarioComponent,
-    LoginComponent,
+    LoginComponent
 
   ],
   providers: [],
