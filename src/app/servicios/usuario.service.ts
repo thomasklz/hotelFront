@@ -13,9 +13,10 @@ export class UsuarioService {
     
   }
 
-  getTipoUsuario(){
+  getusuario(){
     return this.http.get<any>('http://localhost:3000/api/mostrarusuario/');
   }
+  
 
   
 putusuario(data:any, id:number){

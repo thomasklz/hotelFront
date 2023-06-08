@@ -12,25 +12,33 @@
 
               <div class="card">
                   <div class="card-header card-header-danger">
-                      <h4 class="card-title disabled">  <img src="assets/img/usuarioss.png" class="edit" alt=""> USUARIOS</h4>
-                     
+                      <h4 class="card-title disabled">  <img src="assets/img/usuarios.png" class="edit" alt=""> USUARIOS</h4>
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
                           <table class="table">
                               <thead class=" text-primary">
                                   <th>
-                                      ID
+                                      No
                                   </th>
                                   <th>
                                       Usuario
                                   </th>
                                   <th>
-                                      Contrasena
+                                      Contraseña
                                   </th>
                                   <th>
-                                      Estado
+                                      Nombres
                                   </th>
+                                  <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Teléfono
+                                </th>
+                                <th>
+                                    Foto
+                                </th>
                                   <th>
                                     Accion
                                 </th>
@@ -48,7 +56,16 @@
                                         {{item.contrasena}}
                                       </td>
                                       <td>
-                                        {{item.estado}}
+                                        {{item.persona.nombre}}
+                                      </td>
+                                      <td>
+                                        {{item.persona.email}}
+                                      </td>
+                                      <td>
+                                        {{item.persona.telefono}}
+                                      </td>
+                                      <td>
+                                        {{item.persona.foto}}
                                       </td>
                                       <td>
                                        

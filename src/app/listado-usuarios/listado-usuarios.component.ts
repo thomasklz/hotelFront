@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'app/servicios/usuario.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-listado-usuarios',
@@ -14,20 +15,29 @@ export class ListadoUsuariosComponent implements OnInit {
   usuario:string = ''; 
   contrasena:string = ''; 
   usuariosss:any[] = []; 
+  dataSource = new MatTableDataSource<any>();
 
   constructor(private http:HttpClient,private UsuarioService: UsuarioService, private router: Router,private formBuilder: FormBuilder) {
-    this.loadusuarios();
+    this.getAllplato();
     
    }
 
   ngOnInit(): void {
   }
-  loadusuarios(){
-    this.http
-    .get("http://localhost:3000/api/mostrarusuario/").subscribe((result:any)=>{
-      this.usuariosss= result.usuarios;
-    })
-   }
+ 
+   //obtener todos los platos 
+  getAllplato() {
+    this.UsuarioService.getusuario().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.platos);
+        this.usuariosss = res.usuarios;
+      },
+      error: (err) => {
+        alert("Error en la carga de datos");
+      },
+    });
+  }
+
 
    eliminarusuario(id:number){
     this.UsuarioService.deleteusuario(id)
@@ -35,7 +45,7 @@ export class ListadoUsuariosComponent implements OnInit {
       next:(res)=>{
         alert("usuario eliminado correctamente");
         
-        this.loadusuarios();
+        this.getAllplato();
       },
       error:()=> {
         alert("Error al eliminar usuario")

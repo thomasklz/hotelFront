@@ -22,7 +22,7 @@ export class TableListComponent implements OnInit {
   menuForm!: FormGroup;
   editandoPlato: boolean = false; // Variable para indicar si se está editando un plato existente
   idPlatoEditar: string = ''; // Variable para almacenar el ID del plato en caso de edición
-
+  
   constructor(
     private http: HttpClient,
     private MenuService: MenuService,
