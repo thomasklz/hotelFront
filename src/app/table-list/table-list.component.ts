@@ -2,227 +2,149 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { MatDialogRef,MAT_DIALOG_DATA,MatDialog } from '@angular/material/dialog';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MenuService } from 'app/servicios/menu.service';
 
-import {MatPaginator} from '@angular/material/paginator';
-import { data } from 'jquery';
-import { error } from 'console';
-
-
-
-MenuService
 @Component({
   selector: 'app-table-list',
   templateUrl: './table-list.component.html',
   styleUrls: ['./table-list.component.css']
 })
 export class TableListComponent implements OnInit {
-
-
-
-  displayedColumns: string[] = ['id', 'id_tipomenu', 'descripcion','estado', 'accion'];
-  dataSource = new MatTableDataSource<any>;
-  id:string = ''; 
-  estado: boolean= true;
-  descripcion:string = ''; 
-  listatipomenusss:any[] = [];
-  id_tipomenu:string = '';
-  tipomenusss:any[] = []; 
-  actionBtn:string='Guardar'
-  platosss:any[] = []; 
+  dataSource = new MatTableDataSource<any>();
+  id: string = '';
+  estado: boolean = true;
+  descripcion: string = '';
+  id_tipomenu: string = '';
+  tipomenusss: any[] = [];
+  platosss: any[] = [];
   tituloForm;
-  constructor(private http:HttpClient,private MenuService: MenuService, private router: Router,private formBuilder: FormBuilder) {
+  menuForm!: FormGroup;
+  editandoPlato: boolean = false; // Variable para indicar si se está editando un plato existente
+  idPlatoEditar: string = ''; // Variable para almacenar el ID del plato en caso de edición
 
-    this.loadmenuplato();
-    
-   }
- 
-
- 
-   loadmenuplato(){
+  constructor(
+    private http: HttpClient,
+    private MenuService: MenuService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {
+    this.getAlltipomenu();
+    this.getAllplato();
+  }
+//registrar el id tipo menu el nuevo que se selecciona y enviarlo a la data
+  getId_Tipomenu() {
     this.http
-    .get("http://localhost:3000/api/mostrarplato/").subscribe((result:any)=>{
-      this.platosss= result.platos;
-    })
-   }
-   //Parar Guardar el id del combo selection-------------------------------------------------------
-
-
-getId_Tipomenu(){
-  this.http
-    .get("http://localhost:3000/api/creartipo_menu?="+this.id_tipomenu).subscribe((result:any)=>{
-      this.tipomenusss= result.platos;
-    })
-
-}
-
-
-menuForm!:FormGroup;
- 
-
- 
+      .get("http://localhost:3000/api/creartipo_menu?=" + this.id_tipomenu)
+      .subscribe((result: any) => {
+        this.tipomenusss = result.platos;
+      });
+  }
+//cargar los datos de la seleccion de la tabla  en la modal
   ngOnInit() {
+    this.getAllplato();
+    this.menuForm = this.formBuilder.group({
+      descripcion: new FormControl("", Validators.minLength(3)),
+      id_tipomenu: new FormControl("", Validators.maxLength(1))
+    });
+  }
+//obtener todos los tipos menu desayuno almuerzo y merienda 
 
-    
-//     this.menuForm= this.formBuilder.group({
-    
-//       descripcion: new FormControl("", Validators.minLength(3)),
-//       id_tipomenu: new FormControl("",Validators.maxLength(1)),
-//       funcion:['']
-
-//  });
- this.loadmenuplato();
- this.getAllplato();
-}
-
-getAllplato(){
-  this.MenuService.gettplato()
-  .subscribe({
-    next:(res)=>{
-     // this.dataSource= new MatTableDataSource(res);
-      this.dataSource = new MatTableDataSource(res.platos);
-      //this.dataSource.paginator= this.paginator;
-    },
-    error:(err)=> {
-      alert("Error en la carga de datos")
-    },
-  })
- }
-
-
-
- 
-nuevoCurso(){
-  this.tituloForm='Registro de Menu';
-  
-  
-  this.menuForm.patchValue({
-    id: 'null' ,
-    descripcion: '',
-    id_tipomenu: 'null' 
-  });
-}
-
-editarPlato(platoId: number) {
-  this.tituloForm='Editar  Menu';
-  // Obtener los datos del plato mediante el ID utilizando un servicio
-  const plato = this.platosss.find(item => item.id === platoId);
-
-  // Asignar los valores al formulario
-  this.menuForm.patchValue({
-    descripcion: plato.descripcion,
-    id_tipomenu: plato.id_tipomenu, 
-    funcion:plato.id,
-    
-  });
-  this.loadmenuplato();
-  // Otros pasos que puedas necesitar realizar
-}
-  
-  
-/*addMenu(){
-
-const datos ={
-  descripcion : this.menuForm.value.descripcion,
-  id_tipomenu : this.menuForm.value.id_tipomenu,
-}
-
-if (this.menuForm.value.funcion==='') {
-  this.MenuService.guardar(datos)
-  .subscribe(
-    platos => console.log(platos),
-    error=> console.log(error),
-    
-  )
-
-  
-} else {
-  this.MenuService.guardar(datos, this.menuForm.value.funcion)
-  .subscribe(
-    plato => console.log(plato),
-    
-  )
-
- 
-}
-this.loadmenuplato();
-}*/
-
-addMenu() {
-  const datos = {
-    descripcion: this.menuForm.value.descripcion,
-    id_tipomenu: this.menuForm.value.id_tipomenu,
-  };
-  
-
-  if (this.menuForm.value.funcion === '') {
-    
-    this.MenuService.guardar(datos).subscribe(
-      platos => {
-        console.log(platos);
-        alert('Guardado correctamente');
-        this.loadmenuplato();
-
+  getAlltipomenu() {
+    this.MenuService.gettipomenu().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.tipo_menus);
+        this.tipomenusss = res.tipo_menus;
       },
-      error => {
-        console.log(error);
-        alert('Error al guardar');
-      }
-    );
-  } else {
-    this.MenuService.guardar(datos, this.menuForm.value.funcion).subscribe(
-      plato => {
-        console.log(plato);
-        alert('modificado correctamente');
-        this.loadmenuplato();
-        window.location.reload();
+      error: (err) => {
+        alert("Error en la carga de datos");
       },
-      error => {
-        console.log(error);
-        alert('Error al guardar');
-      }
-    );
+    });
+  }
+//obtener todos los platos 
+  getAllplato() {
+    this.MenuService.gettplato().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.platos);
+        this.platosss = res.platos;
+      },
+      error: (err) => {
+        alert("Error en la carga de datos");
+      },
+    });
   }
 
-  
-}
 
+//Para el registro de plato usando modal
+  nuevoCurso() {
+    this.tituloForm = 'Registro de Menu'; //cambio de nombre en el encabezado
+    this.menuForm.reset();
+    this.editandoPlato = false;
+    this.idPlatoEditar = '';
+  }
+//Para el editar de plato usando modal
 
-/*--------------------------------------------------------------------------------- */
+  editarPlato(item: any) {
+    this.tituloForm = 'Editar  Menu';
+    this.menuForm.patchValue({
+      descripcion: item.descripcion,
+      id_tipomenu: item.tipo_menu.id
+    });
+    this.getId_Tipomenu();
+    this.editandoPlato = true;
+    this.idPlatoEditar = item.id;
+  }
 
+  addMenu() {
+    const datos = {
+      descripcion: this.menuForm.value.descripcion,
+      id_tipomenu: this.menuForm.value.id_tipomenu
+    };
 
-loadplato(){
-  this.http
-  .get("http://localhost:3000/api/mostrarplato/").subscribe((resultado:any)=>{
-    this.listatipomenusss= resultado.platos;
-  })
-  this.getAllplato();
- }
+    if (!this.editandoPlato) {
+      this.MenuService.guardar(datos).subscribe(
+        (platos) => {
+          console.log(platos);
+          alert('Registrado correctamente');
+          this.getAllplato(); // Actualizar la tabla después de agregar un menú
+        },
+        (error) => {
+          console.log(error);
+          alert('Error al guardar');
+        }
+      );
+    } else {
+      this.MenuService.guardar(datos, this.idPlatoEditar).subscribe(
+        (plato) => {
+          console.log(plato);
+          alert('Modificado correctamente');
+          this.nuevoCurso(); // Restablecer el formulario después de editar
+          this.getAllplato();
+        },
+        (error) => {
+          console.log(error);
+          alert('Error al guardar');
+        }
+      );
+    }
+  }
 
- 
+  eliminarPlato(id: number) {
+    this.MenuService.deleteplato(id).subscribe({
+      next: (res) => {
+        alert("Plato eliminado correctamente");
+        this.getAllplato();
+      },
+      error: () => {
+        alert("Error al eliminar plato")
+      },
+    });
+  }
 
-
-
- 
-
- eliminarPlato(id:number){
-  this.MenuService.deleteplato(id)
-  .subscribe({
-    next:(res)=>{
-      alert("Plato eliminado correctamente");
-      this.getAllplato();
-      this.loadmenuplato();
-    },
-    error:()=> {
-      alert("Error al eliminar plato")
-    },
-  })
- }
-
-
- 
-
+  // Restablecer el formulario cuando se cierre el modal
+  closeModal() {
+    this.menuForm.reset();
+    this.editandoPlato = false;
+    this.idPlatoEditar = '';
+  }
 }

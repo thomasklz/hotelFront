@@ -29,9 +29,7 @@
                                   <th>
                                       Plato
                                   </th>
-                                  <th>
-                                      Estado
-                                  </th>
+                                  
                                   <th>
                                     Accion
                                 </th>
@@ -48,13 +46,13 @@
                                       <td>
                                         {{item.descripcion}}
                                       </td>
+                                      
                                       <td>
-                                        {{item.estado}}
-                                      </td>
-                                      <td>
-                                        <button1 color="primary" (click)="editarPlato(item.id)">
+                                        <button1 color="primary" (click)="editarPlato(item)">
                                           <i class="material-icons" data-toggle="modal" data-target="#ventanaForm">edit</i>
                                         </button1>
+                                        
+                                        
                                      ---  <button2 > <i class="material-icons" (click)="eliminarPlato(item.id)" >delete</i></button2>
                                     </td>
                                     
@@ -117,8 +115,8 @@
               </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-danger"  data-dismiss="modal" (click)="addMenu() " >Guardar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+          <button type="button" class="btn btn-danger"  data-dismiss="modal" (click)="addMenu()  "  >Guardar</button>
         </div>
       </div>
     </div>
