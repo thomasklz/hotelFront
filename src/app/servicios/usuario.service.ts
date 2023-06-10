@@ -27,9 +27,6 @@ deleteusuario(id:number){
   return this.http.delete<any>('http://localhost:3000/api/eliminarusuario/'+id);
 }
 
-loginUser(data:any){
-  return this.http.post<any>('http://localhost:3000/api/login/', data);
-}
 
 postpersona(data:any){
   debugger
@@ -47,6 +44,11 @@ iniciarSesion(data:any){
   
 }
 
+guardar(data:any, id?){
+  if (id) {
+    return this.http.put<any>('http://localhost:3000/api/editartipo_usuario/'+id,data);
+  }
+  }
 
 }
 

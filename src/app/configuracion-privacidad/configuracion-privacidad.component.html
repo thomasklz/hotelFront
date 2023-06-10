@@ -1,0 +1,186 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="card">
+          <div class="card-header card-header-danger">
+              <h2 class="card-title"><img src="assets/img/configuraciones.png" alt="">Configuración y Privacidad</h2>
+          </div>
+          <div class="card-body">
+              <div id="typography">
+                  <div class="card-title">
+                      <h2>Tu Información</h2>
+                  </div>
+                  <div class="row">
+                      <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaUsuario">
+                          <h3>
+                              <span class="tim-note">Usuario</span >GilbertoB </h3> 
+                      </div>
+                      <div class="tim-typo table-row editable-row "  data-toggle="modal" data-target="#ventanaNombre">
+                          <h3>
+                              <span class="tim-note">Nombres</span>Gilberto Blanco</h3>
+                      </div>
+                      <div class="tim-typo table-row editable-row"  data-toggle="modal" data-target="#ventanaEmail">
+                          <h3>
+                              <span class="tim-note ">Email</span>gilbertoblanco@espam.edu.ec</h3>
+                      </div>
+                      <div class="tim-typo table-row editable-row"  data-toggle="modal" data-target="#ventanaTelefono">
+                          <h4>
+                              <span class="tim-note">Telèfono</span>0992515160</h4>
+                      </div>
+                      <div class="tim-typo table-row editable-row"  data-toggle="modal" data-target="#ventanaContrasena">
+                        <h4>
+                            <span class="tim-note">Contraseña</span>*******************</h4>
+                    </div>
+                    <div class="tim-typo table-row editable-row " data-toggle="modal" data-target="#ventanaFoto">
+                        <h4>
+                            <span class="tim-note">Foto</span>foto.png</h4>
+                    </div>
+                      
+                     
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+
+
+
+
+
+
+  
+  <!-- Modal Usuario-->
+  <div class="modal fade" id="ventanaUsuario"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header danger" >
+          <h1 class="modal-title" id="exampleModalLabel"><img src="assets/img/usuario.png" alt="">Editar Usuario</h1>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-8">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Usuario: " type="text"  formControlName="usuario">GilbertoB
+                </mat-form-field>
+
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Modal Nombre -->
+    <div class="modal fade" id="ventanaNombre"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header danger">
+              <h1 class="modal-title " id="exampleModalLabel"><img src="assets/img/editar-informacion (1).png" alt="">Editar Nombres</h1>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    
+    <!-- Modal Email-->
+    <div class="modal fade" id="ventanaEmail"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header danger">
+              <h1 class="modal-title" id="exampleModalLabel"><img src="assets/img/email.png" alt="">Editar Email</h1>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+    <!-- Modal Telefono-->
+    <div class="modal fade" id="ventanaTelefono"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header danger">
+              <h1 class="modal-title" id="exampleModalLabel"><img src="assets/img/llamada.png" alt="">Editar Teléfono</h1>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+          <!-- Modal Contraseña -->
+    <div class="modal fade" id="ventanaContrasena"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header danger">
+              <h1 class="modal-title" id="exampleModalLabel"><img src="assets/img/contrasena.png" alt="">Editar Contraseña</h1>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+          <!-- Modal Foto -->
+    <div class="modal fade" id="ventanaFoto"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header danger">
+              <h1 class="modal-title" id="exampleModalLabel"><img src="assets/img/imagen.png" alt="">Editar Foto</h1>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>

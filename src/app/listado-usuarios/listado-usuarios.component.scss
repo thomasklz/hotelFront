@@ -5,12 +5,24 @@ img{
 
 }
 
+
+.editable-row {
+    cursor: pointer;
+  }
+  
+  .editable-row:hover {
+    background-color: #ffffff;
+  }
+  
+  .edit-mode {
+    background-color: #ffffff;
+  }
+  
 .edit{
     height: 80px;
     width: 80px ; 
     
 }
-
 .marco-div {
     border: 2px solid black;
     padding: 10px;

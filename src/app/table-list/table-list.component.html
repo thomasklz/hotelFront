@@ -49,11 +49,11 @@
                                       
                                       <td>
                                         <button1 color="primary" (click)="editarPlato(item)">
-                                          <i class="material-icons" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                                          <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
                                         </button1>
                                         
                                         
-                                     ---  <button2 > <i class="material-icons" (click)="eliminarPlato(item.id)" >delete</i></button2>
+                                       <button2 > <i class="material-icons editable-row" (click)="eliminarPlato(item.id)" >delete</i></button2>
                                     </td>
                                     
                                   </tr>
@@ -88,22 +88,29 @@
         <div class="modal-body " >
             <form [formGroup]="menuForm">
                
-              <div class="form-row">
-                
-                <div class="form-group col-md-4">
-                  <label for="inputState">Tipo Menu</label>
-                  <select id="inputState" class="form-control"  placeholder="Seleccione"  formControlName="id_tipomenu" (Change)="getId_Tipomenu()" >
-                    <option selected *ngFor="let item of tipomenusss "  [value]="item.id" >{{item.tipo}}</option>
-                   
-                  </select>
-                </div>
-              </div>
+             
                 <div class="form-group">
                   <label for="inputAddress">Plato</label>
                   <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="descripcion">
                 </div>
                
-             
+                <div class="form-row">
+                
+                  <div class="form-group col-md-4">
+                    <label for="inputState">Tipo Menu</label>
+                    <select id="inputState" class="form-control"  placeholder="Seleccione"  formControlName="id_tipomenu" (Change)="getId_Tipomenu()" >
+                      <option selected *ngFor="let item of tipomenusss "  [value]="item.id" >{{item.tipo}}</option>
+                     
+                    </select>
+                  </div>
+
+
+
+
+     
+
+                 
+                </div>
              <input type="hidden" formControlName="funcion " >
               </form>
         </div>

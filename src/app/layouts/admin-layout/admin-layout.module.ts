@@ -21,6 +21,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-politecnico.component';
 import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
+import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.
     NotificationsComponent,
     UpgradeComponent,
     ReportePolitecnicoComponent,
-   ListadoUsuariosComponent
+   ListadoUsuariosComponent,
+   ConfiguracionPrivacidadComponent
 
   ]
 })

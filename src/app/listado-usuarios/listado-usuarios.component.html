@@ -24,9 +24,7 @@
                                   <th>
                                       Usuario
                                   </th>
-                                  <th>
-                                      Contraseña
-                                  </th>
+                                 
                                   <th>
                                       Nombres
                                   </th>
@@ -52,9 +50,7 @@
                                       <td >
                                         {{item.usuario}}
                                       </td>
-                                      <td>
-                                        {{item.contrasena}}
-                                      </td>
+                                     
                                       <td>
                                         {{item.persona.nombre}}
                                       </td>
@@ -68,8 +64,11 @@
                                         {{item.persona.foto}}
                                       </td>
                                       <td>
-                                       
-                                       <button2 > <i class="material-icons" (click)="eliminarusuario(item.id)" >delete</i></button2>
+                                          <!-- <button1 color="primary" (click)="editarUsuario(item)">
+                                          <i class="material-icons" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                                        </button1>
+                                        -->
+                                       <button2 > <i class="material-icons editable-row" (click)="eliminarusuario(item.id)" >delete</i></button2>
                                     </td>
                                     
                                   </tr>
@@ -91,3 +90,51 @@
 
 
 
+  <!-- ventanaForm Modal 
+  <div class="modal fade" id="ventanaForm" data-backdrop="static"  data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content ">
+        <div class="modal-header heads " >
+          <h5 class="modal-title " id="exampleModalLabel" >{{tituloForm}}  <img src="assets/img/menuicono.png" alt=""></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body " >
+            <form [formGroup]="usuarioForm">
+               
+             
+                <div class="form-group">
+                  <label for="inputAddress">Usuario</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="usuario">
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">Nombre</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="nombre">
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAddress">Email</label>
+                  <input type="email" class="form-control" id="inputAddress" placeholder="" formControlName="email">
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAddress">Telefono</label>
+                  <input type="number" class="form-control" id="inputAddress" placeholder="" formControlName="telefono">
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">Foto</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="foto">
+                </div>
+             <input type="hidden" formControlName="funcion " >
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+          <button type="button" class="btn btn-danger"  data-dismiss="modal" (click)="usuarioedit()  "  >Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+-->
