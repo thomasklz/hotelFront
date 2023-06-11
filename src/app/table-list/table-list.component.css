@@ -49,7 +49,8 @@ button2{
 }
 h5{
     font-size: larger;
-    color: antiquewhite;
+    color: rgb(255, 255, 255);
+    text-align: center;
 }
 
 .disabled{
@@ -70,3 +71,34 @@ th{
 
 
 
+
+
+
+.select-gr {
+  font-size: 18px; /* Tamaño de letra grande */
+  color: rgb(158, 155, 155);
+  text-align: center;
+  
+  
+}
+
+
+.estilos{
+  content: "";
+  margin-top: 10px; /* Espacio de 5 píxeles arriba de cada opción */
+  border: none; /* Removemos todos los bordes */
+  border-bottom: 1px solid  #888888;/* Agregamos solo el borde inferior */
+  width: 200px;
+  font-size: 18px; 
+}
+.heads{
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
