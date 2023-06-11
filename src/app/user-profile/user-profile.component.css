@@ -14,3 +14,6 @@ img{
     font-weight: bold;
     font-size: 18px;
 }
+.error-message{
+    color: rgb(255, 0, 0);
+}

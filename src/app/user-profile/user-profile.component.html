@@ -1,85 +1,79 @@
-<div class="main-content " >
-  <div class="container-fluid ">
-      <div class="row">
-          <div class="col-md-12 " >
-              <div class="card ">
-                  <div class="card-header card-header-danger" ><img src="assets/img/persona.png" alt="">
-                      <h4 class="card-title disabled">Datos de Usuario   </h4>
-                      <p class="card-category">completa tu perfil</p>
-                  </div>
-                  <div class="card-body">
-                      <form [formGroup]="personaForm">
-                          <div class="row">
-                              <div class="col-md-5">
-                                <mat-form-field class="example-full-width disabled">
-                                    <input matInput placeholder="Datos Personales" disabled >
-                                  </mat-form-field>
-                              </div>
-                             
-                          </div>
-                          <div class="row">
-                              <div class="col-md-6">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Nombre" type="text" formControlName="nombre">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-md-6">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Email" type="email" formControlName="email">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-md-4">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Teléfono" type="number" formControlName="telefono">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-md-4">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Foto" type="text"  formControlName="foto">
-                                </mat-form-field>
-
-                              </div>
-                             
-                          </div>
-                        
-                          <div class="row">
-                             
-                          </div>
-                          <div class="row">
-                            <div class="col-md-5">
-                              <mat-form-field class="example-full-width disabled " >
-                                  <input matInput placeholder="Datos Usuario" disabled >
-                                </mat-form-field>
-                            </div>
-                           
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                              <mat-form-field class="example-full-width">
-                                <input matInput placeholder="Usuario" type="text" formControlName="usuario">
-                              </mat-form-field>
-                            </div>
-                            <div class="col-md-6">
-                              <mat-form-field class="example-full-width">
-                                <input matInput placeholder="Contraseña" type="password" formControlName="contrasena">
-                              </mat-form-field>
-                            </div>
-                           
-                        </div>
-                      
-                          <div class="row">
-                              <div class="col-md-12">
-                              
-                        
-                              </div>
-                          </div>
-                          <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="addPersona()">Guardar</button>
-                          <div class="clearfix"></div>
-                      </form>
-                  </div>
-              </div>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <img src="assets/img/persona.png" alt="">
+            <h4 class="card-title disabled">Datos de Usuario</h4>
+            <p class="card-category">Completa tu perfil</p>
           </div>
-        
+          <div class="card-body">
+            <form [formGroup]="personaForm" (ngSubmit)="addPersona()" novalidate>
+              <div class="row">
+                <div class="col-md-5">
+                  <mat-form-field class="example-full-width disabled">
+                    <input matInput placeholder="Datos Personales" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Nombre" type="text" formControlName="nombre">
+                    <div *ngIf="personaForm.get('nombre').invalid && (personaForm.get('nombre').touched || submitted)" class="error-message">El nombre es requerido y debe tener al menos 3 caracteres.</div>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Email" type="email" formControlName="email">
+                    <div *ngIf="personaForm.get('email').invalid && (personaForm.get('email').touched || submitted)" class="error-message">El email es requerido </div>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Teléfono" type="number" formControlName="telefono">
+                    <div *ngIf="personaForm.get('telefono').invalid && (personaForm.get('telefono').touched || submitted)" class="error-message">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Foto" type="text" formControlName="foto">
+                    <div *ngIf="personaForm.get('foto').invalid && (personaForm.get('foto').touched || submitted)" class="error-message">La foto es requerida .</div>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5">
+                  <mat-form-field class="example-full-width disabled">
+                    <input matInput placeholder="Datos Usuario" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Usuario" type="text" formControlName="usuario">
+                    <div *ngIf="personaForm.get('usuario').invalid && (personaForm.get('usuario').touched || submitted)" class="error-message">El usuario es requerido y debe tener al menos 3 caracteres.</div>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Contraseña" type="password" formControlName="contrasena">
+                    <div *ngIf="personaForm.get('contrasena').invalid && (personaForm.get('contrasena').touched || submitted)" class="error-message">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                </div>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right">Guardar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 </div>

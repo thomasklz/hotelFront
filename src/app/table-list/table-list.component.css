@@ -4,10 +4,21 @@ img{
 
 
 }
+.texto-grueso {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  
+
+
+  
 .editable-row {
     cursor: pointer;
   }
-  
+  .sele{
+    color: black;
+  }
   .editable-row:hover {
     background-color: #ffffff;
   }
@@ -50,3 +61,12 @@ th{
     font-weight: bold;
     font-size: 20px;
 }
+
+
+
+
+
+
+
+
+
