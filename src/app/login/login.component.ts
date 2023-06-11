@@ -4,6 +4,8 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import {MatTableDataSource} from '@angular/material/table';
 import { UsuarioService } from 'app/servicios/usuario.service';
+import swal from 'sweetalert';
+import swal2 from 'sweetalert';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,7 +17,20 @@ export class LoginComponent implements OnInit {
    
     
    }
+title= 'sweetAlert';
+showModal(){
+  swal2({
+    title:'Inicio de Sesión Exitoso',
+    icon: "success",
+  });
+}
 
+showModalError(){
+  swal({
+    title:'Error de Incio Sesión ',
+    icon: "error",
+  });
+}
   ngOnInit(): void {
     this.loginForm= this.formBuilder.group({
      
@@ -29,15 +44,15 @@ export class LoginComponent implements OnInit {
       this.UsuarioService.iniciarSesion(this.loginForm.value)
         .subscribe({
           next: (res) => {
-            debugger;
-            alert("Inicio de sesión exitoso");
+            
+            this.showModal();
             this.loginForm.reset();
             this.router.navigate(["/dashboard"]);
           
           },
           error: (error) => {
-            debugger;
-            alert("Error al iniciar sesión");
+            
+            this.showModalError();
           }
         });
     }

@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { UsuarioService } from 'app/servicios/usuario.service';
 import { MatTableDataSource } from '@angular/material/table';
-
+import swal from 'sweetalert';
 @Component({
   selector: 'app-listado-usuarios',
   templateUrl: './listado-usuarios.component.html',
@@ -27,7 +27,21 @@ export class ListadoUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
   }
- 
+   //Modal de Eliminar Usuario Notificacion
+   title= 'sweetAlert';
+   showModal(){
+     swal({
+       title:'Usuario Eliminado Exitosamente',
+       icon: "success",
+     });
+   }
+    //Modal de error de Eliminar Usuario Notificacion
+    showModalError(){
+      swal({
+        title:'Usuario No Eliminado Exitosamente',
+        icon: "error",
+      });
+    }
    //obtener todos los platos 
   getAllplato() {
     this.UsuarioService.getusuario().subscribe({
@@ -36,7 +50,7 @@ export class ListadoUsuariosComponent implements OnInit {
         this.usuariosss = res.usuarios;
       },
       error: (err) => {
-        alert("Error en la carga de datos");
+       // alert("Error en la carga de datos");
       },
     });
   }
@@ -78,12 +92,12 @@ editarUsuario(item: any) {
     this.UsuarioService.deleteusuario(id)
     .subscribe({
       next:(res)=>{
-        alert("usuario eliminado correctamente");
+        this.showModal();
         
         this.getAllplato();
       },
       error:()=> {
-        alert("Error al eliminar usuario")
+        this.showModalError();
       },
     })
    }

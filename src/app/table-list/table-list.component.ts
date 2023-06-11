@@ -4,7 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MenuService } from 'app/servicios/menu.service';
-
+import swal from 'sweetalert';
+import swal2 from 'sweetalert';
 @Component({
   selector: 'app-table-list',
   templateUrl: './table-list.component.html',
@@ -32,6 +33,70 @@ export class TableListComponent implements OnInit {
     this.getAlltipomenu();
     this.getAllplato();
   }
+
+
+
+
+  //Modal de Agregar Notificacion
+  title= 'sweetAlert';
+  showModal(){
+    swal2({
+      title:'Datos Registrado Exitosamente',
+      icon: "success",
+    });
+  }
+  
+  //Modal de No agg error de Notificacion
+
+  showModalError(){
+    swal({
+      title:'Error de Registro de Datos ',
+      icon: "error",
+    });
+  }
+ 
+  
+
+  //Modal de Modificacion Notificacion
+  
+  showModalEdit(){
+    swal2({
+      title:'Datos Modificado Exitosamente',
+      icon: "success",
+    });
+  }
+  
+
+    //Modal de  error de Modificacion Notificacion
+
+    showModalErrorEdit(){
+      swal({
+        title:'Error de Modificación de Datos ',
+        icon: "error",
+      });
+    }
+
+
+
+
+     //Modal de Eliminar Notificacion
+  
+  showModalEliminar(){
+    swal2({
+      title:'Datos Eliminado Exitosamente',
+      icon: "success",
+    });
+  }
+  
+
+    //Modal de  error de Modificacion Notificacion
+
+    showModalErrorEliminar(){
+      swal({
+        title:'Error de Eliminación de Datos ',
+        icon: "error",
+      });
+    }
 //registrar el id tipo menu el nuevo que se selecciona y enviarlo a la data
   getId_Tipomenu() {
     this.http
@@ -57,7 +122,7 @@ export class TableListComponent implements OnInit {
         this.tipomenusss = res.tipo_menus;
       },
       error: (err) => {
-        alert("Error en la carga de datos");
+       // alert("Error en la carga de datos");
       },
     });
   }
@@ -69,7 +134,7 @@ export class TableListComponent implements OnInit {
         this.platosss = res.platos;
       },
       error: (err) => {
-        alert("Error en la carga de datos");
+        //alert("Error en la carga de datos");
       },
     });
   }
@@ -105,25 +170,26 @@ export class TableListComponent implements OnInit {
       this.MenuService.guardar(datos).subscribe(
         (platos) => {
           console.log(platos);
-          alert('Registrado correctamente');
+          this.showModal();
           this.getAllplato(); // Actualizar la tabla después de agregar un menú
         },
         (error) => {
           console.log(error);
-          alert('Error al guardar');
+          this.showModalError();
         }
       );
     } else {
+      //m o d i f i c a r -----------------------------
       this.MenuService.guardar(datos, this.idPlatoEditar).subscribe(
         (plato) => {
           console.log(plato);
-          alert('Modificado correctamente');
+          this.showModalEdit();
           this.nuevoCurso(); // Restablecer el formulario después de editar
           this.getAllplato();
         },
         (error) => {
           console.log(error);
-          alert('Error al guardar');
+          this.showModalErrorEdit();
         }
       );
     }
@@ -132,11 +198,11 @@ export class TableListComponent implements OnInit {
   eliminarPlato(id: number) {
     this.MenuService.deleteplato(id).subscribe({
       next: (res) => {
-        alert("Plato eliminado correctamente");
+        this.showModalEliminar();
         this.getAllplato();
       },
       error: () => {
-        alert("Error al eliminar plato")
+        this.showModalErrorEliminar();
       },
     });
   }

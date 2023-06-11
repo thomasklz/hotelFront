@@ -28,7 +28,8 @@ import { LoginComponent } from './login/login.component';
     MatDialogModule,
     MatTableModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    
     
   ],
   declarations: [
@@ -36,9 +37,11 @@ import { LoginComponent } from './login/login.component';
     AdminLayoutComponent,
     CrearUsuarioComponent,
     LoginComponent,
+    
 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }
