@@ -33,7 +33,6 @@ showModalError(){
 }
   ngOnInit(): void {
     this.loginForm= this.formBuilder.group({
-     
       usuario: new FormControl("", Validators.minLength(3)),
       contrasena: new FormControl("",Validators.minLength(4)),
       });
@@ -44,14 +43,15 @@ showModalError(){
       this.UsuarioService.iniciarSesion(this.loginForm.value)
         .subscribe({
           next: (res) => {
-            
+            localStorage.setItem('idPersona',res.idPersona);
+            localStorage.setItem('idUsuario',res.usuario);
+            localStorage.setItem('usuario',res.usuario);
             this.showModal();
             this.loginForm.reset();
             this.router.navigate(["/dashboard"]);
           
           },
           error: (error) => {
-            
             this.showModalError();
           }
         });
