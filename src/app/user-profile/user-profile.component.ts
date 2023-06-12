@@ -59,11 +59,11 @@ export class UserProfileComponent implements OnInit {
           this.personaForm.reset();
         },
         error: (error) => {
+          this.personaForm.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar los mensajes de error
+
           this.showModalError();
         }
       });
-    } else {
-      this.personaForm.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar los mensajes de error
-    }
+    } 
   }
 }
