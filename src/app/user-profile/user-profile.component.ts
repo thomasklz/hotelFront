@@ -49,7 +49,7 @@ export class UserProfileComponent implements OnInit {
       contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
     });
   }
-
+  
   addPersona() {
     this.submitted = true;
     if (this.personaForm.valid) {

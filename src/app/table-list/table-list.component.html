@@ -72,51 +72,46 @@
   </div>
 </div>
 
-
-<!-- ventanaForm Modal -->
 <div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content d-flex align-items-center">
       <div class=" heads">
         <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png" alt=""></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          
-        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="menuForm">
 
-         <!-- ... -->
+          <!-- ... -->
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr text-center">Tipo Menu</label> <br>
-    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_tipomenu" (Change)="getId_Tipomenu()">
-      <option selected disabled value="">Seleccione</option>
-      <option *ngFor="let item of tipomenusss" [value]="item.id">{{item.tipo}}</option>
-    </select>
-    <div *ngIf="menuForm.controls['id_tipomenu'].errors?.required && menuForm.controls['id_tipomenu'].touched" class="text-danger">Campo requerido</div>
-  </div>
-</div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr text-center">Tipo Menu</label> <br>
+              <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_tipomenu" (change)="getId_Tipomenu()">
+                <option selected disabled value="">Seleccione</option>
+                <option *ngFor="let item of tipomenusss" [value]="item.id">{{item.tipo}}</option>
+              </select>
+              <div *ngIf="showIdTipomenuError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Descripción</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="descripcion">
+              <div *ngIf="showDescripcionError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
+          
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr">Descripción</label> <br>
-    <input class="example-full-width estilos" type="text" formControlName="descripcion">
-    <div *ngIf="menuForm.controls['descripcion'].errors?.required && menuForm.controls['descripcion'].touched" class="text-danger">Campo requerido</div>
-  </div>
-</div>
-
-<!-- ... -->
-
-
+          <!-- ... -->
 
           <input type="hidden" formControlName="funcion">
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="addMenu()">Guardar</button>
+        <button type="button" class="btn btn-danger" (click)="addMenu()">Guardar</button>
       </div>
     </div>
   </div>
