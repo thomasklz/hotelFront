@@ -59,6 +59,7 @@ export class TableListComponent implements OnInit {
     swal({
       title:'Error de Registro de Datos ',
       icon: "error",
+      
     });
   }
  
@@ -186,6 +187,7 @@ export class TableListComponent implements OnInit {
           (error) => {
             console.log(error);
             this.showModalError();
+            
           }
         );
       } else {
