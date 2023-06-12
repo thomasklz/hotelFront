@@ -34,8 +34,15 @@ export class TableListComponent implements OnInit {
     this.getAllplato();
   }
 
+//cargar los datos de la seleccion de la tabla  en la modal
 
-
+  ngOnInit() {
+    this.getAllplato();
+    this.menuForm = this.formBuilder.group({
+      descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)])
+    });
+  }
 
   //Modal de Agregar Notificacion
   title= 'sweetAlert';
@@ -105,14 +112,7 @@ export class TableListComponent implements OnInit {
         this.tipomenusss = result.platos;
       });
   }
-//cargar los datos de la seleccion de la tabla  en la modal
-  ngOnInit() {
-    this.getAllplato();
-    this.menuForm = this.formBuilder.group({
-      descripcion: new FormControl("", Validators.minLength(3)),
-      id_tipomenu: new FormControl("", Validators.maxLength(1))
-    });
-  }
+ 
 //obtener todos los tipos menu desayuno almuerzo y merienda 
 
   getAlltipomenu() {
