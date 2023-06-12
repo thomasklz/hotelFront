@@ -164,7 +164,7 @@ export class TableListComponent implements OnInit {
   showDescripcionError = false;
   showIdTipomenuError = false;
 
-  // ...
+  // Registro de Plato...
 
   addMenu() {
     if (this.menuForm.valid) {
