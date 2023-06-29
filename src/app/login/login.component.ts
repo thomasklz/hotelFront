@@ -44,8 +44,9 @@ showModalError(){
         .subscribe({
           next: (res) => {
             localStorage.setItem('idPersona',res.idPersona);
-            localStorage.setItem('idUsuario',res.usuario);
+            localStorage.setItem('idUsuario',res.idUsuario);
             localStorage.setItem('usuario',res.usuario);
+            
             this.showModal();
             this.loginForm.reset();
             this.router.navigate(["/dashboard"]);

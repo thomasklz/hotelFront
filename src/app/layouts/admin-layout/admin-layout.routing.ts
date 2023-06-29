@@ -13,6 +13,7 @@ import { LoginComponent } from 'app/login/login.component';
 import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-politecnico.component';
 import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
 import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
+import { AyudaComponent } from 'app/ayuda/ayuda.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -72,6 +73,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'reportePolitecnico',        component: ReportePolitecnicoComponent },
     { path: 'listadoUsuarios',        component: ListadoUsuariosComponent },
     { path: 'configuracionyprivacidad',        component: ConfiguracionPrivacidadComponent },
+    { path: 'ayuda',        component: AyudaComponent },
+    
     
 
     

@@ -17,10 +17,13 @@ export class UsuarioService {
     return this.http.get<any>('http://localhost:3000/api/mostrarusuario/');
   }
   
-
+  buscarUsuario(id:number){
+    return this.http.get<any>('http://localhost:3000/api/buscarUsuario/'+id);
+  }
   
-putusuario(data:any, id:number){
-  return this.http.put<any>('http://localhost:3000/api/editarusuario/'+id,data);
+  
+putusuario(data:any, id:any){
+  return this.http.put<any>('http://localhost:3000/api/editardatos/'+id,data);
 }
 
 deleteusuario(id:number){
@@ -44,11 +47,32 @@ iniciarSesion(data:any){
   
 }
 
-guardar(data:any, id?){
-  if (id) {
-    return this.http.put<any>('http://localhost:3000/api/editartipo_usuario/'+id,data);
-  }
-  }
+
+  //----------------------------------Editar campo por campo de datos de usuario
+editUsuario(data:any, id:number){
+  return this.http.put<any>('http://localhost:3000/api/editUsuario/'+id,data);
+}
+
+editContrasena(data:any, id:number){
+  return this.http.put<any>('http://localhost:3000/api/editContrasena/'+id,data);
+}
+
+editNombre(data:any, id:number){
+  return this.http.put<any>('http://localhost:3000/api/editNombre/'+id,data);
+}
+
+editEmail(data:any, id:number){
+  return this.http.put<any>('http://localhost:3000/api/editEmail/'+id,data);
+}
+
+editTelefono(data:any, id:number){
+  return this.http.put<any>('http://localhost:3000/api/editTelefono/'+id,data);
+}
+
+editFoto(data:any, id:number){
+  return this.http.put<any>('http://localhost:3000/api/editFoto/'+id,data);
+}
+
 
 }
 

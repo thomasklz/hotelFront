@@ -1,12 +1,10 @@
 img{
-    height: 80px;
-    width: 80px;
-
+  font-weight: bold;
 
 }
 .texto-grueso {
     font-weight: bold;
-    font-size: 25px;
+    font-size: 22px;
   }
 
   
@@ -29,11 +27,6 @@ img{
     background-color: #ffffff;
   }
   
-.edit{
-    height: 80px;
-    width: 80px ; 
-    
-}
 
 .marco-div {
     border: 2px solid black;
@@ -57,7 +50,7 @@ h5{
 
 .disabled{
     font-weight: bold;
-    font-size: 18px;
+    font-size: 21px;
 }
 th{
     color: rgb(182, 17, 17);
@@ -90,7 +83,7 @@ th{
   margin-top: 10px; /* Espacio de 5 píxeles arriba de cada opción */
   border: none; /* Removemos todos los bordes */
   border-bottom: 1px solid  #888888;/* Agregamos solo el borde inferior */
-  width: 200px;
+  width: 400px;
   font-size: 18px; 
 }
 .heads{
@@ -104,3 +97,9 @@ header {
   justify-content: center;
   align-items: center;
 }
+
+.x{
+  
+   height: 80px;
+   
+ }

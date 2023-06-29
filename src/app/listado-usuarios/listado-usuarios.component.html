@@ -12,7 +12,7 @@
 
               <div class="card">
                   <div class="card-header card-header-danger">
-                      <h4 class="card-title disabled">  <img src="assets/img/usuarios.png" class="edit" alt=""> USUARIOS</h4>
+                      <h4 class="card-title disabled">  <img src="assets/img/usuarios.png"  alt="">  Usuarios</h4>
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
@@ -24,7 +24,9 @@
                                   <th>
                                       Usuario
                                   </th>
-                                 
+                                  <th>
+                                    Contraseña
+                                </th>
                                   <th>
                                       Nombres
                                   </th>
@@ -50,7 +52,9 @@
                                       <td >
                                         {{item.usuario}}
                                       </td>
-                                     
+                                      <td>
+                                       **************
+                                      </td>
                                       <td>
                                         {{item.persona.nombre}}
                                       </td>
@@ -64,10 +68,10 @@
                                         {{item.persona.foto}}
                                       </td>
                                       <td>
-                                          <!-- <button1 color="primary" (click)="editarUsuario(item)">
-                                          <i class="material-icons" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                                          <button1 color="primary" (click)="editarUsuario(item)">
+                                          <i class="material-icons  editable-row" data-toggle="modal" data-target="#ventanaUsuario">edit</i>
                                         </button1>
-                                        -->
+                                        
                                        <button2 > <i class="material-icons editable-row" (click)="eliminarusuario(item.id)" >delete</i></button2>
                                     </td>
                                     
@@ -90,51 +94,51 @@
 
 
 
-  <!-- ventanaForm Modal 
-  <div class="modal fade" id="ventanaForm" data-backdrop="static"  data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content ">
-        <div class="modal-header heads " >
-          <h5 class="modal-title " id="exampleModalLabel" >{{tituloForm}}  <img src="assets/img/menuicono.png" alt=""></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body " >
-            <form [formGroup]="usuarioForm">
-               
-             
-                <div class="form-group">
-                  <label for="inputAddress">Usuario</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="usuario">
-                </div>
-                <div class="form-group">
-                  <label for="inputAddress">Nombre</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="nombre">
-                </div>
 
-                <div class="form-group">
-                  <label for="inputAddress">Email</label>
-                  <input type="email" class="form-control" id="inputAddress" placeholder="" formControlName="email">
+ 
+    <!-- Modal Email-->
+    <div class="modal fade" id="ventanaUsuario"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content d-flex align-items-center">
+          <div class=" heads x">
+              <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Datos de Usuario <img src="assets/img/editar.png" alt=""></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="usuarioForm">
+                <div class="form-group col-md-8">
+                  <label for="inputState" class="select-gr">Usuario</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="usuario">
                 </div>
-
-                <div class="form-group">
-                  <label for="inputAddress">Telefono</label>
-                  <input type="number" class="form-control" id="inputAddress" placeholder="" formControlName="telefono">
+                <div class="form-group col-md-8">
+                  <label for="inputState" class="select-gr">Contraseña</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="contrasena">
                 </div>
-                <div class="form-group">
-                  <label for="inputAddress">Foto</label>
-                  <input type="text" class="form-control" id="inputAddress" placeholder="" formControlName="foto">
+                <div class="form-group col-md-8">
+                  <label for="inputState" class="select-gr">Nombres</label> <br>
+                  <input class="example-full-width estilos" type="text"  formControlName="nombre" >
                 </div>
-             <input type="hidden" formControlName="funcion " >
+                <div class="form-group col-md-8">
+                  <label for="inputState" class="select-gr">Email</label> <br>
+                  <input class="example-full-width estilos" type="text"  formControlName="email" >
+                </div>
+                <div class="form-group col-md-8">
+                  <label for="inputState" class="select-gr">Teléfono</label> <br>
+                  <input class="example-full-width estilos" type="text"  formControlName="telefono" >
+                </div>
+                <div class="form-group col-md-8">
+                  <label for="inputState" class="select-gr">Foto</label> <br>
+                  <input class="example-full-width estilos" type="text"  formControlName="foto" >
+                </div>
+                
               </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-          <button type="button" class="btn btn-danger"  data-dismiss="modal" (click)="usuarioedit()  "  >Guardar</button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+              <button type="button" class="btn btn-danger"  data-dismiss="modal" (click)="usuarioedit()">Guardar</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
--->

@@ -22,6 +22,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-politecnico.component';
 import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
 import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
+import { AyudaComponent } from 'app/ayuda/ayuda.component';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/c
     UpgradeComponent,
     ReportePolitecnicoComponent,
    ListadoUsuariosComponent,
-   ConfiguracionPrivacidadComponent
+   ConfiguracionPrivacidadComponent,
+   AyudaComponent
 
   ]
 })

@@ -20,13 +20,49 @@ export class ListadoUsuariosComponent implements OnInit {
   usuarioForm!: FormGroup;
   editandousuario: boolean = false; // Variable para indicar si se está editando un usuario existente
   idUsuarioEditar: string = ''; // Variable para almacenar el ID del usuario en caso de edición
+
+
+  showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
+  showIdTipomenuError = false;//evitando que se muestren los mensajes de campo requerido
   constructor(private http:HttpClient,private UsuarioService: UsuarioService, private router: Router,private formBuilder: FormBuilder) {
-    this.getAllplato();
+    this.getAllusuarios();
     
+
+
+    this.usuarioForm = new FormGroup({
+      usuario: new FormControl(),
+      contrasena: new FormControl(),
+      nombre: new FormControl(),
+      email: new FormControl(),
+      telefono: new FormControl(),
+      foto: new FormControl(),
+    });
    }
 
   ngOnInit(): void {
   }
+
+   //Modal de Modificacion Notificacion
+  
+ showModalEdit(){
+  swal({
+    title:'Datos Modificado Exitosamente',
+    icon: "success",
+  });
+}
+
+
+  //Modal de  error de Modificacion Notificacion
+
+  showModalErrorEdit(){
+    swal({
+      title:'Error de Modificación de Datos ',
+      icon: "error",
+    });
+  }
+
+
+
    //Modal de Eliminar Usuario Notificacion
    title= 'sweetAlert';
    showModal(){
@@ -43,7 +79,7 @@ export class ListadoUsuariosComponent implements OnInit {
       });
     }
    //obtener todos los platos 
-  getAllplato() {
+  getAllusuarios() {
     this.UsuarioService.getusuario().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.platos);
@@ -61,27 +97,41 @@ usuarioedit() {
     nombre: this.usuarioForm.value.nombre,
     email: this.usuarioForm.value.email,
     telefono: this.usuarioForm.value.telefono,
-    foto: this.usuarioForm.value.foto
+    foto: this.usuarioForm.value.foto,
+    contrasena: this.usuarioForm.value.contrasena
   };
-    this.UsuarioService.guardar(datos, this.idUsuarioEditar).subscribe(
-      (plato) => {
-        console.log(plato);
-        alert('Modificado correctamente');
-       /// this.nuevoCurso(); // Restablecer el formulario después de editar
-        this.getAllplato();
+    this.UsuarioService.putusuario(datos, this.idUsuarioEditar).subscribe(
+      (usuarios) => {
+        console.log(usuarios);
+       
+        this. showModalEdit(); 
+        this.getAllusuarios();
       },
       (error) => {
         console.log(error);
-        alert('Error al guardar');
+        this. showModalErrorEdit(); 
       }
     );
   
 }
 editarUsuario(item: any) {
+
+  const contrasenaEncriptada = item.contrasena;
+  const longitud = contrasenaEncriptada.length;
+  const asteriscos = '*'.repeat(longitud);
+
+  this.usuarioForm.patchValue({
+    contrasena: asteriscos
+  });
   this.tituloForm = 'Editar  Menu';
   this.usuarioForm.patchValue({
-    descripcion: item.descripcion,
-    id_tipomenu: item.tipo_menu.id
+    usuario: item.usuario,
+    nombre: item.persona.nombre,
+    email: item.persona.email,
+    telefono: item.persona.telefono,
+    contrasena: asteriscos,
+    foto: item.persona.foto
+
   });
   //this.getId_Tipomenu();
   this.editandousuario = true;
@@ -94,7 +144,7 @@ editarUsuario(item: any) {
       next:(res)=>{
         this.showModal();
         
-        this.getAllplato();
+        this.getAllusuarios();
       },
       error:()=> {
         this.showModalError();

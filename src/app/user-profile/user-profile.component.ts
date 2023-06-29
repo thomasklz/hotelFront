@@ -15,6 +15,7 @@ import swal2 from 'sweetalert';
 export class UserProfileComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   submitted = false;
+
   constructor(
     private UsuarioService: UsuarioService,
     private router: Router,
@@ -50,20 +51,40 @@ export class UserProfileComponent implements OnInit {
     });
   }
   
+ 
   addPersona() {
-    this.submitted = true;
-    if (this.personaForm.valid) {
+    if (this.personaForm.invalid) {
+      this.submitted = true;
+
+      if (this.personaForm.touched) {
+        // Verificar si todos los campos están vacíos
+        const allFieldsEmpty = Object.values(this.personaForm.value).every((value) => !value);
+        
+        if (allFieldsEmpty) {
+          this.personaForm.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar los mensajes de error
+        } else {
+          // Marcar solo los campos vacíos como tocados para mostrar los mensajes de error
+          Object.keys(this.personaForm.controls).forEach((field) => {
+            if (this.personaForm.get(field)?.value === '') {
+              this.personaForm.get(field)?.markAsTouched();
+            }
+          });
+        }
+        
+        this.showModalError();
+      }
+    } else {
+      this.submitted = false; // Restablecer submitted a false si el formulario es válido
+
       this.UsuarioService.postpersona(this.personaForm.value).subscribe({
         next: (res) => {
           this.showModal();
           this.personaForm.reset();
         },
         error: (error) => {
-          this.personaForm.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar los mensajes de error
-
           this.showModalError();
         }
       });
-    } 
+    }
   }
 }

@@ -24,6 +24,11 @@ export class TableListComponent implements OnInit {
   editandoPlato: boolean = false; // Variable para indicar si se está editando un plato existente
   idPlatoEditar: string = ''; // Variable para almacenar el ID del plato en caso de edición
   
+
+
+  showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
+  showIdTipomenuError = false;//evitando que se muestren los mensajes de campo requerido 
+
   constructor(
     private http: HttpClient,
     private MenuService: MenuService,
@@ -127,6 +132,7 @@ export class TableListComponent implements OnInit {
       },
     });
   }
+  
 //obtener todos los platos 
   getAllplato() {
     this.MenuService.gettplato().subscribe({
@@ -150,67 +156,81 @@ export class TableListComponent implements OnInit {
   }
 //Para el editar de plato usando modal
 
-  editarPlato(item: any) {
-    this.tituloForm = 'Editar  Menu';
-    this.menuForm.patchValue({
-      descripcion: item.descripcion,
-      id_tipomenu: item.tipo_menu.id
-    });
-    this.getId_Tipomenu();
-    this.editandoPlato = true;
-    this.idPlatoEditar = item.id;
-  }
+ // ...
 
-  
-  showDescripcionError = false;
-  showIdTipomenuError = false;
+editarPlato(item: any) {
+  this.tituloForm = 'Editar  Menu';
+  this.menuForm.patchValue({
+    descripcion: item.descripcion,
+    id_tipomenu: item.tipo_menu.id
+  });
+  this.getId_Tipomenu();
+  this.editandoPlato = true;
+  this.idPlatoEditar = item.id;
 
-  // Registro de Plato...
+  // Establecer variables a false al editar
+  this.showDescripcionError = false;
+  this.showIdTipomenuError = false;
+}
 
-  addMenu() {
-    if (this.menuForm.valid) {
-      this.showDescripcionError = false;
-      this.showIdTipomenuError = false;
 
-      const datos = {
-        descripcion: this.menuForm.value.descripcion,
-        id_tipomenu: this.menuForm.value.id_tipomenu
-      };
 
-      if (!this.editandoPlato) {
-        this.MenuService.guardar(datos).subscribe(
-          (platos) => {
-            console.log(platos);
-            this.showModal();
-            this.getAllplato(); // Actualizar la tabla después de agregar un menú
-          },
-          (error) => {
-            console.log(error);
-            this.showModalError();
-            
-          }
-        );
-      } else {
-        // m o d i f i c a r -----------------------------
-        this.MenuService.guardar(datos, this.idPlatoEditar).subscribe(
-          (plato) => {
-            console.log(plato);
-            this.showModalEdit();
-            this.nuevoCurso(); // Restablecer el formulario después de editar
-            this.getAllplato();
-          },
-          (error) => {
-            console.log(error);
-            this.showModalErrorEdit();
-          }
-        );
-      }
+
+// Registro de Plato...
+
+addMenu() {
+  if (this.menuForm.valid) {
+    this.showDescripcionError = false;
+    this.showIdTipomenuError = false;
+
+    const datos = {
+      descripcion: this.menuForm.value.descripcion,
+      id_tipomenu: this.menuForm.value.id_tipomenu
+    };
+
+    if (!this.editandoPlato) {
+      this.MenuService.guardar(datos).subscribe(
+        (platos) => {
+          console.log(platos);
+          this.showModal();
+          this.getAllplato(); // Actualizar la tabla después de agregar un menú
+          this.menuForm.reset(); // Restablecer los valores del formulario
+        },
+        (error) => {
+          console.log(error);
+          this.showModalError();
+        }
+      );
     } else {
-      // Campos requeridos vacíos, muestra mensajes de error
-      this.showDescripcionError = this.menuForm.controls.descripcion.invalid;
-      this.showIdTipomenuError = this.menuForm.controls.id_tipomenu.invalid;
+      // m o d i f i c a r -----------------------------
+      this.MenuService.guardar(datos, this.idPlatoEditar).subscribe(
+        (plato) => {
+          console.log(plato);
+          this.showModalEdit();
+          this.nuevoCurso(); // Restablecer el formulario después de editar
+          this.getAllplato();
+        },
+        (error) => {
+          console.log(error);
+          this.showModalErrorEdit();
+        }
+      );
     }
+  } else {
+    this.showDescripcionError = this.menuForm.controls.descripcion.invalid;
+    this.showIdTipomenuError = this.menuForm.controls.id_tipomenu.invalid;
   }
+}
+
+// ...
+
+
+
+  // ...
+
+
+// ...
+
   
   eliminarPlato(id: number) {
     this.MenuService.deleteplato(id).subscribe({
