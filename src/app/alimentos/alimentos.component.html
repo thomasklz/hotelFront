@@ -13,7 +13,7 @@
 
               <div class="card">
                   <div class="card-header card-header-danger">
-                      <h4 class="card-title disabled">  <img src="/assets/img/mn.png" class="edit" alt=""> Menú</h4>
+                      <h4 class="card-title disabled">  <img src="/assets/img/alimentos.png" class="edit" alt=""> Alimentos</h4>
                      
                   </div>
                   <div class="card-body">
@@ -24,10 +24,10 @@
                                       ID
                                   </th>
                                   <th>
-                                      Tipo Menú
+                                      Tipo Alimento
                                   </th>
                                   <th>
-                                      Plato
+                                      Alimento
                                   </th>
                                   
                                   <th>
@@ -35,20 +35,20 @@
                                 </th>
                                   
                               </thead>
-                              <tbody  *ngFor="let item of platosss ;let i=index "  >
+                              <tbody  *ngFor="let item of alimentosss ;let i=index "  >
                                   <tr  >
                                       <td >
                                         {{i+1}}
                                       </td>
                                       <td >
-                                        {{item.tipo_menu.tipo}}
+                                        {{item.tipo_alimento.tipo}}
                                       </td>
                                       <td>
                                         {{item.descripcion}}
                                       </td>
                                       
                                       <td>
-                                        <button1 color="primary" (click)="editarPlato(item)">
+                                        <button1 color="primary" (click)="editarAlimento(item)">
                                           <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
                                         </button1>
                                         
@@ -76,20 +76,20 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content d-flex align-items-center">
       <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png" alt=""></h5>
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png" alt=""></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="menuForm">
+        <form [formGroup]="alimentoForm">
 
 <div class="form-row">
   <div class="form-group col-md-8">
     <label for="inputState" class="select-gr text-center">Tipo Menú</label> <br>
-    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_tipomenu" (change)="getId_Tipomenu()">
+    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_tipoalimento" (change)="getId_Tipoalimento()">
       <option selected disabled value="">Seleccione</option>
-      <option *ngFor="let item of tipomenusss" [value]="item.id">{{item.tipo}}</option>
+      <option *ngFor="let item of tipoalimentosss" [value]="item.id">{{item.tipo}}</option>
     </select>
-    <div *ngIf="showIdTipomenuError" class="text-danger">Campo requerido</div>
+    <div *ngIf="showIdTipoalimentoError" class="text-danger">Campo requerido</div>
   </div>
 </div>
 
@@ -111,7 +111,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-danger" (click)="addAlimento()" data-dismiss="modal">Guardar</button>
       </div>
     </div>
   </div>

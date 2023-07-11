@@ -15,15 +15,32 @@ import swal2 from 'sweetalert';
 export class UserProfileComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   submitted = false;
+  usuarioForm!: FormGroup;
+  
 
   constructor(
     private UsuarioService: UsuarioService,
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpClient
-  ) {}
+  ) {
+    this.getAllusuarios();
+    
+
+
+    this.usuarioForm = new FormGroup({
+      usuario: new FormControl(),
+     
+      nombre: new FormControl(),
+      email: new FormControl(),
+      telefono: new FormControl(),
+      foto: new FormControl(),
+    });
+    
+  }
 
   personaForm!: FormGroup;
+  usuariosss:any[] = []; 
   title = 'sweetAlert';
 
   showModal() {
@@ -79,6 +96,7 @@ export class UserProfileComponent implements OnInit {
       this.UsuarioService.postpersona(this.personaForm.value).subscribe({
         next: (res) => {
           this.showModal();
+          this.getAllusuarios();
           this.personaForm.reset();
         },
         error: (error) => {
@@ -86,5 +104,17 @@ export class UserProfileComponent implements OnInit {
         }
       });
     }
+  }
+
+  getAllusuarios() {
+    this.UsuarioService.getusuario().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.platos);
+        this.usuariosss = res.usuarios;
+      },
+      error: (err) => {
+       // alert("Error en la carga de datos");
+      },
+    });
   }
 }

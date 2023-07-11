@@ -35,7 +35,8 @@
                   <div class="card-footer">
                       <div class="stats">
                         <i class="material-icons text-danger">play_arrow</i>
-                        <a href="javascript:void(0) " routerLink="/listadoUsuarios">Generarlo </a>
+                        <a *ngIf="cuentaFija" href="javascript:void(0)" routerLink="/listadoUsuarios">Generarlo</a>
+
                       </div>
                   </div>
               </div>

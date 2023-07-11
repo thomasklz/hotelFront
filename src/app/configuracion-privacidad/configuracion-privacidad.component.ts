@@ -72,20 +72,11 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   }
 
   editarcontrasena(item: any) {
-    const contrasenaEncriptada = item.contrasena;
-    const longitud = contrasenaEncriptada.length;
-    const asteriscos = '*'.repeat(longitud);
-  
-    this.usuarioForm.patchValue({
-      contrasena: asteriscos
-    });
-  
-    this.editandox = true;
-    this.idEditar = item.id;
-  
+   
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
+    this.usuarioForm.reset();
   }
   
 
@@ -148,7 +139,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   
  showModalEdit(){
   swal2({
-    title:'Datos Modificado Exitosamente',
+    title:'Datos modificado exitosamente',
     icon: "success",
   });
 }
@@ -158,7 +149,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
 
   showModalErrorEdit(){
     swal({
-      title:'Error de Modificación de Datos ',
+      title:'Error de modificación de datos ',
       icon: "error",
     });
   }

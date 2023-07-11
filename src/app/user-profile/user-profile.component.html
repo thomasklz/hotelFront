@@ -75,5 +75,87 @@
         </div>
       </div>
     </div>
+
+
+
+    <div class="row">
+
+      <div class="col-md-12">
+
+          <div class="card">
+              <div class="card-header card-header-danger">
+                  <h4 class="card-title disabled">    Usuarios</h4>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead class=" text-primary">
+                              <th>
+                                  No
+                              </th>
+                              <th>
+                                  Usuario
+                              </th>
+                              <th>
+                                Contraseña
+                            </th>
+                              <th>
+                                  Nombres
+                              </th>
+                              <th>
+                                Email
+                            </th>
+                            <th>
+                                Teléfono
+                            </th>
+                            <th>
+                                Foto
+                            </th>
+                           
+                              
+                          </thead>
+                          <tbody  *ngFor="let item of usuariosss;let i=index ">
+                              <tr  >
+                                  <td >
+                                    {{i+1}}
+                                  </td>
+                                  <td >
+                                    {{item.usuario}}
+                                  </td>
+                                  <td>
+                                   **************
+                                  </td>
+                                  <td>
+                                    {{item.persona.nombre}}
+                                  </td>
+                                  <td>
+                                    {{item.persona.email}}
+                                  </td>
+                                  <td>
+                                    {{item.persona.telefono}}
+                                  </td>
+                                  <td>
+                                    {{item.persona.foto}}
+                                  </td>
+                                 
+                                
+                              </tr>
+                             
+                          </tbody>
+                      </table>
+
+
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+  </div>
   </div>
 </div>
+
+
+
+
+

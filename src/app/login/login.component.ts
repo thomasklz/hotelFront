@@ -46,7 +46,7 @@ showModalError(){
             localStorage.setItem('idPersona',res.idPersona);
             localStorage.setItem('idUsuario',res.idUsuario);
             localStorage.setItem('usuario',res.usuario);
-            
+            localStorage.setItem('contrasena',res.contrasena);
             this.showModal();
             this.loginForm.reset();
             this.router.navigate(["/dashboard"]);

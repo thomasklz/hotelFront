@@ -40,7 +40,7 @@
                                     Foto
                                 </th>
                                   <th>
-                                    Accion
+                                    Acción
                                 </th>
                                   
                               </thead>
@@ -68,11 +68,14 @@
                                         {{item.persona.foto}}
                                       </td>
                                       <td>
+                                        <button0 color="primary" (click)="editcontrasena(item)">
+                                          <i class="material-icons  editable-row" data-toggle="modal" data-target="#ventanaContrasena">https</i>
+                                        </button0>
                                           <button1 color="primary" (click)="editarUsuario(item)">
                                           <i class="material-icons  editable-row" data-toggle="modal" data-target="#ventanaUsuario">edit</i>
                                         </button1>
                                         
-                                       <button2 > <i class="material-icons editable-row" (click)="eliminarusuario(item.id)" >delete</i></button2>
+                                       <button2 > <i class="material-icons editable-row" (click)="showModalEliminar(item.id)" >delete</i></button2>
                                     </td>
                                     
                                   </tr>
@@ -94,9 +97,33 @@
 
 
 
-
+        <!-- Modal Contraseña -->
+        <div class="modal fade" id="ventanaContrasena"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content d-flex align-items-center">
+              <div class=" heads x">
+                  <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Contraseña <img src="assets/img/contrasena.png" alt=""></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="usuarioForm2">
+                    <div class="form-group col-md-8">
+                      <label for="inputState" class="select-gr">Contraseña</label> <br>
+                      <input class="example-full-width estilos" type="text" formControlName="contrasena">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+                  <button type="button" class="btn btn-danger" (click)=" editarContrasena()" data-dismiss="modal">Guardar</button>
+                </div>
+              </div>
+            </div>
+          </div>
  
-    <!-- Modal Email-->
+    <!-- Modal -->
     <div class="modal fade" id="ventanaUsuario"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content d-flex align-items-center">
@@ -112,10 +139,7 @@
                   <label for="inputState" class="select-gr">Usuario</label> <br>
                   <input class="example-full-width estilos" type="text" formControlName="usuario">
                 </div>
-                <div class="form-group col-md-8">
-                  <label for="inputState" class="select-gr">Contraseña</label> <br>
-                  <input class="example-full-width estilos" type="text" formControlName="contrasena">
-                </div>
+                
                 <div class="form-group col-md-8">
                   <label for="inputState" class="select-gr">Nombres</label> <br>
                   <input class="example-full-width estilos" type="text"  formControlName="nombre" >

@@ -53,7 +53,7 @@ editUsuario(data:any, id:number){
   return this.http.put<any>('http://localhost:3000/api/editUsuario/'+id,data);
 }
 
-editContrasena(data:any, id:number){
+editContrasena(data:any, id:any){
   return this.http.put<any>('http://localhost:3000/api/editContrasena/'+id,data);
 }
 

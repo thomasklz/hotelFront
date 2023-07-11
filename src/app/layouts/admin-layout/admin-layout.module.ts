@@ -23,6 +23,7 @@ import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-pol
 import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
 import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
 import { AyudaComponent } from 'app/ayuda/ayuda.component';
+import { AlimentosComponent } from 'app/alimentos/alimentos.component';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { AyudaComponent } from 'app/ayuda/ayuda.component';
     ReportePolitecnicoComponent,
    ListadoUsuariosComponent,
    ConfiguracionPrivacidadComponent,
-   AyudaComponent
+   AyudaComponent,
+   AlimentosComponent
 
   ]
 })

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UsuarioService } from 'app/servicios/usuario.service';
 import { MatTableDataSource } from '@angular/material/table';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-listado-usuarios',
   templateUrl: './listado-usuarios.component.html',
@@ -15,9 +17,11 @@ export class ListadoUsuariosComponent implements OnInit {
   usuario:string = ''; 
   contrasena:string = ''; 
   usuariosss:any[] = []; 
+  
   dataSource = new MatTableDataSource<any>();
   tituloForm;
   usuarioForm!: FormGroup;
+  usuarioForm2!: FormGroup;
   editandousuario: boolean = false; // Variable para indicar si se está editando un usuario existente
   idUsuarioEditar: string = ''; // Variable para almacenar el ID del usuario en caso de edición
 
@@ -31,11 +35,15 @@ export class ListadoUsuariosComponent implements OnInit {
 
     this.usuarioForm = new FormGroup({
       usuario: new FormControl(),
-      contrasena: new FormControl(),
+     
       nombre: new FormControl(),
       email: new FormControl(),
       telefono: new FormControl(),
       foto: new FormControl(),
+    });
+    this.usuarioForm2 = new FormGroup({
+      contrasena: new FormControl(),
+    
     });
    }
 
@@ -46,17 +54,16 @@ export class ListadoUsuariosComponent implements OnInit {
   
  showModalEdit(){
   swal({
-    title:'Datos Modificado Exitosamente',
+    title:'Datos modificado exitosamente',
     icon: "success",
   });
 }
 
 
   //Modal de  error de Modificacion Notificacion
-
   showModalErrorEdit(){
     swal({
-      title:'Error de Modificación de Datos ',
+      title:'Error de modificación de datos ',
       icon: "error",
     });
   }
@@ -67,18 +74,43 @@ export class ListadoUsuariosComponent implements OnInit {
    title= 'sweetAlert';
    showModal(){
      swal({
-       title:'Usuario Eliminado Exitosamente',
+       title:'Usuario eliminado exitosamente',
        icon: "success",
      });
    }
     //Modal de error de Eliminar Usuario Notificacion
     showModalError(){
       swal({
-        title:'Usuario No Eliminado Exitosamente',
+        title:'Error en eliminar usuario',
         icon: "error",
       });
     }
-   //obtener todos los platos 
+
+    showModalEliminar(id: number) {
+      Swal.fire({
+        title: '¿Estás seguro que deseas eliminar este usuario?',
+        icon: 'warning',
+        showCancelButton: true,
+       
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#bf0d0d',
+        
+        
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.eliminarusuario(id);
+        }
+      });
+    }
+        
+    showModalErrorEliminar() {
+      Swal.fire({
+        title: 'Error al eliminar el usuario',
+        icon: 'error',
+      });
+    }
+   //obtener todos los usuarios 
   getAllusuarios() {
     this.UsuarioService.getusuario().subscribe({
       next: (res) => {
@@ -90,7 +122,36 @@ export class ListadoUsuariosComponent implements OnInit {
       },
     });
   }
-//Para el editar de plato usando modal
+  editarUsuario(item: any) {
+  this.usuarioForm.patchValue({
+     
+    });
+    this.tituloForm = 'Editar  Menu';
+    this.usuarioForm.patchValue({
+      usuario: item.usuario,
+      nombre: item.persona.nombre,
+      email: item.persona.email,
+      telefono: item.persona.telefono,
+      foto: item.persona.foto
+  
+    });
+    //this.getId_Tipomenu();
+    this.editandousuario = true;
+    this.idUsuarioEditar = item.id;
+  }
+  
+  
+  editcontrasena(item: any) {
+   
+
+    this.editandousuario = true;
+    this.idUsuarioEditar = item.id;
+   
+    this.usuarioForm2.reset();
+  }
+
+
+//Para el editar de usuario usando modal
 usuarioedit() {
   const datos = {
     usuario: this.usuarioForm.value.usuario,
@@ -98,7 +159,7 @@ usuarioedit() {
     email: this.usuarioForm.value.email,
     telefono: this.usuarioForm.value.telefono,
     foto: this.usuarioForm.value.foto,
-    contrasena: this.usuarioForm.value.contrasena
+   
   };
     this.UsuarioService.putusuario(datos, this.idUsuarioEditar).subscribe(
       (usuarios) => {
@@ -114,29 +175,27 @@ usuarioedit() {
     );
   
 }
-editarUsuario(item: any) {
 
-  const contrasenaEncriptada = item.contrasena;
-  const longitud = contrasenaEncriptada.length;
-  const asteriscos = '*'.repeat(longitud);
-
-  this.usuarioForm.patchValue({
-    contrasena: asteriscos
-  });
-  this.tituloForm = 'Editar  Menu';
-  this.usuarioForm.patchValue({
-    usuario: item.usuario,
-    nombre: item.persona.nombre,
-    email: item.persona.email,
-    telefono: item.persona.telefono,
-    contrasena: asteriscos,
-    foto: item.persona.foto
-
-  });
-  //this.getId_Tipomenu();
-  this.editandousuario = true;
-  this.idUsuarioEditar = item.id;
+editarContrasena() {
+ 
+  const datos = {
+    contrasena: this.usuarioForm2.value.contrasena,
+    
+   
+  };
+    this.UsuarioService.editContrasena(datos, this.idUsuarioEditar).subscribe(
+      (contrasena) => {
+        console.log(contrasena);
+        this.showModalEdit();
+      
+      },
+      (error) => {
+        console.log(error);
+        this.showModalErrorEdit();
+      }
+    );
 }
+
 
    eliminarusuario(id:number){
     this.UsuarioService.deleteusuario(id)
@@ -151,6 +210,7 @@ editarUsuario(item: any) {
       },
     })
    }
+
 
    // Restablecer el formulario cuando se cierre el modal
    closeModal() {
