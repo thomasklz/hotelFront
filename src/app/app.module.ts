@@ -14,6 +14,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { LoginComponent } from './login/login.component';
+import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { LoginComponent } from './login/login.component';
     AdminLayoutComponent,
     CrearUsuarioComponent,
     LoginComponent,
+    CrearAdministradorComponent,
     
     
     

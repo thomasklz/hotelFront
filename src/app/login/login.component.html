@@ -1,11 +1,19 @@
+<div class="main-container">
 <form class="login-form"  [formGroup]="loginForm">
-    <p class="login-text">
-        <br><br><br><br> <br><br><br><br> <br><br><br><br>
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-circle fa-stack-2x"></i>
-        <i class="fa fa-lock fa-stack-1x"></i>
-      </span>
-    </p> 
+  <div class="login-text">
+    <div class="logo-container">
+      <img src="assets/img/log.png" alt="">
+
+
+
+    </div>
+    
+    <span class="fa-stack fa-2x">
+      <i class="fa fa-user fa-stack-1x"></i>
+    </span>
+    
+  </div>
+  
     
    
    
@@ -16,8 +24,17 @@
 
     <input type="submit" name="Login" value="Ingresar" class="login-submit" (click)="login()" />
     
+    <div class="register-link" *ngIf="!hayUsuarios">
+      ¿No tienes cuenta? <a (click)="crearUsuario()">Regístrate</a>
+    </div>
+    
+   
+    <br>
   </form>
  
   <div class="underlay-photo "> </div>
   <div class="underlay-black"></div> 
   <router-outlet></router-outlet>  
+
+
+</div>

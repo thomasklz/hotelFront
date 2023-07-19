@@ -1,0 +1,157 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+<div class="main-content">
+  <div class="container-fluid">
+
+
+      <div class="row">
+        <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title"  data-toggle="modal" data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+
+          <div class="col-md-12">
+
+              <div class="card">
+                  <div class="card-header card-header-danger">
+                      <h4 class="card-title disabled">  <img src="/assets/img/alimentos.png" class="edit" alt=""> Ingredientes</h4>
+                     
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table class="table">
+                              <thead class=" text-primary">
+                                  <th>
+                                      ID
+                                  </th>
+                                  <th>
+                                      Plato
+                                  </th>
+                                  <th>
+                                      Alimento
+                                  </th>
+                                  <th>
+                                    Peso
+                                </th>
+                                <th>
+                                  Precio
+                              </th>
+                                  
+                                  <th>
+                                    Acción
+                                </th>
+                                  
+                              </thead>
+                              <tbody  *ngFor="let item of ingredientesss ;let i=index "  >
+                                  <tr  >
+
+                                    
+                                      <td >
+                                        {{i+1}}
+                                      </td>
+                                      <td>
+                                        {{item.plato.descripcion}}
+                                      </td>
+                                      <td >
+                                        {{item.alimento.descripcion}}
+                                      </td>
+                                      <td >
+                                        {{item.peso.descripcion}}
+                                      </td>
+                                      <td>
+                                        {{item.precio}}
+                                      </td>
+                                      
+                                      <td>
+                                        <button1 color="primary" (click)="editarIngrediente(item)">
+                                          <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                                        </button1>
+                                        
+                                        
+                                       <button2 > <i class="material-icons editable-row" (click)="showModalEliminar(item.id)" >delete</i></button2>
+                                    </td>
+                                    
+                                  </tr>
+                                 
+                              </tbody>
+                          </table>
+
+
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content d-flex align-items-center">
+      <div class=" heads x">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png" alt=""></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="ingredientesForm">
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="inputState" class="select-gr text-center">Plato</label> <br>
+    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_plato" (change)="getId_plato()">
+      <option selected disabled value="">Seleccione</option>
+      <option *ngFor="let item of platosss" [value]="item.id">{{item.descripcion}}</option>
+    </select>
+    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+  </div>
+</div>
+
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="inputState" class="select-gr text-center">Alimento</label> <br>
+    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_alimento" (change)="getId_alimento()">
+      <option selected disabled value="">Seleccione</option>
+      <option *ngFor="let item of alimentosss" [value]="item.id">{{item.descripcion}}</option>
+    </select>
+    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+  </div>
+</div>
+
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="inputState" class="select-gr text-center">Peso</label> <br>
+    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_peso" (change)="getId_peso()">
+      <option selected disabled value="">Seleccione</option>
+      <option *ngFor="let item of pesosss" [value]="item.id">{{item.descripcion}}</option>
+    </select>
+    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="inputState" class="select-gr">Precio</label> <br>
+    <input class="example-full-width estilos" type="text" formControlName="precio">
+    <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
+  </div>
+</div>
+
+<!-- ... -->
+
+
+          <!-- ... -->
+
+          <input type="hidden" formControlName="funcion">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

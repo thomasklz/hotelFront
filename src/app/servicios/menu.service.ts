@@ -16,6 +16,11 @@ export class MenuService {
   gettplato(){
     return this.http.get<any>('http://localhost:3000/api/mostrarplato');
   }
+  gettplatoselect(){
+    return this.http.get<any>('http://localhost:3000/api/obtenerplato');
+  }
+
+  
 
 putplato(data:any, id:number){
   return this.http.put<any>('http://localhost:3000/api/editarplato/'+id,data);

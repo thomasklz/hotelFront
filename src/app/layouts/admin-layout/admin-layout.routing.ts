@@ -15,6 +15,7 @@ import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.
 import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
 import { AyudaComponent } from 'app/ayuda/ayuda.component';
 import { AlimentosComponent } from 'app/alimentos/alimentos.component';
+import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -76,7 +77,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'configuracionyprivacidad',        component: ConfiguracionPrivacidadComponent },
     { path: 'ayuda',        component: AyudaComponent },
     { path: 'alimentos',        component: AlimentosComponent },
-
+    { path: 'ingredientes',        component: IngredientesComponent },
     
     
     

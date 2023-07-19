@@ -26,8 +26,6 @@ export class UserProfileComponent implements OnInit {
   ) {
     this.getAllusuarios();
     
-
-
     this.usuarioForm = new FormGroup({
       usuario: new FormControl(),
      

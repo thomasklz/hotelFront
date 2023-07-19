@@ -24,6 +24,8 @@ import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.
 import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
 import { AyudaComponent } from 'app/ayuda/ayuda.component';
 import { AlimentosComponent } from 'app/alimentos/alimentos.component';
+import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
+
 
 @NgModule({
   imports: [
@@ -53,7 +55,8 @@ import { AlimentosComponent } from 'app/alimentos/alimentos.component';
    ListadoUsuariosComponent,
    ConfiguracionPrivacidadComponent,
    AyudaComponent,
-   AlimentosComponent
+   AlimentosComponent,
+   IngredientesComponent
 
   ]
 })
