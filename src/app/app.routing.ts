@@ -15,6 +15,7 @@ const routes: Routes = [
   {path:'login', component: LoginComponent},
   {path:'crearAdministrador', component: CrearAdministradorComponent},
   
+  
    {
     path: '',
     component: AdminLayoutComponent,

@@ -25,6 +25,9 @@ import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/c
 import { AyudaComponent } from 'app/ayuda/ayuda.component';
 import { AlimentosComponent } from 'app/alimentos/alimentos.component';
 import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
+import { PlatosComponent } from 'app/platos/platos.component';
+import { MenuComponent } from 'app/menu/menu.component';
+import { CreditoComponent } from 'app/credito/credito.component';
 
 
 @NgModule({
@@ -56,7 +59,10 @@ import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
    ConfiguracionPrivacidadComponent,
    AyudaComponent,
    AlimentosComponent,
-   IngredientesComponent
+   IngredientesComponent,
+   PlatosComponent,
+   MenuComponent,
+   CreditoComponent,
 
   ]
 })

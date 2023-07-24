@@ -16,6 +16,9 @@ import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/c
 import { AyudaComponent } from 'app/ayuda/ayuda.component';
 import { AlimentosComponent } from 'app/alimentos/alimentos.component';
 import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
+import { PlatosComponent } from 'app/platos/platos.component';
+import { MenuComponent } from 'app/menu/menu.component';
+import { CreditoComponent } from 'app/credito/credito.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -78,6 +81,10 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'ayuda',        component: AyudaComponent },
     { path: 'alimentos',        component: AlimentosComponent },
     { path: 'ingredientes',        component: IngredientesComponent },
+    { path: 'platos',        component: PlatosComponent },
+    { path: 'menu',        component: MenuComponent },
+    { path: 'creditos',        component: CreditoComponent },
+    
     
     
     
