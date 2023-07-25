@@ -30,7 +30,7 @@
         <input type="email" class="login-username" autofocus="true" placeholder="Usuario*" formControlName="usuario" [ngClass]="{ 'error': personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted) }" />
         <div *ngIf="personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted)" class="error-message error-text">El usuario es requerido y debe tener al menos 3 caracteres.</div>
         
-        <input type="email" class="login-password" placeholder="Contraseña*" formControlName="contrasena" [ngClass]="{ 'error': personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted) }" />
+        <input type="password" class="login-password" placeholder="Contraseña*" formControlName="contrasena" [ngClass]="{ 'error': personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted) }" />
         <div *ngIf="personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted)" class="error-message error-text">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
       
         <button type="submit" class="login-submit" >

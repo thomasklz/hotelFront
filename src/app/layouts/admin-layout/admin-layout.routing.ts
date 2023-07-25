@@ -19,6 +19,8 @@ import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
 import { PlatosComponent } from 'app/platos/platos.component';
 import { MenuComponent } from 'app/menu/menu.component';
 import { CreditoComponent } from 'app/credito/credito.component';
+import { TipoalimentosComponent } from 'app/tipoalimentos/tipoalimentos.component';
+import { PesosComponent } from 'app/pesos/pesos.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -84,10 +86,11 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'platos',        component: PlatosComponent },
     { path: 'menu',        component: MenuComponent },
     { path: 'creditos',        component: CreditoComponent },
-    
-    
-    
-    
+    { path: 'tipoalimentos',        component: TipoalimentosComponent },
+    { path: 'pesos',        component: PesosComponent },
 
+    
+    
+    
     
 ];

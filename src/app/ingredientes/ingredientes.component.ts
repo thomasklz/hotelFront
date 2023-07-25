@@ -11,6 +11,8 @@ import { IngredientesService } from '../servicios/ingredientes.service';
 import Swal from 'sweetalert2';
 import { AlimentosService } from 'app/servicios/alimentos.service';
 import { MenuService } from 'app/servicios/menu.service';
+import { PesosService } from 'app/servicios/pesos.service';
+
 @Component({
   selector: 'app-ingredientes',
   templateUrl: './ingredientes.component.html',
@@ -43,7 +45,7 @@ export class IngredientesComponent implements OnInit {
     private IngredientesService: IngredientesService,
     private AlimentosService: AlimentosService,
     private MenuService: MenuService,
-    
+    private PesosService:PesosService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
@@ -132,7 +134,7 @@ getId_alimento() {
 //obtener todos los pesos 
 
   getAllpesos() {
-    this.IngredientesService.gettpesos().subscribe({
+    this.PesosService.gettpesos().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.pesos);
         this.pesosss = res.pesos;

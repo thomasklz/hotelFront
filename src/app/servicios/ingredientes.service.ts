@@ -10,9 +10,7 @@ export class IngredientesService {
 
 
   //obtener ingredientes
-  gettpesos(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarpeso/');
-  }
+  
 
   //obtener ingredientes
   getingrediente(){

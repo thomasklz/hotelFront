@@ -28,6 +28,8 @@ import { IngredientesComponent } from 'app/ingredientes/ingredientes.component';
 import { PlatosComponent } from 'app/platos/platos.component';
 import { MenuComponent } from 'app/menu/menu.component';
 import { CreditoComponent } from 'app/credito/credito.component';
+import { TipoalimentosComponent } from 'app/tipoalimentos/tipoalimentos.component';
+import { PesosComponent } from 'app/pesos/pesos.component';
 
 
 @NgModule({
@@ -63,7 +65,8 @@ import { CreditoComponent } from 'app/credito/credito.component';
    PlatosComponent,
    MenuComponent,
    CreditoComponent,
-
+   TipoalimentosComponent,
+   PesosComponent
   ]
 })
 
