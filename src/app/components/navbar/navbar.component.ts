@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -124,7 +124,23 @@ export class NavbarComponent implements OnInit {
       return 'Dashboard';
     }
 
-
+    showModalcerrar() {
+        Swal.fire({
+          title: '¿Estás seguro que deseas cerrar sesión?',
+          icon: 'warning',
+          showCancelButton: true,
+         
+          confirmButtonText: 'Sí, cerrar',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#bf0d0d',
+          
+          
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.logout();
+          }
+        });
+      }
     logout() {
         localStorage.removeItem('idPersona');
         localStorage.removeItem('idUsuario');

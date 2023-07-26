@@ -12,3 +12,6 @@ img{
    font-size: 50px;
    font-weight: bold;
   }
+  a{
+    cursor: pointer;
+  }
