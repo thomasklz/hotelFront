@@ -119,7 +119,7 @@ editartipoAlimento(item: any) {
 }
 
 
-// Registro de Plato...
+// Registro de tipo alimento...
 addtipoAlimento() {
   if (this.TipoalimentoForm.valid) {
     this.showTipoError = false;

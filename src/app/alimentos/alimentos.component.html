@@ -8,7 +8,7 @@
 
       <div class="row">
         <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title"  data-toggle="modal" data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
-        <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title"  data-toggle="modal" data-target="#ventanaForm" (click)="nuevoCurso()">TIPO ALIMENTO +</button>
+        <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title"  data-toggle="modal" data-target="#ventanaForm2" (click)="nuevoCurso()">TIPO ALIMENTO +</button>
 
           <div class="col-md-12">
 
@@ -117,4 +117,37 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="ventanaForm2" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content d-flex align-items-center">
+      <div class=" heads x">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png" alt=""></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="TipoalimentoForm">
+
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="inputState" class="select-gr">Tipo</label> <br>
+    <input class="example-full-width estilos" type="text" formControlName="tipo">
+    <div *ngIf="showTipoError" class="text-danger">Campo requerido</div>
+  </div>
+</div>
+
+
+          <input type="hidden" formControlName="funcion">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-danger" (click)="addtipoAlimento()" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

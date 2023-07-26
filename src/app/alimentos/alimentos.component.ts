@@ -29,6 +29,14 @@ export class AlimentosComponent implements OnInit {
   showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
   showIdTipoalimentoError = false;//evitando que se muestren los mensajes de campo requerido 
 
+
+
+  //--------------
+  TipoalimentoForm!: FormGroup;
+  showTipoError = false; //evitando que se muestren los mensajes de campo requerido 
+  editandoTipoAlimento: boolean = false; // Variable para indicar si se está editando un alimento existente
+  idTipoAlimentoEditar: string = ''; // Variable para almacenar el ID del alimento en caso de edición
+
   constructor(
     private http: HttpClient,
     private AlimentosService: AlimentosService,
@@ -47,6 +55,12 @@ export class AlimentosComponent implements OnInit {
     this.alimentoForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
       id_tipoalimento: new FormControl("", [Validators.required, Validators.maxLength(1)])
+    });
+
+
+    this.getAlltipoalimento();
+    this.TipoalimentoForm = this.formBuilder.group({
+      tipo: new FormControl("", [Validators.required, Validators.minLength(3)])
     });
   }
 
@@ -149,7 +163,7 @@ editarAlimento(item: any) {
 }
 
 
-// Registro de Plato...
+// Registro de alimento...
 
 addAlimento() {
   if (this.alimentoForm.valid) {
@@ -196,7 +210,48 @@ addAlimento() {
   }
 }
 
+//registro de tipo alimento
+addtipoAlimento() {
+  if (this.TipoalimentoForm.valid) {
+    this.showTipoError = false;
 
+    const datos = {
+      tipo: this.TipoalimentoForm.value.tipo
+    };
+
+    if (!this.editandoTipoAlimento) {
+      this.AlimentosService.guardartiposalimentos(datos).subscribe(
+        (tipo_alimentos) => {
+          console.log(tipo_alimentos);
+          this.showModal();
+          this.getAlltipoalimento(); // Actualizar la tabla después de agregar un alimento
+          this.TipoalimentoForm.reset(); // Restablecer los valores del formulario
+          
+        },
+        (error) => {
+          console.log(error);
+          this.showModalError();
+        }
+      );
+    } else {
+      // m o d i f i c a r -----------------------------
+      this.AlimentosService.guardartiposalimentos(datos, this.idTipoAlimentoEditar).subscribe(
+        (tipo_alimentos) => {
+          console.log(tipo_alimentos);
+          this.showModalEdit();
+          this.nuevoCurso(); // Restablecer el formulario después de editar
+          this.getAlltipoalimento();
+        },
+        (error) => {
+          console.log(error);
+          this.showModalErrorEdit();
+        }
+      );
+    }
+  } else {
+    this.showTipoError = this.TipoalimentoForm.controls.tipo.invalid;
+  }
+}
 // ...
 showModalEliminar(id: number) {
   Swal.fire({
