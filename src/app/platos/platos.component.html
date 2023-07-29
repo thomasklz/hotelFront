@@ -85,11 +85,20 @@
 <div class="form-row">
   <div class="form-group col-md-8">
     <label for="inputState" class="select-gr text-center">Tipo Menú</label> <br>
-    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_tipomenu" (change)="getId_Tipomenu()">
-      <option selected disabled value="">Seleccione</option>
-      <option *ngFor="let item of tipomenusss" [value]="item.id">{{item.tipo}}</option>
-    </select>
-    <div *ngIf="showIdTipomenuError" class="text-danger">Campo requerido</div>
+    <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
+      <div class="selected-option" (click)="toggleShowMoreOptions()">
+        {{ getSelectedOptionLabel() }}
+        <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+      </div>
+      <div class="options-container">
+        <ng-container *ngFor="let item of tipomenusss">
+          <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7" (click)="selectOption(item)">{{ item.tipo }}</div>
+          <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.tipo }}</div>
+          <div *ngIf="showIdTipomenuError" class="text-danger">Campo requerido</div>
+        </ng-container>
+      </div>
+    </div>
+
   </div>
 </div>
 

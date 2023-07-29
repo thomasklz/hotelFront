@@ -30,7 +30,7 @@ import { MenuComponent } from 'app/menu/menu.component';
 import { CreditoComponent } from 'app/credito/credito.component';
 import { TipoalimentosComponent } from 'app/tipoalimentos/tipoalimentos.component';
 import { PesosComponent } from 'app/pesos/pesos.component';
-
+import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
 
 @NgModule({
   imports: [
@@ -46,6 +46,7 @@ import { PesosComponent } from 'app/pesos/pesos.component';
     MatTooltipModule,
     MatTableModule,
     MatIconModule
+  
   ],
   declarations: [
     DashboardComponent,
@@ -66,7 +67,8 @@ import { PesosComponent } from 'app/pesos/pesos.component';
    MenuComponent,
    CreditoComponent,
    TipoalimentosComponent,
-   PesosComponent
+   PesosComponent,
+   CantidadplatosComponent
   ]
 })
 

@@ -20,13 +20,10 @@ export class MenuService {
     return this.http.get<any>('http://localhost:3000/api/obtenerplato');
   }
 
-  
-
 putplato(data:any, id:number){
   return this.http.put<any>('http://localhost:3000/api/editarplato/'+id,data);
 }
 id:number;
-
 
 guardar(data:any, id?){
 if (id) {
@@ -38,7 +35,6 @@ if (id) {
 buscar( id){
   return this.http.get<any>('http://localhost:3000/api/buscarplato/'+id);
 }
-
 deleteplato(id:number){
   return this.http.delete<any>('http://localhost:3000/api/eliminarplato/'+id);
 }
@@ -59,7 +55,40 @@ posttipomenu(data:any){
 }
 
 
+/*CANTIDAD DE PLATOS------------------------------------------------------ */
+
+guardarCantidadPlato(data:any, id?){
+  if (id) {
+    return this.http.put<any>('http://localhost:3000/api/editarcantidadplato/'+id,data);
+  }else{
+    return this.http.post<any>('http://localhost:3000/api/crearcantidadplato/', data);
+  }
+  }
+
+  gettcantidadplatos(){
+    return this.http.get<any>('http://localhost:3000/api/mostrarcantidadplato');
+  }
+
+  obtenercantidadplatoselect(){
+    return this.http.get<any>('http://localhost:3000/api/obtenercantidadplatoselect');
+  }
+
+  
 
 
+/* MENU------------------------------------------------------ */
+gettMenu(){
+  return this.http.get<any>('http://localhost:3000/api/mostrarmenu');
+}
+
+
+
+guardarMenu(data:any, id?){
+  if (id) {
+    return this.http.put<any>('http://localhost:3000/api/editarmenu/'+id,data);
+  }else{
+    return this.http.post<any>('http://localhost:3000/api/crearmenu/', data);
+  }
+  }
 
 }

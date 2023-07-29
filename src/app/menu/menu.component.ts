@@ -21,7 +21,13 @@ export class MenuComponent implements OnInit {
   descripcion: string = '';
   id_tipomenu: string = '';
   tipomenusss: any[] = [];
-  platosss: any[] = [];
+  
+  
+  id_cantidadplato: string = '';
+
+
+  cantidadplatosss: any[] = [];
+  menusss: any[] = [];
   tituloForm;
   menuForm!: FormGroup;
   editandoPlato: boolean = false; // Variable para indicar si se está editando un plato existente
@@ -29,8 +35,46 @@ export class MenuComponent implements OnInit {
   
 
 
-  showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
-  showIdTipomenuError = false;//evitando que se muestren los mensajes de campo requerido 
+  showId_cantidadplatoError = false; //evitando que se muestren los mensajes de campo requerido 
+  showId_tipomenuError = false;//evitando que se muestren los mensajes de campo requerido
+  showFechaError = false; //evitando que se muestren los mensajes de campo requerido 
+  showHabilitadoError = false;//evitando que se muestren los mensajes de campo requerido 
+
+  showMoreOptions: boolean = false;  
+  selectedOption: any = null;
+    toggleShowMoreOptions() { 
+      this.showMoreOptions = !this.showMoreOptions;
+        }        
+        selectOption(item: any) {
+          this.selectedOption = item;
+          this.showMoreOptions = false;
+      
+          // Update the form control with the selected option's ID
+          this.menuForm.get('id_tipomenu')?.setValue(item.id);
+        }    
+        getSelectedOptionLabel() {
+          return this.selectedOption ? this.selectedOption.tipo : 'Seleccione  ';
+        }
+
+        showMoreOptionscantidadplato: boolean = false;  
+        selectedOptioncantidadplato: any = null;
+        
+        
+        
+          toggleShowMoreOptionscantidadplato() { 
+            this.showMoreOptionscantidadplato = !this.showMoreOptionscantidadplato;
+              }        
+              selectOptioncantidadplato(item: any) {
+                this.selectedOptioncantidadplato = item;
+                this.showMoreOptionscantidadplato = false;
+            
+                // Update the form control with the selected option's ID
+                this.menuForm.get('id_cantidadplato')?.setValue(item.id);
+              }
+            
+              getSelectedOptionLabelcantidadplato() {
+                return this.selectedOptioncantidadplato ? this.selectedOptioncantidadplato.cantidad : 'Seleccione  ';
+              }
 
   constructor(
     private http: HttpClient,
@@ -39,16 +83,23 @@ export class MenuComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.getAlltipomenu();
-    this.getAllplato();
+    this.getAllmenus();
+    this.getAllcantidadplatos();
+    
   }
 
 //cargar los datos de la seleccion de la tabla  en la modal
 
   ngOnInit() {
-    this.getAllplato();
+    this.getAllmenus();
+    this.getAllcantidadplatos();
     this.menuForm = this.formBuilder.group({
-      descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
-      id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)])
+     
+      id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      id_cantidadplato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      fecha: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      habilitado: new FormControl("", [Validators.required, Validators.minLength(1)]),
+
     });
   }
 
@@ -72,8 +123,6 @@ export class MenuComponent implements OnInit {
     });
   }
  
-  
-
   //Modal de Modificacion Notificacion
   
   showModalEdit(){
@@ -83,7 +132,6 @@ export class MenuComponent implements OnInit {
     });
   }
   
-
     //Modal de  error de Modificacion Notificacion
 
     showModalErrorEdit(){
@@ -93,14 +141,7 @@ export class MenuComponent implements OnInit {
       });
     }
 
-
-
-
      //Modal de Eliminar Notificacion
-
-  
-
-
 
 
     //Modal de  error de Modificacion Notificacion
@@ -111,10 +152,18 @@ export class MenuComponent implements OnInit {
     this.http
       .get("http://localhost:3000/api/creartipo_menu?=" + this.id_tipomenu)
       .subscribe((result: any) => {
-        this.tipomenusss = result.platos;
+        this.tipomenusss = result.menus;
       });
   }
  
+  //registrar el id cantidad de plato el nuevo que se selecciona y enviarlo a la data
+  getId_Cantidadplato() {
+    this.http
+      .get("http://localhost:3000/api/crearcantidadplato?=" + this.id_cantidadplato)
+      .subscribe((result: any) => {
+        this.cantidadplatosss = result.menus;
+      });
+  }
 //obtener todos los tipos menu desayuno almuerzo y merienda 
 
   getAlltipomenu() {
@@ -128,13 +177,28 @@ export class MenuComponent implements OnInit {
       },
     });
   }
-  
-//obtener todos los platos 
-  getAllplato() {
-    this.MenuService.gettplato().subscribe({
+
+  //obtener todas las cantidades de platos
+
+  getAllcantidadplatos() {
+    this.MenuService.obtenercantidadplatoselect().subscribe({
       next: (res) => {
-        this.dataSource = new MatTableDataSource(res.platos);
-        this.platosss = res.platos;
+        this.dataSource = new MatTableDataSource(res.cantidad_platos);
+        this.cantidadplatosss = res.cantidad_platos;
+        
+      },
+      error: (err) => {
+       // alert("Error en la carga de datos");
+      },
+    });
+  }
+  
+//obtener todos los menus 
+  getAllmenus() {
+    this.MenuService.gettMenu().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.menu);
+        this.menusss = res.menu;
       },
       error: (err) => {
         //alert("Error en la carga de datos");
@@ -149,24 +213,46 @@ export class MenuComponent implements OnInit {
     this.menuForm.reset();
     this.editandoPlato = false;
     this.idPlatoEditar = '';
+
+    this.selectedOption = null;
+    this.menuForm.get('id_tipomenu')?.setValue(null);   
+    this.showId_tipomenuError = false;
+
+    this.selectedOptioncantidadplato = null;
+    this.menuForm.get('id_cantidadplato')?.setValue(null);   
+    this.showId_cantidadplatoError = false;
+    this.showFechaError = false;
+    this.showHabilitadoError = false;
+
   }
 //Para el editar de plato usando modal
 
  // ...
 
-editarPlato(item: any) {
+editarMenu(item: any) {
   this.tituloForm = 'Editar  Menú';
-  this.menuForm.patchValue({
-    descripcion: item.descripcion,
-    id_tipomenu: item.tipo_menu.id
+  this.menuForm.patchValue({   
+    id_tipomenu: item.tipo_menu.id,
+    id_cantidadplato: item.cantidad_plato.id,
+    fecha: item.fecha,
+    habilitado: item.habilitado
+
   });
+
+  this.selectedOption = { tipo: item.tipo_menu.tipo, id: item.tipo_menu.id };
+  this.selectedOptioncantidadplato = { cantidad: item.cantidad_plato.cantidad, id: item.cantidad_plato.id };
   this.getId_Tipomenu();
+  this.getId_Cantidadplato();
   this.editandoPlato = true;
   this.idPlatoEditar = item.id;
 
   // Establecer variables a false al editar
-  this.showDescripcionError = false;
-  this.showIdTipomenuError = false;
+  this.showId_cantidadplatoError = false;
+  this.showId_tipomenuError = false;
+  this.showFechaError = false;
+  this.showHabilitadoError = false;
+
+  
 }
 
 
@@ -176,20 +262,27 @@ editarPlato(item: any) {
 
 addMenu() {
   if (this.menuForm.valid) {
-    this.showDescripcionError = false;
-    this.showIdTipomenuError = false;
+    this.showId_cantidadplatoError = false;
+    this.showId_tipomenuError = false;
+    this.showFechaError = false;
+    this.showHabilitadoError = false;
 
     const datos = {
-      descripcion: this.menuForm.value.descripcion,
-      id_tipomenu: this.menuForm.value.id_tipomenu
+     
+      id_tipomenu: this.menuForm.value.id_tipomenu,
+      id_cantidadplato: this.menuForm.value.id_cantidadplato,
+      fecha: this.menuForm.value.fecha,
+      habilitado: this.menuForm.value.habilitado
+
+      
     };
 
     if (!this.editandoPlato) {
-      this.MenuService.guardar(datos).subscribe(
+      this.MenuService.guardarMenu(datos).subscribe(
         (platos) => {
           console.log(platos);
           this.showModal();
-          this.getAllplato(); // Actualizar la tabla después de agregar un menú
+          this.getAllmenus(); // Actualizar la tabla después de agregar un menú
           this.menuForm.reset(); // Restablecer los valores del formulario
           
         },
@@ -200,12 +293,12 @@ addMenu() {
       );
     } else {
       // m o d i f i c a r -----------------------------
-      this.MenuService.guardar(datos, this.idPlatoEditar).subscribe(
+      this.MenuService.guardarMenu(datos, this.idPlatoEditar).subscribe(
         (plato) => {
           console.log(plato);
           this.showModalEdit();
           this.nuevoCurso(); // Restablecer el formulario después de editar
-          this.getAllplato();
+          this.getAllmenus();
         },
         (error) => {
           console.log(error);
@@ -214,8 +307,12 @@ addMenu() {
       );
     }
   } else {
-    this.showDescripcionError = this.menuForm.controls.descripcion.invalid;
-    this.showIdTipomenuError = this.menuForm.controls.id_tipomenu.invalid;
+    this.showId_cantidadplatoError = this.menuForm.controls.id_cantidadplato.invalid;
+    this.showId_tipomenuError = this.menuForm.controls.id_tipomenu.invalid;
+    this.showFechaError = this.menuForm.controls.fecha.invalid;
+    this.showHabilitadoError = this.menuForm.controls.habilitado.invalid;
+
+  
   }
 }
 
@@ -263,7 +360,7 @@ eliminarPlato(id: number) {
         title: 'Datos eliminados exitosamente',
         icon: 'success',
       }).then(() => {
-        this.getAllplato();
+        this.getAllmenus();
       });
     },
     error: () => {

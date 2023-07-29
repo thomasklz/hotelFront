@@ -135,23 +135,12 @@ position: absolute;
 top: 100%;
 left: 0;
 right: 0;
-
 background-color: #fff;
-border: 2px solid #ccc;
+border: 1px solid #ccc;
 max-height: 200px;
 overflow-y: auto;
 z-index: 1;
-
-display: none;
-
 }
-
-
-
-.show-more-options .options-container {
-  display: block; /* Agregar esta línea para mostrar las opciones cuando se haga clic */
-}
-
 
 .option {
 padding: 8px;
@@ -195,5 +184,5 @@ margin-right: 5px; /* Add some spacing between the text and the arrow */
 /* ... (rest of your CSS) ... */
 /* Agregar color plomo cuando el cursor se encuentra sobre una fila */
 .editable-row:hover {
-  background-color: #c0c0c0; /* Cambia el color a tu elección */
+background-color: #c0c0c0; /* Cambia el color a tu elección */
 }

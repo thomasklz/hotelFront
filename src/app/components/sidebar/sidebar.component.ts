@@ -15,6 +15,8 @@ export const ROUTES: RouteInfo[] = [
     { path: '/alimentos', title: 'Crear Alimentos',  icon:'fastfood', class: '' },
     { path: '/pesos', title: 'Crear Pesos',  icon:'scale', class: '' },
     { path: '/ingredientes', title: 'Crear Ingredientes',  icon:'list_alt', class: '' },
+    { path: '/cantidadplatos', title: 'Crear Cantidad Platos',  icon:'room_service', class: '' },
+
     { path: '/menu', title: 'Crear Menú',  icon:'content_paste', class: '' },
     { path: '/creditos', title: 'Crear Créditos',  icon:'credit_card', class: '' },
     { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },

@@ -99,11 +99,24 @@
 <div class="form-row">
   <div class="form-group col-md-8">
     <label for="inputState" class="select-gr text-center">Plato</label> <br>
-    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_plato" (change)="getId_plato()">
-      <option selected disabled value="">Seleccione</option>
-      <option *ngFor="let item of platosss" [value]="item.id">{{item.descripcion}}</option>
-    </select>
-    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+    <div class="custom-dropdown" [class.show-more-options]="showMoreOptionsplato">
+      <div class="selected-option " (click)="toggleShowMoreOptionsplato()">
+        {{ getSelectedOptionLabelplato() }}
+        <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+      </div>
+      <div class="options-container ">
+        <ng-container *ngFor="let item of platosss">
+          <!-- Agrega el atributo [value] para almacenar el ID del plato seleccionado -->
+          <div class="option example-full-width estilos " *ngIf="!showMoreOptionsplato && index >= 7" (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
+          <div class="option estil editable-row" *ngIf="showMoreOptionsplato" (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
+          <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+        </ng-container>
+      </div>
+    </div> 
+    <!-- Repite el mismo cambio para los campos id_alimento e id_peso -->
+    
+    
+
   </div>
 </div>
 
@@ -111,11 +124,23 @@
 <div class="form-row">
   <div class="form-group col-md-8">
     <label for="inputState" class="select-gr text-center">Alimento</label> <br>
-    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_alimento" (change)="getId_alimento()">
-      <option selected disabled value="">Seleccione</option>
-      <option *ngFor="let item of alimentosss" [value]="item.id">{{item.descripcion}}</option>
-    </select>
-    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+<div class="custom-dropdown" [class.show-more-options]="showMoreOptionsalimento">
+  <div class="selected-option" (click)="toggleShowMoreOptionsalimento()">
+    {{ getSelectedOptionLabelalimento() }}
+    <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+  </div>
+  <div class="options-container">
+    <ng-container *ngFor="let item of alimentosss">
+      <!-- Agrega el atributo [value] para almacenar el ID del plato seleccionado -->
+      <div class="option example-full-width estilos" *ngIf="!showMoreOptionsalimento && index >= 7" (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
+      <div class="option estil editable-row" *ngIf="showMoreOptionsalimento" (click)="selectOptionalimento(item)" [value]="item.id">{{ item.descripcion }}</div>
+      <div *ngIf="showIdalimentoError" class="text-danger">Campo requerido</div>
+    </ng-container>
+  </div>
+</div> 
+<!-- Repite el mismo cambio para los campos id_alimento e id_peso -->
+
+
   </div>
 </div>
 
@@ -123,11 +148,23 @@
 <div class="form-row">
   <div class="form-group col-md-8">
     <label for="inputState" class="select-gr text-center">Peso</label> <br>
-    <select id="inputState" class="example-full-width estilos" placeholder="Seleccione" formControlName="id_peso" (change)="getId_peso()">
-      <option selected disabled value="">Seleccione</option>
-      <option *ngFor="let item of pesosss" [value]="item.id">{{item.descripcion}}</option>
-    </select>
-    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
+<div class="custom-dropdown" [class.show-more-options]="showMoreOptionspeso">
+  <div class="selected-option" (click)="toggleShowMoreOptionspeso()">
+    {{ getSelectedOptionLabelpeso() }}
+    <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+  </div>
+  <div class="options-container">
+    <ng-container *ngFor="let item of pesosss">
+      <!-- Agrega el atributo [value] para almacenar el ID del plato seleccionado -->
+      <div class="option example-full-width estilos" *ngIf="!showMoreOptionspeso && index >= 7" (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
+      <div class="option estil editable-row" *ngIf="showMoreOptionspeso" (click)="selectOptionpeso(item)" [value]="item.id">{{ item.descripcion }}</div>
+      <div *ngIf="showIdpesoError" class="text-danger">Campo requerido</div>
+    </ng-container>
+  </div>
+</div> 
+<!-- Repite el mismo cambio para los campos id_alimento e id_peso -->
+
+
   </div>
 </div>
 
@@ -139,10 +176,6 @@
   </div>
 </div>
 
-<!-- ... -->
-
-
-          <!-- ... -->
 
           <input type="hidden" formControlName="funcion">
         </form>

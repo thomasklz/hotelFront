@@ -21,50 +21,10 @@ import { MenuComponent } from 'app/menu/menu.component';
 import { CreditoComponent } from 'app/credito/credito.component';
 import { TipoalimentosComponent } from 'app/tipoalimentos/tipoalimentos.component';
 import { PesosComponent } from 'app/pesos/pesos.component';
+import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
 
 export const AdminLayoutRoutes: Routes = [
-    // {
-    //   path: '',
-    //   children: [ {
-    //     path: 'dashboard',
-    //     component: DashboardComponent
-    // }]}, {
-    // path: '',
-    // children: [ {
-    //   path: 'userprofile',
-    //   component: UserProfileComponent
-    // }]
-    // }, {
-    //   path: '',
-    //   children: [ {
-    //     path: 'icons',
-    //     component: IconsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'notifications',
-    //         component: NotificationsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'maps',
-    //         component: MapsComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'typography',
-    //         component: TypographyComponent
-    //     }]
-    // }, {
-    //     path: '',
-    //     children: [ {
-    //         path: 'upgrade',
-    //         component: UpgradeComponent
-    //     }]
-    // }
+   
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'table-list',     component: TableListComponent },
@@ -88,7 +48,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'creditos',        component: CreditoComponent },
     { path: 'tipoalimentos',        component: TipoalimentosComponent },
     { path: 'pesos',        component: PesosComponent },
-
+    { path: 'cantidadplatos',        component: CantidadplatosComponent },
     
     
     

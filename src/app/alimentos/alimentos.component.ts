@@ -47,7 +47,27 @@ export class AlimentosComponent implements OnInit {
     this.getAlltipoalimento();
     this.getAllalimento();
   }
-
+  showMoreOptions: boolean = false;  
+  selectedOption: any = null;
+  
+  
+  
+    toggleShowMoreOptions() { 
+      this.showMoreOptions = !this.showMoreOptions;
+        }
+    
+        
+        selectOption(item: any) {
+          this.selectedOption = item;
+          this.showMoreOptions = false;
+      
+          // Update the form control with the selected option's ID
+          this.alimentoForm.get('id_tipoalimento')?.setValue(item.id);
+        }
+      
+        getSelectedOptionLabel() {
+          return this.selectedOption ? this.selectedOption.tipo : 'Seleccione  ';
+        }
 //cargar los datos de la seleccion de la tabla  en la modal
 
   ngOnInit() {
@@ -139,12 +159,21 @@ export class AlimentosComponent implements OnInit {
   }
 
 //Para el registro de plato usando modal
-  nuevoCurso() {
-    this.tituloForm = 'Registro de Alimento'; //cambio de nombre en el encabezado
-    this.alimentoForm.reset();
-    this.editandoAlimento = false;
-    this.idAlimentoEditar = '';
-  }
+nuevoCurso() {
+  this.tituloForm = 'Registro de Alimento'; // cambio de nombre en el encabezado
+  this.alimentoForm.reset();
+  this.editandoAlimento = false;
+  this.idAlimentoEditar = '';
+
+  // Reset the selectedOption and clear the form field value
+  this.selectedOption = null;
+  this.alimentoForm.get('id_tipoalimento')?.setValue(null);
+
+  // Establecer variables a false al editar
+  this.showDescripcionError = false;
+  this.showIdTipoalimentoError = false;
+}
+
 //Para el editar de plato usando modal
 
 editarAlimento(item: any) {
@@ -153,6 +182,7 @@ editarAlimento(item: any) {
     descripcion: item.descripcion,
     id_tipoalimento: item.tipo_alimento.id
   });
+  this.selectedOption = { tipo: item.tipo_alimento.tipo, id: item.tipo_alimento.id };
   this.getId_Tipoalimento();
   this.editandoAlimento = true;
   this.idAlimentoEditar = item.id;
@@ -181,8 +211,9 @@ addAlimento() {
           console.log(alimentos);
           this.showModal();
           this.getAllalimento(); // Actualizar la tabla después de agregar un alimento
-          this.alimentoForm.reset(); // Restablecer los valores del formulario
-          
+          this.alimentoForm.reset(); // Clear the form fields after successful registration
+          this.alimentoForm.get('id_tipoalimento')?.setValue(''); // Set id_tipoalimento to empty after successful registration
+          this.selectedOption = null; // Reset selectedOption to null, effectively setting the dropdown back to "Seleccione"
         },
         (error) => {
           console.log(error);
@@ -209,6 +240,8 @@ addAlimento() {
     this.showIdTipoalimentoError = this.alimentoForm.controls.id_tipoalimento.invalid;
   }
 }
+
+
 
 //registro de tipo alimento
 addtipoAlimento() {

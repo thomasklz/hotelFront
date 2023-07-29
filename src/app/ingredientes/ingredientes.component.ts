@@ -66,6 +66,65 @@ export class IngredientesComponent implements OnInit {
       id_peso: new FormControl("", [Validators.required, Validators.maxLength(1)])
     });
   }
+  showMoreOptionsplato: boolean = false;  
+  showMoreOptionsalimento: boolean = false; 
+  showMoreOptionspeso: boolean = false; 
+
+
+  selectedOptionplato: any = null;
+  selectedOptionalimento: any = null;
+  selectedOptionpeso: any = null;
+  
+    toggleShowMoreOptionsplato() { 
+      this.showMoreOptionsplato = !this.showMoreOptionsplato;
+        }
+    toggleShowMoreOptionsalimento() { 
+          this.showMoreOptionsalimento = !this.showMoreOptionsalimento;
+        }
+      
+   toggleShowMoreOptionspeso() { 
+          this.showMoreOptionspeso = !this.showMoreOptionspeso;
+        }
+
+
+
+        selectOptionplato(item: any) {
+          this.selectedOptionplato = item;
+          this.showMoreOptionsplato = false;   
+          // Asignar el valor del ID del plato seleccionado al formulario
+          this.ingredientesForm.get('id_plato')?.setValue(item.id);
+        }
+        
+        selectOptionalimento(item: any) {
+          this.selectedOptionalimento = item;
+          this.showMoreOptionsalimento = false;
+        
+          // Asignar el valor del ID del alimento seleccionado al formulario
+          this.ingredientesForm.get('id_alimento')?.setValue(item.id);
+        }
+        
+        selectOptionpeso(item: any) {
+          this.selectedOptionpeso = item;
+          this.showMoreOptionspeso = false;
+        
+          // Asignar el valor del ID del peso seleccionado al formulario
+          this.ingredientesForm.get('id_peso')?.setValue(item.id);
+        }
+        
+        
+     
+      
+        getSelectedOptionLabelplato() {
+          return this.selectedOptionplato ? this.selectedOptionplato.descripcion : 'Seleccione  ';
+        }
+
+        getSelectedOptionLabelalimento() {
+          return this.selectedOptionalimento ? this.selectedOptionalimento.descripcion : 'Seleccione  ';
+        }
+
+        getSelectedOptionLabelpeso() {
+          return this.selectedOptionpeso ? this.selectedOptionpeso.descripcion : 'Seleccione  ';
+        }
 
   //Modal de Agregar Notificacion
   title= 'sweetAlert';
@@ -191,6 +250,23 @@ getId_alimento() {
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
     this.idIngredientesEditar = '';
+
+     // Reset the selectedOption and clear the form field value
+  this.selectedOptionalimento = null;
+  this.ingredientesForm.get('id_alimento')?.setValue(null);
+
+   // Reset the selectedOption and clear the form field value
+   this.selectedOptionplato = null;
+   this.ingredientesForm.get('id_plato')?.setValue(null);
+
+    // Reset the selectedOption and clear the form field value
+  this.selectedOptionpeso = null;
+  this.ingredientesForm.get('id_peso')?.setValue(null);
+
+    // Establecer variables a false al editar
+    this.showIdalimentoError = false;
+    this.showIdpesoError = false;
+    this.showIdplatoError = false;
   }
 //Para el editar de plato usando modal
 
@@ -201,9 +277,11 @@ editarIngrediente(item: any) {
     id_plato: item.plato.id,
     id_alimento: item.alimento.id,
     id_peso: item.peso.id
-
-
   });
+  this.selectedOptionalimento = { descripcion: item.alimento.descripcion, id: item.alimento.id };
+  this.selectedOptionplato = { descripcion: item.plato.descripcion, id: item.plato.id };
+  this.selectedOptionpeso = { descripcion: item.peso.descripcion, id: item.peso.id };
+
   this.getId_peso();
   this.getId_plato();
   this.getId_alimento();
@@ -217,6 +295,8 @@ editarIngrediente(item: any) {
   this.showIdalimentoError = false;
   } 
 
+  
+
 
 
 // Registro de Plato...
@@ -227,6 +307,7 @@ addIngredientes() {
     this.showIdpesoError = false;
     this.showIdplatoError = false;
     this.showIdalimentoError = false;
+
     const datos = {
       precio: this.ingredientesForm.value.precio,
       id_peso: this.ingredientesForm.value.id_peso,
@@ -236,12 +317,11 @@ addIngredientes() {
 
     if (!this.editandoIngredientes) {
       this.IngredientesService.guardar(datos).subscribe(
-        (ingredientes) => {
-          console.log(ingredientes);
+        (result: any) => {
+          console.log(result);
           this.showModal();
-          this.getAllingredientes(); // Actualizar la tabla después de agregar un ingredientes
+          this.getAllingredientes(); // Actualizar la tabla después de agregar un ingrediente
           this.ingredientesForm.reset(); // Restablecer los valores del formulario
-          
         },
         (error) => {
           console.log(error);
@@ -251,8 +331,8 @@ addIngredientes() {
     } else {
       // m o d i f i c a r -----------------------------
       this.IngredientesService.guardar(datos, this.idIngredientesEditar).subscribe(
-        (ingredientes) => {
-          console.log(ingredientes);
+        (result: any) => {
+          console.log(result);
           this.showModalEdit();
           this.nuevoCurso(); // Restablecer el formulario después de editar
           this.getAllingredientes();
@@ -270,6 +350,7 @@ addIngredientes() {
     this.showIdalimentoError = this.ingredientesForm.controls.id_alimento.invalid;
   }
 }
+
 
 
 // ...
