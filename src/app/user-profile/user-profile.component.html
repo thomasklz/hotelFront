@@ -21,25 +21,30 @@
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Nombre" type="text" formControlName="nombre">
-                    <div *ngIf="personaForm.get('nombre').invalid && (personaForm.get('nombre').touched || submitted)" class="error-message">El nombre es requerido y debe tener al menos 3 caracteres.</div>
+                    <div *ngIf="personaForm.get('nombre').invalid && (personaForm.get('nombre').touched || submitted)"
+                      class="error-message">El nombre es requerido y debe tener al menos 3 caracteres.</div>
                   </mat-form-field>
                 </div>
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Email" type="email" formControlName="email">
-                    <div *ngIf="personaForm.get('email').invalid && (personaForm.get('email').touched || submitted)" class="error-message">El email es requerido </div>
+                    <div *ngIf="personaForm.get('email').invalid && (personaForm.get('email').touched || submitted)"
+                      class="error-message">El email es requerido </div>
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Teléfono" type="number" formControlName="telefono">
-                    <div *ngIf="personaForm.get('telefono').invalid && (personaForm.get('telefono').touched || submitted)" class="error-message">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
+                    <div
+                      *ngIf="personaForm.get('telefono').invalid && (personaForm.get('telefono').touched || submitted)"
+                      class="error-message">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Foto" type="text" formControlName="foto">
-                    <div *ngIf="personaForm.get('foto').invalid && (personaForm.get('foto').touched || submitted)" class="error-message">La foto es requerida .</div>
+                    <div *ngIf="personaForm.get('foto').invalid && (personaForm.get('foto').touched || submitted)"
+                      class="error-message">La foto es requerida .</div>
                   </mat-form-field>
                 </div>
               </div>
@@ -54,13 +59,16 @@
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Usuario" type="text" formControlName="usuario">
-                    <div *ngIf="personaForm.get('usuario').invalid && (personaForm.get('usuario').touched || submitted)" class="error-message">El usuario es requerido y debe tener al menos 3 caracteres.</div>
+                    <div *ngIf="personaForm.get('usuario').invalid && (personaForm.get('usuario').touched || submitted)"
+                      class="error-message">El usuario es requerido y debe tener al menos 3 caracteres.</div>
                   </mat-form-field>
                 </div>
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Contraseña" type="password" formControlName="contrasena">
-                    <div *ngIf="personaForm.get('contrasena').invalid && (personaForm.get('contrasena').touched || submitted)" class="error-message">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
+                    <div
+                      *ngIf="personaForm.get('contrasena').invalid && (personaForm.get('contrasena').touched || submitted)"
+                      class="error-message">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
                   </mat-form-field>
                 </div>
               </div>
@@ -82,80 +90,75 @@
 
       <div class="col-md-12">
 
-          <div class="card">
-              <div class="card-header card-header-danger">
-                  <h4 class="card-title disabled">    Usuarios</h4>
-              </div>
-              <div class="card-body">
-                  <div class="table-responsive">
-                      <table class="table">
-                          <thead class=" text-primary">
-                              <th>
-                                  No
-                              </th>
-                              <th>
-                                  Usuario
-                              </th>
-                              <th>
-                                Contraseña
-                            </th>
-                              <th>
-                                  Nombres
-                              </th>
-                              <th>
-                                Email
-                            </th>
-                            <th>
-                                Teléfono
-                            </th>
-                            <th>
-                                Foto
-                            </th>
-                           
-                              
-                          </thead>
-                          <tbody  *ngFor="let item of usuariosss;let i=index ">
-                              <tr  >
-                                  <td >
-                                    {{i+1}}
-                                  </td>
-                                  <td >
-                                    {{item.usuario}}
-                                  </td>
-                                  <td>
-                                   **************
-                                  </td>
-                                  <td>
-                                    {{item.persona.nombre}}
-                                  </td>
-                                  <td>
-                                    {{item.persona.email}}
-                                  </td>
-                                  <td>
-                                    {{item.persona.telefono}}
-                                  </td>
-                                  <td>
-                                    {{item.persona.foto}}
-                                  </td>
-                                 
-                                
-                              </tr>
-                             
-                          </tbody>
-                      </table>
-
-
-                      
-                  </div>
-              </div>
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled"> Usuarios</h4>
           </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    No
+                  </th>
+                  <th>
+                    Usuario
+                  </th>
+                  <th>
+                    Contraseña
+                  </th>
+                  <th>
+                    Nombres
+                  </th>
+                  <th>
+                    Email
+                  </th>
+                  <th>
+                    Teléfono
+                  </th>
+                  <th>
+                    Foto
+                  </th>
+
+
+                </thead>
+                <tbody *ngFor="let item of usuariosss;let i=index ">
+                  <tr>
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>
+                      {{item.usuario}}
+                    </td>
+                    <td>
+                      **************
+                    </td>
+                    <td>
+                      {{item.persona.nombre}}
+                    </td>
+                    <td>
+                      {{item.persona.email}}
+                    </td>
+                    <td>
+                      {{item.persona.telefono}}
+                    </td>
+                    <td>
+                      {{item.persona.foto}}
+                    </td>
+
+
+                  </tr>
+
+                </tbody>
+              </table>
+
+
+
+            </div>
+          </div>
+        </div>
       </div>
-      
-  </div>
+
+    </div>
   </div>
 </div>
-
-
-
-
-

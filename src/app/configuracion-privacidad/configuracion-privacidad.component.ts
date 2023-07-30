@@ -17,19 +17,19 @@ import { interval } from 'rxjs';
 export class ConfiguracionPrivacidadComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   usuariosss: any[] = [];
-  idUsuario:number;
+  idUsuario: number;
   usuarioForm!: FormGroup;
   private intervalSubscription: any;
 
-  constructor(private UsuarioService:UsuarioService,private http: HttpClient, private router: Router, private formBuilder: FormBuilder) {
-   this.idUsuario = +localStorage.getItem('idUsuario');
-   
-    this.getAllusuario();
-    
-   }
+  constructor(private UsuarioService: UsuarioService, private http: HttpClient, private router: Router, private formBuilder: FormBuilder) {
+    this.idUsuario = +localStorage.getItem('idUsuario');
 
-   
-   ngOnInit(): void {
+    this.getAllusuario();
+
+  }
+
+
+  ngOnInit(): void {
     this.getAllusuario();
     this.usuarioForm = this.formBuilder.group({
       usuario: new FormControl("", [Validators.required, Validators.minLength(3)]),
@@ -49,121 +49,116 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
       this.intervalSubscription.unsubscribe();
     }
   }
-  
+
 
   editandox: boolean = false; // Variable para indicar si se está editando un usuario existente
   idEditar: string = ''; // Variable para almacenar el ID del usuario en caso de edición
   showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
   showIdTipomenuError = false;//evitando que se muestren los mensajes de campo requerido 
 
-  
-//-----------------------------------------Traer----los---datos----en--la---Modal----------------------------------------------------
+
+  //-----------------------------------------Obtener----los---datos----en--la---Modal----------------------------------------------------
   editarusuario(item: any) {
-    
+
     this.usuarioForm.patchValue({
       usuario: item.usuario
     });
     this.editandox = true;
     this.idEditar = item.id;
-  
+
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
   }
 
   editarcontrasena(item: any) {
-   
+
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
     this.usuarioForm.reset();
   }
-  
+
 
   editarnombre(item: any) {
-    
+
     this.usuarioForm.patchValue({
       nombre: item.persona.nombre
     });
-    
+
     this.editandox = true;
     this.idEditar = item.id;
-  
+
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
   }
   editaremail(item: any) {
-    
+
     this.usuarioForm.patchValue({
       email: item.persona.email
     });
-    
+
     this.editandox = true;
     this.idEditar = item.id;
-  
+
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
   }
   editartelefono(item: any) {
-    
+
     this.usuarioForm.patchValue({
       telefono: item.persona.telefono
     });
-    
+
     this.editandox = true;
     this.idEditar = item.id;
-  
+
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
   }
 
   editarfoto(item: any) {
-    
+
     this.usuarioForm.patchValue({
       foto: item.persona.foto
     });
-    
+
     this.editandox = true;
     this.idEditar = item.id;
-  
+
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
   }
 
 
- //Modal de Modificacion Notificacion
-  
- showModalEdit(){
-  swal2({
-    title:'Datos modificado exitosamente',
-    icon: "success",
-  });
-}
-
-
-  //Modal de  error de Modificacion Notificacion
-
-  showModalErrorEdit(){
-    swal({
-      title:'Error de modificación de datos ',
-      icon: "error",
+  //Modal de Modificacion Notificacion
+  showModalEdit() {
+    swal2({
+      title: 'Datos modificado exitosamente',
+      icon: "success",
     });
   }
 
 
+  //Modal de  error de Modificacion Notificacion
+  showModalErrorEdit() {
+    swal({
+      title: 'Error de modificación de datos ',
+      icon: "error",
+    });
+  }
 
   //obtener el usuario 
- 
   getAllusuario() {
     this.UsuarioService.buscarUsuario(this.idUsuario).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.usuario);
         this.usuariosss = res.usuario;
-        
+
       },
       error: (err) => {
         // Maneja el error de carga de datos aquí
@@ -171,139 +166,133 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
     });
   }
   //------------------------------------------------------Metodos--de----Editar----------------------------------------------------------------------------------------------
- //editar usuario
- editarUsuario() {
- 
+  //editar usuario
+  editarUsuario() {
+
     const datos = {
       usuario: this.usuarioForm.value.usuario
-     
+
     };
-      this.UsuarioService.editUsuario(datos, this.idUsuario).subscribe(
-        (usuario) => {
-          console.log(usuario);
-          this.showModalEdit();
-        
-        },
-        (error) => {
-          console.log(error);
-          this.showModalErrorEdit();
-        }
-      );
-}
- //editar nombre
- editarNombre() {
- 
-  const datos = {
-    nombre: this.usuarioForm.value.nombre
-   
-  };
+    this.UsuarioService.editUsuario(datos, this.idUsuario).subscribe(
+      (usuario) => {
+        console.log(usuario);
+        this.showModalEdit();
+
+      },
+      (error) => {
+        console.log(error);
+        this.showModalErrorEdit();
+      }
+    );
+  }
+  //editar nombre
+  editarNombre() {
+
+    const datos = {
+      nombre: this.usuarioForm.value.nombre
+
+    };
     this.UsuarioService.editNombre(datos, this.idUsuario).subscribe(
       (nombre) => {
         console.log(nombre);
         this.showModalEdit();
-      
+
       },
       (error) => {
         console.log(error);
         this.showModalErrorEdit();
       }
     );
-}
+  }
 
- //editar email
- editarEmail() {
- 
-  const datos = {
-    email: this.usuarioForm.value.email
-   
-  };
+  //editar email
+  editarEmail() {
+
+    const datos = {
+      email: this.usuarioForm.value.email
+
+    };
     this.UsuarioService.editEmail(datos, this.idUsuario).subscribe(
       (email) => {
         console.log(email);
         this.showModalEdit();
-      
+
       },
       (error) => {
         console.log(error);
         this.showModalErrorEdit();
       }
     );
-}
+  }
 
- //editar telefono
- editarTelefono() {
- 
-  const datos = {
-    telefono: this.usuarioForm.value.telefono
-   
-  };
+  //editar telefono
+  editarTelefono() {
+
+    const datos = {
+      telefono: this.usuarioForm.value.telefono
+
+    };
     this.UsuarioService.editTelefono(datos, this.idUsuario).subscribe(
       (telefono) => {
         console.log(telefono);
         this.showModalEdit();
-      
+
       },
       (error) => {
         console.log(error);
         this.showModalErrorEdit();
       }
     );
-}
+  }
 
- //editar contraena
- editarContrasena() {
- 
-  const datos = {
-    contrasena: this.usuarioForm.value.contrasena,
-    
-   
-  };
+  //editar contraena
+  editarContrasena() {
+
+    const datos = {
+      contrasena: this.usuarioForm.value.contrasena,
+
+
+    };
     this.UsuarioService.editContrasena(datos, this.idUsuario).subscribe(
       (contrasena) => {
         console.log(contrasena);
         this.showModalEdit();
-      
+
       },
       (error) => {
         console.log(error);
         this.showModalErrorEdit();
       }
     );
-}
+  }
 
 
- //editar FOTO
- editarFoto() {
- 
-  const datos = {
-    foto: this.usuarioForm.value.foto
-   
-  };
+  //editar FOTO
+  editarFoto() {
+
+    const datos = {
+      foto: this.usuarioForm.value.foto
+
+    };
     this.UsuarioService.editFoto(datos, this.idUsuario).subscribe(
       (foto) => {
         console.log(foto);
         this.showModalEdit();
-      
+
       },
       (error) => {
         console.log(error);
         this.showModalErrorEdit();
       }
     );
-}
-
+  }
 
 
   // Restablecer el formulario cuando se cierre el modal
   closeModal() {
     this.usuarioForm.reset();
-   // this.editandoPlato = false;
- //   this.idPlatoEditar = '';
+    // this.editandoPlato = false;
+    //   this.idPlatoEditar = '';
   }
 
-
-  //--------------------------------------------------------------
-
-  
-  
 }

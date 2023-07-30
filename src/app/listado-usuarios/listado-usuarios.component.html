@@ -6,163 +6,166 @@
   <div class="container-fluid">
 
 
-      <div class="row">
+    <div class="row">
 
-          <div class="col-md-12">
+      <div class="col-md-12">
 
-              <div class="card">
-                  <div class="card-header card-header-danger">
-                      <h4 class="card-title disabled">  <img src="assets/img/usuarios.png"  alt="">  Usuarios</h4>
-                  </div>
-                  <div class="card-body">
-                      <div class="table-responsive">
-                          <table class="table">
-                              <thead class=" text-primary">
-                                  <th>
-                                      No
-                                  </th>
-                                  <th>
-                                      Usuario
-                                  </th>
-                                  <th>
-                                    Contraseña
-                                </th>
-                                  <th>
-                                      Nombres
-                                  </th>
-                                  <th>
-                                    Email
-                                </th>
-                                <th>
-                                    Teléfono
-                                </th>
-                                <th>
-                                    Foto
-                                </th>
-                                  <th>
-                                    Acción
-                                </th>
-                                  
-                              </thead>
-                              <tbody  *ngFor="let item of usuariosss;let i=index ">
-                                  <tr  >
-                                      <td >
-                                        {{i+1}}
-                                      </td>
-                                      <td >
-                                        {{item.usuario}}
-                                      </td>
-                                      <td>
-                                       **************
-                                      </td>
-                                      <td>
-                                        {{item.persona.nombre}}
-                                      </td>
-                                      <td>
-                                        {{item.persona.email}}
-                                      </td>
-                                      <td>
-                                        {{item.persona.telefono}}
-                                      </td>
-                                      <td>
-                                        {{item.persona.foto}}
-                                      </td>
-                                      <td>
-                                        <button0 color="primary" (click)="editcontrasena(item)">
-                                          <i class="material-icons  editable-row" data-toggle="modal" data-target="#ventanaContrasena">https</i>
-                                        </button0>
-                                          <button1 color="primary" (click)="editarUsuario(item)">
-                                          <i class="material-icons  editable-row" data-toggle="modal" data-target="#ventanaUsuario">edit</i>
-                                        </button1>
-                                        
-                                       <button2 > <i class="material-icons editable-row" (click)="showModalEliminar(item.id)" >delete</i></button2>
-                                    </td>
-                                    
-                                  </tr>
-                                 
-                              </tbody>
-                          </table>
-
-
-                          
-                      </div>
-                  </div>
-              </div>
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled"> <img src="assets/img/usuarios.png" alt=""> Usuarios</h4>
           </div>
-          
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    No
+                  </th>
+                  <th>
+                    Usuario
+                  </th>
+                  <th>
+                    Contraseña
+                  </th>
+                  <th>
+                    Nombres
+                  </th>
+                  <th>
+                    Email
+                  </th>
+                  <th>
+                    Teléfono
+                  </th>
+                  <th>
+                    Foto
+                  </th>
+                  <th>
+                    Acción
+                  </th>
+
+                </thead>
+                <tbody *ngFor="let item of usuariosss;let i=index ">
+                  <tr>
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>
+                      {{item.usuario}}
+                    </td>
+                    <td>
+                      **************
+                    </td>
+                    <td>
+                      {{item.persona.nombre}}
+                    </td>
+                    <td>
+                      {{item.persona.email}}
+                    </td>
+                    <td>
+                      {{item.persona.telefono}}
+                    </td>
+                    <td>
+                      {{item.persona.foto}}
+                    </td>
+                    <td>
+                      <button0 color="primary" (click)="editcontrasena(item)">
+                        <i class="material-icons  editable-row" data-toggle="modal"
+                          data-target="#ventanaContrasena">https</i>
+                      </button0>
+                      <button1 color="primary" (click)="editarUsuario(item)">
+                        <i class="material-icons  editable-row" data-toggle="modal"
+                          data-target="#ventanaUsuario">edit</i>
+                      </button1>
+
+                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      </button2>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
+
+    </div>
   </div>
 </div>
 
 
 
 
-        <!-- Modal Contraseña -->
-        <div class="modal fade" id="ventanaContrasena"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content d-flex align-items-center">
-              <div class=" heads x">
-                  <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Contraseña <img src="assets/img/contrasena.png" alt=""></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form [formGroup]="usuarioForm2">
-                    <div class="form-group col-md-8">
-                      <label for="inputState" class="select-gr">Contraseña</label> <br>
-                      <input class="example-full-width estilos" type="text" formControlName="contrasena">
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-                  <button type="button" class="btn btn-danger" (click)=" editarContrasena()" data-dismiss="modal">Guardar</button>
-                </div>
-              </div>
-            </div>
-          </div>
- 
-    <!-- Modal -->
-    <div class="modal fade" id="ventanaUsuario"data-backdrop="static"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content d-flex align-items-center">
-          <div class=" heads x">
-              <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Datos de Usuario <img src="assets/img/editar.png" alt=""></h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                
-              </button>
-            </div>
-            <div class="modal-body">
-              <form [formGroup]="usuarioForm">
-                <div class="form-group col-md-8">
-                  <label for="inputState" class="select-gr">Usuario</label> <br>
-                  <input class="example-full-width estilos" type="text" formControlName="usuario">
-                </div>
-                
-                <div class="form-group col-md-8">
-                  <label for="inputState" class="select-gr">Nombres</label> <br>
-                  <input class="example-full-width estilos" type="text"  formControlName="nombre" >
-                </div>
-                <div class="form-group col-md-8">
-                  <label for="inputState" class="select-gr">Email</label> <br>
-                  <input class="example-full-width estilos" type="text"  formControlName="email" >
-                </div>
-                <div class="form-group col-md-8">
-                  <label for="inputState" class="select-gr">Teléfono</label> <br>
-                  <input class="example-full-width estilos" type="text"  formControlName="telefono" >
-                </div>
-                <div class="form-group col-md-8">
-                  <label for="inputState" class="select-gr">Foto</label> <br>
-                  <input class="example-full-width estilos" type="text"  formControlName="foto" >
-                </div>
-                
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-              <button type="button" class="btn btn-danger"  data-dismiss="modal" (click)="usuarioedit()">Guardar</button>
-            </div>
-          </div>
-        </div>
+<!-- Modal Contraseña -->
+<div class="modal fade" id="ventanaContrasena" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content d-flex align-items-center">
+      <div class=" heads x">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Contraseña <img
+            src="assets/img/contrasena.png" alt=""></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+        </button>
       </div>
+      <div class="modal-body">
+        <form [formGroup]="usuarioForm2">
+          <div class="form-group col-md-8">
+            <label for="inputState" class="select-gr">Contraseña</label> <br>
+            <input class="example-full-width estilos" type="text" formControlName="contrasena">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-danger" (click)=" editarContrasena()" data-dismiss="modal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ventanaUsuario" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content d-flex align-items-center">
+      <div class=" heads x">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Datos de Usuario <img
+            src="assets/img/editar.png" alt=""></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="usuarioForm">
+          <div class="form-group col-md-8">
+            <label for="inputState" class="select-gr">Usuario</label> <br>
+            <input class="example-full-width estilos" type="text" formControlName="usuario">
+          </div>
+
+          <div class="form-group col-md-8">
+            <label for="inputState" class="select-gr">Nombres</label> <br>
+            <input class="example-full-width estilos" type="text" formControlName="nombre">
+          </div>
+          <div class="form-group col-md-8">
+            <label for="inputState" class="select-gr">Email</label> <br>
+            <input class="example-full-width estilos" type="text" formControlName="email">
+          </div>
+          <div class="form-group col-md-8">
+            <label for="inputState" class="select-gr">Teléfono</label> <br>
+            <input class="example-full-width estilos" type="text" formControlName="telefono">
+          </div>
+          <div class="form-group col-md-8">
+            <label for="inputState" class="select-gr">Foto</label> <br>
+            <input class="example-full-width estilos" type="text" formControlName="foto">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="usuarioedit()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

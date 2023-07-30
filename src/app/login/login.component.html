@@ -1,40 +1,42 @@
 <div class="main-container">
-<form class="login-form"  [formGroup]="loginForm">
-  <div class="login-text">
-    <div class="logo-container">
-      <img src="assets/img/log.png" alt="">
+  <form class="login-form" [formGroup]="loginForm">
+    <div class="login-text">
+      <div class="logo-container">
+        <img src="assets/img/log.png" alt="">
 
 
+
+      </div>
+
+      <span class="fa-stack fa-2x">
+        <i class="fa fa-user fa-stack-1x"></i>
+      </span>
 
     </div>
-    
-    <span class="fa-stack fa-2x">
-      <i class="fa fa-user fa-stack-1x"></i>
-    </span>
-    
-  </div>
-  
-    
-   
-   
-    <input type="email" class="login-username" autofocus="true" required="true" placeholder="Usuario"  formControlName="usuario"/>
-    
-    <input type="password" class="login-password" required="true" placeholder="Contraseña" formControlName="contrasena" />
+
+
+
+
+    <input type="email" class="login-username" autofocus="true" required="true" placeholder="Usuario"
+      formControlName="usuario" />
+
+    <input type="password" class="login-password" required="true" placeholder="Contraseña"
+      formControlName="contrasena" />
 
 
     <input type="submit" name="Login" value="Ingresar" class="login-submit" (click)="login()" />
-    
+
     <div class="register-link" *ngIf="!hayUsuarios">
       ¿No tienes cuenta? <a (click)="crearUsuario()">Regístrate</a>
     </div>
-    
-   
+
+
     <br>
   </form>
- 
+
   <div class="underlay-photo "> </div>
-  <div class="underlay-black"></div> 
-  <router-outlet></router-outlet>  
+  <div class="underlay-black"></div>
+  <router-outlet></router-outlet>
 
 
 </div>

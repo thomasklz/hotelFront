@@ -1,128 +1,130 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
-
+<!-- Listado de los cantidad de platos. -->
 <div class="main-content">
   <div class="container-fluid">
 
 
-      <div class="row">
-        <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title"  data-toggle="modal" data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+    <div class="row">
+      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
+        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
 
-          <div class="col-md-12">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled"> <img src="/assets/img/plato-y-cubiertos.png" class="edit" alt=""> Cantidad
+              Platos</h4>
 
-              <div class="card">
-                  <div class="card-header card-header-danger">
-                      <h4 class="card-title disabled">  <img src="/assets/img/plato-y-cubiertos.png" class="edit" alt="">  Cantidad Platos</h4>
-                     
-                  </div>
-                  <div class="card-body">
-                      <div class="table-responsive">
-                          <table class="table">
-                              <thead class=" text-primary">
-                                  <th>
-                                      ID
-                                  </th>
-                                  <th>
-                                      Platos
-                                  </th>
-                                  <th>
-                                      Cantidad
-                                  </th>
-                                  <th>
-                                    Fecha
-                                </th>
-                                  
-                                  <th>
-                                    Acción
-                                </th>
-                                  
-                              </thead>
-                              <tbody  *ngFor="let item of cantidadplatosss ;let i=index "  >
-                                  <tr  >
-                                      <td >
-                                        {{i+1}}
-                                      </td>
-                                      <td >
-                                        {{item.plato.descripcion}}
-                                      </td>
-                                      <td>
-                                        {{item.cantidad}}
-                                      </td>
-                                      <td>
-                                        {{item.fecha}}
-                                      </td>
-                                      
-                                      <td>
-                                        <button1 color="primary" (click)="editarPlato(item)">
-                                          <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                                        </button1>
-                                        
-                                        
-                                       <button2 > <i class="material-icons editable-row" (click)="showModalEliminar(item.id)" >delete</i></button2>
-                                    </td>
-                                    
-                                  </tr>
-                                 
-                              </tbody>
-                          </table>
-
-
-                          
-                      </div>
-                  </div>
-              </div>
           </div>
-          
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    ID
+                  </th>
+                  <th>
+                    Platos
+                  </th>
+                  <th>
+                    Cantidad
+                  </th>
+                  <th>
+                    Fecha
+                  </th>
+
+                  <th>
+                    Acción
+                  </th>
+
+                </thead>
+                <tbody *ngFor="let item of cantidadplatosss ;let i=index ">
+                  <tr>
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>
+                      {{item.plato.descripcion}}
+                    </td>
+                    <td>
+                      {{item.cantidad}}
+                    </td>
+                    <td>
+                      {{item.fecha}}
+                    </td>
+
+                    <td>
+                      <button1 color="primary" (click)="editarCantidadPlato(item)">
+                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                      </button1>
+
+
+                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      </button2>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 </div>
 
-<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal de cantidad de platos. -->
+<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content d-flex align-items-center">
       <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png" alt=""></h5>
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png"
+            alt=""></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="cantidadPlatosForm">
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr text-center">Platos</label> <br>
-    <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
-      <div class="selected-option" (click)="toggleShowMoreOptions()">
-        {{ getSelectedOptionLabel() }}
-        <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-      </div>
-      <div class="options-container">
-        <ng-container *ngFor="let item of platosss">
-          <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7" (click)="selectOption(item)">{{ item.descripcion }}</div>
-          <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.descripcion }}</div>
-          <div *ngIf="showId_platoError" class="text-danger">Campo requerido</div>
-        </ng-container>
-      </div>
-    </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr text-center">Platos</label> <br>
+              <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
+                <div class="selected-option" (click)="toggleShowMoreOptions()">
+                  {{ getSelectedOptionLabel() }}
+                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+                </div>
+                <div class="options-container">
+                  <ng-container *ngFor="let item of platosss">
+                    <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7"
+                      (click)="selectOption(item)">{{ item.descripcion }}</div>
+                    <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{
+                      item.descripcion }}</div>
+                    <div *ngIf="showId_platoError" class="text-danger">Campo requerido</div>
+                  </ng-container>
+                </div>
+              </div>
 
-  </div>
-</div>
+            </div>
+          </div>
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr">Cantidad</label> <br>
-    <input class="example-full-width estilos" type="text" formControlName="cantidad">
-    <div *ngIf="showCantidadError" class="text-danger">Campo requerido</div>
-  </div>
-</div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Cantidad</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="cantidad">
+              <div *ngIf="showCantidadError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr">Fecha</label> <br>
-    <input class="example-full-width estilos" type="date" formControlName="fecha">
-    <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
-  </div>
-</div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Fecha</label> <br>
+              <input class="example-full-width estilos" type="date" formControlName="fecha">
+              <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
 
           <input type="hidden" formControlName="funcion">
         </form>
@@ -134,4 +136,3 @@
     </div>
   </div>
 </div>
-

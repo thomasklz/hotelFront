@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpClient
-  ) {}
+  ) { }
 
   title = 'sweetAlert';
 
@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
       this.showModalErrorr();
     }
   }
-  
+
 
   crearUsuario() {
     this.router.navigate(['/crearAdministrador']);

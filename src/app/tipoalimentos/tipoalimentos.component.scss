@@ -1,111 +1,123 @@
-img{
-    font-weight: bold;
-  
-  }
-  .texto-grueso {
-      font-weight: bold;
-      font-size: 22px;
-    }
-  
-    
-  .btn1{
-    color: #ffffff;
-  }
-  
-    
-  .editable-row {
-      cursor: pointer;
-    }
-    .sele{
-      color: black;
-    }
-    .editable-row:hover {
-      background-color: #ffffff;
-    }
-    
-    .edit-mode {
-      background-color: #ffffff;
-    }
-    
-  
-  .marco-div {
-      border: 2px solid black;
-      padding: 10px;
-    }
-  button1{
-      color: blue;
-  }
-  
-  button2{
-      color: red;
-  }
-  .heads{
-      background-color: rgb(206, 25, 25);
-  }
-  h5{
-      font-size: larger;
-      color: rgb(255, 255, 255);
-      text-align: center;
-  }
-  
-  .disabled{
-      font-weight: bold;
-      font-size: 21px;
-  }
-  th{
-      color: rgb(182, 17, 17);
-      font-weight: bold;
-      font-size: 20px;
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  .select-gr {
-    font-size: 18px; /* Tamaño de letra grande */
-    color: rgb(158, 155, 155);
-    text-align: center;
-    
-    
-  }
-  
-  
-  .estilos{
-    content: "";
-    margin-top: 10px; /* Espacio de 5 píxeles arriba de cada opción */
-    border: none; /* Removemos todos los bordes */
-    border-bottom: 1px solid  #888888;/* Agregamos solo el borde inferior */
-    width: 400px;
-    font-size: 18px; 
-  }
-  .heads{
-    width: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .x{
-    
-     height: 80px;
-     
-   }
-  
-   .btn1 {
-    margin-right: 20px; /* Ajusta el valor según el espacio de separación deseado */
-  }
-  
-  
+img {
+  font-weight: bold;
+
+}
+
+.texto-grueso {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+
+.btn1 {
+  color: #ffffff;
+}
+
+
+.editable-row {
+  cursor: pointer;
+}
+
+.sele {
+  color: black;
+}
+
+.editable-row:hover {
+  background-color: #ffffff;
+}
+
+.edit-mode {
+  background-color: #ffffff;
+}
+
+
+.marco-div {
+  border: 2px solid black;
+  padding: 10px;
+}
+
+button1 {
+  color: blue;
+}
+
+button2 {
+  color: red;
+}
+
+.heads {
+  background-color: rgb(206, 25, 25);
+}
+
+h5 {
+  font-size: larger;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.disabled {
+  font-weight: bold;
+  font-size: 21px;
+}
+
+th {
+  color: rgb(182, 17, 17);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.select-gr {
+  font-size: 18px;
+  /* Tamaño de letra grande */
+  color: rgb(158, 155, 155);
+  text-align: center;
+
+
+}
+
+
+.estilos {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  width: 400px;
+  font-size: 18px;
+}
+
+.heads {
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.x {
+
+  height: 80px;
+
+}
+
+.btn1 {
+  margin-right: 20px;
+  /* Ajusta el valor según el espacio de separación deseado */
+}

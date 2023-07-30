@@ -13,27 +13,35 @@ body {
   display: flex;
   overflow: hidden;
 }
-h1{
+
+h1 {
   color: black;
 }
+
 input {
   ::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.7);
   }
+
   ::-moz-placeholder {
     color: rgba(255, 255, 255, 0.7);
   }
+
   :-ms-input-placeholder {
     color: rgba(255, 255, 255, 0.7);
   }
+
   &:focus {
     outline: 0 transparent solid;
+
     ::-webkit-input-placeholder {
       color: rgba(0, 0, 0, 0.7);
     }
+
     ::-moz-placeholder {
       color: rgba(0, 0, 0, 0.7);
     }
+
     :-ms-input-placeholder {
       color: rgba(0, 0, 0, 0.7);
     }
@@ -49,11 +57,13 @@ input {
 }
 
 .login-text .logo-container {
-  margin-bottom: 0; /* Quita el margen inferior */
+  margin-bottom: 0;
+  /* Quita el margen inferior */
 }
 
 .registro-usuario {
-  margin-top: 0; /* Quita el margen superior */
+  margin-top: 0;
+  /* Quita el margen superior */
 }
 
 .login-username,
@@ -64,7 +74,8 @@ input {
   border-bottom: 1px solid rgba(rgb(189, 188, 188), 0.5);
   color: rgb(0, 0, 0);
   display: block;
-  margin: 0 1rem 0.5rem; /* Modificación realizada aquí */
+  margin: 0 1rem 0.5rem;
+  /* Modificación realizada aquí */
   padding: 0.5rem;
   transition: 250ms background ease-in;
   width: calc(100% - 2rem);
@@ -112,10 +123,12 @@ input {
   text-align: center;
   //text-decoration: none;
   width: 100%;
+
   &:hover {
     opacity: 1;
   }
 }
+
 .login-submit {
   background: rgb(222, 21, 21);
   color: white;
@@ -139,8 +152,8 @@ input {
 }
 
 .login-submit:before {
-  
- 
+
+
   margin-right: 0.5rem;
 }
 
@@ -157,13 +170,14 @@ input {
   position: fixed;
   top: 0;
 }
+
 .underlay-photo {
   animation: hue-rotate 6s infinite;
   background: url("/assets/img/toma1.jpg") no-repeat center center fixed;
   background-size: cover;
   -webkit-filter: grayscale(30%);
   z-index: -1;
-  
+
 }
 
 
@@ -176,10 +190,12 @@ input {
   from {
     -webkit-filter: grayscale(30%) hue-rotate(0deg);
   }
+
   to {
     -webkit-filter: grayscale(30%) hue-rotate(360deg);
   }
 }
+
 .logo-container {
   display: flex;
   justify-content: center;
@@ -208,96 +224,101 @@ input {
 .register-link a:hover {
   text-decoration: underline;
 }
+
 .login-text .fa-user {
   margin: 0.4rem 0;
   margin-top: 0.1rem;
-  
+
 }
 
 
 .login-submit-secondary {
-    background: #999;
-    color: white;
-    display: block;
-    width: 30%;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    margin: 1rem auto;
-    text-align: center;
-    padding: 0.25rem;
-    transition: 250ms background ease-in;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-  }
-  
-  .login-submit-secondary:hover,
-  .login-submit-secondary:focus {
-    background: #777;
-  }
-  
-  .login-submit-secondary:before {
-    content: "\f00d";
-    font-family: FontAwesome;
-    margin-right: 0.5rem;
-  }
-  
-  .login-submit-secondary span {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .close-button{
-    background-color: #ffffff;
-    position: fixed; 
-    right: 20px;
-    z-index: 9999;
-    border: none;
-    background: none;
-    outline: none;
+  background: #999;
+  color: white;
+  display: block;
+  width: 30%;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  margin: 1rem auto;
+  text-align: center;
+  padding: 0.25rem;
+  transition: 250ms background ease-in;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
 
-    font-size: 1.5rem; 
+.login-submit-secondary:hover,
+.login-submit-secondary:focus {
+  background: #777;
+}
 
-    margin-top: 1rem; /* Agrega un espaciado superior */
-    margin-right: 1rem; /* Agrega un espaciado derecho */
-  }
+.login-submit-secondary:before {
+  content: "\f00d";
+  font-family: FontAwesome;
+  margin-right: 0.5rem;
+}
 
-  .close-button:focus,
-  button:hover {
-    background-color: red;
-  }
-  h1{
-    color: #4c4c4c;
-    font-weight: bold;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
-  }
+.login-submit-secondary span {
+  display: inline-block;
+  vertical-align: middle;
+}
 
-  .error {
-    border-color: red;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 0.8rem;
-    margin-top: 0.2rem;
-  }
-  
-  .error-text {
-    width: calc(100% - 2rem);
-    margin-left: 1rem;
-  }
-  
+.close-button {
+  background-color: #ffffff;
+  position: fixed;
+  right: 20px;
+  z-index: 9999;
+  border: none;
+  background: none;
+  outline: none;
+
+  font-size: 1.5rem;
+
+  margin-top: 1rem;
+  /* Agrega un espaciado superior */
+  margin-right: 1rem;
+  /* Agrega un espaciado derecho */
+}
+
+.close-button:focus,
+button:hover {
+  background-color: red;
+}
+
+h1 {
+  color: #4c4c4c;
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+}
+
+.error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.error-text {
+  width: calc(100% - 2rem);
+  margin-left: 1rem;
+}
 
 
- 
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-  }
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}

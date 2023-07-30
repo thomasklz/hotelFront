@@ -1,61 +1,68 @@
-img{
+img {
   font-weight: bold;
 
 }
-.texto-grueso {
-    font-weight: bold;
-    font-size: 22px;
-  }
 
-  
-.btn1{
+.texto-grueso {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+
+.btn1 {
   color: #ffffff;
 }
 
-  
+
 .editable-row {
-    cursor: pointer;
-  }
-  .sele{
-    color: black;
-  }
-  .editable-row:hover {
-    background-color: #ffffff;
-  }
-  
-  .edit-mode {
-    background-color: #ffffff;
-  }
-  
+  cursor: pointer;
+}
+
+.sele {
+  color: black;
+}
+
+.editable-row:hover {
+  background-color: #ffffff;
+}
+
+.edit-mode {
+  background-color: #ffffff;
+}
+
 
 .marco-div {
-    border: 2px solid black;
-    padding: 10px;
-  }
-button1{
-    color: blue;
+  border: 2px solid black;
+  padding: 10px;
 }
 
-button2{
-    color: red;
-}
-.heads{
-    background-color: rgb(206, 25, 25);
-}
-h5{
-    font-size: larger;
-    color: rgb(255, 255, 255);
-    text-align: center;
+button1 {
+  color: blue;
 }
 
-.disabled{
-    font-weight: bold;
-    font-size: 21px;
+button2 {
+  color: red;
 }
-th{
-    color: rgb(182, 17, 17);
-    font-weight: bold;
-    font-size: 20px;
+
+.heads {
+  background-color: rgb(206, 25, 25);
+}
+
+h5 {
+  font-size: larger;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.disabled {
+  font-weight: bold;
+  font-size: 21px;
+}
+
+th {
+  color: rgb(182, 17, 17);
+  font-weight: bold;
+  font-size: 20px;
 }
 
 
@@ -70,89 +77,100 @@ th{
 
 
 .select-gr {
-  font-size: 18px; /* Tamaño de letra grande */
+  font-size: 18px;
+  /* Tamaño de letra grande */
   color: rgb(158, 155, 155);
   text-align: center;
-  
-  
+
+
 }
 
 
-.estilos{
+.estilos {
   content: "";
-  margin-top: 10px; /* Espacio de 5 píxeles arriba de cada opción */
-  border: none; /* Removemos todos los bordes */
-  border-bottom: 1px solid  #888888;/* Agregamos solo el borde inferior */
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
   width: 400px;
-  font-size: 18px; 
+  font-size: 18px;
 }
-.estil{
+
+.estil {
   content: "";
-  margin-top: 10px; /* Espacio de 5 píxeles arriba de cada opción */
-  border: none; /* Removemos todos los bordes */
-  border-bottom: 1px solid  #888888;/* Agregamos solo el borde inferior */
- 
-  font-size: 18px; 
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+
+  font-size: 18px;
 }
-.heads{
+
+.heads {
   width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 header {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.x{
-  
-   height: 80px;
-   
- }
+.x {
 
- .btn1 {
-  margin-right: 20px; /* Ajusta el valor según el espacio de separación deseado */
+  height: 80px;
+
+}
+
+.btn1 {
+  margin-right: 20px;
+  /* Ajusta el valor según el espacio de separación deseado */
 }
 
 /* ... (your existing CSS) ... */
 
 .custom-dropdown {
-position: relative;
-border: 1px solid #ccc;
-cursor: pointer;
-width: 400px;
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 400px;
 }
 
 .selected-option {
-padding: 8px;
-font-size: 18px; 
+  padding: 8px;
+  font-size: 18px;
 }
 
 .options-container {
-position: absolute;
-top: 100%;
-left: 0;
-right: 0;
-background-color: #fff;
-border: 1px solid #ccc;
-max-height: 200px;
-overflow-y: auto;
-z-index: 1;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1;
 }
 
 .option {
-padding: 8px;
-border-bottom: 1px solid #ccc;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
 }
 
 .option:last-child {
-border-bottom: none;
+  border-bottom: none;
 }
 
 .show-more-options .options-container {
-display: block;
+  display: block;
 }
 
 /* ... (rest of your CSS) ... */
@@ -162,27 +180,32 @@ display: block;
 /* ... (your existing CSS) ... */
 
 .custom-dropdown {
-position: relative;
-border: 1px solid #ccc;
-cursor: pointer;
-width: 400px;
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 400px;
 }
 
 .selected-option {
-padding: 8px;
-display: flex;
-align-items: center;
-justify-content: space-between; /* Add this to create space for the arrow */
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Add this to create space for the arrow */
 }
 
 .down-arrow {
-width: 12px; /* Adjust the width as needed */
-height: 12px; /* Adjust the height as needed */
-margin-right: 5px; /* Add some spacing between the text and the arrow */
+  width: 12px;
+  /* Adjust the width as needed */
+  height: 12px;
+  /* Adjust the height as needed */
+  margin-right: 5px;
+  /* Add some spacing between the text and the arrow */
 }
 
 /* ... (rest of your CSS) ... */
 /* Agregar color plomo cuando el cursor se encuentra sobre una fila */
 .editable-row:hover {
-background-color: #c0c0c0; /* Cambia el color a tu elección */
+  background-color: #c0c0c0;
+  /* Cambia el color a tu elección */
 }

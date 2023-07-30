@@ -1,19 +1,23 @@
-h4{
+h4 {
     font-size: larger;
     color: brown;
 }
-.tamaño{
+
+.tamaño {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-img{
+
+img {
     height: 50px;
 }
-.disabled{
+
+.disabled {
     font-weight: bold;
     font-size: 18px;
 }
-.error-message{
+
+.error-message {
     color: rgb(255, 0, 0);
 }

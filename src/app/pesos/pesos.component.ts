@@ -29,14 +29,14 @@ export class PesosComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private PesosService: PesosService,
-    
+
     private router: Router,
     private formBuilder: FormBuilder
   ) {
     this.getAlltipoalimento();
   }
 
-//cargar los datos de la seleccion de la tabla  en la modal
+  //cargar los datos de la seleccion de la tabla  en la modal
 
   ngOnInit() {
     this.getAlltipoalimento();
@@ -46,43 +46,43 @@ export class PesosComponent implements OnInit {
   }
 
   //Modal de Agregar Notificacion
-  title= 'sweetAlert';
-  showModal(){
+  title = 'sweetAlert';
+  showModal() {
     swal2({
-      title:'Datos registrado exitosamente',
+      title: 'Datos registrado exitosamente',
       icon: "success",
     });
   }
-  
+
   //Modal de No agg error de Notificacion
-  showModalError(){
+  showModalError() {
     swal({
-      title:'Error de registro de datos ',
+      title: 'Error de registro de datos ',
       icon: "error",
-      
+
     });
   }
- 
+
   //Modal de Modificacion Notificacion
-  showModalEdit(){
+  showModalEdit() {
     swal2({
-      title:'Datos modificado exitosamente',
+      title: 'Datos modificado exitosamente',
       icon: "success",
     });
   }
-  
-    //Modal de  error de Modificacion Notificacion
-    showModalErrorEdit(){
-      swal({
-        title:'Error de modificación de datos ',
-        icon: "error",
-      });
-    }
+
+  //Modal de  error de Modificacion Notificacion
+  showModalErrorEdit() {
+    swal({
+      title: 'Error de modificación de datos ',
+      icon: "error",
+    });
+  }
 
 
 
- 
-//obtener todos los tipos alimentos 
+
+  //obtener todos los tipos alimentos 
   getAlltipoalimento() {
     this.PesosService.gettpesos().subscribe({
       next: (res) => {
@@ -90,120 +90,120 @@ export class PesosComponent implements OnInit {
         this.pesosss = res.pesos;
       },
       error: (err) => {
-       // alert("Error en la carga de datos");
+        // alert("Error en la carga de datos");
       },
     });
   }
-  
 
 
-//Para el registro de plato usando modal
+
+  //Para el registro de plato usando modal
   nuevoCurso() {
     this.tituloForm = 'Registro de Peso'; //cambio de nombre en el encabezado
     this.pesosForm.reset();
     this.editandopeso = false;
     this.idpesoEditar = '';
   }
-//Para el editar de plato usando modal
-editartipoAlimento(item: any) {
-  this.tituloForm = 'Editar  Peso';
-  this.pesosForm.patchValue({
-    descripcion: item.descripcion
-  });
-  this.editandopeso = true;
-  this.idpesoEditar = item.id;
+  //Para el editar de plato usando modal
+  editartipoAlimento(item: any) {
+    this.tituloForm = 'Editar  Peso';
+    this.pesosForm.patchValue({
+      descripcion: item.descripcion
+    });
+    this.editandopeso = true;
+    this.idpesoEditar = item.id;
 
-  // Establecer variables a false al editar
-  this.showpesooError = false;
-}
-
-
-// Registro de Plato...
-addtipoAlimento() {
-  if (this.pesosForm.valid) {
+    // Establecer variables a false al editar
     this.showpesooError = false;
-
-    const datos = {
-      descripcion: this.pesosForm.value.descripcion
-    };
-
-    if (!this.editandopeso) {
-      this.PesosService.guardar(datos).subscribe(
-        (pesos) => {
-          console.log(pesos);
-          this.showModal();
-          this.getAlltipoalimento(); // Actualizar la tabla después de agregar un alimento
-          this.pesosForm.reset(); // Restablecer los valores del formulario
-          
-        },
-        (error) => {
-          console.log(error);
-          this.showModalError();
-        }
-      );
-    } else {
-      // m o d i f i c a r -----------------------------
-      this.PesosService.guardar(datos, this.idpesoEditar).subscribe(
-        (pesos) => {
-          console.log(pesos);
-          this.showModalEdit();
-          this.nuevoCurso(); // Restablecer el formulario después de editar
-          this.getAlltipoalimento();
-        },
-        (error) => {
-          console.log(error);
-          this.showModalErrorEdit();
-        }
-      );
-    }
-  } else {
-    this.showpesooError = this.pesosForm.controls.descripcion.invalid;
   }
-}
 
 
-// ...
-showModalEliminar(id: number) {
-  Swal.fire({
-    title: '¿Estás seguro que deseas eliminar el peso?',
-    icon: 'warning',
-    showCancelButton: true,
-   
-    confirmButtonText: 'Sí, eliminar',
-    cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#bf0d0d',
-    
-    
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.eliminartipoAlimento(id);
+  // Registro de Plato...
+  addtipoAlimento() {
+    if (this.pesosForm.valid) {
+      this.showpesooError = false;
+
+      const datos = {
+        descripcion: this.pesosForm.value.descripcion
+      };
+
+      if (!this.editandopeso) {
+        this.PesosService.guardar(datos).subscribe(
+          (pesos) => {
+            console.log(pesos);
+            this.showModal();
+            this.getAlltipoalimento(); // Actualizar la tabla después de agregar un alimento
+            this.pesosForm.reset(); // Restablecer los valores del formulario
+
+          },
+          (error) => {
+            console.log(error);
+            this.showModalError();
+          }
+        );
+      } else {
+        // m o d i f i c a r -----------------------------
+        this.PesosService.guardar(datos, this.idpesoEditar).subscribe(
+          (pesos) => {
+            console.log(pesos);
+            this.showModalEdit();
+            this.nuevoCurso(); // Restablecer el formulario después de editar
+            this.getAlltipoalimento();
+          },
+          (error) => {
+            console.log(error);
+            this.showModalErrorEdit();
+          }
+        );
+      }
+    } else {
+      this.showpesooError = this.pesosForm.controls.descripcion.invalid;
     }
-  });
-}
+  }
 
 
-showModalErrorEliminar() {
-  Swal.fire({
-    title: 'Error al eliminar el alimento',
-    icon: 'error',
-  });
-}
+  // ...
+  showModalEliminar(id: number) {
+    Swal.fire({
+      title: '¿Estás seguro que deseas eliminar el peso?',
+      icon: 'warning',
+      showCancelButton: true,
 
-eliminartipoAlimento(id: number) {
-  this.PesosService.deletepesos(id).subscribe({
-    next: (res) => {
-      Swal.fire({
-        title: 'Datos eliminados exitosamente',
-        icon: 'success',
-      }).then(() => {
-        this.getAlltipoalimento();
-      });
-    },
-    error: () => {
-      this.showModalErrorEliminar();
-    },
-  });
-}
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#bf0d0d',
+
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.eliminartipoAlimento(id);
+      }
+    });
+  }
+
+
+  showModalErrorEliminar() {
+    Swal.fire({
+      title: 'Error al eliminar el alimento',
+      icon: 'error',
+    });
+  }
+
+  eliminartipoAlimento(id: number) {
+    this.PesosService.deletepesos(id).subscribe({
+      next: (res) => {
+        Swal.fire({
+          title: 'Datos eliminados exitosamente',
+          icon: 'success',
+        }).then(() => {
+          this.getAlltipoalimento();
+        });
+      },
+      error: () => {
+        this.showModalErrorEliminar();
+      },
+    });
+  }
 
 
   // Restablecer el formulario cuando se cierre el modal

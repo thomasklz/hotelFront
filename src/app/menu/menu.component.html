@@ -6,153 +6,161 @@
   <div class="container-fluid">
 
 
-      <div class="row">
-        <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title"  data-toggle="modal" data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+    <div class="row">
+      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
+        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
 
-          <div class="col-md-12">
+      <div class="col-md-12">
 
-              <div class="card">
-                  <div class="card-header card-header-danger">
-                      <h4 class="card-title disabled">  <img src="/assets/img/mn.png" class="edit" alt=""> Menú</h4>
-                     
-                  </div>
-                  <div class="card-body">
-                      <div class="table-responsive">
-                          <table class="table">
-                              <thead class=" text-primary">
-                                  <th>
-                                      ID
-                                  </th>
-                                  <th>
-                                      Tipo Menú
-                                  </th>
-                                  <th>
-                                      Cantidad de Plato
-                                  </th>
-                                  <th>
-                                    Fecha
-                                </th>
-                                <th>
-                                  Habilitado
-                              </th>
-                                  <th>
-                                    Acción
-                                </th>
-                                  
-                              </thead>
-                              <tbody  *ngFor="let item of menusss ;let i=index "  >
-                                  <tr  >
-                                      <td >
-                                        {{i+1}}
-                                      </td>
-                                      <td >
-                                        {{item.tipo_menu.tipo}}
-                                      </td>
-                                      <td>
-                                        {{item.cantidad_plato.cantidad}}
-                                      </td>
-                                      <td>
-                                        {{item.fecha}}
-                                      </td>
-                                      <td>
-                                        {{item.habilitado}}
-                                      </td>
-                                      
-                                      <td>
-                                        <button1 color="primary" (click)="editarMenu(item)">
-                                          <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                                        </button1>
-                                        
-                                        
-                                       <button2 > <i class="material-icons editable-row" (click)="showModalEliminar(item.id)" >delete</i></button2>
-                                    </td>
-                                    
-                                  </tr>
-                                 
-                              </tbody>
-                          </table>
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Menú</h4>
 
-
-                          
-                      </div>
-                  </div>
-              </div>
           </div>
-          
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    ID
+                  </th>
+                  <th>
+                    Tipo Menú
+                  </th>
+                  <th>
+                    Cantidad de Plato
+                  </th>
+                  <th>
+                    Fecha
+                  </th>
+                  <th>
+                    Habilitado
+                  </th>
+                  <th>
+                    Acción
+                  </th>
+
+                </thead>
+                <tbody *ngFor="let item of menusss ;let i=index ">
+                  <tr>
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>
+                      {{item.tipo_menu.tipo}}
+                    </td>
+                    <td>
+                      {{item.cantidad_plato.cantidad}}
+                    </td>
+                    <td>
+                      {{item.fecha}}
+                    </td>
+                    <td>
+                      {{item.habilitado}}
+                    </td>
+
+                    <td>
+                      <button1 color="primary" (click)="editarMenu(item)">
+                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                      </button1>
+
+
+                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      </button2>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+
+
+
+            </div>
+          </div>
+        </div>
       </div>
+
+    </div>
   </div>
 </div>
 
-<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content d-flex align-items-center">
       <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png" alt=""></h5>
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png"
+            alt=""></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="menuForm">
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr text-center">Tipo Menú</label> <br>
-    <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
-      <div class="selected-option" (click)="toggleShowMoreOptions()">
-        {{ getSelectedOptionLabel() }}
-        <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-      </div>
-      <div class="options-container">
-        <ng-container *ngFor="let item of tipomenusss">
-          <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7" (click)="selectOption(item)">{{ item.tipo }}</div>
-          <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.tipo }}</div>
-          <div *ngIf="showId_tipomenuError" class="text-danger">Campo requerido</div>
-        </ng-container>
-      </div>
-    </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr text-center">Tipo Menú</label> <br>
+              <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
+                <div class="selected-option" (click)="toggleShowMoreOptions()">
+                  {{ getSelectedOptionLabel() }}
+                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+                </div>
+                <div class="options-container">
+                  <ng-container *ngFor="let item of tipomenusss">
+                    <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7"
+                      (click)="selectOption(item)">{{ item.tipo }}</div>
+                    <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{
+                      item.tipo }}</div>
+                    <div *ngIf="showId_tipomenuError" class="text-danger">Campo requerido</div>
+                  </ng-container>
+                </div>
+              </div>
 
 
-  </div>
-</div>
+            </div>
+          </div>
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr text-center">Cantidad</label> <br>
-    <div class="custom-dropdown" [class.show-more-options]="showMoreOptionscantidadplato">
-      <div class="selected-option" (click)="toggleShowMoreOptionscantidadplato()">
-        {{ getSelectedOptionLabelcantidadplato() }}
-        <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-      </div>
-      <div class="options-container">
-        <ng-container *ngFor="let item of cantidadplatosss">
-          <div class="option example-full-width estilos" *ngIf="!showMoreOptionscantidadplato && index >= 7" (click)="selectOptioncantidadplato(item)">{{ item.cantidad }}</div>
-          <div class="option estil editable-row" *ngIf="showMoreOptionscantidadplato" (click)="selectOptioncantidadplato(item)">{{ item.cantidad }}</div>
-          <div *ngIf="showId_cantidadplatoError" class="text-danger">Campo requerido</div>
-        </ng-container>
-      </div>
-    </div>
-
-
-  </div>
-</div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr text-center">Cantidad</label> <br>
+              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionscantidadplato">
+                <div class="selected-option" (click)="toggleShowMoreOptionscantidadplato()">
+                  {{ getSelectedOptionLabelcantidadplato() }}
+                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+                </div>
+                <div class="options-container">
+                  <ng-container *ngFor="let item of cantidadplatosss">
+                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionscantidadplato && index >= 7"
+                      (click)="selectOptioncantidadplato(item)">{{ item.cantidad }}</div>
+                    <div class="option estil editable-row" *ngIf="showMoreOptionscantidadplato"
+                      (click)="selectOptioncantidadplato(item)">{{ item.cantidad }}</div>
+                    <div *ngIf="showId_cantidadplatoError" class="text-danger">Campo requerido</div>
+                  </ng-container>
+                </div>
+              </div>
 
 
+            </div>
+          </div>
 
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr">Habilitado</label> <br>
-    <input class="example-full-width estilos" type="text" formControlName="habilitado">
-    <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
-  </div>
-</div>
 
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr">Descripción</label> <br>
-    <input class="example-full-width estilos" type="date" formControlName="fecha">
-    <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
-  </div>
-</div>
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Habilitado</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="habilitado">
+              <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Descripción</label> <br>
+              <input class="example-full-width estilos" type="date" formControlName="fecha">
+              <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
 
 
 
@@ -166,4 +174,3 @@
     </div>
   </div>
 </div>
-

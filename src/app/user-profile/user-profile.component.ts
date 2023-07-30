@@ -16,7 +16,7 @@ export class UserProfileComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   submitted = false;
   usuarioForm!: FormGroup;
-  
+
 
   constructor(
     private UsuarioService: UsuarioService,
@@ -25,20 +25,20 @@ export class UserProfileComponent implements OnInit {
     private http: HttpClient
   ) {
     this.getAllusuarios();
-    
+
     this.usuarioForm = new FormGroup({
       usuario: new FormControl(),
-     
+
       nombre: new FormControl(),
       email: new FormControl(),
       telefono: new FormControl(),
       foto: new FormControl(),
     });
-    
+
   }
 
   personaForm!: FormGroup;
-  usuariosss:any[] = []; 
+  usuariosss: any[] = [];
   title = 'sweetAlert';
 
   showModal() {
@@ -65,8 +65,8 @@ export class UserProfileComponent implements OnInit {
       contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
     });
   }
-  
- 
+
+
   addPersona() {
     if (this.personaForm.invalid) {
       this.submitted = true;
@@ -74,7 +74,7 @@ export class UserProfileComponent implements OnInit {
       if (this.personaForm.touched) {
         // Verificar si todos los campos están vacíos
         const allFieldsEmpty = Object.values(this.personaForm.value).every((value) => !value);
-        
+
         if (allFieldsEmpty) {
           this.personaForm.markAllAsTouched(); // Marcar todos los campos como tocados para mostrar los mensajes de error
         } else {
@@ -85,7 +85,7 @@ export class UserProfileComponent implements OnInit {
             }
           });
         }
-        
+
         this.showModalError();
       }
     } else {
@@ -111,7 +111,7 @@ export class UserProfileComponent implements OnInit {
         this.usuariosss = res.usuarios;
       },
       error: (err) => {
-       // alert("Error en la carga de datos");
+        // alert("Error en la carga de datos");
       },
     });
   }

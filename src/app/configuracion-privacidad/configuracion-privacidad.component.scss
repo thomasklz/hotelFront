@@ -1,98 +1,105 @@
-
-.tim-note2{
-    text-align: right;
+.tim-note2 {
+  text-align: right;
 
 }
 
 .table-row:hover {
-    background-color: #f2f2f2;
-  }
-  .editable-row {
-    cursor: pointer;
-  }
-  
-  .editable-row:hover {
-    background-color: #f2f2f2;
-  }
-  
-  .edit-mode {
-    background-color: #fffacd;
-  }
-  .danger{
-    background-color: rgb(204, 43, 43);
-    color: #ffffff;
-    font-size: smaller;
-  }
+  background-color: #f2f2f2;
+}
+
+.editable-row {
+  cursor: pointer;
+}
+
+.editable-row:hover {
+  background-color: #f2f2f2;
+}
+
+.edit-mode {
+  background-color: #fffacd;
+}
+
+.danger {
+  background-color: rgb(204, 43, 43);
+  color: #ffffff;
+  font-size: smaller;
+}
 
 
-.x{
- // width: 200px;
+.x {
+  // width: 200px;
   height: 80px;
   //margin-right: 20px;
- // margin-bottom: 0;
+  // margin-bottom: 0;
 }
 
 
 
 .texto-grueso {
-    font-weight: bold;
-    font-size: 25px;
-  }
+  font-weight: bold;
+  font-size: 25px;
+}
 
-  
-.btn1{
+
+.btn1 {
   color: #ffffff;
 }
 
-  
+
 .editable-row {
-    cursor: pointer;
-  }
-  .sele{
-    color: black;
-  }
-  .editable-row:hover {
-    background-color: #ffffff;
-  }
-  
-  .edit-mode {
-    background-color: #ffffff;
-  }
-  
-.edit{
-    height: 80px;
-    width: 80px ; 
-    
+  cursor: pointer;
+}
+
+.sele {
+  color: black;
+}
+
+.editable-row:hover {
+  background-color: #ffffff;
+}
+
+.edit-mode {
+  background-color: #ffffff;
+}
+
+.edit {
+  height: 80px;
+  width: 80px;
+
 }
 
 .marco-div {
-    border: 2px solid black;
-    padding: 10px;
-  }
-button1{
-    color: blue;
+  border: 2px solid black;
+  padding: 10px;
 }
 
-button2{
-    color: red;
-}
-.heads{
-    background-color: rgb(206, 25, 25);
-}
-h5{
-    font-size: larger;
-    color: rgb(255, 255, 255);
-    text-align: center;
+button1 {
+  color: blue;
 }
 
-.disabled{
-    font-weight: bold;
-    font-size: 18px;
+button2 {
+  color: red;
 }
-th{
-    color: rgb(182, 17, 17);
-    font-weight: bold;
-    font-size: 20px;
+
+.heads {
+  background-color: rgb(206, 25, 25);
+}
+
+h5 {
+  font-size: larger;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.disabled {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+th {
+  color: rgb(182, 17, 17);
+  font-weight: bold;
+  font-size: 20px;
 }
 
 
@@ -107,28 +114,34 @@ th{
 
 
 .select-gr {
-  font-size: 18px; /* Tamaño de letra grande */
+  font-size: 18px;
+  /* Tamaño de letra grande */
   color: rgb(158, 155, 155);
   text-align: center;
-  
-  
+
+
 }
 
 
-.estilos{
+.estilos {
   content: "";
-  margin-top: 10px; /* Espacio de 5 píxeles arriba de cada opción */
-  border: none; /* Removemos todos los bordes */
-  border-bottom: 1px solid  #888888;/* Agregamos solo el borde inferior */
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
   width: 400px;
-  font-size: 18px; 
+  font-size: 18px;
 }
-.heads{
+
+.heads {
   width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 header {
   display: flex;
   justify-content: center;

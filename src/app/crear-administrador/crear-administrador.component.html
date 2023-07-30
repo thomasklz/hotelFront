@@ -1,50 +1,55 @@
 <div class="container">
-    <form class="login-form" [formGroup]="personaForm" (ngSubmit)="addPersona()">
-        <button type="button" class="close-button" (click)="cerrar()">
-            <i class="fa fa-times"></i>
-          </button>
-        <div class="login-text">
-          <div class="logo-container">
-            
-            <img src="assets/img/log.png" alt="">
-            
-          </div>
-           
-          
-        </div>
-        
-        <h1 >Registro de Administrador</h1>
-      
-        <input type="email" class="login-username" autofocus="true" placeholder="Nombre*" formControlName="nombre" [ngClass]="{ 'error': personaForm.get('nombre')?.invalid && (personaForm.get('nombre')?.touched || submitted) }" />
-        <div *ngIf="personaForm.get('nombre')?.invalid && (personaForm.get('nombre')?.touched || submitted)" class="error-message error-text">El nombre es requerido y debe tener al menos 3 caracteres.</div>
-        
-        <input type="email" class="login-username" autofocus="true" placeholder="Email*" formControlName="email" [ngClass]="{ 'error': personaForm.get('email')?.invalid && (personaForm.get('email')?.touched || submitted) }" />
-        <div *ngIf="personaForm.get('email')?.invalid && (personaForm.get('email')?.touched || submitted)" class="error-message error-text">El email es requerido.</div>
-        
-        <input type="email" class="login-username" autofocus="true" placeholder="Teléfono*" formControlName="telefono" [ngClass]="{ 'error': personaForm.get('telefono')?.invalid && (personaForm.get('telefono')?.touched || submitted) }" />
-        <div *ngIf="personaForm.get('telefono')?.invalid && (personaForm.get('telefono')?.touched || submitted)" class="error-message error-text">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
-        
-        <input type="email" class="login-username" autofocus="true" placeholder="Foto*" formControlName="foto" [ngClass]="{ 'error': personaForm.get('foto')?.invalid && (personaForm.get('foto')?.touched || submitted) }" />
-        <div *ngIf="personaForm.get('foto')?.invalid && (personaForm.get('foto')?.touched || submitted)" class="error-message error-text">La foto es requerida</div>
-        
-        <input type="email" class="login-username" autofocus="true" placeholder="Usuario*" formControlName="usuario" [ngClass]="{ 'error': personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted) }" />
-        <div *ngIf="personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted)" class="error-message error-text">El usuario es requerido y debe tener al menos 3 caracteres.</div>
-        
-        <input type="password" class="login-password" placeholder="Contraseña*" formControlName="contrasena" [ngClass]="{ 'error': personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted) }" />
-        <div *ngIf="personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted)" class="error-message error-text">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
-      
-        <button type="submit" class="login-submit" >
-         <img src="assets/img/guardar.png" alt=""> Guardar
-        </button>
-      
-       
-       
-        <br>
-      </form>
-      
-      <div class="underlay-photo"></div>
-      <div class="underlay-black"></div> 
-      <router-outlet></router-outlet>  
-      
-  </div>
+  <form class="login-form" [formGroup]="personaForm" (ngSubmit)="addPersona()">
+    <button type="button" class="close-button" (click)="cerrar()">
+      <i class="fa fa-times"></i>
+    </button>
+    <div class="login-text">
+      <div class="logo-container">
+        <img src="assets/img/log.png" alt="">
+      </div>
+    </div>
 
+    <h1>Registro de Administrador</h1>
+
+    <input type="email" class="login-username" autofocus="true" placeholder="Nombre*" formControlName="nombre"
+      [ngClass]="{ 'error': personaForm.get('nombre')?.invalid && (personaForm.get('nombre')?.touched || submitted) }" />
+    <div *ngIf="personaForm.get('nombre')?.invalid && (personaForm.get('nombre')?.touched || submitted)"
+      class="error-message error-text">El nombre es requerido y debe tener al menos 3 caracteres.</div>
+
+    <input type="email" class="login-username" autofocus="true" placeholder="Email*" formControlName="email"
+      [ngClass]="{ 'error': personaForm.get('email')?.invalid && (personaForm.get('email')?.touched || submitted) }" />
+    <div *ngIf="personaForm.get('email')?.invalid && (personaForm.get('email')?.touched || submitted)"
+      class="error-message error-text">El email es requerido.</div>
+
+    <input type="email" class="login-username" autofocus="true" placeholder="Teléfono*" formControlName="telefono"
+      [ngClass]="{ 'error': personaForm.get('telefono')?.invalid && (personaForm.get('telefono')?.touched || submitted) }" />
+    <div *ngIf="personaForm.get('telefono')?.invalid && (personaForm.get('telefono')?.touched || submitted)"
+      class="error-message error-text">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
+
+    <input type="email" class="login-username" autofocus="true" placeholder="Foto*" formControlName="foto"
+      [ngClass]="{ 'error': personaForm.get('foto')?.invalid && (personaForm.get('foto')?.touched || submitted) }" />
+    <div *ngIf="personaForm.get('foto')?.invalid && (personaForm.get('foto')?.touched || submitted)"
+      class="error-message error-text">La foto es requerida</div>
+
+    <input type="email" class="login-username" autofocus="true" placeholder="Usuario*" formControlName="usuario"
+      [ngClass]="{ 'error': personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted) }" />
+    <div *ngIf="personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted)"
+      class="error-message error-text">El usuario es requerido y debe tener al menos 3 caracteres.</div>
+
+    <input type="password" class="login-password" placeholder="Contraseña*" formControlName="contrasena"
+      [ngClass]="{ 'error': personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted) }" />
+    <div *ngIf="personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted)"
+      class="error-message error-text">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
+
+    <button type="submit" class="login-submit">
+      <img src="assets/img/guardar.png" alt=""> Guardar
+    </button>
+
+    <br>
+  </form>
+
+  <div class="underlay-photo"></div>
+  <div class="underlay-black"></div>
+  <router-outlet></router-outlet>
+
+</div>
