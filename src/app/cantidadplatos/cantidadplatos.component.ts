@@ -227,7 +227,7 @@ export class CantidadplatosComponent implements OnInit {
 
   showModalEliminar(id: number) {
     Swal.fire({
-      title: '¿Estás seguro que deseas eliminar el plato?',
+      title: '¿Estás seguro que deseas eliminar la cantidad de plato?',
       icon: 'warning',
       showCancelButton: true,
 

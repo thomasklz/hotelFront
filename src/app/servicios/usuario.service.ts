@@ -28,6 +28,11 @@ putusuario(data:any, id:any){
 
 deleteusuario(id:number){
   return this.http.delete<any>('http://localhost:3000/api/eliminarusuario/'+id);
+  
+}
+deletepersona(id:number){
+  return this.http.delete<any>('http://localhost:3000/api/eliminarpersona/'+id);
+  
 }
 
 

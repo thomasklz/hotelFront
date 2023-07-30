@@ -208,7 +208,20 @@ export class ListadoUsuariosComponent implements OnInit {
         error: () => {
           this.showModalError();
         },
-      })
+      });
+
+
+      this.UsuarioService.deletepersona(id)
+      .subscribe({
+        next: (res) => {
+          this.showModal();
+
+          this.getAllusuarios();
+        },
+        error: () => {
+          this.showModalError();
+        },
+      });
   }
 
 
