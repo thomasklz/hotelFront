@@ -94,7 +94,7 @@ export class LoginComponent implements OnInit {
   }
 
   getAllusuarios() {
-    this.UsuarioService.getusuario().subscribe({
+    this.UsuarioService.getusua().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.usuarios);
         this.usuariosss = res.usuarios;

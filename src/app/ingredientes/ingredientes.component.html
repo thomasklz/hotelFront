@@ -27,7 +27,16 @@
                     Plato
                   </th>
                   <th>
-                    Alimento
+                    Cantidad
+                  </th>
+                  <th>
+                   Tipo  Ingrediente
+                  </th>
+                  <th>
+                    Ingrediente
+                  </th>
+                  <th>
+                    Nº Peso
                   </th>
                   <th>
                     Peso
@@ -52,11 +61,22 @@
                       {{item.plato.descripcion}}
                     </td>
                     <td>
-                      {{item.alimento.descripcion}}
+                      {{item.cantidad}}
+                    </td>
+                    <td>
+                      {{item.tipo_alimento.tipo}}
+                    </td>
+                    <td>
+                      {{item.alimento}}
+                    </td>
+                    <td>
+                      {{item.cantidad_peso}}
                     </td>
                     <td>
                       {{item.peso.descripcion}}
                     </td>
+                    
+                    
                     <td>
                       {{item.precio}}
                     </td>
@@ -87,66 +107,74 @@
   </div>
 </div>
 
-<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+<div class="modal fade " id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
   aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content d-flex align-items-center">
-      <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png"
-            alt=""></h5>
+  <div class="modal-dialog " role="document">
+    <div class="modal-content d-flex align-items-center ">
+      
+      <div class="heads  x ">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png" alt=""></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      
+      <div class="modal-body modal-with-padding">
         <form [formGroup]="ingredientesForm">
 
-          <div class="form-row">
-            <div class="form-group col-md-8">
+          <div class="form-row ">
+            <div class="form-group col-md-6">
               <label for="inputState" class="select-gr text-center">Plato</label> <br>
               <div class="custom-dropdown" [class.show-more-options]="showMoreOptionsplato">
-                <div class="selected-option " (click)="toggleShowMoreOptionsplato()">
+                <div class="selected-option" (click)="toggleShowMoreOptionsplato()">
                   {{ getSelectedOptionLabelplato() }}
                   <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
                 </div>
-                <div class="options-container ">
+                <div class="options-container">
                   <ng-container *ngFor="let item of platosss">
-                    <!-- Agrega el atributo [value] para almacenar el ID del plato seleccionado -->
-                    <div class="option example-full-width estilos " *ngIf="!showMoreOptionsplato && index >= 7"
+                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionsplato && index >= 7"
                       (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionsplato"
-                      (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
+                    <div class="option estil editable-row" *ngIf="showMoreOptionsplato" (click)="selectOptionplato(item)"
+                      [value]="item.id">{{ item.descripcion }}</div>
                     <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
                   </ng-container>
                 </div>
               </div>
             </div>
+            <div class="form-group col-md-6">
+              <label for="inputState" class="select-gr">Cantidad de Plato</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="cantidad">
+              <div *ngIf="showCantidadError" class="text-danger">Campo requerido</div>
+            </div>
           </div>
 
-
           <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Alimento</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionsalimento">
-                <div class="selected-option" (click)="toggleShowMoreOptionsalimento()">
-                  {{ getSelectedOptionLabelalimento() }}
+            <div class="form-group col-md-6">
+              <label for="inputState" class="select-gr text-center">Tipo de Ingrediente</label> <br>
+              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionstipoalimento">
+                <div class="selected-option" (click)="toggleShowMoreOptionstipoalimento()">
+                  {{ getSelectedOptionLabeltipoalimento() }}
                   <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
                 </div>
                 <div class="options-container">
-                  <ng-container *ngFor="let item of alimentosss">
-                    <!-- Agrega el atributo [value] para almacenar el ID del alimento seleccionado -->
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionsalimento && index >= 7"
-                      (click)="selectOptionalimento(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionsalimento"
-                      (click)="selectOptionalimento(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div *ngIf="showIdalimentoError" class="text-danger">Campo requerido</div>
+                  <ng-container *ngFor="let item of tipoalimentosss">
+                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionstipoalimento && index >= 7"
+                      (click)="selectOptiontipoalimento(item)" [value]="item.id">{{ item.tipo }}</div>
+                    <div class="option estil editable-row" *ngIf="showMoreOptionstipoalimento" (click)="selectOptiontipoalimento(item)"
+                      [value]="item.id">{{ item.tipo }}</div>
+                    <div *ngIf="showIdtipoalimentoError" class="text-danger">Campo requerido</div>
                   </ng-container>
                 </div>
               </div>
             </div>
+            <div class="form-group col-md-6">
+              <label for="inputState" class="select-gr">Ingrediente</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="alimento">
+              <div *ngIf="showAlimentoError" class="text-danger">Campo requerido</div>
+            </div>
           </div>
 
-
           <div class="form-row">
-            <div class="form-group col-md-8">
+           
+            <div class="form-group col-md-6">
               <label for="inputState" class="select-gr text-center">Peso</label> <br>
               <div class="custom-dropdown" [class.show-more-options]="showMoreOptionspeso">
                 <div class="selected-option" (click)="toggleShowMoreOptionspeso()">
@@ -155,7 +183,6 @@
                 </div>
                 <div class="options-container">
                   <ng-container *ngFor="let item of pesosss">
-                    <!-- Agrega el atributo [value] para almacenar el ID del peso seleccionado -->
                     <div class="option example-full-width estilos" *ngIf="!showMoreOptionspeso && index >= 7"
                       (click)="selectOptionpeso(item)" [value]="item.id">{{ item.descripcion }}</div>
                     <div class="option estil editable-row" *ngIf="showMoreOptionspeso" (click)="selectOptionpeso(item)"
@@ -165,24 +192,32 @@
                 </div>
               </div>
             </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputState" class="select-gr">Nº Peso</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="cantidad_peso">
+              <div *ngIf="showcantidad_pesoError" class="text-danger">Campo requerido</div>
+            </div>
+            
           </div>
 
           <div class="form-row">
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-12 mx-auto text-center">
               <label for="inputState" class="select-gr">Precio</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="precio">
+              <input class="example-full-width estilos " type="text" formControlName="precio">
               <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
             </div>
           </div>
 
-
           <input type="hidden" formControlName="funcion">
         </form>
       </div>
-      <div class="modal-footer">
+
+      <div class="modal-footer justify-content-center">
         <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
         <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">Guardar</button>
       </div>
     </div>
   </div>
 </div>
+

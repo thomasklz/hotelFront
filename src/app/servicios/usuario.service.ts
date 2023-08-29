@@ -16,6 +16,12 @@ export class UsuarioService {
   getusuario(){
     return this.http.get<any>('http://localhost:3000/api/mostrarusuario/');
   }
+  getusua(){
+    return this.http.get<any>('http://localhost:3000/api/obtusuario/');
+  }
+
+
+  
   
   buscarUsuario(id:number){
     return this.http.get<any>('http://localhost:3000/api/buscarUsuario/'+id);

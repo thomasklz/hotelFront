@@ -87,7 +87,7 @@ input {
   min-height: 10rem;
   margin: auto;
   width: 25%;
-  border-radius: 30px;
+  border-radius: 20px;
   background-color: rgba(235, 234, 227, 0.956);
   position: absolute;
   top: 50%;
@@ -213,6 +213,7 @@ input {
   text-align: center;
   margin-top: 1rem;
   color: rgb(0, 0, 0);
+  cursor: pointer;
 }
 
 .register-link a {
@@ -322,3 +323,25 @@ h1 {
   max-width: 800px;
   margin: 0 auto;
 }
+
+
+
+.input-container {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.login-username,
+.login-password {
+  padding-left: 30px; /* Adjust this value based on icon width and padding */
+  border-radius: 10px; /* Optional: Match the input field's border-radius */
+}
+
+/* Rest of your existing CSS styles */

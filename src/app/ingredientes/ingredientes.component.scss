@@ -46,6 +46,8 @@ button2 {
 
 .heads {
   background-color: rgb(206, 25, 25);
+  justify-content: center;
+  align-items: center;
 }
 
 h5 {
@@ -94,10 +96,23 @@ th {
   /* Removemos todos los bordes */
   border-bottom: 1px solid #888888;
   /* Agregamos solo el borde inferior */
-  width: 400px;
+  width: 190px;
   font-size: 18px;
+  
 }
 
+.estilosss {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  width: 400pxpx;
+  font-size: 18px;
+  
+}
 .estil {
   content: "";
   margin-top: 10px;
@@ -136,17 +151,9 @@ header {
 
 /* ... (your existing CSS) ... */
 
-.custom-dropdown {
-  position: relative;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  width: 400px;
-}
 
-.selected-option {
-  padding: 8px;
-  font-size: 18px;
-}
+
+
 
 .options-container {
   position: absolute;
@@ -195,16 +202,18 @@ header {
   position: relative;
   border: 1px solid #ccc;
   cursor: pointer;
-  width: 400px;
+  width: 190px;
 }
 
 .selected-option {
   padding: 8px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   /* Add this to create space for the arrow */
 }
+
 
 .down-arrow {
   width: 12px;
@@ -220,4 +229,14 @@ header {
 .editable-row:hover {
   background-color: #c0c0c0;
   /* Cambia el color a tu elección */
+}
+
+.modal-with-padding {
+  padding-left: 40px; /* Ajusta el valor según el espacio deseado */
+  padding-right: 30px; /* Ajusta el valor según el espacio deseado */
+}
+
+/* Estilo para centrar horizontalmente el título del modal */
+.text-center {
+  text-align: center;
 }

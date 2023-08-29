@@ -24,19 +24,26 @@ export class IngredientesComponent implements OnInit {
   precio: string = '';
   id_peso: string = '';
   id_plato: string = '';
-  id_alimento: string = '';
+  id_tipoalimento: string = '';
   pesosss: any[] = [];
   platosss: any[] = [];
-  alimentosss: any[] = [];
+  tipoalimentosss: any[] = [];
   ingredientesss: any[] = [];
   tituloForm;
+  
   ingredientesForm!: FormGroup;
   editandoIngredientes: boolean = false; // Variable para indicar si se está editando un alimento existente
   idIngredientesEditar: string = ''; // Variable para almacenar el ID del alimento en caso de edición
-  showPrecioError = false; //evitando que se muestren los mensajes de campo requerido 
+  
+  showIdplatoError = false//evitando que se muestren los mensajes de campo requerido 
+  showCantidadError = false;//evitando que se muestren los mensajes de campo requerido 
+  showIdtipoalimentoError = false//evitando que se muestren los mensajes de campo requerido 
+  showAlimentoError = false//evitando que se muestren los mensajes de campo requerido 
   showIdpesoError = false;//evitando que se muestren los mensajes de campo requerido 
-  showIdplatoError = false
-  showIdalimentoError = false
+  showPrecioError = false; //evitando que se muestren los mensajes de campo requerido 
+  showcantidad_pesoError = false; //evitando que se muestren los mensajes de campo requerido 
+  
+  
   constructor(
     private http: HttpClient,
     private IngredientesService: IngredientesService,
@@ -48,7 +55,7 @@ export class IngredientesComponent implements OnInit {
   ) {
     this.getAllpesos();
     this.getAllplatos();
-    this.getAllalimentos();
+    this.getAlltipoalimento();
     this.getAllingredientes();
   }
 
@@ -58,25 +65,28 @@ export class IngredientesComponent implements OnInit {
     this.getAllingredientes();
     this.ingredientesForm = this.formBuilder.group({
       precio: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      alimento: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      cantidad: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      cantidad_peso: new FormControl("", [Validators.required, Validators.minLength(1)]),
       id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      id_alimento: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      id_tipoalimento: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       id_peso: new FormControl("", [Validators.required, Validators.maxLength(1)])
     });
   }
   showMoreOptionsplato: boolean = false;
-  showMoreOptionsalimento: boolean = false;
+  showMoreOptionstipoalimento: boolean = false;
   showMoreOptionspeso: boolean = false;
-
+ 
 
   selectedOptionplato: any = null;
-  selectedOptionalimento: any = null;
+  selectedOptiontipoalimento: any = null;
   selectedOptionpeso: any = null;
 
   toggleShowMoreOptionsplato() {
     this.showMoreOptionsplato = !this.showMoreOptionsplato;
   }
-  toggleShowMoreOptionsalimento() {
-    this.showMoreOptionsalimento = !this.showMoreOptionsalimento;
+  toggleShowMoreOptionstipoalimento() {
+    this.showMoreOptionstipoalimento = !this.showMoreOptionstipoalimento;
   }
 
   toggleShowMoreOptionspeso() {
@@ -90,12 +100,12 @@ export class IngredientesComponent implements OnInit {
     this.ingredientesForm.get('id_plato')?.setValue(item.id);
   }
 
-  selectOptionalimento(item: any) {
-    this.selectedOptionalimento = item;
-    this.showMoreOptionsalimento = false;
+  selectOptiontipoalimento(item: any) {
+    this.selectedOptiontipoalimento = item;
+    this.showMoreOptionstipoalimento = false;
 
     // Asignar el valor del ID del alimento seleccionado al formulario
-    this.ingredientesForm.get('id_alimento')?.setValue(item.id);
+    this.ingredientesForm.get('id_tipoalimento')?.setValue(item.id);
   }
 
   selectOptionpeso(item: any) {
@@ -110,8 +120,8 @@ export class IngredientesComponent implements OnInit {
     return this.selectedOptionplato ? this.selectedOptionplato.descripcion : 'Seleccione  ';
   }
 
-  getSelectedOptionLabelalimento() {
-    return this.selectedOptionalimento ? this.selectedOptionalimento.descripcion : 'Seleccione  ';
+  getSelectedOptionLabeltipoalimento() {
+    return this.selectedOptiontipoalimento ? this.selectedOptiontipoalimento.tipo : 'Seleccione  ';
   }
 
   getSelectedOptionLabelpeso() {
@@ -164,14 +174,15 @@ export class IngredientesComponent implements OnInit {
       });
   }
 
-  //registrar el id alimento el nuevo que se selecciona y enviarlo a la data
-  getId_alimento() {
+  //registrar el id tipo alimento el nuevo que se selecciona y enviarlo a la data
+  getId_Tipoalimento() {
     this.http
-      .get("http://localhost:3000/api/crearalimento/?=" + this.id_alimento)
+      .get("http://localhost:3000/api/creartipo_alimento?=" + this.id_tipoalimento)
       .subscribe((result: any) => {
-        this.alimentosss = result.ingredientes;
+        this.tipoalimentosss = result.ingredientes;
       });
   }
+
 
   //registrar el id peso el nuevo que se selecciona y enviarlo a la data
   getId_peso() {
@@ -208,18 +219,20 @@ export class IngredientesComponent implements OnInit {
     });
   }
 
-  //obtener todos los alimentos para utlizarlo en el selection
-  getAllalimentos() {
-    this.AlimentosService.getalimentos().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.alimentos);
-        this.alimentosss = res.alimentos;
-      },
-      error: (err) => {
-        // alert("Error en la carga de datos");
-      },
-    });
-  }
+
+    //obtener todos los tipos alimentos 
+    getAlltipoalimento() {
+      this.AlimentosService.gettipoalimento().subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.tipo_alimentos);
+          this.tipoalimentosss = res.tipo_alimentos;
+        },
+        error: (err) => {
+          // alert("Error en la carga de datos");
+        },
+      });
+    }
+  
 
   //obtener todos los ingredientes 
   getAllingredientes() {
@@ -242,8 +255,8 @@ export class IngredientesComponent implements OnInit {
     this.idIngredientesEditar = '';
 
     // Reset the selectedOption and clear the form field value
-    this.selectedOptionalimento = null;
-    this.ingredientesForm.get('id_alimento')?.setValue(null);
+    this.selectedOptiontipoalimento = null;
+    this.ingredientesForm.get('id_tipoalimento')?.setValue(null);
 
     // Reset the selectedOption and clear the form field value
     this.selectedOptionplato = null;
@@ -254,9 +267,14 @@ export class IngredientesComponent implements OnInit {
     this.ingredientesForm.get('id_peso')?.setValue(null);
 
     // Establecer variables a false al editar
-    this.showIdalimentoError = false;
+    this.showIdtipoalimentoError = false;
     this.showIdpesoError = false;
     this.showIdplatoError = false;
+    this.showAlimentoError= false;
+    this.showCantidadError= false;
+    this.showcantidad_pesoError= false;
+
+    
   }
   //Para el editar de ingredientes usando modal
 
@@ -264,17 +282,20 @@ export class IngredientesComponent implements OnInit {
     this.tituloForm = 'Editar  Ingredientes';
     this.ingredientesForm.patchValue({
       precio: item.precio,
+      cantidad: item.cantidad,
+      alimento: item.alimento,
+      cantidad_peso: item.cantidad_peso,
       id_plato: item.plato.id,
-      id_alimento: item.alimento.id,
+      id_tipoalimento: item.tipo_alimento.id,
       id_peso: item.peso.id
     });
-    this.selectedOptionalimento = { descripcion: item.alimento.descripcion, id: item.alimento.id };
+    this.selectedOptiontipoalimento = { tipo: item.tipo_alimento.tipo, id: item.tipo_alimento.id };
     this.selectedOptionplato = { descripcion: item.plato.descripcion, id: item.plato.id };
     this.selectedOptionpeso = { descripcion: item.peso.descripcion, id: item.peso.id };
 
     this.getId_peso();
     this.getId_plato();
-    this.getId_alimento();
+    this.getId_Tipoalimento();
     this.editandoIngredientes = true;
     this.idIngredientesEditar = item.id;
 
@@ -282,7 +303,12 @@ export class IngredientesComponent implements OnInit {
     this.showPrecioError = false;
     this.showIdpesoError = false;
     this.showIdplatoError = false;
-    this.showIdalimentoError = false;
+    this.showAlimentoError = false;
+   this.showIdtipoalimentoError= false;
+   this.showCantidadError= false;
+   this.showAlimentoError= false;
+
+   
   }
 
   // Registro de ingredientes...
@@ -292,13 +318,18 @@ export class IngredientesComponent implements OnInit {
       this.showPrecioError = false;
       this.showIdpesoError = false;
       this.showIdplatoError = false;
-      this.showIdalimentoError = false;
-
+      this.showIdtipoalimentoError = false;
+      this.showAlimentoError= false;
+      this.showCantidadError= false;
+      this.showAlimentoError= false;
       const datos = {
         precio: this.ingredientesForm.value.precio,
+        alimento: this.ingredientesForm.value.alimento,
+        cantidad: this.ingredientesForm.value.cantidad,
+        cantidad_peso: this.ingredientesForm.value.cantidad_peso,
         id_peso: this.ingredientesForm.value.id_peso,
         id_plato: this.ingredientesForm.value.id_plato,
-        id_alimento: this.ingredientesForm.value.id_alimento
+        id_tipoalimento: this.ingredientesForm.value.id_tipoalimento
       };
 
       if (!this.editandoIngredientes) {
@@ -333,7 +364,11 @@ export class IngredientesComponent implements OnInit {
       this.showPrecioError = this.ingredientesForm.controls.precio.invalid;
       this.showIdpesoError = this.ingredientesForm.controls.id_peso.invalid;
       this.showIdplatoError = this.ingredientesForm.controls.id_plato.invalid;
-      this.showIdalimentoError = this.ingredientesForm.controls.id_alimento.invalid;
+      this.showIdtipoalimentoError = this.ingredientesForm.controls.id_alimento.invalid;
+      this.showAlimentoError=this .ingredientesForm.controls.descripcion.invalid;
+      this.showCantidadError= this.ingredientesForm.controls.cantidad.invalid;
+      this.showcantidad_pesoError= this.ingredientesForm.controls.cantidad_peso.invalid;
+      
     }
   }
 

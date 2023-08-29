@@ -23,11 +23,22 @@ button1 {
 button2 {
   color: red;
 }
+button3 {
+  color: rgb(33, 127, 2);
+  cursor: pointer; 
+}
 
 .heads {
   background-color: rgb(206, 25, 25);
 }
+.material-icons.toggle_on {
+  color: green; /* Color cuando el botón está activado */
 
+}
+
+.material-icons.toggle_on.inactive {
+  color: #888; /* Cambia a tu color "plomo" o gris cuando el botón está desactivado */
+}
 h5 {
   font-size: larger;
   color: antiquewhite;

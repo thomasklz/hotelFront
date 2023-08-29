@@ -110,6 +110,18 @@ export class ListadoUsuariosComponent implements OnInit {
       icon: 'error',
     });
   }
+
+  // Variable para controlar el estado del botón y el ícono
+  isToggleOn: boolean = false;
+
+  // Función para cambiar el estado y el ícono del botón
+  toggleButtonState() {
+    this.isToggleOn = !this.isToggleOn;
+  }
+
+
+
+  
   //obtener todos los usuarios 
   getAllusuarios() {
     this.UsuarioService.getusuario().subscribe({

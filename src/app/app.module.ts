@@ -15,6 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { LoginComponent } from './login/login.component';
 import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
+import { ReporteComponent } from './reporte/reporte.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { CrearAdministradorComponent } from './crear-administrador/crear-adminis
     CrearUsuarioComponent,
     LoginComponent,
     CrearAdministradorComponent,
+    ReporteComponent,
     
     
     
