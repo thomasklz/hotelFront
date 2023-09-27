@@ -1,84 +1,88 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
 <div class="main-content">
   <div class="container-fluid">
+    <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
+      data-target="#ventanaForm" (click)="nuevoCurso()">
+      AGREGAR +
+    </button>
 
+    <div class="search-container">
+      <label class="label" for="input-datalist">Buscar el nombre del Plato:</label>
+      <div class="search-box">
+        <input type="text" class="form-control" list="list-timezone" id="input-datalist" [(ngModel)]="ingredientId" />
+        <datalist id="list-timezone">
+          <option *ngFor="let ingrediente of ingredientes" [value]="ingrediente.descripcion"></option>
+        </datalist>
+      </div>
+      <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId(); buscarDescripcionporId()">
+        Buscar<i class="fa fa-search fa-stack-1x"></i>
+      </button>
+      
+    </div>
 
     <div class="row">
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
-
       <div class="col-md-12">
-
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/alimentos.png" class="edit" alt=""> Ingredientes</h4>
-
+            <h4 class="card-title disabled">
+              <img src="/assets/img/alimentos.png" class="edit" alt="" />
+              Ingredientes
+            </h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    Plato
-                  </th>
-                  <th>
-                    Cantidad
-                  </th>
-                  <th>
-                   Tipo  Ingrediente
-                  </th>
-                  <th>
-                    Ingrediente
-                  </th>
-                  <th>
-                    Nº Peso
-                  </th>
-                  <th>
-                    Peso
-                  </th>
-                  <th>
-                    Precio
-                  </th>
-
-                  <th>
-                    Acción
-                  </th>
-
+              
+              <ng-container *ngIf="ingredientId">
+                <div *ngIf="ingredientesss.length === 0">
+                  <p>
+                    
+                    
+                  </p>
+                </div>
+              </ng-container>
+              
+              
+              <table class="table"  *ngIf="ingredientesss.length > 0">
+                <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
+                  <th>Plato: {{ item.plato.descripcion }}</th>
                 </thead>
-                <tbody *ngFor="let item of ingredientesss ;let i=index ">
+                <thead class="text-primary">
+                  <th>Nº</th>
+
+                  <th>Ingrediente</th>
+                  <th>Cantidad Persona</th>
+                  <th>Libra/Litro</th>
+                  <th>Opciones de Día</th>
+                  <th>Cantidad Final</th>
+                  <th>Precio</th>
+
+                  <th>Acción</th>
+                </thead>
+                <tbody *ngFor="let item of ingredientesss; let i = index">
                   <tr>
+                    <td>
+                      {{ i + 1 }}
+                    </td>
 
+                    <td>
+                      {{ item.alimento.descripcion }}
+                    </td>
+                    <td>
+                      {{ item.cantidadPersona }}
+                    </td>
+                    <td>
+                      {{ item.cantidadGramo }}
+                    </td>
+                    <td>
+                      {{ item.numDias }}
+                    </td>
+                    <td>
+                      {{ item.cantidadFinal }}
+                    </td>
 
                     <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.plato.descripcion}}
-                    </td>
-                    <td>
-                      {{item.cantidad}}
-                    </td>
-                    <td>
-                      {{item.tipo_alimento.tipo}}
-                    </td>
-                    <td>
-                      {{item.alimento}}
-                    </td>
-                    <td>
-                      {{item.cantidad_peso}}
-                    </td>
-                    <td>
-                      {{item.peso.descripcion}}
-                    </td>
-                    
-                    
-                    <td>
-                      {{item.precio}}
+                      {{ item.precio }}
                     </td>
 
                     <td>
@@ -86,138 +90,135 @@
                         <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
                       </button1>
 
-
-                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      <button2>
+                        <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
                       </button2>
                     </td>
-
                   </tr>
-
                 </tbody>
               </table>
-
-
-
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<div class="modal fade " id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog " role="document">
-    <div class="modal-content d-flex align-items-center ">
-      
-      <div class="heads  x ">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png" alt=""></h5>
+<style>
+  @media (max-width: 768px) {
+    /* Estilos para pantallas pequeñas */
+    #ventanaForm .modal-dialog {
+      top: 50%;
+    }
+  }
+  
+  /* Estilos para pantallas más grandes */
+  @media (min-width: 769px) {
+    #ventanaForm .modal-dialog {
+      top: 45%;
+    }
+  }
+  </style>
+
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm }} <img src="assets/img/comida.png" alt="" />
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
-      
+
       <div class="modal-body modal-with-padding">
         <form [formGroup]="ingredientesForm">
-
-          <div class="form-row ">
-            <div class="form-group col-md-6">
-              <label for="inputState" class="select-gr text-center">Plato</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionsplato">
-                <div class="selected-option" (click)="toggleShowMoreOptionsplato()">
-                  {{ getSelectedOptionLabelplato() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container">
-                  <ng-container *ngFor="let item of platosss">
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionsplato && index >= 7"
-                      (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionsplato" (click)="selectOptionplato(item)"
-                      [value]="item.id">{{ item.descripcion }}</div>
-                    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="inputState" class="select-gr">Cantidad de Plato</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="cantidad">
-              <div *ngIf="showCantidadError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputState" class="select-gr text-center">Tipo de Ingrediente</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionstipoalimento">
-                <div class="selected-option" (click)="toggleShowMoreOptionstipoalimento()">
-                  {{ getSelectedOptionLabeltipoalimento() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container">
-                  <ng-container *ngFor="let item of tipoalimentosss">
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionstipoalimento && index >= 7"
-                      (click)="selectOptiontipoalimento(item)" [value]="item.id">{{ item.tipo }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionstipoalimento" (click)="selectOptiontipoalimento(item)"
-                      [value]="item.id">{{ item.tipo }}</div>
-                    <div *ngIf="showIdtipoalimentoError" class="text-danger">Campo requerido</div>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="inputState" class="select-gr">Ingrediente</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="alimento">
-              <div *ngIf="showAlimentoError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
+            <div class="form-group col-md-8">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label" for="input-datalist-plato">Buscar el nombre del Plato:</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" list="list-timezone-plato" id="input-datalist-plato"
+                    [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
+             
+                  
 
-          <div class="form-row">
-           
-            <div class="form-group col-md-6">
-              <label for="inputState" class="select-gr text-center">Peso</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionspeso">
-                <div class="selected-option" (click)="toggleShowMoreOptionspeso()">
-                  {{ getSelectedOptionLabelpeso() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container">
-                  <ng-container *ngFor="let item of pesosss">
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionspeso && index >= 7"
-                      (click)="selectOptionpeso(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionspeso" (click)="selectOptionpeso(item)"
-                      [value]="item.id">{{ item.descripcion }}</div>
-                    <div *ngIf="showIdpesoError" class="text-danger">Campo requerido</div>
-                  </ng-container>
+                    <datalist id="list-timezone-plato">
+                      <option *ngFor="let item of ingredientes" [value]="item.descripcion"></option>
+                    </datalist>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="form-group col-md-6">
-              <label for="inputState" class="select-gr">Nº Peso</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="cantidad_peso">
-              <div *ngIf="showcantidad_pesoError" class="text-danger">Campo requerido</div>
+            <div class="form-group col-md-8">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label" for="input-datalist-ingredient">Buscar el nombre del Ingrediente</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" list="list-timezone-ingredient" id="input-datalist-ingredient"
+       [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
+
+       
+                    <datalist id="list-timezone-ingredient">
+                      <option *ngFor="let item2 of alimentoss" [value]="item2.descripcion"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
             </div>
-            
           </div>
 
           <div class="form-row">
-            <div class="form-group col-md-12 mx-auto text-center">
-              <label for="inputState" class="select-gr">Precio</label> <br>
-              <input class="example-full-width estilos " type="text" formControlName="precio">
-              <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
+            <div class="form-group col-md-12">
+              <label for="inputState" class="select-gr">Cantidad de Persona</label>
+              <br />
+              <input class="example-full-width estilos" type="text" formControlName="cantidadPersona" />
+              <div *ngIf="showCantidadPersonaError" class="text-danger">
+                Campo requerido
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label for="inputState" class="select-gr">Días</label> <br />
+              <input class="example-full-width estilos" type="text" formControlName="numDias" />
+              <div *ngIf="showDiasError" class="text-danger">
+                Campo requerido
+              </div>
+            </div>
+
+
+
+            <div class="form-group col-md-12">
+
+              <label for="inputState" class="select-gr">Precio</label> <br />
+              <input class="example-full-width estilos" type="text" formControlName="precio" />
+              
+              <div *ngIf="showPrecioError" class="text-danger">
+                Campo requerido
+              </div>
             </div>
           </div>
 
-          <input type="hidden" formControlName="funcion">
+       
+          <input type="hidden" formControlName="funcion" />
         </form>
       </div>
 
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" (click)="closeModalAfterCancel()">
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">
+          Guardar
+        </button>
       </div>
     </div>
   </div>
 </div>
+
 

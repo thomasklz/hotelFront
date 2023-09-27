@@ -25,6 +25,8 @@ export class AlimentosComponent implements OnInit {
   editandoAlimento: boolean = false; // Variable para indicar si se está editando un alimento existente
   idAlimentoEditar: string = ''; // Variable para almacenar el ID del alimento en caso de edición
   showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
+  showCantidadPersonaError = false;
+  showEquivalenteGramoError = false;
   showIdTipoalimentoError = false;//evitando que se muestren los mensajes de campo requerido 
 
   TipoalimentoForm!: FormGroup;
@@ -64,7 +66,9 @@ export class AlimentosComponent implements OnInit {
     this.getAllalimento();
     this.alimentoForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
-      id_tipoalimento: new FormControl("", [Validators.required, Validators.maxLength(1)])
+      equivalenteGramo: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      cantidadPersona: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      
     });
 
 
@@ -160,6 +164,9 @@ export class AlimentosComponent implements OnInit {
 
     // Establecer variables a false al editar
     this.showDescripcionError = false;
+    this.showCantidadPersonaError = false;
+    this.showEquivalenteGramoError= false;
+  
     this.showIdTipoalimentoError = false;
   }
 
@@ -185,10 +192,10 @@ export class AlimentosComponent implements OnInit {
     //obteniendo los campos llenos segun su id
     this.alimentoForm.patchValue({
       descripcion: item.descripcion,
-      id_tipoalimento: item.tipo_alimento.id
+      equivalenteGramo: item.equivalenteGramo,
+      cantidadPersona: item.cantidadPersona
     });
-    this.selectedOption = { tipo: item.tipo_alimento.tipo, id: item.tipo_alimento.id };
-    this.getId_Tipoalimento();
+    
     this.editandoAlimento = true;
     this.idAlimentoEditar = item.id;
 
@@ -202,11 +209,12 @@ export class AlimentosComponent implements OnInit {
   addAlimento() {
     if (this.alimentoForm.valid) {
       this.showDescripcionError = false;
-      this.showIdTipoalimentoError = false;
-
+      this.showCantidadPersonaError = false;
+      this.showEquivalenteGramoError = false;
       const datos = {
         descripcion: this.alimentoForm.value.descripcion,
-        id_tipoalimento: this.alimentoForm.value.id_tipoalimento
+        equivalenteGramo: this.alimentoForm.value.equivalenteGramo,
+        cantidadPersona: this.alimentoForm.value.cantidadPersona,
       };
       //Registrar Alimento ----------------------------
       if (!this.editandoAlimento) {
@@ -216,7 +224,6 @@ export class AlimentosComponent implements OnInit {
             this.showModal();
             this.getAllalimento(); // Actualizar la tabla después de agregar un alimento
             this.alimentoForm.reset(); //Borre los campos del formulario después de un registro exitoso
-            this.alimentoForm.get('id_tipoalimento')?.setValue(''); // Establezca id_tipoalimento en vacío después de un registro exitoso
             this.selectedOption = null; //Restablezca la opción seleccionada a nula, configurando efectivamente el menú desplegable de nuevo en "Seleccionar"
           },
           (error) => {
@@ -241,7 +248,9 @@ export class AlimentosComponent implements OnInit {
       }
     } else {
       this.showDescripcionError = this.alimentoForm.controls.descripcion.invalid;
-      this.showIdTipoalimentoError = this.alimentoForm.controls.id_tipoalimento.invalid;
+      this.showCantidadPersonaError = this.alimentoForm.controls.cantidadPersona.invalid;
+      this.showEquivalenteGramoError = this.alimentoForm.controls.equivalenteGramo.invalid;
+      
     }
   }
 

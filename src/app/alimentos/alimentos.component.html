@@ -7,8 +7,7 @@
       <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
       <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
         data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm2" (click)="nuevaModaltipoAlimento()">TIPO ALIMENTO +</button>
+     
       <div class="col-md-12">
 
         <div class="card">
@@ -20,13 +19,19 @@
               <table class="table">
                 <thead class=" text-primary">
                   <th>
-                    ID
+                    Nº
                   </th>
                   <th>
-                    Tipo Alimento
+                    Descripción
                   </th>
                   <th>
-                    Alimento
+                    Equivalente Gramo
+                  </th>
+                  <th>
+                    Numero Persona
+                  </th>
+                  <th>
+                    Gramo Persona
                   </th>
                   <th>
                     Acción
@@ -38,11 +43,18 @@
                     <td>
                       {{i+1}}
                     </td>
-                    <td>
-                      {{item.tipo_alimento.tipo}}
-                    </td>
+            
                     <td>
                       {{item.descripcion}}
+                    </td>
+                    <td>
+                      {{item.equivalenteGramo}}
+                    </td>
+                    <td>
+                      {{item.cantidadPersona}}
+                    </td>
+                    <td>
+                      {{item.gramoPersona}}
                     </td>
 
                     <td>
@@ -79,33 +91,29 @@
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Tipo Alimento</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
-                <div class="selected-option" (click)="toggleShowMoreOptions()">
-                  {{ getSelectedOptionLabel() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container">
-                  <ng-container *ngFor="let item of tipoalimentosss">
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7"
-                      (click)="selectOption(item)">{{ item.tipo }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{
-                      item.tipo }}</div>
-                    <div *ngIf="showIdTipoalimentoError" class="text-danger">Campo requerido</div>
-                  </ng-container>
-                </div>
-              </div>
-
+              <label for="inputState" class="select-gr">Alimento</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="descripcion">
+              <div *ngIf="showDescripcionError" class="text-danger">Campo requerido</div>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Descripción</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="descripcion">
-              <div *ngIf="showDescripcionError" class="text-danger">Campo requerido</div>
+              <label for="inputState" class="select-gr">Equivalente Gramo	</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="equivalenteGramo">
+              <div *ngIf="showEquivalenteGramoError" class="text-danger">Campo requerido</div>
             </div>
           </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Numero Persona	</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="cantidadPersona">
+              <div *ngIf="showCantidadPersonaError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
+        
+      
           <input type="hidden" formControlName="funcion">
         </form>
       </div>
@@ -117,36 +125,3 @@
   </div>
 </div>
 
-<!-- Modal de Registro de Tipos de Alimentos -->
-<div class="modal fade" id="ventanaForm2" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content d-flex align-items-center">
-      <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{titulo2Form}} <img src="assets/img/comida.png"
-            alt=""></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="TipoalimentoForm">
-
-
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Tipo</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="tipo">
-              <div *ngIf="showTipoError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-
-
-          <input type="hidden" formControlName="funcion">
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addtipoAlimento()" data-dismiss="modal">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>

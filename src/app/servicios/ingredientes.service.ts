@@ -16,6 +16,18 @@ export class IngredientesService {
   getingrediente(){
     return this.http.get<any>('http://localhost:3000/api/mostraringredientes');
   }
+ //obtener ingredientes
+ getingredienteporid( id?){
+  return this.http.get<any>('http://localhost:3000/api/obtenerIngredientesPorPlato/'+id);
+}
+
+
+
+getobtenerDescripcionPlato( id?){
+  return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlato/'+id);
+}
+
+
 
   //Crear y Modificar ingredientes
   guardar(data:any, id?){
@@ -25,6 +37,7 @@ export class IngredientesService {
       return this.http.post<any>('http://localhost:3000/api/crearingredientes', data);
     }
     }
+
 
     //eliminar ingredientes
     deleteingrediente(id:number){
