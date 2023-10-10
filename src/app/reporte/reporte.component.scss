@@ -2,7 +2,6 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: rgb(203, 192, 192); /* Fondo blanco para toda la página */
   }
   
   .header {
@@ -16,8 +15,13 @@ body {
     
   }
 
-  
-  
+  .fondo{
+    background: url('/assets/img/menudesayunoo.jpeg') center center/cover no-repeat;
+
+  }
+  .xx{
+    cursor: pointer;
+  }
   .header-content {
     display: flex;
     align-items: center;

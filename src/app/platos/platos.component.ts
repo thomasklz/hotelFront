@@ -31,6 +31,7 @@ export class PlatosComponent implements OnInit {
 
   showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
   showIdTipomenuError = false;//evitando que se muestren los mensajes de campo requerido 
+  showPrecioError = false;
 
   showMoreOptions: boolean = false;
   selectedOption: any = null;
@@ -69,7 +70,8 @@ export class PlatosComponent implements OnInit {
     this.getAllplato();
     this.menuForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
-      id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)])
+      id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      precio: new FormControl("", [Validators.required, Validators.minLength(1)]),
     });
   }
 
@@ -141,7 +143,7 @@ export class PlatosComponent implements OnInit {
 
   //obtener todos los platos 
   getAllplato() {
-    this.MenuService.gettplato().subscribe({
+    this.MenuService.obtenerplatos().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.platos);
         this.platosss = res.platos;
@@ -165,6 +167,8 @@ export class PlatosComponent implements OnInit {
 
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
+    this.showPrecioError = false;
+
   }
   //Para el editar de plato usando modal
 
@@ -174,7 +178,8 @@ export class PlatosComponent implements OnInit {
     this.tituloForm = 'Editar  Plato';
     this.menuForm.patchValue({
       descripcion: item.descripcion,
-      id_tipomenu: item.tipo_menu.id
+      id_tipomenu: item.tipo_menu.id,
+      precio:item.precio
     });
     this.selectedOption = { tipo: item.tipo_menu.tipo, id: item.tipo_menu.id };
 
@@ -185,6 +190,8 @@ export class PlatosComponent implements OnInit {
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
+    this.showPrecioError = false;
+    
   }
 
 
@@ -196,10 +203,12 @@ export class PlatosComponent implements OnInit {
     if (this.menuForm.valid) {
       this.showDescripcionError = false;
       this.showIdTipomenuError = false;
+      this.showPrecioError = false;
 
       const datos = {
         descripcion: this.menuForm.value.descripcion,
-        id_tipomenu: this.menuForm.value.id_tipomenu
+        id_tipomenu: this.menuForm.value.id_tipomenu,
+        precio:this.menuForm.value.precio
       };
 
       if (!this.editandoPlato) {
@@ -234,6 +243,8 @@ export class PlatosComponent implements OnInit {
     } else {
       this.showDescripcionError = this.menuForm.controls.descripcion.invalid;
       this.showIdTipomenuError = this.menuForm.controls.id_tipomenu.invalid;
+      this.showPrecioError =  this.menuForm.controls.precio.invalid;
+
     }
   }
 

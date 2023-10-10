@@ -25,7 +25,7 @@
                   <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                       <a class="dropdown-item"  routerLink="/configuracionyprivacidad" > <i class="material-icons">settings</i> Cofiguración y privacidad</a>
                       <a class="dropdown-item" routerLink="/ayuda"><i class="material-icons">help</i> Ayuda</a>
-                      <a class="dropdown-item" > <i class="material-icons">exit_to_app</i>  Cerrar sesión</a>
+                      <a class="dropdown-item xx" (click)="showModalcerrar()"> <i class="material-icons">exit_to_app</i>  Cerrar sesión</a>
                       
                   </div>
               </li>
@@ -59,41 +59,42 @@
   </header>
 
   
-  <main  id="report-content">
-    <h2>Reporte Semanal</h2>
-    <label for="fecha"> f</label>
+  <main  id="report-content " class=" ">
+    <label for="fecha"> </label>
    
-    <div class="main-content">
-      <div class="container-fluid">
+    <div class="main-content ">
+      <div class="container-fluid ">
     
     
-        <div class="row">
+        <div class="row ">
          
     
           <div class="col-md-12">
     
             <div class="card">
               <div class="card-header card-header-danger">
-                <h4 class="card-title disabled"> <img src="/assets/img/tarjeta-de-credito.png" class="edit" alt=""> Créditos
+                <h4 class="card-title disabled"> <img src="/assets/img/tarjeta-de-credito.png" class="edit" alt=""> Reporte de: {{usuario}}
                 </h4>
     
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table">
+                  <table class="table ">
                     <thead class=" text-primary">
                       <th>
                         Nº
                       </th>
-                      <th>
-                        Régimen de comida
-                      </th>
+                     
                       <th>
                         Plato
                       </th>
                       <th>
+                        Cantidad
+                      </th>
+                      <th>
                         Precio
                       </th>
+                   
                       <th>
                         Fecha
                       </th>
@@ -103,33 +104,41 @@
     
     
                     </thead>
-                    <tbody >
+                    <tbody *ngFor="let item of creditosss ;let i=index ">
                       <tr>
     
     
                         <td>
-                        l
+                          {{i+1}}
                         </td>
                         <td>
-                          a
+                          {{item.plato.descripcion}}
+                        </td>
+                      
+                        <td>
+                          {{item.cantidad}}
                         </td>
                         <td>
-                         a
+                          {{item.precio}}
                         </td>
                         <td>
-                         s
+                          {{item.fecha}}
                         </td>
                         <td>
-                         w
-                        </td>
-                        <td>
-                       e
+                          {{item.pagado}}
                         </td>
                       
                        
     
                       </tr>
     
+                    </tbody>
+                    <tbody>
+                      <thead>
+                        <th>
+                        <h2> Total a pagar:</h2>   {{ calcularTotal() | currency:'USD':'symbol':'1.2-2'}}
+                        </th>
+                      </thead>
                     </tbody>
                   </table>
     
@@ -148,7 +157,7 @@
 
    
   </main>
-  <button class="btn-download" (click)="generarPDF()">Descargar PDF</button>
+<!--   <button class="btn-download" (click)="generarPDF()">Descargar PDF</button>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -174,4 +183,4 @@
     }
   </script>
 </body>
-
+ -->

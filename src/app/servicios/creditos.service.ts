@@ -19,4 +19,9 @@ export class CreditosService {
       return this.http.post<any>('http://localhost:3000/api/crearcredito', data);
     }
     }
+
+    getReporteUsuario( id:any){
+      return this.http.get<any>('http://localhost:3000/api/obtenerreporteporusuario/'+id);
+    }
+    
 }

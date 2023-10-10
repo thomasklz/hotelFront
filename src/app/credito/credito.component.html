@@ -21,7 +21,7 @@
               <table class="table">
                 <thead class=" text-primary">
                   <th>
-                    ID
+                    Nº
                   </th>
                   <th>
                     Nombres
@@ -121,51 +121,65 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="creditosForm">
-
           <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Plato</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionsplato">
-                <div class="selected-option " (click)="toggleShowMoreOptionsplato()">
-                  {{ getSelectedOptionLabelplato() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container ">
-                  <ng-container *ngFor="let item of platosss">
-                    <!-- Agrega el atributo [value] para almacenar el ID del plato seleccionado -->
-                    <div class="option example-full-width estilos " *ngIf="!showMoreOptionsplato && index >= 7"
-                      (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionsplato"
-                      (click)="selectOptionplato(item)" [value]="item.id">{{ item.descripcion }}</div>
-                    <div *ngIf="showIdplatoError" class="text-danger">Campo requerido</div>
-                  </ng-container>
+
+            <div class="form-group col-md-12">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label select-gr" for="input-datalist-usuario">Buscar cedula de usuario</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control " list="list-timezone-usuario"
+                    [value]="usuarioSeleccionado.usuario" (input)="updateUsuarioId($event)"
+                    formControlName="id_persona" />
+             
+             
+       
+                    <datalist id="list-timezone-usuario">
+                      <option *ngFor="let item2 of personas" [value]="item2.usuario">
+                        {{ item2.usuario }}
+                      </option>
+                    </datalist>
+                    
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
 
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Persona</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptionspersona">
-                <div class="selected-option" (click)="toggleShowMoreOptionspersona()">
-                  {{ getSelectedOptionLabelpersona() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container">
-                  <ng-container *ngFor="let item of personasss">
-                    <!-- Agrega el atributo [value] para almacenar el ID del persona seleccionado -->
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptionspersona && index >= 7"
-                      (click)="selectOptionpersona(item)" [value]="item.id">{{ item.nombre }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptionspersona"
-                      (click)="selectOptionpersona(item)" [value]="item.id">{{ item.nombre }}</div>
-                    <div *ngIf="showPersonaError" class="text-danger">Campo requerido</div>
-                  </ng-container>
+
+            <div class="form-group col-md-11">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label select-gr" for="input-datalist-plato">Buscar el nombre del Plato:</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" list="list-timezone" id="input-datalist"
+                           [value]="platoSeleccionados.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
+            
+                    <datalist id="list-timezone">
+                      <option *ngFor="let ingrediente of ingredientes" [value]="ingrediente.descripcion">
+                        {{ ingrediente.descripcion }}
+                      </option>
+                    </datalist>
+                  </div>
                 </div>
               </div>
             </div>
+            
+         
+         
+
+
+       
+
+
+
+
           </div>
+
+
+
+
+
 
 
           <div class="form-row">
@@ -183,19 +197,20 @@
               <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
             </div>
           </div>
+          
+          
+        
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Fecha</label> <br>
-              <input class="example-full-width estilos" type="date" formControlName="fecha">
-              <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Pagado</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="pagado">
+              <label for="inputState" class="select-gr">Cancelar</label> <br>
+              <!-- Elimina el input anterior y utiliza radio buttons -->
+              <input type="radio" id="si" name="habilitado" formControlName="pagado" value="1">
+              <label for="si">Si</label>
+              <br>
+              <input type="radio" id="no" name="habilitado" formControlName="pagado" value="0">
+              <label for="no">No</label>
+          
               <div *ngIf="showPagadoError" class="text-danger">Campo requerido</div>
             </div>
           </div>

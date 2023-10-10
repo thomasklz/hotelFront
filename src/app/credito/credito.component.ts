@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 import { MenuService } from 'app/servicios/menu.service';
 import { CreditosService } from 'app/servicios/creditos.service';
 import { UsuarioService } from '../servicios/usuario.service';
+import { NgZone } from '@angular/core';
+import {  ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-credito',
@@ -17,14 +19,22 @@ import { UsuarioService } from '../servicios/usuario.service';
   styleUrls: ['./credito.component.scss']
 })
 export class CreditoComponent implements OnInit {
+  @ViewChild('inputDatalist') inputDatalist: ElementRef;
 
   dataSource = new MatTableDataSource<any>();
   id: string = '';
   id_persona: string = '';
   id_plato: string = '';
   personasss: any[] = [];
+  personas: any[] = [];
+
   platosss: any[] = [];
   creditosss: any[] = [];
+  ingredientes: any[] = [];
+  ingredientId: string = "";
+  ingredientedescripcionsss: any[] = [];
+
+
   tituloForm;
   creditosForm!: FormGroup;
   editandoCreditos: boolean = false; // Variable para indicar si se está editando un alimento existente
@@ -42,6 +52,8 @@ export class CreditoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private CreditosService: CreditosService,
     private UsuarioService: UsuarioService,
+    private IngredientesService:IngredientesService,
+    private zone: NgZone
   ) {
     this.getAllplatos();
     this.getAllpersonas();
@@ -50,16 +62,36 @@ export class CreditoComponent implements OnInit {
 
   //cargar los datos de la seleccion de la tabla  en la modal
   ngOnInit() {
+    console.log('Valor de ingredientId:', this.ingredientId);
+
     this.getAllcreditos();
+    this.getAlldescripcionplatos();
+    this.getAllpersonascedula();
+
+    
     this.creditosForm = this.formBuilder.group({
       precio: new FormControl("", [Validators.required, Validators.minLength(1)]),
       id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       id_persona: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       pagado: new FormControl("", [Validators.required, Validators.minLength(1)]),
-      fecha: new FormControl("", [Validators.required, Validators.minLength(1)]),
+     
       cantidad: new FormControl("", [Validators.required, Validators.minLength(1)]),
     });
+
+    this.inputDatalist.nativeElement.addEventListener('change', () => {
+      this.onDescriptionSelected();
+    });
   }
+
+  // ... (resto del código)
+
+onDescriptionSelected() {
+  // Llamada a la función buscarPrecioPorDescripcion al seleccionar una descripción
+  this.buscarPrecioPorDescripcion();
+}
+
+// ... (resto del código)
+
   showMoreOptionsplato: boolean = false;
   showMoreOptionspersona: boolean = false;
 
@@ -164,12 +196,43 @@ export class CreditoComponent implements OnInit {
     });
   }
 
+  getAlldescripcionplatos() {
+    this.MenuService.gettplato().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.platos);
+        this.ingredientes = res.platos;
+        
+      },
+      error: (err) => {
+        //alert("Error en la carga de datos");
+      },
+    });
+  }
+
+
+
 
   getAllpersonas() {
-    this.UsuarioService.getpersona().subscribe({
+    this.UsuarioService.getpersonacedula().subscribe({
       next: (res) => {
-        this.dataSource = new MatTableDataSource(res.personas);
-        this.personasss = res.personas;
+        this.dataSource = new MatTableDataSource(res.usuarios);
+        this.personasss = res.usuarios;
+      },
+      error: (err) => {
+        // alert("Error en la carga de datos");
+      },
+    });
+  }
+
+
+
+  
+
+  getAllpersonascedula() {
+    this.UsuarioService.getpersonacedula().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.usuarios);
+        this.personas = res.usuarios;
       },
       error: (err) => {
         // alert("Error en la carga de datos");
@@ -223,18 +286,30 @@ export class CreditoComponent implements OnInit {
       precio: item.precio,
       cantidad: item.cantidad,
       pagado: item.pagado,
-      fecha: item.fecha,
       id_plato: item.plato.id,
       id_persona: item.persona.id
     });
+  
+    // Configurar el valor del radio button
+    const radioValue = +item.pagado === 1 ? '1' : '0';
+    console.log('Radio Value:', radioValue);
+    this.creditosForm.get('pagado')?.setValue(radioValue);
+  
+    // Configurar la descripción del plato seleccionado
+    this.platoSeleccionados = {
+      id: item.plato.id,
+      descripcion: item.plato.descripcion
+    };
+  
     this.selectedOptionpersona = { nombre: item.persona.nombre, id: item.persona.id };
     this.selectedOptionplato = { descripcion: item.plato.descripcion, id: item.plato.id };
-
+  
+    // Actualizar las listas según sea necesario (puede requerir llamadas a servicios)
     this.getId_plato();
     this.getId_persona();
     this.editandoCreditos = true;
     this.idCreditosEditar = item.id;
-
+  
     // Establecer variables a false al editar
     this.showPrecioError = false;
     this.showIdplatoError = false;
@@ -243,6 +318,102 @@ export class CreditoComponent implements OnInit {
     this.showCantidadError = false;
     this.showFechaError = false;
   }
+  
+
+
+// ... (resto del código)
+
+
+
+updateUsuarioId(event: any) {
+  const usuarioInput = event.target.value;
+  console.log('Usuario Input:', usuarioInput);
+
+  const usuarioSeleccionado = this.personas.find(
+    (usuario) => usuario.usuario === usuarioInput
+  );
+  console.log('Usuario Seleccionado:', usuarioSeleccionado);
+
+  this.usuarioSeleccionado = usuarioSeleccionado || {
+    id: null,
+    usuario: usuarioInput,
+  };
+  this.creditosForm.get("id_persona")?.setValue(this.usuarioSeleccionado.id);
+}
+
+updatePlatoId(event: any) {
+  const descripcion = event.target.value;
+  const platoSeleccionado = this.ingredientes.find(
+    (plato) => plato.descripcion === descripcion
+  );
+  this.platoSeleccionados = platoSeleccionado || {
+    id: null,
+    descripcion: descripcion,
+  };
+  this.creditosForm.get("id_plato")?.setValue(this.platoSeleccionados.id);
+
+  // Actualiza ingredientId con la descripción del plato seleccionado
+  this.ingredientId = this.platoSeleccionados.descripcion || "";
+
+  // Llama a buscarPrecioPorDescripcion directamente al seleccionar la descripción
+  this.buscarPrecioPorDescripcion();
+}
+
+
+usuarioSeleccionado: { id: number | null; usuario: string } = {
+  id: null,
+  usuario: "",
+};
+
+
+
+// ... (resto del código)
+platoSeleccionados: { id: number | null; descripcion: string } = {
+  id: null,
+  descripcion: "",
+};
+
+buscarPrecioPorDescripcion() {
+  // Verifica si ingredientId tiene un valor
+  if (this.ingredientId) {
+    // Lógica para buscar el precio por descripción
+    this.IngredientesService.getobtenerDescripcionPlatoPrecio(this.ingredientId).subscribe(
+      (result: any) => {
+        console.log('Respuesta del servicio:', result);
+        const plato = result.platos[0].plato; // Accedemos a la propiedad 'plato' del primer elemento del arreglo
+        if (plato && plato.precio !== undefined) {
+          // Actualiza el valor del precio en el formulario
+          this.creditosForm.get('precio')?.setValue(plato.precio);
+        } else {
+          // Maneja el caso cuando no se encuentra el plato o el precio no está definido
+          console.error('Plato no encontrado o precio no definido');
+        }
+      },
+      (error) => {
+        console.error('Error al obtener precio del plato', error);
+      }
+    );
+  } else {
+    console.error('ingredientId no tiene un valor');
+  }
+}
+
+
+onDescriptionInput() {
+  // Se ejecutará cada vez que el usuario escriba o seleccione un valor
+  console.log('Valor seleccionado o escrito:', this.ingredientId);
+  // Puedes realizar la lógica necesaria aquí
+  this.buscarPrecioPorDescripcion();
+}
+
+
+onDescriptionChange(newValue: string) {
+  console.log('Nuevo valor seleccionado o escrito:', newValue);
+  this.buscarPrecioPorDescripcion();
+}
+
+
+
   // Registro de Credito...
 
   addCredito() {
@@ -261,6 +432,8 @@ export class CreditoComponent implements OnInit {
         fecha: this.creditosForm.value.fecha,
         id_plato: this.creditosForm.value.id_plato,
         id_persona: this.creditosForm.value.id_persona
+
+        
       };
 
       if (!this.editandoCreditos) {

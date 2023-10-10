@@ -61,7 +61,7 @@ export class UserProfileComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       telefono: new FormControl('', [Validators.required, Validators.minLength(10)]),
       foto: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      usuario: new FormControl('', [Validators.required, Validators.minLength(10)]),
       contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
     });
   }

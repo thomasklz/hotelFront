@@ -12,7 +12,7 @@
 
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/alimentos.png" class="edit" alt=""> Alimentos</h4>
+            <h4 class="card-title disabled"> <img src="/assets/img/alimentos.png" class="edit" alt=""> Productos</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -22,16 +22,16 @@
                     Nº
                   </th>
                   <th>
-                    Descripción
+                    Producto 
                   </th>
                   <th>
-                    Equivalente Gramo
+                    Equivalente Gramo: 
                   </th>
                   <th>
-                    Numero Persona
+                    Cantidad de Persona
                   </th>
                   <th>
-                    Gramo Persona
+                    Gramo por Persona
                   </th>
                   <th>
                     Acción
@@ -91,7 +91,7 @@
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Alimento</label> <br>
+              <label for="inputState" class="select-gr">Producto</label> <br>
               <input class="example-full-width estilos" type="text" formControlName="descripcion">
               <div *ngIf="showDescripcionError" class="text-danger">Campo requerido</div>
             </div>
@@ -99,15 +99,15 @@
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Equivalente Gramo	</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="equivalenteGramo">
+              <label for="inputState" class="select-gr">Equivalente Gramo <h6>* 1 libra equivale a 453.592 gramos /LT</h6>	</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="equivalenteGramo" >
               <div *ngIf="showEquivalenteGramoError" class="text-danger">Campo requerido</div>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Numero Persona	</label> <br>
+              <label for="inputState" class="select-gr">Cantidad de Persona	</label> <br>
               <input class="example-full-width estilos" type="text" formControlName="cantidadPersona">
               <div *ngIf="showCantidadPersonaError" class="text-danger">Campo requerido</div>
             </div>

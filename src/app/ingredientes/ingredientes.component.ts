@@ -260,6 +260,7 @@ export class IngredientesComponent implements OnInit {
     });
   }
   
+
   //Modal de No agg error de Notificacion
 
   showModalError() {

@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MenuService } from 'app/servicios/menu.service';
+
 import swal from 'sweetalert';
 import swal2 from 'sweetalert';
 
@@ -78,7 +79,6 @@ export class MenuComponent implements OnInit {
 
       id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       cantidad: new FormControl("", [Validators.required, Validators.minLength(1)]),
-      fecha: new FormControl("", [Validators.required, Validators.minLength(1)]),
       habilitado: new FormControl("", [Validators.required, Validators.minLength(1)]),
 
     });
@@ -122,20 +122,46 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  //Modal de Eliminar Notificacion
-
-
-  //Modal de  error de Modificacion Notificacion
-
-
-  //registrar el id tipo menu el nuevo que se selecciona y enviarlo a la data
-  // getId_Tipomenu() {
-  //   this.http
-  //     .get("http://localhost:3000/api/creartipo_menu?=" + this.id_tipomenu)
-  //     .subscribe((result: any) => {
-  //       this.tipomenusss = result.menus;
-  //     });
-  // }
+  platoSeleccionado: { id: number | null; descripcion: string } = {
+    id: null,
+    descripcion: "",
+  };
+  
+/*   updatePlatoId(event: any) {
+    const descripcion = event.target.value;
+    const platoSeleccionado = this.platosss.find(
+      (plato) => plato.descripcion === descripcion
+    );
+    this.platoSeleccionado = platoSeleccionado || {
+      id: null,
+      descripcion: descripcion,
+    };
+    this.menuForm.get("id_plato")?.setValue(this.platoSeleccionado.id);
+  } */
+  updatePlatoId(event: any) {
+    const descripcion = event.target.value;
+    const platoSeleccionado = this.platosss.find(
+      (plato) => plato.descripcion === descripcion
+    );
+  
+    if (platoSeleccionado) {
+      this.platoSeleccionado = {
+        id: null,
+        descripcion: platoSeleccionado.descripcion,
+      };
+      this.menuForm.get("id_plato")?.setValue(platoSeleccionado.id);
+    } else {
+      this.platoSeleccionado = {
+        id: null,
+        descripcion: descripcion,
+      };
+      this.menuForm.get("id_plato")?.setValue(null);
+    }
+  }
+  
+  
+  
+  
 
  //registrar el id plato el nuevo que se selecciona y enviarlo a la data
  getId_plato() {
@@ -158,6 +184,8 @@ export class MenuComponent implements OnInit {
       },
     });
   }
+
+
 
 
 
@@ -208,29 +236,62 @@ export class MenuComponent implements OnInit {
 
   // ...
 
-  editarMenu(item: any) {
-    this.tituloForm = 'Editar  Menú';
+/*   editarMenu(item: any) {
+    this.tituloForm = 'Editar Menú';
     this.menuForm.patchValue({
       id_plato: item.plato.id,
       cantidad: item.cantidad,
-      fecha: item.fecha,
-      habilitado: item.habilitado
-
+      habilitado: item.habilitado  // Esto establecerá el valor correcto en el formulario
     });
-
+  
+    // Selecciona automáticamente el radio button correspondiente
+    const radioValue = +item.habilitado === 1 ? '1' : '0';
+    console.log('Radio Value:', radioValue);
+    this.menuForm.get('habilitado')?.setValue(radioValue);
+  
+    console.log('Formulario después de la configuración:', this.menuForm.value);
+  
     this.selectedOption = { descripcion: item.plato.descripcion, id: item.plato.id };
     this.getId_plato();
     this.editandoPlato = true;
     this.idPlatoEditar = item.id;
-
+  
     // Establecer variables a false al editar
     this.showId_cantidadplatoError = false;
     this.showId_tipomenuError = false;
     this.showFechaError = false;
     this.showHabilitadoError = false;
-
-
   }
+   */
+  
+  editarMenu(item: any) {
+    this.tituloForm = 'Editar Menú';
+    this.menuForm.patchValue({
+      id_plato: item.plato.id,
+      cantidad: item.cantidad,
+      habilitado: item.habilitado
+    });
+  
+    // Selecciona automáticamente el radio button correspondiente
+    const radioValue = +item.habilitado === 1 ? '1' : '0';
+    this.menuForm.get('habilitado')?.setValue(radioValue);
+  
+    // Actualiza la descripción del plato seleccionado
+    this.platoSeleccionado = {
+      id: item.plato.id,
+      descripcion: item.plato.descripcion
+    };
+  
+    this.editandoPlato = true;
+    this.idPlatoEditar = item.id;
+  
+    // Establecer variables a false al editar
+    this.showId_cantidadplatoError = false;
+    this.showId_tipomenuError = false;
+    this.showFechaError = false;
+    this.showHabilitadoError = false;
+  }
+  
 
 
 
@@ -248,7 +309,6 @@ export class MenuComponent implements OnInit {
 
         id_plato: this.menuForm.value.id_plato,
         cantidad: this.menuForm.value.cantidad,
-        fecha: this.menuForm.value.fecha,
         habilitado: this.menuForm.value.habilitado
 
 

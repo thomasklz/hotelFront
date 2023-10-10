@@ -11,7 +11,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
-
+import {MatRadioModule} from '@angular/material/radio';
 
 
 
@@ -24,7 +24,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
     MatTableModule,
     MatInputModule,
     MatAutocompleteModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    MatRadioModule
 
 
 

@@ -30,7 +30,9 @@
                   <th>
                     Plato
                   </th>
-
+                  <th>
+                    Precio
+                  </th>
                   <th>
                     Acción
                   </th>
@@ -47,7 +49,9 @@
                     <td>
                       {{item.descripcion}}
                     </td>
-
+                    <td>
+                      {{item.precio}}
+                    </td>
                     <td>
                       <button1 color="primary" (click)="editarPlato(item)">
                         <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
@@ -116,10 +120,13 @@
             </div>
           </div>
 
-          <!-- ... -->
-
-
-          <!-- ... -->
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Precio</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="precio">
+              <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
 
           <input type="hidden" formControlName="funcion">
         </form>

@@ -28,7 +28,7 @@
 
     <input type="submit" name="Login" value="Ingresar" class="login-submit" (click)="login()" />
 
-    <div class="register-link" *ngIf="!hayUsuarios">
+    <div class="register-link" *ngIf="!hayUsuarios" style="margin-top: 20px; margin-bottom: 20px;"> 
       ¿No tienes cuenta? <a (click)="crearUsuario()">Regístrate</a>
     </div>
   </form>

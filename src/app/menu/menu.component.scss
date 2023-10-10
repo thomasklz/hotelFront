@@ -206,6 +206,11 @@ header {
   /* Add this to create space for the arrow */
 }
 
+.form-control {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
 .down-arrow {
   width: 12px;
   /* Adjust the width as needed */
@@ -221,3 +226,5 @@ header {
   background-color: #c0c0c0;
   /* Cambia el color a tu elección */
 }
+
+

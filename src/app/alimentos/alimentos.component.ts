@@ -153,7 +153,7 @@ export class AlimentosComponent implements OnInit {
 
   //Para el registro de alimento usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de Alimento'; // cambio de nombre en el encabezado
+    this.tituloForm = 'Registro de Producto'; // cambio de nombre en el encabezado
     this.alimentoForm.reset();
     this.editandoAlimento = false;
     this.idAlimentoEditar = '';
@@ -188,7 +188,7 @@ export class AlimentosComponent implements OnInit {
 
   //Para el editar de plato usando modal
   editarAlimento(item: any) {
-    this.tituloForm = 'Editar  Alimento'; //editando encabezado
+    this.tituloForm = 'Editar  Producto'; //editando encabezado
     //obteniendo los campos llenos segun su id
     this.alimentoForm.patchValue({
       descripcion: item.descripcion,
@@ -301,7 +301,7 @@ export class AlimentosComponent implements OnInit {
   // ...
   showModalEliminar(id: number) {
     Swal.fire({
-      title: '¿Estás seguro que deseas eliminar el alimento?',
+      title: '¿Estás seguro que deseas eliminar el producto?',
       icon: 'warning',
       showCancelButton: true,
 
@@ -320,7 +320,7 @@ export class AlimentosComponent implements OnInit {
 
   showModalErrorEliminar() {
     Swal.fire({
-      title: 'Error al eliminar el alimento',
+      title: 'Error al eliminar el producto',
       icon: 'error',
     });
   }

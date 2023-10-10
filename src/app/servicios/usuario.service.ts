@@ -32,6 +32,8 @@ putusuario(data:any, id:any){
   return this.http.put<any>('http://localhost:3000/api/editardatos/'+id,data);
 }
 
+
+
 deleteusuario(id:number){
   return this.http.delete<any>('http://localhost:3000/api/eliminarusuario/'+id);
   
@@ -49,6 +51,10 @@ postpersona(data:any){
 
 getpersona(){
   return this.http.get<any>('http://localhost:3000/api/mostrarpersona/');
+}
+
+getpersonacedula(){
+  return this.http.get<any>('http://localhost:3000/api/obtenerusuariocedula/');
 }
 
 

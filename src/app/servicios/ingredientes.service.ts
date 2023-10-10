@@ -27,7 +27,9 @@ getobtenerDescripcionPlato( id?){
   return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlato/'+id);
 }
 
-
+getobtenerDescripcionPlatoPrecio( id?){
+  return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlatoyprecio/'+id);
+}
 
   //Crear y Modificar ingredientes
   guardar(data:any, id?){

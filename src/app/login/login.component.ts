@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
     this.getAllusuarios(); // Obtener usuarios al iniciar el componente
   }
 
-  login() {
+  /* login() {
     if (this.loginForm.valid) {
       this.UsuarioService.iniciarSesion(this.loginForm.value).subscribe({
         next: (res) => {
@@ -87,8 +87,44 @@ export class LoginComponent implements OnInit {
       this.showModalErrorr();
     }
   }
+ */
 
 
+  login() {
+    if (this.loginForm.valid) {
+      this.UsuarioService.iniciarSesion(this.loginForm.value).subscribe({
+        next: (res) => {
+          // Guardar datos en el almacenamiento local
+          localStorage.setItem('idPersona', res.idPersona);
+          localStorage.setItem('idUsuario', res.idUsuario);
+          localStorage.setItem('usuario', res.usuario);
+          localStorage.setItem('contrasena', res.contrasena);
+          localStorage.setItem('id_tipousuario', res.id_tipousuario);
+  
+          // Mostrar el modal
+          this.showModal();
+  
+          // Reiniciar el formulario
+          this.loginForm.reset();
+  
+          // Redireccionar según el tipo de usuario
+          if (res.id_tipousuario === 1) {
+            // Redireccionar a las rutas específicas para id_tipousuario igual a 1
+            this.router.navigate(['/dashboard']);
+          } else {
+            // Redireccionar a las rutas generales para otros tipos de usuarios
+            this.router.navigate(['/reporte']);
+          }
+        },
+        error: (error) => {
+          this.showModalError();
+        }
+      });
+    } else {
+      this.showModalErrorr();
+    }
+  }
+  
   crearUsuario() {
     this.router.navigate(['/crearAdministrador']);
   }

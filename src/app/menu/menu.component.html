@@ -30,9 +30,7 @@
                   <th>
                     Cantidad de Plato
                   </th>
-                  <th>
-                    Fecha
-                  </th>
+                 
                   <th>
                     Habilitado
                   </th>
@@ -52,9 +50,7 @@
                     <td>
                       {{item.cantidad}}
                     </td>
-                    <td>
-                      {{item.fecha}}
-                    </td>
+                  
                     <td>
                       {{item.habilitado}}
                     </td>
@@ -98,26 +94,31 @@
         <form [formGroup]="menuForm">
 
           <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Plato</label> <br>
-              <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
-                <div class="selected-option" (click)="toggleShowMoreOptions()">
-                  {{ getSelectedOptionLabel() }}
-                  <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
-                </div>
-                <div class="options-container">
-                  <ng-container *ngFor="let item of platosss">
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7"
-                      (click)="selectOption(item)">{{ item.descripcion }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{
-                      item.descripcion }}</div>
-                    <div *ngIf="showId_tipomenuError" class="text-danger">Campo requerido</div>
-                  </ng-container>
+            <div class="form-group col-md-11">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label select-gr" for="input-datalist-plato">Buscar el nombre del Plato:</label>
+                  <div class="search-box">
+                    <input
+                      type="text"
+                      class="example-full-width estilos"
+                      list="list-timezone-plato"
+                      id="input-datalist-plato"
+                      [value]="platoSeleccionado.descripcion"
+                      (input)="updatePlatoId($event)"
+                      formControlName="id_plato"
+                      readonly
+                      aria-readonly="true"
+                    />
+            
+                    <datalist id="list-timezone-plato">
+                      <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
+                    </datalist>
+                  </div>
                 </div>
               </div>
-
-
             </div>
+            
           </div>
 
           
@@ -129,21 +130,26 @@
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Habilitado</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="habilitado">
-              <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
+         <!-- ... (otras partes de tu código HTML) ... -->
 
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Fecha</label> <br>
-              <input class="example-full-width estilos" type="date" formControlName="fecha">
-              <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="inputState" class="select-gr">Habilitado</label> <br>
+    <!-- Elimina el input anterior y utiliza radio buttons -->
+    <input type="radio" id="si" name="habilitado" formControlName="habilitado" value="1">
+    <label for="si">Si</label>
+    <br>
+    <input type="radio" id="no" name="habilitado" formControlName="habilitado" value="0">
+    <label for="no">No</label>
+
+    <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
+  </div>
+</div>
+
+<!-- ... (otras partes de tu código HTML) ... -->
+
+
+ 
 
 
 
