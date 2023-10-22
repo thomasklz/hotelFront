@@ -19,16 +19,18 @@ export class LoginComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   usuariosss: any[] = [];
   hayUsuarios: boolean = false;
-
+  showPassword: boolean = false;
   constructor(
     private UsuarioService: UsuarioService,
     private router: Router,
     private formBuilder: FormBuilder,
     private http: HttpClient
   ) { }
-
+ 
   title = 'sweetAlert';
-
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
   showModal() {
     swal2({
       title: 'Inicio de sesión exitoso',

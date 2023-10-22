@@ -12,7 +12,7 @@
 
       <div class="col-md-12">
 
-        <div class="card">
+        <div class="card text-center">
           <div class="card-header card-header-danger">
             <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Platos</h4>
 
@@ -22,10 +22,10 @@
               <table class="table">
                 <thead class=" text-primary">
                   <th>
-                    ID
+                    N°
                   </th>
                   <th>
-                    Tipo Menú
+                    Tipo menú
                   </th>
                   <th>
                     Plato
@@ -34,42 +34,41 @@
                     Precio
                   </th>
                   <th>
-                    Acción
+                    Acciones
                   </th>
 
                 </thead>
-                <tbody *ngFor="let item of platosss ;let i=index ">
+                <tbody *ngFor="let item of pagedMenus; let i=index">
                   <tr>
-                    <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.tipo_menu.tipo}}
-                    </td>
-                    <td>
-                      {{item.descripcion}}
-                    </td>
-                    <td>
-                      {{item.precio}}
-                    </td>
+                    <td>{{ startIndex + i + 1 }}</td>
+                    <td>{{ item.tipo_menu.tipo }}</td>
+                    <td>{{ item.descripcion }}</td>
+                    <td>{{ item.precio }}</td>
                     <td>
                       <button1 color="primary" (click)="editarPlato(item)">
                         <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
                       </button1>
-
-
-                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      <button2>
+                        <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
                       </button2>
                     </td>
-
                   </tr>
-
                 </tbody>
+                
               </table>
 
 
-
             </div>
+       
+          <!-- Contenedor para centrar la paginación -->
+<div class="pagination-containerrrr">
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+    <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+  </div>
+</div>
           </div>
         </div>
       </div>
@@ -92,7 +91,7 @@
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Tipo Menú</label> <br>
+              <label for="inputState" class="select-gr text-center">Tipo menú</label> <br>
               <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
                 <div class="selected-option" (click)="toggleShowMoreOptions()">
                   {{ getSelectedOptionLabel() }}
@@ -125,15 +124,20 @@
               <label for="inputState" class="select-gr">Precio</label> <br>
               <input class="example-full-width estilos" type="text" formControlName="precio">
               <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
+              <div *ngIf="menuForm.get('precio')?.hasError('pattern')" class="text-danger">  El campo de precio solo permite números y hasta dos decimales, y se permite únicamente el uso del punto como separador decimal.
+              </div>
             </div>
           </div>
+          
 
           <input type="hidden" formControlName="funcion">
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">
+          {{ editandoPlato ? 'Modificar' : 'Registrar' }}
+        </button>
       </div>
     </div>
   </div>

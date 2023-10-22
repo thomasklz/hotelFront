@@ -22,6 +22,7 @@ import { CreditoComponent } from 'app/credito/credito.component';
 import { TipoalimentosComponent } from 'app/tipoalimentos/tipoalimentos.component';
 import { PesosComponent } from 'app/pesos/pesos.component';
 import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
+import { ProductosplatoComponent } from 'app/productosplato/productosplato.component';
 
 export const AdminLayoutRoutes: Routes = [
    
@@ -49,7 +50,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'tipoalimentos',        component: TipoalimentosComponent },
     { path: 'pesos',        component: PesosComponent },
     { path: 'cantidadplatos',        component: CantidadplatosComponent },
-    
+    { path: 'productosplato',        component: ProductosplatoComponent },
+
     
     
     

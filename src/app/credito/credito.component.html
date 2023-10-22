@@ -49,7 +49,7 @@
                   </th>
 
                   <th>
-                    Acción
+                    Acciones
                   </th>
 
                 </thead>
@@ -126,7 +126,7 @@
             <div class="form-group col-md-12">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label select-gr" for="input-datalist-usuario">Buscar cedula de usuario</label>
+                  <label class="label select-gr" for="input-datalist-usuario">Buscar cédula de usuario</label>
                   <div class="search-box">
                     <input type="text" class="form-control " list="list-timezone-usuario"
                     [value]="usuarioSeleccionado.usuario" (input)="updateUsuarioId($event)"
@@ -145,12 +145,14 @@
               </div>
             </div>
 
+         
+
 
 
             <div class="form-group col-md-11">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label select-gr" for="input-datalist-plato">Buscar el nombre del Plato:</label>
+                  <label class="label select-gr" for="input-datalist-plato">Buscar el nombre del plato:</label>
                   <div class="search-box">
                     <input type="text" class="form-control" list="list-timezone" id="input-datalist"
                            [value]="platoSeleccionados.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
@@ -185,7 +187,7 @@
           <div class="form-row">
             <div class="form-group col-md-8">
               <label for="inputState" class="select-gr">Cantidad</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="cantidad">
+              <input class="example-full-width estilos" type="number" formControlName="cantidad">
               <div *ngIf="showCantidadError" class="text-danger">Campo requerido</div>
             </div>
           </div>
@@ -200,26 +202,33 @@
           
           
         
-
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Cancelar</label> <br>
-              <!-- Elimina el input anterior y utiliza radio buttons -->
-              <input type="radio" id="si" name="habilitado" formControlName="pagado" value="1">
-              <label for="si">Si</label>
-              <br>
-              <input type="radio" id="no" name="habilitado" formControlName="pagado" value="0">
-              <label for="no">No</label>
+              <!-- Only show the label and radio buttons when in "edit" mode -->
+              <ng-container *ngIf="editandoCreditos">
+                <label for="inputState" class="select-gr">Cancelar</label> <br>
+                <!-- Elimina el input anterior y utiliza radio buttons -->
+                <input type="radio" id="si" name="habilitado" formControlName="pagado" value="1">
+                <label for="si">Si</label>
+                <br>
+                <input type="radio" id="no" name="habilitado" formControlName="pagado" value="0">
+                <label for="no">No</label>
+              </ng-container>
           
               <div *ngIf="showPagadoError" class="text-danger">Campo requerido</div>
             </div>
           </div>
+          
           <input type="hidden" formControlName="funcion">
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addCredito()" data-dismiss="modal">Guardar</button>
+       
+
+        <button type="button" class="btn btn-danger" (click)="addCredito()" data-dismiss="modal">
+          {{ editandoCreditos ? 'Modificar' : 'Registrar' }}
+        </button>
       </div>
     </div>
   </div>

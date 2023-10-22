@@ -17,12 +17,16 @@ export class CrearAdministradorComponent implements OnInit {
   submitted = false;
   dataSource = new MatTableDataSource<any>();
   usuariosss: any[] = [];
+  showPassword: boolean = false;
+
   constructor(private UsuarioService: UsuarioService, private router: Router, private formBuilder: FormBuilder, private http: HttpClient) {
 
 
   }
   title = 'sweetAlert';
-
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
   //Mensaje de alerta de Crear-------
   showModalcrear() {
     swal2({

@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MenuService } from 'app/servicios/menu.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 import swal from 'sweetalert';
 import swal2 from 'sweetalert';
@@ -38,7 +39,8 @@ export class MenuComponent implements OnInit {
   showId_tipomenuError = false;//evitando que se muestren los mensajes de campo requerido
   showFechaError = false; //evitando que se muestren los mensajes de campo requerido 
   showHabilitadoError = false;//evitando que se muestren los mensajes de campo requerido 
-
+  showDiasError= false;
+   showPrecioError= false;
   showMoreOptions: boolean = false;
   selectedOption: any = null;
   toggleShowMoreOptions() {
@@ -63,7 +65,9 @@ export class MenuComponent implements OnInit {
     private http: HttpClient,
     private MenuService: MenuService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef  // Inyecta ChangeDetectorRef
+
   ) {
     this.getAllplatos();
     this.getAllmenus();
@@ -75,15 +79,69 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.getAllmenus();
+  this.loadPageData();
     this.menuForm = this.formBuilder.group({
 
       id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      cantidad: new FormControl("", [Validators.required, Validators.minLength(1)]),
+     
       habilitado: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      fecha: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      
+      cantidad: new FormControl("", [
+        Validators.required,
+        Validators.pattern(/^[0-9]+$/), // Acepta solo números
+        Validators.minLength(1),
+      ]),
+      numDias: ['', Validators.required]
+    });
 
+
+    this.menuForm.get('cantidad')?.valueChanges.subscribe(() => {
+      this.showId_cantidadplatoError = this.menuForm.get('cantidad')?.invalid;
     });
   }
 
+
+  
+  pageSize = 10;  // Tamaño de la página
+  currentPage = 1;  // Página actual
+  totalItems = 0;  // Total de elementos
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.pageSize;
+  }
+
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.pageSize - 1, this.totalItems - 1);
+  }
+
+  get pagedMenus(): any[] {
+    return this.menusss.slice(this.startIndex, this.endIndex + 1);
+  }
+
+  // ... otras funciones del componente
+
+  loadPageData() {
+    // Lógica para cargar datos de la página actual (no es necesario pasar parámetros a la API)
+    this.MenuService.gettMenu().subscribe({
+      next: (res) => {
+        this.menusss = res.menu;
+        this.totalItems = res.menu.length;  // Actualizar el total de elementos
+      },
+      error: (err) => {
+        console.error(err);
+        // Manejo de errores si la llamada a la API falla
+      },
+    });
+  }
+
+  onPageChange(event: number) {
+    this.currentPage = event;
+  }
   //Modal de Agregar Notificacion
   title = 'sweetAlert';
   showModal() {
@@ -127,17 +185,7 @@ export class MenuComponent implements OnInit {
     descripcion: "",
   };
   
-/*   updatePlatoId(event: any) {
-    const descripcion = event.target.value;
-    const platoSeleccionado = this.platosss.find(
-      (plato) => plato.descripcion === descripcion
-    );
-    this.platoSeleccionado = platoSeleccionado || {
-      id: null,
-      descripcion: descripcion,
-    };
-    this.menuForm.get("id_plato")?.setValue(this.platoSeleccionado.id);
-  } */
+
   updatePlatoId(event: any) {
     const descripcion = event.target.value;
     const platoSeleccionado = this.platosss.find(
@@ -217,7 +265,7 @@ export class MenuComponent implements OnInit {
 
   //Para el registro de plato usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de Menú'; //cambio de nombre en el encabezado
+    this.tituloForm = 'Registro de menú diario'; //cambio de nombre en el encabezado
     this.menuForm.reset();
     this.editandoPlato = false;
     this.idPlatoEditar = '';
@@ -230,46 +278,19 @@ export class MenuComponent implements OnInit {
     this.showId_cantidadplatoError = false;
     this.showFechaError = false;
     this.showHabilitadoError = false;
+    this.showDiasError = false;
+    this.showPrecioError = false;
 
   }
-  //Para el editar de plato usando modal
 
-  // ...
-
-/*   editarMenu(item: any) {
-    this.tituloForm = 'Editar Menú';
-    this.menuForm.patchValue({
-      id_plato: item.plato.id,
-      cantidad: item.cantidad,
-      habilitado: item.habilitado  // Esto establecerá el valor correcto en el formulario
-    });
-  
-    // Selecciona automáticamente el radio button correspondiente
-    const radioValue = +item.habilitado === 1 ? '1' : '0';
-    console.log('Radio Value:', radioValue);
-    this.menuForm.get('habilitado')?.setValue(radioValue);
-  
-    console.log('Formulario después de la configuración:', this.menuForm.value);
-  
-    this.selectedOption = { descripcion: item.plato.descripcion, id: item.plato.id };
-    this.getId_plato();
-    this.editandoPlato = true;
-    this.idPlatoEditar = item.id;
-  
-    // Establecer variables a false al editar
-    this.showId_cantidadplatoError = false;
-    this.showId_tipomenuError = false;
-    this.showFechaError = false;
-    this.showHabilitadoError = false;
-  }
-   */
-  
   editarMenu(item: any) {
-    this.tituloForm = 'Editar Menú';
+    this.tituloForm = 'Editar menú diario';
     this.menuForm.patchValue({
       id_plato: item.plato.id,
       cantidad: item.cantidad,
-      habilitado: item.habilitado
+      habilitado: item.habilitado,
+      fecha:item.fecha,
+      numDias:5
     });
   
     // Selecciona automáticamente el radio button correspondiente
@@ -304,24 +325,24 @@ export class MenuComponent implements OnInit {
       this.showId_tipomenuError = false;
       this.showFechaError = false;
       this.showHabilitadoError = false;
-
+      this.showDiasError = false;
+   
       const datos = {
-
         id_plato: this.menuForm.value.id_plato,
         cantidad: this.menuForm.value.cantidad,
-        habilitado: this.menuForm.value.habilitado
-
-
+        habilitado: this.menuForm.value.habilitado,
+        fecha: this.menuForm.value.fecha,
+        numDias: this.menuForm.value.numDias
       };
-
+  
       if (!this.editandoPlato) {
         this.MenuService.guardarMenu(datos).subscribe(
           (platos) => {
             console.log(platos);
             this.showModal();
             this.getAllmenus(); // Actualizar la tabla después de agregar un menú
+            this.loadPageData();
             this.menuForm.reset(); // Restablecer los valores del formulario
-
           },
           (error) => {
             console.log(error);
@@ -334,6 +355,7 @@ export class MenuComponent implements OnInit {
           (plato) => {
             console.log(plato);
             this.showModalEdit();
+            this.loadPageData();
             this.nuevoCurso(); // Restablecer el formulario después de editar
             this.getAllmenus();
           },
@@ -348,39 +370,32 @@ export class MenuComponent implements OnInit {
       this.showId_tipomenuError = this.menuForm.controls.id_plato.invalid;
       this.showFechaError = this.menuForm.controls.fecha.invalid;
       this.showHabilitadoError = this.menuForm.controls.habilitado.invalid;
-
-
+      this.showDiasError = this.menuForm.controls.numDias.invalid;
+      
     }
   }
+  
 
-  // ...
-
-
-
-  // ...
-
-
-  // ...
   showModalEliminar(id: number) {
     Swal.fire({
-      title: '¿Estás seguro que deseas eliminar el menú?',
+      title: '¿Estás seguro que deseas eliminar el menú diario?',
       icon: 'warning',
       showCancelButton: true,
-
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#bf0d0d',
-
-
     }).then((result) => {
       if (result.isConfirmed) {
         this.eliminarPlato(id);
+        // Actualiza la variable menuList
+        this.menusss = this.menusss.filter(menu => menu.id !== id);
+        this.totalItems = this.menusss.length;
       }
     });
   }
+  
 
-
-
+ 
 
 
   showModalErrorEliminar() {
@@ -389,15 +404,16 @@ export class MenuComponent implements OnInit {
       icon: 'error',
     });
   }
-
   eliminarPlato(id: number) {
-    this.MenuService.deleteplato(id).subscribe({
+    this.MenuService.deletemenudiario(id).subscribe({
       next: (res) => {
         Swal.fire({
           title: 'Datos eliminados exitosamente',
           icon: 'success',
         }).then(() => {
           this.getAllmenus();
+          this.loadPageData(); // Actualizar la tabla y la paginación después de eliminar un menú
+          this.cdr.detectChanges(); // Forzar la detección de cambios
         });
       },
       error: () => {
@@ -405,7 +421,6 @@ export class MenuComponent implements OnInit {
       },
     });
   }
-
 
   // Restablecer el formulario cuando se cierre el modal
   closeModal() {

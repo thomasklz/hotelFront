@@ -10,7 +10,7 @@
      
       <div class="col-md-12">
 
-        <div class="card">
+        <div class="card text-center">
           <div class="card-header card-header-danger">
             <h4 class="card-title disabled"> <img src="/assets/img/alimentos.png" class="edit" alt=""> Productos</h4>
           </div>
@@ -25,20 +25,20 @@
                     Producto 
                   </th>
                   <th>
-                    Equivalente Gramo: 
+                    Equivalente gramo: 
                   </th>
                   <th>
-                    Cantidad de Persona
+                    Cantidad de persona
                   </th>
                   <th>
-                    Gramo por Persona
+                    Gramo por persona
                   </th>
                   <th>
-                    Acción
+                    Acciones
                   </th>
 
                 </thead>
-                <tbody *ngFor="let item of alimentosss ;let i=index ">
+                <tbody *ngFor="let item of pagedMenus ;let i=index ">
                   <tr>
                     <td>
                       {{i+1}}
@@ -70,6 +70,15 @@
                 </tbody>
               </table>
             </div>
+              <!-- Contenedor para centrar la paginación -->
+  <div class="pagination-containerrrr">
+    <!-- Paginación -->
+    <div class="pagination">
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+      <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+    </div>
+  </div>
           </div>
         </div>
       </div>
@@ -99,7 +108,7 @@
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Equivalente Gramo <h6>* 1 libra equivale a 453.592 gramos /LT</h6>	</label> <br>
+              <label for="inputState" class="select-gr">Equivalente gramo <h6>* 1 libra equivale a 453.592 gramos /LT</h6>	</label> <br>
               <input class="example-full-width estilos" type="text" formControlName="equivalenteGramo" >
               <div *ngIf="showEquivalenteGramoError" class="text-danger">Campo requerido</div>
             </div>
@@ -107,11 +116,13 @@
 
           <div class="form-row">
             <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Cantidad de Persona	</label> <br>
+              <label for="inputState" class="select-gr">Cantidad de persona</label> <br>
               <input class="example-full-width estilos" type="text" formControlName="cantidadPersona">
               <div *ngIf="showCantidadPersonaError" class="text-danger">Campo requerido</div>
+              <div *ngIf="showCantidadPersonaError && alimentoForm.get('cantidadPersona')?.hasError('pattern')" class="text-danger">El campo de cantidadPersona solo permite números.</div>
             </div>
           </div>
+          
         
       
           <input type="hidden" formControlName="funcion">
@@ -119,7 +130,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addAlimento()" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-danger" (click)="addAlimento()" data-dismiss="modal">
+          {{ editandoAlimento ? 'Modificar' : 'Registrar' }}
+        </button>
       </div>
     </div>
   </div>

@@ -26,7 +26,7 @@
     <div *ngIf="personaForm.get('telefono')?.invalid && (personaForm.get('telefono')?.touched || submitted)"
       class="error-message error-text">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
 
-    <input type="email" class="login-username" autofocus="true" placeholder="Foto*" formControlName="foto"
+    <input type="file" class="login-username" autofocus="true" placeholder="Foto*" formControlName="foto"
       [ngClass]="{ 'error': personaForm.get('foto')?.invalid && (personaForm.get('foto')?.touched || submitted) }" />
     <div *ngIf="personaForm.get('foto')?.invalid && (personaForm.get('foto')?.touched || submitted)"
       class="error-message error-text">La foto es requerida</div>
@@ -36,10 +36,21 @@
     <div *ngIf="personaForm.get('usuario')?.invalid && (personaForm.get('usuario')?.touched || submitted)"
       class="error-message error-text">El usuario es requerido y debe tener al menos 3 caracteres.</div>
 
-    <input type="password" class="login-password" placeholder="Contraseña*" formControlName="contrasena"
+ <!-- Agrega estos estilos y eventos al archivo HTML de tu componente -->
+<div class="input-container">
+ 
+  <div class="password-input-container">
+    <input type="{{ showPassword ? 'text' : 'password' }}" class="login-password" placeholder="Contraseña*" formControlName="contrasena"
       [ngClass]="{ 'error': personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted) }" />
-    <div *ngIf="personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted)"
-      class="error-message error-text">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
+    <span class="show-password-icon" (click)="togglePasswordVisibility()">
+      <i class="fa fa-eye" *ngIf="showPassword"></i>
+      <i class="fa fa-eye-slash" *ngIf="!showPassword"></i>
+    </span>
+  </div>
+  <div *ngIf="personaForm.get('contrasena')?.invalid && (personaForm.get('contrasena')?.touched || submitted)"
+    class="error-message error-text">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
+</div>
+
 
     <button type="submit" class="login-submit">
       <img src="assets/img/guardar.png" alt=""> Guardar

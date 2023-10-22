@@ -45,4 +45,32 @@ getobtenerDescripcionPlatoPrecio( id?){
     deleteingrediente(id:number){
       return this.http.delete<any>('http://localhost:3000/api/eliminaringredientes/'+id);
     }
+
+
+
+
+
+ //Crear y Modificar productos para su plato
+ guardarproductosconsuplato(data:any, id?){
+  if (id) {
+    return this.http.put<any>('http://localhost:3000/api/editaringredientes/'+id,data);
+  }else{
+    return this.http.post<any>('http://localhost:3000/api/crearingredientesconsuplato', data);
+  }
+  }
+
+  getproductosporid( id?){
+    return this.http.get<any>('http://localhost:3000/api/obtenerproductosplatos_PorPlato/'+id);
+  }
+  getobtenerDescripcionPlatoproductos( id?){
+    return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlatoproductos/'+id);
+  }
+
+//buscar ingrediente fecha y plato
+
+buscarFechaYPlato(id: number, fecha: string) {
+  return this.http.get<any>(`http://localhost:3000/api/buscarPorFecha/${id}/${fecha}`);
+}
+
+   
 }

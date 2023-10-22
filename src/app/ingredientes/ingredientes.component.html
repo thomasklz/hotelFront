@@ -2,25 +2,64 @@
 
 <div class="main-content">
   <div class="container-fluid">
-    <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
-      data-target="#ventanaForm" (click)="nuevoCurso()">
-      AGREGAR +
-    </button>
+    
 
     <div class="search-container">
-      <label class="label" for="input-datalist">Buscar el nombre del Plato:</label>
+ 
+
+
+
+
+
+
+
+      <label class="label" for="input-datalist-fecha">Buscar fecha:</label>
       <div class="search-box">
-        <input type="text" class="form-control" list="list-timezone" id="input-datalist" [(ngModel)]="ingredientId" />
-        <datalist id="list-timezone">
-          <option *ngFor="let ingrediente of ingredientes" [value]="ingrediente.descripcion"></option>
+        <input
+          type="text"
+          class="form-control"
+          list="list-timezone-fecha"
+          id="input-datalist-fecha"
+          [value]="fechaSeleccionado.fecha"
+          (change)="updateFechaId($event)"
+          formControlName="fecha"
+        />
+        <datalist id="list-timezone-fecha">
+          <option *ngFor="let item of fechass" [value]="item.fecha"></option>
         </datalist>
       </div>
-      <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId(); buscarDescripcionporId()">
-        Buscar<i class="fa fa-search fa-stack-1x"></i>
-      </button>
+
+     <br><br>
+    
+     <label class="label" for="input-datalist-plato">Seleccione el plato:</label>
+     <div class="search-box">
+      <input
+        type="text"
+        class="form-control"
+        list="list-timezone-plato"
+        id="input-datalist-plato"
+        [value]="platoSeleccionado.descripcion"
+        (input)="updatePlatoId($event)"
+      />
+
+    
+
+      <datalist id="list-timezone-plato">
+        <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
+      </datalist>
+    </div>
+    <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId() "  (click)="buscarDescripcionporId()">
+      Buscar <i class="fa fa-search fa-stack-1x"></i>
+    </button>
       
     </div>
 
+
+
+
+
+
+    
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -51,11 +90,11 @@
                   <th>Nº</th>
 
                   <th>Ingrediente</th>
-                  <th>Cantidad Persona</th>
-                  <th>Libra/Litro</th>
-                  <th>Opciones de Día</th>
-                  <th>Cantidad Final</th>
-                  <th>Precio</th>
+                  <th>Cantidad persona</th>
+                  <th>Libra/litro</th>
+                  <th>Opciones de día</th>
+                  <th>Cantidad final</th>
+                 
 
                   <th>Acción</th>
                 </thead>
@@ -69,7 +108,7 @@
                       {{ item.alimento.descripcion }}
                     </td>
                     <td>
-                      {{ item.cantidadPersona }}
+                      {{ item.cantidad }}
                     </td>
                     <td>
                       {{ item.cantidadGramo }}
@@ -81,9 +120,7 @@
                       {{ item.cantidadFinal }}
                     </td>
 
-                    <td>
-                      {{ item.precio }}
-                    </td>
+                
 
                     <td>
                       <button1 color="primary" (click)="editarIngrediente(item)">
@@ -137,47 +174,60 @@
       <div class="modal-body modal-with-padding">
         <form [formGroup]="ingredientesForm">
           <div class="form-row">
+         
             <div class="form-group col-md-8">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label" for="input-datalist-plato">Buscar el nombre del Plato:</label>
+                  <label class="label" for="input-datalist-fechas">Buscar fecha:</label>
                   <div class="search-box">
-                    <input type="text" class="form-control" list="list-timezone-plato" id="input-datalist-plato"
-                    [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
-             
-                  
-
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone-fechas"
+                      id="input-datalist-fechas"
+                      [value]="fechaSeleccionado.fecha"
+                      (change)="updateRegistroFechaId($event)"
+                      formControlName="fecha"
+                    />
+                    <datalist id="list-timezone-fechas">
+                      <option *ngFor="let item of Registrofechass" [value]="item.fecha"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Rest of your code -->
+            
+            <div class="form-group col-md-8">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label" for="input-datalist-plato">Buscar el nombre del plato:</label>
+                  <div class="search-box">
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone-plato"
+                      id="input-datalist-plato"
+                      [value]="platoSeleccionado.descripcion"
+                      (input)="onPlatoInputChange($event)"
+                    />
                     <datalist id="list-timezone-plato">
-                      <option *ngFor="let item of ingredientes" [value]="item.descripcion"></option>
+                      <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
                     </datalist>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="form-group col-md-8">
-              <div class="formmm">
-                <div class="search-container">
-                  <label class="label" for="input-datalist-ingredient">Buscar el nombre del Ingrediente</label>
-                  <div class="search-box">
-                    <input type="text" class="form-control" list="list-timezone-ingredient" id="input-datalist-ingredient"
-       [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
-
-       
-                    <datalist id="list-timezone-ingredient">
-                      <option *ngFor="let item2 of alimentoss" [value]="item2.descripcion"></option>
-                    </datalist>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
+            
           </div>
 
           <div class="form-row">
             <div class="form-group col-md-12">
-              <label for="inputState" class="select-gr">Cantidad de Persona</label>
+              <label for="inputState" class="select-gr">Cantidad de persona</label>
               <br />
-              <input class="example-full-width estilos" type="text" formControlName="cantidadPersona" />
+              <input class="example-full-width estilos" type="number" formControlName="cantidadPersona" />
               <div *ngIf="showCantidadPersonaError" class="text-danger">
                 Campo requerido
               </div>
@@ -193,15 +243,7 @@
 
 
 
-            <div class="form-group col-md-12">
-
-              <label for="inputState" class="select-gr">Precio</label> <br />
-              <input class="example-full-width estilos" type="text" formControlName="precio" />
-              
-              <div *ngIf="showPrecioError" class="text-danger">
-                Campo requerido
-              </div>
-            </div>
+           
           </div>
 
        
@@ -213,8 +255,11 @@
         <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" (click)="closeModalAfterCancel()">
           Cerrar
         </button>
+       
+
+
         <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">
-          Guardar
+          {{ editandoIngredientes ? 'Modificar' : 'Registrar' }}
         </button>
       </div>
     </div>

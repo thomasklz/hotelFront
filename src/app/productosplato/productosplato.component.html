@@ -1,0 +1,193 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<div class="main-content">
+  <div class="container-fluid">
+    <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
+      data-target="#ventanaForm" (click)="nuevoCurso()">
+      AGREGAR +
+    </button>
+
+    <div class="search-container">
+      <label class="label" for="input-datalist">Buscar el nombre del plato:</label>
+      <div class="search-box">
+        <input type="text" class="form-control" list="list-timezone" id="input-datalist" [(ngModel)]="ingredientId" />
+        <datalist id="list-timezone">
+          <option *ngFor="let ingrediente of productosplato" [value]="ingrediente.descripcion"></option>
+        </datalist>
+      </div>
+      <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId(); buscarDescripcionporId()">
+        Buscar<i class="fa fa-search fa-stack-1x"></i>
+      </button>
+      
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card text-center">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled">
+              <img src="/assets/img/alimentos.png" class="edit" alt="" />
+              Productos con su plato
+            </h4>
+          </div>
+          <div class="card-body ">
+            <div class="table-responsive">
+              
+              <ng-container *ngIf="ingredientId">
+                <div *ngIf="productosplatosss.length === 0">
+                  <p>
+                    
+                    
+                  </p>
+                </div>
+              </ng-container>
+              
+              
+              <table class="table" *ngIf="productosplatosss && productosplatosss.length > 0">
+
+                <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
+                  <th>Plato: {{ item.plato.descripcion }}</th>
+                </thead>
+                <thead class="text-primary">
+                  <th>Nº</th>
+
+                  <th>Ingrediente</th>
+                
+
+                  <th>Acciones</th>
+                </thead>
+                <tbody *ngFor="let item of productosplatosss; let i = index">
+                  <tr>
+                    <td>
+                      {{ i + 1 }}
+                    </td>
+
+                    <td>
+                      {{ item.alimento.descripcion }}
+                    </td>
+                 
+
+                    <td>
+                      <button1 color="primary" (click)="editarIngrediente(item)">
+                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                      </button1>
+
+                      <button2>
+                        <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      </button2>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Contenedor para centrar la paginación -->
+<div class="pagination-containerrrr">
+  <!-- Paginación -->
+ <!-- Paginación -->
+<div class="pagination">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+    <i class="fa fa-arrow-left"></i> Anterior
+  </button>
+  <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages">
+    Siguiente <i class="fa fa-arrow-right"></i>
+  </button>
+  
+  
+</div>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    /* Estilos para pantallas pequeñas */
+    #ventanaForm .modal-dialog {
+      top: 50%;
+    }
+  }
+  
+  /* Estilos para pantallas más grandes */
+  @media (min-width: 769px) {
+    #ventanaForm .modal-dialog {
+      top: 45%;
+    }
+  }
+  </style>
+
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm }} <img src="assets/img/comida.png" alt="" />
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body modal-with-padding">
+        <form [formGroup]="ingredientesForm">
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label" for="input-datalist-plato">Buscar el nombre del plato:</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" list="list-timezone-plato" id="input-datalist-plato"
+                    [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
+             
+                  
+
+                    <datalist id="list-timezone-plato">
+                      <option *ngFor="let item of productosplato" [value]="item.descripcion"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-8">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label" for="input-datalist-ingredient">Buscar el nombre del ingrediente</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" list="list-timezone-ingredient" id="input-datalist-ingredient"
+       [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
+
+        
+                    <datalist id="list-timezone-ingredient">
+                      <option *ngFor="let item2 of alimentoss" [value]="item2.descripcion"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        
+       
+          <input type="hidden" formControlName="funcion" />
+        </form>
+      </div>
+
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" (click)="closeModalAfterCancel()">
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">
+          {{ editandoIngredientes ? 'Modificar' : 'Registrar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

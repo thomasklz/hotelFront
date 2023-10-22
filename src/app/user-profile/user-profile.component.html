@@ -1,98 +1,144 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
+      <div class="row ">
+      <div class="col-md-12 mx-auto ">
         <div class="card">
-          <div class="card-header card-header-danger">
-            <img src="assets/img/persona.png" alt="">
-            <h4 class="card-title disabled">Datos de Usuario</h4>
+          <div class="card-header card-header-danger text-center">
+            <img class="img" src="assets/img/persona.png" alt="">
+            <h4 class="card-title disabled">Datos de usuario</h4>
             <p class="card-category">Completa tu perfil</p>
           </div>
           <div class="card-body">
             <form [formGroup]="personaForm" (ngSubmit)="addPersona()" novalidate>
-              <div class="row">
-                <div class="col-md-5">
-                  <mat-form-field class="example-full-width disabled">
-                    <input matInput placeholder="Datos Personales" disabled>
+              <div class="row  ">
+                <div class="col-md-5 mx-auto ">
+                  <mat-form-field class="example-full-width disabled text-center">
+                    <input matInput placeholder="Datos personales" disabled>
                   </mat-form-field>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Nombre" type="text" formControlName="nombre">
-                    <div *ngIf="personaForm.get('nombre').invalid && (personaForm.get('nombre').touched || submitted)"
-                      class="error-message">El nombre es requerido y debe tener al menos 3 caracteres.</div>
-                  </mat-form-field>
+              <div class="row espaciado-columnas">
+                <div class="col-md-6 ">
+                  <label for="inputState" class="select-gr">Nombres*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="nombre">
+                  <div *ngIf="personaForm.get('nombre').invalid && (personaForm.get('nombre').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('nombre').errors }">
+                    El nombre es requerido y debe tener al menos 3 caracteres.
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Email" type="email" formControlName="email">
-                    <div *ngIf="personaForm.get('email').invalid && (personaForm.get('email').touched || submitted)"
-                      class="error-message">El email es requerido </div>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Teléfono" type="number" formControlName="telefono">
-                    <div
-                      *ngIf="personaForm.get('telefono').invalid && (personaForm.get('telefono').touched || submitted)"
-                      class="error-message">El teléfono es requerido y debe tener al menos 10 dígitos.</div>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-4">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Foto" type="text" formControlName="foto">
-                    <div *ngIf="personaForm.get('foto').invalid && (personaForm.get('foto').touched || submitted)"
-                      class="error-message">La foto es requerida .</div>
-                  </mat-form-field>
+                <div class="col-md-6 ">
+                  <label for="inputState" class="select-gr">Email*</label> <br>
+                  <input class="example-full-width estilos" type="email" formControlName="email">
+                  <div *ngIf="personaForm.get('email').invalid && (personaForm.get('email').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('email').errors }">
+                    El email es requerido.
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-5">
-                  <mat-form-field class="example-full-width disabled">
-                    <input matInput placeholder="Datos Usuario" disabled>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
+              <br>
+              <div class="row espaciado-columnas">
                 <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Cedula" type="text" formControlName="usuario" >
-                    <div *ngIf="personaForm.get('usuario').invalid && (personaForm.get('usuario').touched || submitted)"
-                      class="error-message">El usuario es requerido y debe tener al menos 10 caracteres.</div>
-                  </mat-form-field>
+                  <label for="inputState" class="select-gr">Teléfono*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="telefono">
+                  <div *ngIf="personaForm.get('telefono').invalid && (personaForm.get('telefono').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('telefono').errors }">
+                    El teléfono es requerido y debe tener al menos 10 dígitos.
+                  </div>
+
+                  
                 </div>
                 <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Contraseña" type="password" formControlName="contrasena">
-                    <div
-                      *ngIf="personaForm.get('contrasena').invalid && (personaForm.get('contrasena').touched || submitted)"
-                      class="error-message">La contraseña es requerida y debe tener al menos 4 caracteres.</div>
-                  </mat-form-field>
+                  <label for="inputState" class="select-gr">Foto*</label> <br>
+                  <input class="example-full-width estilos" type="file" formControlName="foto">
+                  <div *ngIf="personaForm.get('foto').invalid && (personaForm.get('foto').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('foto').errors }">
+                    La foto es requerida.
+                  </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-5 mx-auto">
+                  <mat-form-field class="example-full-width disabled text-center">
+                    <input matInput placeholder="Datos usuario" disabled>
+                  </mat-form-field>
                 </div>
               </div>
-              <button mat-raised-button type="submit" class="btn btn-danger pull-right">Guardar</button>
+              <div class="row espaciado-columnas">
+                <div class="form-group col-md-6">
+                  <label for="inputState" class="select-gr text-center">Tipo Usuario</label> <br>
+                  <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
+                    <div class="selected-option" (click)="toggleShowMoreOptions()">
+                      {{ getSelectedOptionLabel() }}
+                      <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+                    </div>
+                    <div class="options-container">
+                      <ng-container *ngFor="let item of tipousuariosss; let i = index">
+                        <div class="option example-full-width estilos" *ngIf="!showMoreOptions && i >= 7"
+                          (click)="selectOption(item)">{{ item.tipo }}</div>
+                        <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.tipo }}</div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <input type="hidden" formControlName="id_tipousuario">
+                  <div *ngIf="personaForm.get('id_tipousuario').invalid && (personaForm.get('id_tipousuario').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('id_tipousuario').errors }">
+                    Campo Tipo Usuario es requerido.
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row espaciado-columnas">
+                <div class="col-md-6">
+                  <label for="inputState" class="select-gr">Cédula*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="usuario">
+                  <div *ngIf="personaForm.get('usuario').invalid && (personaForm.get('usuario').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('usuario').errors }">
+                    La Cédula es requerida y debe tener al menos 10 caracteres.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="inputState" class="select-gr">Contraseña*</label> <br>
+                  <div class="password-input-container">
+                      <input class="example-full-width estilos" type="{{ showPassword ? 'text' : 'password' }}" formControlName="contrasena">
+                      <button mat-icon-button (click)="showPassword = !showPassword" type="button" class="eye-icon-button">
+                          <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                      </button>
+                  </div>
+                  <div *ngIf="personaForm.get('contrasena').invalid && (personaForm.get('contrasena').touched || submitted)"
+                      [ngClass]="{ 'error-message': personaForm.get('contrasena').errors }">
+                      {{ personaForm.get('contrasena').hasError('required') ? 'La contraseña es requerida.' : '' }}
+                      {{ personaForm.get('contrasena').hasError('minlength') ? 'Debe tener al menos 4 caracteres.' : '' }}
+                  </div>
+              </div>
+              
+              </div>
+              <br>
+              <div class="row">
+                <div class="mx-auto">
+                  <button mat-raised-button type="submit" class="btn btn-danger pull-right ">REGISTRAR</button>
+  
+                </div>
+              </div>
+              
               <div class="clearfix"></div>
             </form>
           </div>
         </div>
       </div>
     </div>
+    
+    
 
 
 
-    <div class="row">
+
+    <div class="row text-center">
 
       <div class="col-md-12">
 
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> Usuarios</h4>
+            <h4 class="card-title disabled"> Clientes</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -155,6 +201,16 @@
 
 
             </div>
+
+                 <!-- Contenedor para centrar la paginación -->
+<div class="pagination-containerrrr">
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+    <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+  </div>
+</div>
           </div>
         </div>
       </div>

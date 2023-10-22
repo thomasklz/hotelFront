@@ -73,7 +73,7 @@ export class CreditoComponent implements OnInit {
       precio: new FormControl("", [Validators.required, Validators.minLength(1)]),
       id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       id_persona: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      pagado: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      pagado: new FormControl("", ),
      
       cantidad: new FormControl("", [Validators.required, Validators.minLength(1)]),
     });
@@ -195,7 +195,7 @@ onDescriptionSelected() {
       },
     });
   }
-
+ 
   getAlldescripcionplatos() {
     this.MenuService.gettplato().subscribe({
       next: (res) => {
@@ -255,7 +255,7 @@ onDescriptionSelected() {
 
   //Para el registro de plato usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de Créditos'; //cambio de nombre en el encabezado
+    this.tituloForm = 'Registro de créditos'; //cambio de nombre en el encabezado
     this.creditosForm.reset();
     this.editandoCreditos = false;
     this.idCreditosEditar = '';
@@ -281,7 +281,7 @@ onDescriptionSelected() {
   //Para el editar de credito usando modal
 
   editarCreditos(item: any) {
-    this.tituloForm = 'Editar  Créditos';
+    this.tituloForm = 'Editar  créditos';
     this.creditosForm.patchValue({
       precio: item.precio,
       cantidad: item.cantidad,
@@ -424,24 +424,27 @@ onDescriptionChange(newValue: string) {
       this.showPagadoError = false;
       this.showCantidadError = false;
       this.showFechaError = false;
-
+  
+      // Set the default value of pagado to false when adding a new credit
+      if (!this.editandoCreditos) {
+        this.creditosForm.get('pagado')?.setValue('0');
+      }
+  
       const datos = {
         precio: this.creditosForm.value.precio,
         cantidad: this.creditosForm.value.cantidad,
         pagado: this.creditosForm.value.pagado,
         fecha: this.creditosForm.value.fecha,
         id_plato: this.creditosForm.value.id_plato,
-        id_persona: this.creditosForm.value.id_persona
-
-        
+        id_persona: this.creditosForm.value.id_persona,
       };
-
+  
       if (!this.editandoCreditos) {
         this.CreditosService.guardar(datos).subscribe(
           (result: any) => {
             console.log(result);
             this.showModal();
-            this.getAllcreditos(); // Actualizar la tabla después de agregar un ingrediente
+            this.getAllcreditos(); // Actualizar la tabla después de agregar un crédito
             this.creditosForm.reset(); // Restablecer los valores del formulario
           },
           (error) => {
@@ -473,6 +476,7 @@ onDescriptionChange(newValue: string) {
       this.showPersonaError = this.creditosForm.controls.id_persona.invalid;
     }
   }
+  
 
   // ...
   showModalEliminar(id: any) {

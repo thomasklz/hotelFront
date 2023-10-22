@@ -5,112 +5,121 @@
 <div class="main-content">
   <div class="container-fluid">
 
-
     <div class="row">
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
-
+      <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
+              data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +
+      </button>
+    
       <div class="col-md-12">
-
-        <div class="card">
+    
+        <div class="card text-center">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Menú</h4>
-
+            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Menú diario</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table">
                 <thead class=" text-primary">
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    Plato
-                  </th>
-                  <th>
-                    Cantidad de Plato
-                  </th>
-                 
-                  <th>
-                    Habilitado
-                  </th>
-                  <th>
-                    Acción
-                  </th>
-
+                <th>
+                  N°
+                </th>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Plato
+                </th>
+                <th>
+                  Cantidad de plato
+                </th>
+                <th>
+                  Ver en la web
+                </th>
+                <th>
+                  Acciones
+                </th>
                 </thead>
-                <tbody *ngFor="let item of menusss ;let i=index ">
-                  <tr>
-                    <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.plato.descripcion}}
-                    </td>
-                    <td>
-                      {{item.cantidad}}
-                    </td>
-                  
-                    <td>
-                      {{item.habilitado}}
-                    </td>
-
-                    <td>
-                      <button1 color="primary" (click)="editarMenu(item)">
-                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                      </button1>
-
-
-                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
-                      </button2>
-                    </td>
-
-                  </tr>
-
+                <tbody *ngFor="let item of pagedMenus; let i = index ">
+                <tr>
+                  <td>
+                    {{ i + 1 }}
+                  </td>
+                  <td>
+                    {{ item.fecha }}
+                  </td>
+                  <td>
+                    {{ item.plato.descripcion }}
+                  </td>
+                  <td>
+                    {{ item.cantidad }}
+                  </td>
+                  <td>
+                    {{ item.habilitado ? 'Sí' : 'No' }}
+                  </td>
+                  <td>
+                    <button1 color="primary" (click)="editarMenu(item)">
+                      <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                    </button1>
+                    <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                    </button2>
+                  </td>
+                </tr>
                 </tbody>
-              </table>
-
-
-
+              </table> 
             </div>
+    
+          <!-- Contenedor para centrar la paginación -->
+<div class="pagination-containerrrr">
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+    <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+  </div>
+</div>
+
           </div>
         </div>
+    
       </div>
-
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content d-flex align-items-center">
-      <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png"
-            alt=""></h5>
+
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm }} <img src="assets/img/comida.png" alt="" />
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="menuForm">
 
-          <div class="form-row">
-            <div class="form-group col-md-11">
+      <div class="modal-body modal-with-padding">
+        <form [formGroup]="menuForm">
+          <div class="form-row">     
+            <div class="form-group col-md-8">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label select-gr" for="input-datalist-plato">Buscar el nombre del Plato:</label>
+                  <label class="label" for="input-datalist-plato">Buscar el nombre del plato:</label>
                   <div class="search-box">
                     <input
                       type="text"
-                      class="example-full-width estilos"
+                      class="form-control"
                       list="list-timezone-plato"
                       id="input-datalist-plato"
                       [value]="platoSeleccionado.descripcion"
                       (input)="updatePlatoId($event)"
                       formControlName="id_plato"
-                      readonly
+                    
                       aria-readonly="true"
+
                     />
-            
                     <datalist id="list-timezone-plato">
                       <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
                     </datalist>
@@ -118,47 +127,68 @@
                 </div>
               </div>
             </div>
-            
-          </div>
+      </div>
+         <br>
 
-          
           <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Cantidad platos</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="cantidad">
-              <div *ngIf="showId_cantidadplatoError" class="text-danger">Campo requerido</div>
+            <div class="form-group col-md-4">
+              <label for="inputState" class="select-gr">Cantidad de plato</label>
+              <br />
+              <input class="example-full-width estilosversion2" type="number" formControlName="cantidad" />
+              <div *ngIf="showId_cantidadplatoError" class="text-danger">
+                Campo requerido
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="inputState" class="select-gr">Días</label> <br />
+              <input class="example-full-width estilosversion2" type="text" formControlName="numDias" />
+              <div *ngIf="showDiasError" class="text-danger">
+                Campo requerido
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="inputState" class="select-gr">Fecha</label> <br>
+              <input class="example-full-width estilosversion2" type="date" formControlName="fecha">
+              <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
+            </div>
+
+           
+          
+          </div>
+<br>
+          <div class="centered-horizontal ">
+          <div class="form-row ">
+            <div class="form-group col-md-12">
+              <label for="inputState" class="select-gr">Ver en la web</label> <br>
+              <!-- Elimina el input anterior y utiliza radio buttons -->
+              <input type="radio" id="si" name="habilitado" formControlName="habilitado" value="1">
+              <label for="si">Si</label>
+              <br>
+              <input type="radio" id="no" name="habilitado" formControlName="habilitado" value="0">
+              <label for="no">No</label>
+          
+              <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
             </div>
           </div>
+        </div>
 
-         <!-- ... (otras partes de tu código HTML) ... -->
-
-<div class="form-row">
-  <div class="form-group col-md-8">
-    <label for="inputState" class="select-gr">Habilitado</label> <br>
-    <!-- Elimina el input anterior y utiliza radio buttons -->
-    <input type="radio" id="si" name="habilitado" formControlName="habilitado" value="1">
-    <label for="si">Si</label>
-    <br>
-    <input type="radio" id="no" name="habilitado" formControlName="habilitado" value="0">
-    <label for="no">No</label>
-
-    <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
-  </div>
-</div>
-
-<!-- ... (otras partes de tu código HTML) ... -->
-
-
- 
-
-
-
-          <input type="hidden" formControlName="funcion">
+       
+          <input type="hidden" formControlName="funcion" />
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">Guardar</button>
+
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" >
+          Cerrar
+        </button>
+       
+
+
+        <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">
+          {{ editandoPlato  ? 'Modificar' : 'Registrar' }}
+        </button>
       </div>
     </div>
   </div>

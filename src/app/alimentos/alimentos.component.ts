@@ -64,13 +64,20 @@ export class AlimentosComponent implements OnInit {
 
   ngOnInit() {
     this.getAllalimento();
+    this.loadPageData();
     this.alimentoForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
       equivalenteGramo: new FormControl("", [Validators.required, Validators.minLength(1)]),
-      cantidadPersona: new FormControl("", [Validators.required, Validators.minLength(1)]),
-      
+      cantidadPersona: new FormControl("", [
+        Validators.required,
+        Validators.pattern(/^[0-9]+$/), // Acepta solo números
+        Validators.minLength(1),
+      ]),      
     });
-
+  // Escucha los cambios en el campo 'cantidadPersona' mientras el usuario escribe
+  this.alimentoForm.get('cantidadPersona')?.valueChanges.subscribe(() => {
+    this.showCantidadPersonaError = this.alimentoForm.get('cantidadPersona')?.invalid;
+  });
 
     this.getAlltipoalimento();
     this.TipoalimentoForm = this.formBuilder.group({
@@ -78,6 +85,47 @@ export class AlimentosComponent implements OnInit {
     });
   }
 
+
+   //PAGINATOR------------------------------
+   pageSize = 10;  // Tamaño de la página
+   currentPage = 1;  // Página actual
+   totalItems = 0;  // Total de elementos
+ 
+   get totalPages(): number {
+     return Math.ceil(this.totalItems / this.pageSize);
+   }
+ 
+   get startIndex(): number {
+     return (this.currentPage - 1) * this.pageSize;
+   }
+ 
+   get endIndex(): number {
+     return Math.min(this.startIndex + this.pageSize - 1, this.totalItems - 1);
+   }
+ 
+   get pagedMenus(): any[] {
+     return this.alimentosss.slice(this.startIndex, this.endIndex + 1);
+   }
+ 
+   // ... otras funciones del componente
+ 
+   loadPageData() {
+     // Lógica para cargar datos de la página actual (no es necesario pasar parámetros a la API)
+     this.AlimentosService.getalimentos().subscribe({
+       next: (res) => {
+         this.alimentosss = res.alimentos;
+         this.totalItems = res.alimentos.length;  // Actualizar el total de elementos
+       },
+       error: (err) => {
+         console.error(err);
+         // Manejo de errores si la llamada a la API falla
+       },
+     });
+   }
+ 
+   onPageChange(event: number) {
+     this.currentPage = event;
+   }
   //Modal cuando los datos se agg Notificacion
   title = 'sweetAlert';
   showModal() {
@@ -153,7 +201,7 @@ export class AlimentosComponent implements OnInit {
 
   //Para el registro de alimento usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de Producto'; // cambio de nombre en el encabezado
+    this.tituloForm = 'Registro de producto'; // cambio de nombre en el encabezado
     this.alimentoForm.reset();
     this.editandoAlimento = false;
     this.idAlimentoEditar = '';
@@ -188,7 +236,7 @@ export class AlimentosComponent implements OnInit {
 
   //Para el editar de plato usando modal
   editarAlimento(item: any) {
-    this.tituloForm = 'Editar  Producto'; //editando encabezado
+    this.tituloForm = 'Editar  producto'; //editando encabezado
     //obteniendo los campos llenos segun su id
     this.alimentoForm.patchValue({
       descripcion: item.descripcion,
@@ -271,6 +319,8 @@ export class AlimentosComponent implements OnInit {
             console.log(tipo_alimentos);
             this.showModal();
             this.getAlltipoalimento(); // Actualizar la tabla después de agregar un alimento
+            this.loadPageData();
+
             this.TipoalimentoForm.reset(); // Restablecer los valores del formulario
 
           },
@@ -286,6 +336,8 @@ export class AlimentosComponent implements OnInit {
             console.log(tipo_alimentos);
             this.showModalEdit();
             this.nuevaModaltipoAlimento(); // Restablecer el formulario después de editar
+            this.loadPageData();
+
             this.getAlltipoalimento();
           },
           (error) => {
@@ -333,6 +385,8 @@ export class AlimentosComponent implements OnInit {
           icon: 'success',
         }).then(() => {
           this.getAllalimento();
+          this.loadPageData();
+
         });
       },
       error: () => {

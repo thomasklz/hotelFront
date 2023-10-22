@@ -345,3 +345,24 @@ h1 {
 }
 
 /* Rest of your existing CSS styles */
+.input-container {
+  position: relative;
+}
+
+.password-input-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.login-password {
+  padding-right: 20px; /* Ajusta según sea necesario para dejar espacio para el ícono */
+}
+
+.show-password-icon {
+  position: absolute;
+  right: 30px; /* Ajusta según sea necesario */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}

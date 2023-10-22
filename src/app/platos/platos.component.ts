@@ -68,13 +68,65 @@ export class PlatosComponent implements OnInit {
 
   ngOnInit() {
     this.getAllplato();
+    this.loadPageData();
     this.menuForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
       id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      precio: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      precio: new FormControl("", [
+        Validators.required,
+        Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/), // Expresión regular para permitir números y hasta dos decimales
+        Validators.minLength(1)
+      ]),
+    });
+
+
+    this.menuForm.get('precio')?.valueChanges.subscribe(() => {
+      this.showPrecioError = this.menuForm.get('precio')?.invalid;
+    });
+  }
+ 
+  //--------------------------------------------------------------------------------------
+
+  pageSize = 11;  // Tamaño de la página
+  currentPage = 1;  // Página actual
+  totalItems = 0;  // Total de elementos
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.pageSize;
+  }
+
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.pageSize - 1, this.totalItems - 1);
+  }
+
+  get pagedMenus(): any[] {
+    return this.platosss.slice(this.startIndex, this.endIndex + 1);
+  }
+
+  // ... otras funciones del componente
+
+  loadPageData() {
+    // Lógica para cargar datos de la página actual (no es necesario pasar parámetros a la API)
+    this.MenuService.obtenerplatos().subscribe({
+      next: (res) => {
+        this.platosss = res.platos;
+        this.totalItems = res.platos.length;  // Actualizar el total de elementos
+      },
+      error: (err) => {
+        console.error(err);
+        // Manejo de errores si la llamada a la API falla
+      },
     });
   }
 
+  onPageChange(event: number) {
+    this.currentPage = event;
+  }
+  //--------------------------------------------------------------------------------------
   //Modal de Agregar Notificacion
   title = 'sweetAlert';
   showModal() {
@@ -157,7 +209,7 @@ export class PlatosComponent implements OnInit {
 
   //Para el registro de plato usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de Plato'; //cambio de nombre en el encabezado
+    this.tituloForm = 'Registro de plato'; //cambio de nombre en el encabezado
     this.menuForm.reset();
     this.editandoPlato = false;
     this.idPlatoEditar = '';
@@ -175,7 +227,7 @@ export class PlatosComponent implements OnInit {
   // ...
 
   editarPlato(item: any) {
-    this.tituloForm = 'Editar  Plato';
+    this.tituloForm = 'Editar  plato';
     this.menuForm.patchValue({
       descripcion: item.descripcion,
       id_tipomenu: item.tipo_menu.id,
@@ -217,6 +269,7 @@ export class PlatosComponent implements OnInit {
             console.log(platos);
             this.showModal();
             this.getAllplato(); // Actualizar la tabla después de agregar un menú
+            this.loadPageData();
             this.menuForm.reset(); // Restablecer los valores del formulario
 
           },
@@ -232,6 +285,7 @@ export class PlatosComponent implements OnInit {
             console.log(plato);
             this.showModalEdit();
             this.nuevoCurso(); // Restablecer el formulario después de editar
+            this.loadPageData();
             this.getAllplato();
           },
           (error) => {
@@ -254,7 +308,7 @@ export class PlatosComponent implements OnInit {
 
   // ...
 
-
+ 
   // ...
   showModalEliminar(id: number) {
     Swal.fire({
@@ -293,6 +347,7 @@ export class PlatosComponent implements OnInit {
           icon: 'success',
         }).then(() => {
           this.getAllplato();
+          this.loadPageData();
         });
       },
       error: () => {

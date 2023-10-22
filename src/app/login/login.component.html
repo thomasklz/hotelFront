@@ -8,7 +8,7 @@
         <i class="fa fa-user fa-stack-1x"> </i>
       </span>
     </div>
-
+ 
     
     <!-- Username Input with Icon -->
     <div class="input-container">
@@ -18,13 +18,22 @@
       <input type="email" class="login-username" autofocus="true" required="true" placeholder="Usuario" formControlName="usuario" />
     </div>
 
-    <!-- Password Input with Icon -->
-    <div class="input-container">
-      <span class="input-icon">
-        <i class="fa fa-lock"></i>
-      </span>
-      <input type="password" class="login-password" required="true" placeholder="Contraseña" formControlName="contrasena" />
-    </div>
+<!-- Password Input with Icon -->
+<div class="input-container">
+  <span class="input-icon">
+    <i class="fa fa-lock"></i>
+  </span>
+  <div class="password-input-container">
+    <input type="{{ showPassword ? 'text' : 'password' }}" class="login-password" required="true" placeholder="Contraseña" formControlName="contrasena" />
+    <span class="show-password-icon" (click)="togglePasswordVisibility()">
+      <i class="fa fa-eye" *ngIf="showPassword"></i>
+      <i class="fa fa-eye-slash" *ngIf="!showPassword"></i>
+    </span>
+  </div>
+</div>
+
+
+
 
     <input type="submit" name="Login" value="Ingresar" class="login-submit" (click)="login()" />
 

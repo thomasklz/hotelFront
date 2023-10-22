@@ -37,6 +37,10 @@ export class IngredientesComponent implements OnInit {
   ingredientesss: any[] = [];
   ingredientes: any[] = [];
   alimentoss: any[] = [];
+  fechass: any[] = [];
+  Registrofechass: any[] = [];
+Registroplatoss: any[] = [];
+
   ingredientedescripcionsss: any[] = [];
   tituloForm;
   ingredientId: string = "";
@@ -63,7 +67,10 @@ export class IngredientesComponent implements OnInit {
   showMoreOptionsalimento: boolean = false;
   selectedOptionplato: any = null;
   selectedOptionalimento: any = null;
-
+ 
+  
+  
+fecha: string = '';
   constructor(
     private http: HttpClient,
     private IngredientesService: IngredientesService,
@@ -76,16 +83,24 @@ export class IngredientesComponent implements OnInit {
     private route: ActivatedRoute
     
   ) {
-    this.getAllplatos();
-    // this.getAllalimento();
-    //this.getAllingredientes();
+    this.platoSeleccionado = { id: null, descripcion: "" };
   }
 
   //cargar los datos de la seleccion de la tabla  en la modal
 
   ngOnInit() {
     this.getAllingredientes();
-    this.getAllalimentos();
+    this.getAllFechas();
+    this.getAllFechasRegistro();
+    this.id_plato = "1";
+    this.fecha = "2023-10-15";
+    // Set id_plato and fecha_menu with some values
+   
+    // Ensure they are set before calling buscarIngredientePorId
+    if (this.id_plato && this.fecha) {
+     
+    }
+  
     this.ingredientesForm = this.formBuilder.group({
       precio: new FormControl("", [
         Validators.required,
@@ -103,105 +118,65 @@ export class IngredientesComponent implements OnInit {
         Validators.required,
         Validators.maxLength(1),
       ]),
-      id_alimento: new FormControl("", [
+      fecha: new FormControl("", [
         Validators.required,
-        Validators.maxLength(1),
       ]),
     });
   }
+  
+ 
 
+ 
+
+  buscarIngredientePorId() { 
+  const fecha = this.fechaSeleccionado.fecha;
+  const id = this.platoSeleccionado.id;
+  console.log("Plato seleccionado ID:", id);
+  console.log(" seleccionado ID fechaaa:", fecha);
+
+  if (!this.platoSeleccionado || !this.platoSeleccionado.id) {
+    console.error("this.platoSeleccionado.id is null or undefined.");
+    return;
+  }
+ 
+
+  this.IngredientesService.buscarFechaYPlato(id, fecha).subscribe({
+    next: (res: any) => {
+      console.log("Ingredientes encontrados:", res.ingredientes);
+      this.ingredientesss = res.ingredientes;
+      this.buscarDescripcionporId();
+    },
+    error: (err) => {
+      this.showModalErrorsindatos();
+    },
+  });
+}
 
   
- /*  buscarIngredientePorId() {
-    if (this.ingredientId) {
-      this.IngredientesService.getingredienteporid(this.ingredientId).subscribe(
-        {
-          next: (res: any) => {
-            this.ingredientesss = res.ingredientes;
 
-            // Si no hay resultados, vaciar ingredientesss para ocultar la tabla
-            if (this.ingredientesss.length === 0) {
-              this.ingredientesss = [];
+  
+buscarDescripcionporId() {
+  const ingredientId = this.platoSeleccionado.descripcion; // Use the ID, not the description
+  if (ingredientId) {
+    this.IngredientesService.getobtenerDescripcionPlato(ingredientId).subscribe({
+      next: (res: any) => {
+        this.ingredientedescripcionsss = res.ingredientes;
 
-              // Mostrar la modal de errores si no hay resultados
-              this.showModalErrorsindatos();
-            }
-          },
-          error: (err) => {
-            // Maneja errores de búsqueda, por ejemplo, muestra un mensaje de error al usuario.
-            console.error(err);
-
-            // Mostrar la modal de errores en caso de un error
-            this.showModalErrorsindatos();
-          },
+        // Si no hay resultados, vaciar ingredientesss para ocultar la tabla
+        if (this.ingredientedescripcionsss.length === 0) {
+          this.ingredientedescripcionsss = [];
         }
-      );
-      // Llama a otra función para buscar descripción por ID
-      this.buscarDescripcionporId();
-    } else {
-      // Si el usuario borra el ID de búsqueda, vacía ingredientesss para ocultar la tabla
-      this.ingredientesss = [];
-    }
+      },
+      error: (err) => {
+        // Maneja errores de búsqueda, por ejemplo, muestra un mensaje de error al usuario.
+        console.error(err);
+      },
+    });
+  } else {
+    // Si el usuario borra el ID de búsqueda, vacía ingredientesss para ocultar la tabla
+    this.ingredientedescripcionsss = [];
   }
- */
-
-
-  botonBuscarPresionado = false;
-
-
-  buscarIngredientePorId() {
-    // Vacía la tabla antes de realizar la búsqueda
-    this.ingredientesss = [];
-  
-    if (this.ingredientId) {
-      this.IngredientesService.getingredienteporid(this.ingredientId).subscribe({
-        next: (res: any) => {
-          // Si no hay resultados, muestra la modal de errores
-          if (res.ingredientes.length === 0) {
-            this.showModalErrorsindatos();
-          } else {
-            // Actualiza this.ingredientesss solo si hay resultados
-            this.ingredientesss = res.ingredientes;
-          }
-        },
-        error: (err) => {
-          console.error(err);
-          this.showModalErrorsindatos();
-        },
-      });
-  
-      // Llama a otra función para buscar descripción por ID
-      this.buscarDescripcionporId();
-    } else {
-      // Si el usuario borra el ID de búsqueda, no es necesario hacer nada más aquí
-    }
-  }
-  
-
-  
-  buscarDescripcionporId() {
-    if (this.ingredientId) {
-      this.IngredientesService.getobtenerDescripcionPlato(
-        this.ingredientId
-      ).subscribe({
-        next: (res: any) => {
-          this.ingredientedescripcionsss = res.ingredientes;
-
-          // Si no hay resultados, vaciar ingredientesss para ocultar la tabla
-          if (this.ingredientedescripcionsss.length === 0) {
-            this.ingredientedescripcionsss = [];
-          }
-        },
-        error: (err) => {
-          // Maneja errores de búsqueda, por ejemplo, muestra un mensaje de error al usuario.
-          console.error(err);
-        },
-      });
-    } else {
-      // Si el usuario borra el ID de búsqueda, vacía ingredientesss para ocultar la tabla
-      this.ingredientedescripcionsss = [];
-    }
-  }
+}
 
   platoSeleccionado: { id: number | null; descripcion: string } = {
     id: null,
@@ -214,10 +189,89 @@ export class IngredientesComponent implements OnInit {
   };
   
 
- 
   updatePlatoId(event: any) {
     const descripcion = event.target.value;
-    const platoSeleccionado = this.ingredientes.find(
+    const platoSeleccionado = this.platosss.find(
+      (plato) => plato.descripcion === descripcion
+    );
+  
+    // Log the value to check if it's assigned correctly
+    console.log("Plato seleccionado:", platoSeleccionado);
+  
+    // Update the value only if a plato is found
+    if (platoSeleccionado) {
+      this.platoSeleccionado = platoSeleccionado;
+      this.ingredientesForm.get("id_plato")?.setValue(platoSeleccionado.id);
+    } else {
+      // Reset values if plato is not found
+      this.platoSeleccionado = { id: null, descripcion: "" };
+      this.ingredientesForm.get("id_plato")?.setValue(null);
+    }
+  }
+  
+  updateFechaId(event: any) {
+    const fecha = event.target.value;
+    const fechaSeleccionado = this.fechass.find((menu) => menu.fecha === fecha);
+  
+    if (fechaSeleccionado) {
+      this.fechaSeleccionado=fechaSeleccionado;
+      this.MenuService.buscarmenuporfecha(fechaSeleccionado.fecha).subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.platos);
+          this.platosss = res.platos;
+  
+          // Actualizar el valor del campo fecha_menu en ingredientesForm
+          this.ingredientesForm.get("fecha")?.setValue(fechaSeleccionado.fecha);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+
+  }
+  
+  updateRegistroFechaId(event: any) {
+    const fecha = event.target.value;
+    const fechaSeleccionado = this.Registrofechass.find((menu) => menu.fecha === fecha);
+  
+    if (fechaSeleccionado) {
+      this.fechaSeleccionado=fechaSeleccionado;
+      this.MenuService.buscarmenuporfecha(fechaSeleccionado.fecha).subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.platos);
+          this.platosss = res.platos;
+  
+          // Actualizar el valor del campo fecha_menu en ingredientesForm
+          this.ingredientesForm.get("fecha")?.setValue(fechaSeleccionado.fecha);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+
+
+
+  }
+  onPlatoInputChange(event: any) {
+    const descripcion = event.target.value;
+    const platoSeleccionado = this.platosss.find((plato) => plato.descripcion === descripcion);
+  
+    if (platoSeleccionado) {
+      // Almacena internamente el id del plato seleccionado
+      this.ingredientesForm.get("id_plato")?.setValue(platoSeleccionado.id);
+    } else {
+      // Si no se encuentra un plato, restablece los valores
+      this.ingredientesForm.get("id_plato")?.setValue(null);
+      this.buscarIngredientePorId();
+    }
+  }
+  
+  
+  updatePlatoIdddddddddddddddddddddddddddddd(event: any) {
+    const descripcion = event.target.value;
+    const platoSeleccionado = this.platosss.find(
       (plato) => plato.descripcion === descripcion
     );
     this.platoSeleccionado = platoSeleccionado || {
@@ -226,27 +280,39 @@ export class IngredientesComponent implements OnInit {
     };
     this.ingredientesForm.get("id_plato")?.setValue(this.platoSeleccionado.id);
   } 
-
-
-  
-
-  updateAlimentoId(event: any) {
+  updatePlatoIdwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww(event: any) {
     const descripcion = event.target.value;
-    const alimentoSeleccionado = this.alimentoss.find(
-      (alimento) => alimento.descripcion === descripcion
+    const platoSeleccionado = this.platosss.find(
+      (plato) => plato.descripcion === descripcion
     );
-    this.alimentoSeleccionado = alimentoSeleccionado || {
+    this.platoSeleccionado = platoSeleccionado || {
       id: null,
       descripcion: descripcion,
     };
-    this.ingredientesForm
-      .get("id_alimento")
-      ?.setValue(this.alimentoSeleccionado.id);
+    this.ingredientesForm.get("id_plato")?.setValue(this.platoSeleccionado.id);
+  
+    console.log("ID de plato seleccionado:", this.platoSeleccionado.id);
   }
-
-
+  
 
  
+  
+  
+
+
+
+
+ //'------------------------------------------------------
+ fechaSeleccionado: { id: number | null; fecha: string } = {
+  id: null,
+  fecha: "",
+};
+
+
+
+
+
+ //-------------------------------------------------------
   //Modal de Agregar Notificacion
   title = "sweetAlert";
   
@@ -297,31 +363,6 @@ export class IngredientesComponent implements OnInit {
 
 
 
-  //obtener todos los platos para utlizarlo en el selection
-  getAllplatos() {
-    this.MenuService.gettplatoselect().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.plato);
-        this.platosss = res.plato;
-      },
-      error: (err) => {
-        // alert("Error en la carga de datos");
-      },
-    });
-  }
-
-  //obtener todos los  alimentos
-  getAllalimentos() {
-    this.AlimentosService.getalimentos().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.alimentos);
-        this.alimentoss = res.alimentos;
-      },
-      error: (err) => {
-        // alert("Error en la carga de datos");
-      },
-    });
-  }
 
   getAllingredientes() {
     this.MenuService.gettplato().subscribe({
@@ -335,6 +376,36 @@ export class IngredientesComponent implements OnInit {
       },
     });
   }
+  
+
+  getAllFechas() {
+    this.MenuService.gettfechaMenu().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.menu);
+        this.fechass = res.menu;
+        
+      },
+      error: (err) => {
+        //alert("Error en la carga de datos");
+      },
+    });
+  }
+
+  getAllFechasRegistro() {
+    this.MenuService.gettfechaMenuregistro().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.menu);
+        this.Registrofechass = res.menu;
+        
+      },
+      error: (err) => {
+        //alert("Error en la carga de datos");
+      },
+    });
+  }
+  
+
+
 
   //Para el registro de ingredientes usando modal
   nuevoCurso() {
@@ -357,7 +428,6 @@ export class IngredientesComponent implements OnInit {
     this.showAlimentoError = false;
     this.showCantidadPersonaError = false;
     this.showDiasError = false;
-    this. getAllalimentos();
   }
   //Para el editar de ingredientes usando modal
 
@@ -368,10 +438,9 @@ export class IngredientesComponent implements OnInit {
       cantidadPersona: item.cantidadPersona,
       numDias: item.numDias,
       id_plato: item.id_plato,         // Establecer el valor del campo id_plato
-      id_alimento: item.id_alimento,   // Establecer el valor del campo id_alimento
+    /*   id_alimento: item.id_alimento,   // Establecer el valor del campo id_alimento */
     });
     console.log("ID de plato:", item.id_plato);
-  console.log("ID de alimento:", item.id_alimento);
     // Verificar si item.plato está definido y tiene una propiedad descripcion
     if (item.plato && item.plato.descripcion) {
     
@@ -389,20 +458,7 @@ export class IngredientesComponent implements OnInit {
       };
     }
     
-  
-    // Verificar si item.alimento está definido y tiene una propiedad descripcion
-    if (item.alimento && item.alimento.descripcion) {
-     
-      this.alimentoSeleccionado.descripcion = item.alimento.descripcion;
-      this.selectedOptionalimento = {
-        descripcion: item.alimento.descripcion,
-        id: item.id_alimento,
-      };
-    } else {
-      // Manejar el caso en que item.alimento o item.alimento.descripcion sean undefined
-      // Puedes asignar un valor predeterminado o realizar alguna otra acción aquí
-    }
-  
+
     this.editandoIngredientes = true;
     this.idIngredientesEditar = item.id;
   console.log("idddddddddddddd:", this.idIngredientesEditar);
@@ -430,13 +486,16 @@ export class IngredientesComponent implements OnInit {
         numDias: this.ingredientesForm.value.numDias,
         cantidadPersona: this.ingredientesForm.value.cantidadPersona,
         id_plato: this.ingredientesForm.value.id_plato,
-        id_alimento: this.ingredientesForm.value.id_alimento,
-
+        
+        fecha: this.ingredientesForm.value.fecha,
+/*         id_alimento: this.ingredientesForm.value.id_alimento,
+ */
 
         
         
       };
-      this. getAllalimentos();
+
+      console.log("Datos a enviar:", datos);
       if (!this.editandoIngredientes) {
         this.IngredientesService.guardar(datos).subscribe(
           (result: any) => {
@@ -476,7 +535,6 @@ export class IngredientesComponent implements OnInit {
       this.showPrecioError = this.ingredientesForm.controls.precio.invalid;
       this.showIdplatoError = this.ingredientesForm.controls.id_plato.invalid;
       this.showIdalimentoError =
-        this.ingredientesForm.controls.id_alimento.invalid;
       this.showDiasError = this.ingredientesForm.controls.numDias.invalid;
       this.showCantidadPersonaError =
         this.ingredientesForm.controls.cantidadPersona.invalid;
