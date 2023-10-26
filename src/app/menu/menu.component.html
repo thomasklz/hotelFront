@@ -5,11 +5,100 @@
 <div class="main-content">
   <div class="container-fluid">
 
-    <div class="row">
-      <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
-              data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +
-      </button>
+    <div class="form-row">
+      <div class="form-group  ">
+        <label for="filtroSelector">Filtrar por:</label>
+        <div class="d-flex align-items-center">
+          <div class="mr-4 text-center">
+            <div class="form-check">
+              <input
+                type="radio"
+                id="filtroNombre"
+                class="form-check-input"
+                name="filtro"
+                [(ngModel)]="filtroSeleccionado"
+                [value]="'nombre'"
+                (change)="aplicarFiltros()"
+              />
+              <label for="filtroNombre" class="form-check-label">Nombre</label>
+            </div>
+            <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'nombre'">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+
+<!--             <i  class="material-icons mt-2">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+ -->          </div>
+
+
+          <div class="text-center">
+            <div class="form-check">
+              <input
+                type="radio"
+                id="filtroFecha"
+                class="form-check-input"
+                name="filtro"
+                [(ngModel)]="filtroSeleccionado"
+                [value]="'fecha'"
+                (change)="aplicarFiltros()"
+              />
+              <label for="filtroFecha" class="form-check-label">Fecha</label>
+            </div>
+<!--             <i class="material-icons mt-2">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+ -->            <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'fecha'">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+
+          </div>
+        </div>
+      </div>
+
+
+        <!-- Campo de filtro de Nombre -->
+        <div class="form-row" *ngIf="filtroSeleccionado === 'nombre'">
+          <div class="form-group col-md-4">
+            <div class="formmm3">
+           
+           <div class="search-containerr"  *ngIf="filtroSeleccionado === 'nombre'">
+           <label class="label"  for="nombreplatoFiltro">Buscar el nombre del plato:</label>
+            <div class="search-box">
+              <input type="text" class="form-control" [(ngModel)]="nombreplatoFiltro" (input)="aplicarFiltros()" />
+        
+            </div>
+           </div>
+            </div>
+          </div>
+        </div>
+
+
+
+         <!-- Campo de filtro de  Fecha -->
+         <div class="form-row" *ngIf="filtroSeleccionado === 'fecha'">
+          <div class="form-group col-md-4">
+            <div class="formmm3">
+           
+              <div class="search-containerr"  *ngIf="filtroSeleccionado === 'fecha'">
+ 
+
+                <label class="label"  for="fechaFiltro">Buscar la fecha:</label>
+                <div class="search-box">
+                  <input type="date" class="form-control" [(ngModel)]="fechaFiltro" (input)="aplicarFiltrosfecha()" />
+              
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     
+    </div>
+
+
+
+
+
+
+ 
+
+    <div class="row">
+    
+      <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
+    data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +
+  </button>
       <div class="col-md-12">
     
         <div class="card text-center">
@@ -39,7 +128,10 @@
                   Acciones
                 </th>
                 </thead>
-                <tbody *ngFor="let item of pagedMenus; let i = index ">
+                <tbody>
+                  <ng-container *ngFor="let item of pagedMenus; let i = index">
+                    <ng-container *ngIf="(!nombreplatoFiltro || item.plato.descripcion.toLowerCase().includes(nombreplatoFiltro.toLowerCase()))||(!fechaFiltro || item.fecha.toLowerCase().includes(fechaFiltro.toLowerCase()))">
+  
                 <tr>
                   <td>
                     {{ i + 1 }}
@@ -64,6 +156,8 @@
                     </button2>
                   </td>
                 </tr>
+              </ng-container>
+            </ng-container>
                 </tbody>
               </table> 
             </div>
@@ -106,13 +200,13 @@
             <div class="form-group col-md-8">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label" for="input-datalist-plato">Buscar el nombre del plato:</label>
+                  <label class="label" >Buscar el nombre del plato:</label>
                   <div class="search-box">
                     <input
                       type="text"
                       class="form-control"
                       list="list-timezone-plato"
-                      id="input-datalist-plato"
+                     
                       [value]="platoSeleccionado.descripcion"
                       (input)="updatePlatoId($event)"
                       formControlName="id_plato"

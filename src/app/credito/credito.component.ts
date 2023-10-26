@@ -1,30 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
-import swal from 'sweetalert';
-import swal2 from 'sweetalert';
-import { IngredientesService } from '../servicios/ingredientes.service';
-import Swal from 'sweetalert2';
-import { MenuService } from 'app/servicios/menu.service';
-import { CreditosService } from 'app/servicios/creditos.service';
-import { UsuarioService } from '../servicios/usuario.service';
-import { NgZone } from '@angular/core';
-import {  ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import { Router } from "@angular/router";
+import { MatTableDataSource } from "@angular/material/table";
+import swal from "sweetalert";
+import swal2 from "sweetalert";
+import { IngredientesService } from "../servicios/ingredientes.service";
+import Swal from "sweetalert2";
+import { MenuService } from "app/servicios/menu.service";
+import { CreditosService } from "app/servicios/creditos.service";
+import { UsuarioService } from "../servicios/usuario.service";
+import { NgZone } from "@angular/core";
+import { ElementRef, ViewChild } from "@angular/core";
 
 @Component({
-  selector: 'app-credito',
-  templateUrl: './credito.component.html',
-  styleUrls: ['./credito.component.scss']
+  selector: "app-credito",
+  templateUrl: "./credito.component.html",
+  styleUrls: ["./credito.component.scss"],
 })
 export class CreditoComponent implements OnInit {
-  @ViewChild('inputDatalist') inputDatalist: ElementRef;
+  @ViewChild("inputDatalist") inputDatalist: ElementRef;
 
   dataSource = new MatTableDataSource<any>();
-  id: string = '';
-  id_persona: string = '';
-  id_plato: string = '';
+  id: string = "";
+  id_persona: string = "";
+  id_plato: string = "";
   personasss: any[] = [];
   personas: any[] = [];
 
@@ -34,26 +39,29 @@ export class CreditoComponent implements OnInit {
   ingredientId: string = "";
   ingredientedescripcionsss: any[] = [];
 
-
   tituloForm;
   creditosForm!: FormGroup;
   editandoCreditos: boolean = false; // Variable para indicar si se está editando un alimento existente
-  idCreditosEditar: string = ''; // Variable para almacenar el ID del alimento en caso de edición
-  showPrecioError = false; //evitando que se muestren los mensajes de campo requerido 
-  showIdplatoError = false;//evitando que se muestren los mensajes de campo requerido 
+  idCreditosEditar: string = ""; // Variable para almacenar el ID del alimento en caso de edición
+  showPrecioError = false; //evitando que se muestren los mensajes de campo requerido
+  showIdplatoError = false; //evitando que se muestren los mensajes de campo requerido
   showFechaError = false;
   showPagadoError = false;
   showPersonaError = false;
   showCantidadError = false;
+  nombreUsuarioInput: string = "";
+  creditosssOriginal: any[] = [];
+
   constructor(
     private http: HttpClient,
     private MenuService: MenuService,
     private router: Router,
     private formBuilder: FormBuilder,
     private CreditosService: CreditosService,
+    private zone: NgZone,
+    private changeDetector: ChangeDetectorRef,
     private UsuarioService: UsuarioService,
-    private IngredientesService:IngredientesService,
-    private zone: NgZone
+    private IngredientesService: IngredientesService
   ) {
     this.getAllplatos();
     this.getAllpersonas();
@@ -62,39 +70,118 @@ export class CreditoComponent implements OnInit {
 
   //cargar los datos de la seleccion de la tabla  en la modal
   ngOnInit() {
-    console.log('Valor de ingredientId:', this.ingredientId);
+    console.log("Valor de ingredientId:", this.ingredientId);
 
     this.getAllcreditos();
     this.getAlldescripcionplatos();
     this.getAllpersonascedula();
+    this. aplicarFiltros();
 
-    
     this.creditosForm = this.formBuilder.group({
-      precio: new FormControl("", [Validators.required, Validators.minLength(1)]),
-      id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      id_persona: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      pagado: new FormControl("", ),
-     
-      cantidad: new FormControl("", [Validators.required, Validators.minLength(1)]),
+      precio: new FormControl("", [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      id_plato: new FormControl("", [
+        Validators.required,
+        Validators.maxLength(1),
+      ]),
+      id_persona: new FormControl("", [
+        Validators.required,
+        Validators.maxLength(1),
+      ]),
+      pagado: new FormControl(""),
+
+      cantidad: new FormControl("", [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      nombreUsuarioInput: new FormControl(""),
     });
 
-    this.inputDatalist.nativeElement.addEventListener('change', () => {
+    this.inputDatalist.nativeElement.addEventListener("change", () => {
       this.onDescriptionSelected();
     });
   }
 
-  // ... (resto del código)
 
-onDescriptionSelected() {
-  // Llamada a la función buscarPrecioPorDescripcion al seleccionar una descripción
-  this.buscarPrecioPorDescripcion();
+  pageSize = 10;  // Tamaño de la página
+  currentPage = 1;  // Página actual
+  totalItems = 0;  // Total de elementos
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.pageSize;
+  }
+
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.pageSize - 1, this.totalItems - 1);
+  }
+
+  get pagedCreditos(): any[] {
+    return this.creditosss.slice(this.startIndex, this.endIndex + 1);
+  }
+
+  // ... otras funciones del componente
+
+
+  onPageChange(event: number) {
+    this.currentPage = event;
+  }
+
+ 
+//----------------filtro
+nombreFiltro: string = '';
+filtroSeleccionado: string = ''; 
+fechaFiltro: string = '';
+
+// ...
+aplicarFiltros() {
+if (this.filtroSeleccionado === 'nombre') {
+  // Aplica el filtro por nombre y restablece el filtro de fecha
+  this.fechaFiltro = '';
+} else if (this.filtroSeleccionado === 'fecha') {
+  // Si se selecciona el filtro de fecha, vacía el filtro de nombre
+  this.nombreFiltro = '';
 }
 
-// ... (resto del código)
+this.creditosss = this.creditosssOriginal.filter(item => {
+  return !this.nombreFiltro || item.persona.nombre.toLowerCase().includes(this.nombreFiltro.toLowerCase());
+});
+}
+
+aplicarFiltrosfecha() {
+if (this.filtroSeleccionado === 'fecha') {
+  // Aplica el filtro por fecha y restablece el filtro de nombre
+  this.nombreFiltro = '';
+} else if (this.filtroSeleccionado === 'nombre') {
+  // Si se selecciona el filtro por nombre, vacía el filtro de fecha
+  this.fechaFiltro = '';
+}
+
+this.creditosss = this.creditosssOriginal.filter(item => {
+  return !this.fechaFiltro || item.fecha.includes(this.fechaFiltro);
+});
+}
+// ...
+
+
+  
+
+  //-----------------------------------------
+
+  onDescriptionSelected() {
+    // Llamada a la función buscarPrecioPorDescripcion al seleccionar una descripción
+    this.buscarPrecioPorDescripcion();
+  }
+
+  // ... (resto del código)
 
   showMoreOptionsplato: boolean = false;
   showMoreOptionspersona: boolean = false;
-
 
   selectedOptionplato: any = null;
   selectedOptionpersona: any = null;
@@ -110,7 +197,7 @@ onDescriptionSelected() {
     this.selectedOptionplato = item;
     this.showMoreOptionsplato = false;
     // Asignar el valor del ID del plato seleccionado al formulario
-    this.creditosForm.get('id_plato')?.setValue(item.id);
+    this.creditosForm.get("id_plato")?.setValue(item.id);
   }
 
   selectOptionpersona(item: any) {
@@ -118,23 +205,26 @@ onDescriptionSelected() {
     this.showMoreOptionspersona = false;
 
     // Asignar el valor del ID del alimento seleccionado al formulario
-    this.creditosForm.get('id_persona')?.setValue(item.id);
+    this.creditosForm.get("id_persona")?.setValue(item.id);
   }
 
   getSelectedOptionLabelplato() {
-    return this.selectedOptionplato ? this.selectedOptionplato.descripcion : 'Seleccione  ';
+    return this.selectedOptionplato
+      ? this.selectedOptionplato.descripcion
+      : "Seleccione  ";
   }
 
   getSelectedOptionLabelpersona() {
-    return this.selectedOptionpersona ? this.selectedOptionpersona.nombre : 'Seleccione  ';
+    return this.selectedOptionpersona
+      ? this.selectedOptionpersona.nombre
+      : "Seleccione  ";
   }
 
-
   //Modal de Agregar Notificacion
-  title = 'sweetAlert';
+  title = "sweetAlert";
   showModal() {
     swal2({
-      title: 'Datos registrado exitosamente',
+      title: "Datos registrado exitosamente",
       icon: "success",
     });
   }
@@ -142,16 +232,15 @@ onDescriptionSelected() {
   //Modal de No agg error de Notificacion
   showModalError() {
     swal({
-      title: 'Error de registro de datos ',
+      title: "Error de registro de datos ",
       icon: "error",
-
     });
   }
 
   //Modal de Modificacion Notificacion
   showModalEdit() {
     swal2({
-      title: 'Datos modificado exitosamente',
+      title: "Datos modificado exitosamente",
       icon: "success",
     });
   }
@@ -159,7 +248,7 @@ onDescriptionSelected() {
   //Modal de  error de Modificacion Notificacion
   showModalErrorEdit() {
     swal({
-      title: 'Error de modificación de datos ',
+      title: "Error de modificación de datos ",
       icon: "error",
     });
   }
@@ -195,22 +284,18 @@ onDescriptionSelected() {
       },
     });
   }
- 
+
   getAlldescripcionplatos() {
     this.MenuService.gettplato().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.platos);
         this.ingredientes = res.platos;
-        
       },
       error: (err) => {
         //alert("Error en la carga de datos");
       },
     });
   }
-
-
-
 
   getAllpersonas() {
     this.UsuarioService.getpersonacedula().subscribe({
@@ -224,10 +309,6 @@ onDescriptionSelected() {
     });
   }
 
-
-
-  
-
   getAllpersonascedula() {
     this.UsuarioService.getpersonacedula().subscribe({
       next: (res) => {
@@ -240,12 +321,14 @@ onDescriptionSelected() {
     });
   }
 
-  //obtener todos los credito 
+  //obtener todos los credito
   getAllcreditos() {
     this.CreditosService.getcreditos().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.creditos);
         this.creditosss = res.creditos;
+        this.creditosssOriginal = [...res.creditos]; 
+        this.totalItems = res.creditos.length; 
       },
       error: (err) => {
         //alert("Error en la carga de datos");
@@ -255,20 +338,18 @@ onDescriptionSelected() {
 
   //Para el registro de plato usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de créditos'; //cambio de nombre en el encabezado
+    this.tituloForm = "Registro de créditos"; //cambio de nombre en el encabezado
     this.creditosForm.reset();
     this.editandoCreditos = false;
-    this.idCreditosEditar = '';
+    this.idCreditosEditar = "";
 
     // Reset the selectedOption and clear the form field value
     this.selectedOptionpersona = null;
-    this.creditosForm.get('id_persona')?.setValue(null);
+    this.creditosForm.get("id_persona")?.setValue(null);
 
     // Reset the selectedOption and clear the form field value
     this.selectedOptionplato = null;
-    this.creditosForm.get('id_plato')?.setValue(null);
-
-
+    this.creditosForm.get("id_plato")?.setValue(null);
 
     // Establecer variables a false al editar
     this.showPersonaError = false;
@@ -310,6 +391,9 @@ onDescriptionSelected() {
     this.editandoCreditos = true;
     this.idCreditosEditar = item.id;
   
+    // Cargar el valor del campo "Crédito a:" con el nombre del usuario
+    this.nombreUsuarioInput = item.persona.nombre;
+  
     // Establecer variables a false al editar
     this.showPrecioError = false;
     this.showIdplatoError = false;
@@ -317,102 +401,116 @@ onDescriptionSelected() {
     this.showPagadoError = false;
     this.showCantidadError = false;
     this.showFechaError = false;
+  
+    // Llama a tu método onPersonaClick() para actualizar otros datos según el nombre del usuario
+    this.onPersonaClick();
   }
   
 
+  // ... (resto del código)
 
-// ... (resto del código)
+  updateUsuarioId(event: any) {
+    const usuarioInput = event.target.value;
+    console.log("Usuario Input:", usuarioInput);
 
+    const usuarioSeleccionado = this.personas.find(
+      (usuario) => usuario.usuario === usuarioInput
+    );
+    console.log("Usuario Seleccionado:", usuarioSeleccionado);
 
+    this.usuarioSeleccionado = usuarioSeleccionado || {
+      id: null,
+      usuario: usuarioInput,
+    };
+    this.creditosForm.get("id_persona")?.setValue(this.usuarioSeleccionado.id);
+    this.onPersonaClick();
+  }
 
-updateUsuarioId(event: any) {
-  const usuarioInput = event.target.value;
-  console.log('Usuario Input:', usuarioInput);
+  updatePlatoId(event: any) {
+    const descripcion = event.target.value;
+    const platoSeleccionado = this.ingredientes.find(
+      (plato) => plato.descripcion === descripcion
+    );
+    this.platoSeleccionados = platoSeleccionado || {
+      id: null,
+      descripcion: descripcion,
+    };
+    this.creditosForm.get("id_plato")?.setValue(this.platoSeleccionados.id);
 
-  const usuarioSeleccionado = this.personas.find(
-    (usuario) => usuario.usuario === usuarioInput
-  );
-  console.log('Usuario Seleccionado:', usuarioSeleccionado);
+    // Actualiza ingredientId con la descripción del plato seleccionado
+    this.ingredientId = this.platoSeleccionados.descripcion || "";
 
-  this.usuarioSeleccionado = usuarioSeleccionado || {
+    // Llama a buscarPrecioPorDescripcion directamente al seleccionar la descripción
+    this.buscarPrecioPorDescripcion();
+  }
+
+  usuarioSeleccionado: { id: number | null; usuario: string } = {
     id: null,
-    usuario: usuarioInput,
+    usuario: "",
   };
-  this.creditosForm.get("id_persona")?.setValue(this.usuarioSeleccionado.id);
-}
 
-updatePlatoId(event: any) {
-  const descripcion = event.target.value;
-  const platoSeleccionado = this.ingredientes.find(
-    (plato) => plato.descripcion === descripcion
-  );
-  this.platoSeleccionados = platoSeleccionado || {
+  // ... (resto del código)
+  platoSeleccionados: { id: number | null; descripcion: string } = {
     id: null,
-    descripcion: descripcion,
+    descripcion: "",
   };
-  this.creditosForm.get("id_plato")?.setValue(this.platoSeleccionados.id);
 
-  // Actualiza ingredientId con la descripción del plato seleccionado
-  this.ingredientId = this.platoSeleccionados.descripcion || "";
+  buscarPrecioPorDescripcion() {
+    // Verifica si ingredientId tiene un valor
+    if (this.ingredientId) {
+      // Lógica para buscar el precio por descripción
+      this.IngredientesService.getobtenerDescripcionPlatoPrecio(
+        this.ingredientId
+      ).subscribe(
+        (result: any) => {
+          console.log("Respuesta del servicio:", result);
+          const plato = result.platos[0].plato; // Accedemos a la propiedad 'plato' del primer elemento del arreglo
+          if (plato && plato.precio !== undefined) {
+            // Actualiza el valor del precio en el formulario
+            this.creditosForm.get("precio")?.setValue(plato.precio);
+          } else {
+            // Maneja el caso cuando no se encuentra el plato o el precio no está definido
+            console.error("Plato no encontrado o precio no definido");
+          }
+        },
+        (error) => {
+          console.error("Error al obtener precio del plato", error);
+        }
+      );
+    } else {
+      console.error("ingredientId no tiene un valor");
+    }
+  }
 
-  // Llama a buscarPrecioPorDescripcion directamente al seleccionar la descripción
-  this.buscarPrecioPorDescripcion();
-}
-
-
-usuarioSeleccionado: { id: number | null; usuario: string } = {
-  id: null,
-  usuario: "",
-};
-
-
-
-// ... (resto del código)
-platoSeleccionados: { id: number | null; descripcion: string } = {
-  id: null,
-  descripcion: "",
-};
-
-buscarPrecioPorDescripcion() {
-  // Verifica si ingredientId tiene un valor
-  if (this.ingredientId) {
-    // Lógica para buscar el precio por descripción
-    this.IngredientesService.getobtenerDescripcionPlatoPrecio(this.ingredientId).subscribe(
+  onPersonaClick() {
+    const nombreUsuario = this.usuarioSeleccionado.usuario;
+    this.UsuarioService.obtenerNombrePorUsuario(nombreUsuario).subscribe(
       (result: any) => {
-        console.log('Respuesta del servicio:', result);
-        const plato = result.platos[0].plato; // Accedemos a la propiedad 'plato' del primer elemento del arreglo
-        if (plato && plato.precio !== undefined) {
-          // Actualiza el valor del precio en el formulario
-          this.creditosForm.get('precio')?.setValue(plato.precio);
+        if (result.nombre) {
+          this.nombreUsuarioInput = result.nombre;
+          this.changeDetector.detectChanges(); // Forzar la actualización de la vista
+          console.log("Nombre del usuario actualizado:", result.nombre);
         } else {
-          // Maneja el caso cuando no se encuentra el plato o el precio no está definido
-          console.error('Plato no encontrado o precio no definido');
+          console.error("Nombre de usuario no encontrado");
         }
       },
       (error) => {
-        console.error('Error al obtener precio del plato', error);
+        console.error("Error al obtener el nombre del usuario", error);
       }
     );
-  } else {
-    console.error('ingredientId no tiene un valor');
   }
-}
 
+  onDescriptionInput() {
+    // Se ejecutará cada vez que el usuario escriba o seleccione un valor
+    console.log("Valor seleccionado o escrito:", this.ingredientId);
+    // Puedes realizar la lógica necesaria aquí
+    this.buscarPrecioPorDescripcion();
+  }
 
-onDescriptionInput() {
-  // Se ejecutará cada vez que el usuario escriba o seleccione un valor
-  console.log('Valor seleccionado o escrito:', this.ingredientId);
-  // Puedes realizar la lógica necesaria aquí
-  this.buscarPrecioPorDescripcion();
-}
-
-
-onDescriptionChange(newValue: string) {
-  console.log('Nuevo valor seleccionado o escrito:', newValue);
-  this.buscarPrecioPorDescripcion();
-}
-
-
+  onDescriptionChange(newValue: string) {
+    console.log("Nuevo valor seleccionado o escrito:", newValue);
+    this.buscarPrecioPorDescripcion();
+  }
 
   // Registro de Credito...
 
@@ -424,12 +522,13 @@ onDescriptionChange(newValue: string) {
       this.showPagadoError = false;
       this.showCantidadError = false;
       this.showFechaError = false;
-  
+     
       // Set the default value of pagado to false when adding a new credit
       if (!this.editandoCreditos) {
-        this.creditosForm.get('pagado')?.setValue('0');
+        this.creditosForm.get("pagado")?.setValue("0");
+       
       }
-  
+
       const datos = {
         precio: this.creditosForm.value.precio,
         cantidad: this.creditosForm.value.cantidad,
@@ -438,17 +537,19 @@ onDescriptionChange(newValue: string) {
         id_plato: this.creditosForm.value.id_plato,
         id_persona: this.creditosForm.value.id_persona,
       };
-  
+
       if (!this.editandoCreditos) {
         this.CreditosService.guardar(datos).subscribe(
           (result: any) => {
             console.log(result);
             this.showModal();
             this.getAllcreditos(); // Actualizar la tabla después de agregar un crédito
+            this.nombreUsuarioInput = "";
             this.creditosForm.reset(); // Restablecer los valores del formulario
           },
           (error) => {
             console.log(error);
+            this.nombreUsuarioInput = "";
             this.showModalError();
           }
         );
@@ -467,29 +568,29 @@ onDescriptionChange(newValue: string) {
           }
         );
       }
+      
     } else {
       this.showPrecioError = this.creditosForm.controls.precio.invalid;
       this.showPagadoError = this.creditosForm.controls.pagado.invalid;
+      this.nombreUsuarioInput = "";
       this.showFechaError = this.creditosForm.controls.fecha.invalid;
       this.showCantidadError = this.creditosForm.controls.cantidad.invalid;
       this.showIdplatoError = this.creditosForm.controls.id_plato.invalid;
       this.showPersonaError = this.creditosForm.controls.id_persona.invalid;
+      
     }
   }
-  
 
   // ...
   showModalEliminar(id: any) {
     Swal.fire({
-      title: '¿Estás seguro que deseas eliminar el ingrediente?',
-      icon: 'warning',
+      title: "¿Estás seguro que deseas eliminar el ingrediente?",
+      icon: "warning",
       showCancelButton: true,
 
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#bf0d0d',
-
-
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#bf0d0d",
     }).then((result) => {
       if (result.isConfirmed) {
         this.eliminarIngrediente(id);
@@ -497,12 +598,10 @@ onDescriptionChange(newValue: string) {
     });
   }
 
-
   showModalErrorEliminar() {
     Swal.fire({
-      title: 'Error al eliminar el alimento',
-      icon: 'error',
-
+      title: "Error al eliminar el alimento",
+      icon: "error",
     });
   }
   //aqui hay que corregir porque no hemos hecho eliminar
@@ -510,8 +609,8 @@ onDescriptionChange(newValue: string) {
     this.CreditosService.guardar(id).subscribe({
       next: (res) => {
         Swal.fire({
-          title: 'Datos eliminados exitosamente',
-          icon: 'success',
+          title: "Datos eliminados exitosamente",
+          icon: "success",
         }).then(() => {
           this.getAllcreditos();
         });
@@ -524,9 +623,8 @@ onDescriptionChange(newValue: string) {
   // Restablecer el formulario cuando se cierre el modal
   closeModal() {
     this.creditosForm.reset();
+    this.nombreUsuarioInput = "";
     this.editandoCreditos = false;
-    this.idCreditosEditar = '';
+    this.idCreditosEditar = "";
   }
-
 }
-

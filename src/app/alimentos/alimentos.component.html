@@ -2,11 +2,32 @@
 
 <!-- Listado de los alimentos. -->
 <div class="main-content">
+  
   <div class="container-fluid">
+    <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
+    data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+
+    <div class="search-container">
+      <label class="label"  for="nombreproductoFiltro">Buscar el nombre del producto:</label>
+      <div class="search-box">
+        <input type="text" 
+        class="form-control"
+       
+        id="nombreproductoFiltro"
+        [(ngModel)]="nombreproductoFiltro" (input)="aplicarFiltros()"  />
+       
+      </div>
+   
+      
+    </div>
+
+
+
+
+
     <div class="row">
       <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+     
      
       <div class="col-md-12">
 
@@ -38,7 +59,10 @@
                   </th>
 
                 </thead>
-                <tbody *ngFor="let item of pagedMenus ;let i=index ">
+                <tbody >
+                  <ng-container *ngFor="let item of pagedMenus; let i = index">
+                  <ng-container *ngIf="(!nombreproductoFiltro || item.descripcion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+
                   <tr>
                     <td>
                       {{i+1}}
@@ -67,6 +91,9 @@
                       </button2>
                     </td>
                   </tr>
+
+                </ng-container>
+              </ng-container>
                 </tbody>
               </table>
             </div>

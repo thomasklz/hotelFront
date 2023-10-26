@@ -2,14 +2,38 @@
 
 
 
+
+
+
 <div class="main-content">
+
   <div class="container-fluid">
+    <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
+    data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+    
+    <div class="search-container">
+      <label class="label" >Buscar el nombre del plato:</label>
+      <div class="search-box">
+        <input type="text" 
+        class="form-control"
+       
+      
+        [(ngModel)]="nombreplatoFiltro" (input)="aplicarFiltros()"  />
+       
+      </div>
+   
+      
+    </div>
 
 
-    <div class="row">
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
 
+
+
+
+
+
+    <div class="form-row">
+           
       <div class="col-md-12">
 
         <div class="card text-center">
@@ -38,7 +62,14 @@
                   </th>
 
                 </thead>
-                <tbody *ngFor="let item of pagedMenus; let i=index">
+
+                <tbody>
+                  <ng-container *ngFor="let item of pagedMenus; let i = index">
+                    <ng-container *ngIf="(!nombreplatoFiltro || item.descripcion.toLowerCase().includes(nombreplatoFiltro.toLowerCase()))">
+
+
+                    
+             
                   <tr>
                     <td>{{ startIndex + i + 1 }}</td>
                     <td>{{ item.tipo_menu.tipo }}</td>
@@ -53,6 +84,8 @@
                       </button2>
                     </td>
                   </tr>
+                </ng-container>
+              </ng-container>
                 </tbody>
                 
               </table>

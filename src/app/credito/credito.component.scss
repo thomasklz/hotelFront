@@ -6,6 +6,7 @@ img {
 .texto-grueso {
   font-weight: bold;
   font-size: 22px;
+
 }
 
 
@@ -46,13 +47,18 @@ button2 {
 
 .heads {
   background-color: rgb(206, 25, 25);
+  justify-content: center;
+  align-items: center;
 }
 
 h5 {
   font-size: larger;
   color: rgb(255, 255, 255);
-  text-align: center;
+ // width: 1115px;
+  margin: 0 auto; /* Esto centrará el h5 horizontalmente */
+ // text-align: center; /* Esto centrará el texto dentro del h5 */
 }
+
 
 .disabled {
   font-weight: bold;
@@ -73,13 +79,12 @@ th {
 
 
 
-
-.form-control {
-  border: none;
-  box-shadow: none;
-  outline: none;
-  
+.centered-horizontal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 
 .select-gr {
   font-size: 18px;
@@ -91,6 +96,91 @@ th {
 }
 
 
+.centered-horizontal {
+  display: flex;
+  align-items: center;
+}
+
+.select-grr {
+  font-size: 18px;
+  color: rgb(158, 155, 155);
+  margin-right: 10px;
+}
+
+/* Estilos para el contenido dentro de la fila */
+.centered-horizontal  {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.el{
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.centered-horizontal div {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.estilosversion2 {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  width: 350px;
+  font-size: 18px;
+  
+}
+.estilosversion3 {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #ffffff;
+  /* Agregamos solo el borde inferior */
+  width: 350px;
+  font-size: 18px;
+  
+}
+.radio-checked i {
+  color: #007bff; /* Color deseado para el círculo cuando está seleccionado */
+}
+
+
+.pagination-containerrrr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+}
+
+.pagination {
+  /* Estilos adicionales para la paginación si es necesario */
+  /* ... */
+}
+/* Agrega estilos para quitar bordes a los botones de paginación */
+.pagination button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+.k{
+  font-weight: bold;
+}
+/* Estilo para los íconos dentro de los botones */
+.pagination button i {
+  margin-right: 5px; /* Puedes ajustar este valor según tu preferencia */
+}
+
+
 .estilos {
   content: "";
   margin-top: 10px;
@@ -99,10 +189,24 @@ th {
   /* Removemos todos los bordes */
   border-bottom: 1px solid #888888;
   /* Agregamos solo el borde inferior */
-  width: 400px;
+  width: 910px;
   font-size: 18px;
+  
 }
 
+
+.estilosss {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  width: 400pxpx;
+  font-size: 18px;
+  
+}
 .estil {
   content: "";
   margin-top: 10px;
@@ -114,20 +218,35 @@ th {
 
   font-size: 18px;
 }
+/*----------------para la modal----------------------------------*/
+.tam{
+  width: 1000px;
+  
+}
 
+.tam1{
+  width: 1130px;
+  
+}
 .heads {
-  width: 500px;
+  width: 1000px;
   display: flex;
-  justify-content: center;
+  //justify-content: center;
   align-items: center;
 }
+
 
 header {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.modal-dialog {
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .x {
 
   height: 80px;
@@ -141,17 +260,9 @@ header {
 
 /* ... (your existing CSS) ... */
 
-.custom-dropdown {
-  position: relative;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  width: 400px;
-}
 
-.selected-option {
-  padding: 8px;
-  font-size: 18px;
-}
+
+
 
 .options-container {
   position: absolute;
@@ -161,7 +272,7 @@ header {
 
   background-color: #fff;
   border: 2px solid #ccc;
-  max-height: 200px;
+  max-height: 500px;
   overflow-y: auto;
   z-index: 1;
 
@@ -200,16 +311,18 @@ header {
   position: relative;
   border: 1px solid #ccc;
   cursor: pointer;
-  width: 400px;
+  width: 190px;
 }
 
 .selected-option {
   padding: 8px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   /* Add this to create space for the arrow */
 }
+
 
 .down-arrow {
   width: 12px;
@@ -225,4 +338,140 @@ header {
 .editable-row:hover {
   background-color: #c0c0c0;
   /* Cambia el color a tu elección */
+}
+
+
+
+.modal-with-padding {
+  padding-left: 40px; /* Ajusta el valor según el espacio deseado */
+  padding-right: 30px; /* Ajusta el valor según el espacio deseado */
+
+}
+
+/* Estilo para centrar horizontalmente el título del modal */
+.text-center {
+  text-align: center;
+}
+
+
+.formmm {
+  width: 910px;
+  }
+.cursor{
+  cursor: pointer;
+}
+  .formmm3 {
+    margin-left: 30px;
+    width: 900px;
+    }
+    .search-containerr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #ffffff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      width: 800px;
+    }
+    
+.formmm2 {
+  width: 500px;
+  }
+
+/* Estilo para quitar bordes y sombreado del input */
+.form-control {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+
+/* Estilo para hacer la letra más grande en el label */
+.label {
+  font-size: 18px; /* Ajusta el tamaño de la fuente según tus preferencias */
+  margin-right: 25px;
+  color: rgb(141, 130, 130);
+}
+/* Estilo para hacer el botón más largo */
+.btn-danger {
+  width: auto; /* Ancho automático para adaptarse al contenido */
+  display: inline-flex; /* Para colocar el icono al lado del texto */
+  align-items: center; /* Para alinear verticalmente el icono y el texto */
+}
+
+/* Estilo para el icono dentro del botón */
+.btn-danger i {
+  margin-left: 5px; /* Espacio entre el texto y el icono (ajusta según sea necesario) */
+}
+
+
+/* Estilos generales del contenedor de búsqueda */
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  
+}
+
+/* Estilos para el cuadro de búsqueda */
+.search-box {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
+
+}
+
+/* Estilos para el botón de búsqueda */
+.btn-danger {
+  margin-left: 10px; /* Espacio entre el botón y el cuadro de búsqueda */
+}
+
+
+
+
+
+/* Centrar el título h5 */
+.modal-title {
+  text-align: center !important;
+}
+
+/* Centrar los botones "Cerrar" y "Guardar" */
+.modal-footer {
+  text-align: center !important;
+}
+
+/* Aplicar estilos solo a la modal con la clase "my-custom-modal" */
+.my-custom-modal .modal-title {
+  text-align: center;
+}
+
+.my-custom-modal .modal-footer {
+  text-align: center;
+}
+/* Estilo para centrar verticalmente el título h5 */
+.modal-header {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 15px; /* Ajusta este valor según sea necesario para centrar verticalmente */
+}
+
+/* Estilo para centrar horizontalmente los botones de la modal */
+.modal-footer {
+  justify-content: center;
+  padding-top: 15px; /* Ajusta este valor según sea necesario para centrar verticalmente */
+}
+
+/* Estilo para el botón Cerrar (X) en la modal */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

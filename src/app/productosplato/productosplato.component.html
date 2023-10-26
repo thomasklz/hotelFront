@@ -2,39 +2,76 @@
 
 <div class="main-content">
   <div class="container-fluid">
-    <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
-      data-target="#ventanaForm" (click)="nuevoCurso()">
-      AGREGAR +
-    </button>
+    
 
     <div class="search-container">
-      <label class="label" for="input-datalist">Buscar el nombre del plato:</label>
+ 
+
+
+
+
+
+
+      <label class="label" for="input-datalist-fecha">Buscar fecha:</label>
       <div class="search-box">
-        <input type="text" class="form-control" list="list-timezone" id="input-datalist" [(ngModel)]="ingredientId" />
-        <datalist id="list-timezone">
-          <option *ngFor="let ingrediente of productosplato" [value]="ingrediente.descripcion"></option>
+        <input
+          type="date"
+          class="form-control"
+          list="list-timezone-fecha"
+          id="input-datalist-fecha"
+          [value]="fechaSeleccionado.fecha"
+          (change)="updateFechaId($event)"
+          formControlName="fecha"
+        />
+        <datalist id="list-timezone-fecha">
+          <option *ngFor="let item of fechass" [value]="item.fecha"></option>
         </datalist>
       </div>
-      <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId(); buscarDescripcionporId()">
-        Buscar<i class="fa fa-search fa-stack-1x"></i>
-      </button>
+
+     <br><br>
+    
+     <label class="label" >Seleccione el plato:</label>
+     <div class="search-box">
+      <input
+        type="text"
+        class="form-control"
+        list="list-timezone-plato"
+       
+        [value]="platoSeleccionado.descripcion"
+        (input)="updatePlatoId($event)"
+      />
+
+    
+
+      <datalist id="list-timezone-plato">
+        <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
+      </datalist>
+    </div>
+    <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId() "  (click)="buscarDescripcionporId()">
+      Buscar <i class="fa fa-search fa-stack-1x"></i>
+    </button>
       
     </div>
 
+
+
+
+
+    
     <div class="row">
       <div class="col-md-12">
-        <div class="card text-center">
+        <div class="card">
           <div class="card-header card-header-danger">
             <h4 class="card-title disabled">
               <img src="/assets/img/alimentos.png" class="edit" alt="" />
-              Productos con su plato
+              Ingredientes
             </h4>
           </div>
-          <div class="card-body ">
+          <div class="card-body">
             <div class="table-responsive">
               
               <ng-container *ngIf="ingredientId">
-                <div *ngIf="productosplatosss.length === 0">
+                <div *ngIf="ingredientesss.length === 0">
                   <p>
                     
                     
@@ -43,8 +80,7 @@
               </ng-container>
               
               
-              <table class="table" *ngIf="productosplatosss && productosplatosss.length > 0">
-
+              <table class="table"  *ngIf="ingredientesss.length > 0">
                 <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
                   <th>Plato: {{ item.plato.descripcion }}</th>
                 </thead>
@@ -52,11 +88,15 @@
                   <th>Nº</th>
 
                   <th>Ingrediente</th>
-                
+                  <th>Cantidad persona</th>
+                  <th>Libra/litro</th>
+                  <th>Opciones de día</th>
+                  <th>Cantidad final</th>
+                 
 
-                  <th>Acciones</th>
+                  <th>Acción</th>
                 </thead>
-                <tbody *ngFor="let item of productosplatosss; let i = index">
+                <tbody *ngFor="let item of pagedIngredientes; let i = index">
                   <tr>
                     <td>
                       {{ i + 1 }}
@@ -65,13 +105,26 @@
                     <td>
                       {{ item.alimento.descripcion }}
                     </td>
-                 
+                    <td>
+                      {{ item.cantidad }}
+                    </td>
+                    <td>
+                      {{ item.cantidadGramo }}
+                    </td>
+                    <td>
+                      {{ item.numDias }}
+                    </td>
+                    <td>
+                      {{ item.cantidadFinal }}
+                    </td>
+
+                
 
                     <td>
-                      <button1 color="primary" (click)="editarIngrediente(item)">
+                     <!--  <button1 color="primary" (click)="editarIngrediente(item)">
                         <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
                       </button1>
-
+ -->
                       <button2>
                         <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
                       </button2>
@@ -80,24 +133,16 @@
                 </tbody>
               </table>
             </div>
+                        <!-- Contenedor para centrar la paginación -->
+            <div class="pagination-containerrrr">
+             <!-- Paginación -->
+          <div class="pagination">
+           <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+            <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+           <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+               </div>
+            </div>
           </div>
-          <!-- Contenedor para centrar la paginación -->
-<div class="pagination-containerrrr">
-  <!-- Paginación -->
- <!-- Paginación -->
-<div class="pagination">
-  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
-    <i class="fa fa-arrow-left"></i> Anterior
-  </button>
-  <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
-  <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages">
-    Siguiente <i class="fa fa-arrow-right"></i>
-  </button>
-  
-  
-</div>
-
-</div>
         </div>
       </div>
     </div>
@@ -121,7 +166,6 @@
   </style>
 
 
-
 <div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
@@ -136,43 +180,77 @@
       <div class="modal-body modal-with-padding">
         <form [formGroup]="ingredientesForm">
           <div class="form-row">
+         
+            <div class="form-group col-md-8">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label" for="input-datalist-fechas">Buscar fecha:</label>
+                  <div class="search-box">
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone-fechas"
+                      id="input-datalist-fechas"
+                      [value]="fechaSeleccionado.fecha"
+                      (change)="updateRegistroFechaId($event)"
+                      formControlName="fecha"
+                    />
+                    <datalist id="list-timezone-fechas">
+                      <option *ngFor="let item of Registrofechass" [value]="item.fecha"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Rest of your code -->
+            
             <div class="form-group col-md-8">
               <div class="formmm">
                 <div class="search-container">
                   <label class="label" for="input-datalist-plato">Buscar el nombre del plato:</label>
                   <div class="search-box">
-                    <input type="text" class="form-control" list="list-timezone-plato" id="input-datalist-plato"
-                    [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
-             
-                  
-
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone-plato"
+                      id="input-datalist-plato"
+                      [value]="platoSeleccionado.descripcion"
+                      (input)="onPlatoInputChange($event)"
+                    />
                     <datalist id="list-timezone-plato">
-                      <option *ngFor="let item of productosplato" [value]="item.descripcion"></option>
+                      <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
                     </datalist>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="form-group col-md-8">
-              <div class="formmm">
-                <div class="search-container">
-                  <label class="label" for="input-datalist-ingredient">Buscar el nombre del ingrediente</label>
-                  <div class="search-box">
-                    <input type="text" class="form-control" list="list-timezone-ingredient" id="input-datalist-ingredient"
-       [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
-
-        
-                    <datalist id="list-timezone-ingredient">
-                      <option *ngFor="let item2 of alimentoss" [value]="item2.descripcion"></option>
-                    </datalist>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
+            
           </div>
 
-        
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="inputState" class="select-gr">Cantidad de persona</label>
+              <br />
+              <input class="example-full-width estilos" type="number" formControlName="cantidadPersona" />
+              <div *ngIf="showCantidadPersonaError" class="text-danger">
+                Campo requerido
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label for="inputState" class="select-gr">Días</label> <br />
+              <input class="example-full-width estilos" type="text" formControlName="numDias" />
+              <div *ngIf="showDiasError" class="text-danger">
+                Campo requerido
+              </div>
+            </div>
+
+
+           
+          </div>
+
        
           <input type="hidden" formControlName="funcion" />
         </form>
@@ -182,6 +260,8 @@
         <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" (click)="closeModalAfterCancel()">
           Cerrar
         </button>
+       
+
         <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">
           {{ editandoIngredientes ? 'Modificar' : 'Registrar' }}
         </button>
@@ -189,5 +269,6 @@
     </div>
   </div>
 </div>
+
 
 

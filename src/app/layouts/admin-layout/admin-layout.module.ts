@@ -33,6 +33,7 @@ import { PesosComponent } from 'app/pesos/pesos.component';
 import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
 import { ProductosplatoComponent } from 'app/productosplato/productosplato.component';
 
+
 @NgModule({
   imports: [
     CommonModule,

@@ -43,6 +43,8 @@ export class MenuComponent implements OnInit {
    showPrecioError= false;
   showMoreOptions: boolean = false;
   selectedOption: any = null;
+  menusssOriginal: any[] = [];
+
   toggleShowMoreOptions() {
     this.showMoreOptions = !this.showMoreOptions;
   }
@@ -80,6 +82,7 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
     this.getAllmenus();
   this.loadPageData();
+  this.aplicarFiltros();
     this.menuForm = this.formBuilder.group({
 
       id_plato: new FormControl("", [Validators.required, Validators.maxLength(1)]),
@@ -234,8 +237,40 @@ export class MenuComponent implements OnInit {
   }
 
 
+//----------------filtro
+  nombreplatoFiltro: string = '';
+  filtroSeleccionado: string = ''; 
+  fechaFiltro: string = '';
 
+  // ...
+aplicarFiltros() {
+  if (this.filtroSeleccionado === 'nombre') {
+    // Aplica el filtro por nombre y restablece el filtro de fecha
+    this.fechaFiltro = '';
+  } else if (this.filtroSeleccionado === 'fecha') {
+    // Si se selecciona el filtro de fecha, vacía el filtro de nombre
+    this.nombreplatoFiltro = '';
+  }
 
+  this.menusss = this.menusssOriginal.filter(item => {
+    return !this.nombreplatoFiltro || item.plato.descripcion.toLowerCase().includes(this.nombreplatoFiltro.toLowerCase());
+  });
+}
+
+aplicarFiltrosfecha() {
+  if (this.filtroSeleccionado === 'fecha') {
+    // Aplica el filtro por fecha y restablece el filtro de nombre
+    this.nombreplatoFiltro = '';
+  } else if (this.filtroSeleccionado === 'nombre') {
+    // Si se selecciona el filtro por nombre, vacía el filtro de fecha
+    this.fechaFiltro = '';
+  }
+
+  this.menusss = this.menusssOriginal.filter(item => {
+    return !this.fechaFiltro || item.fecha.includes(this.fechaFiltro);
+  });
+}
+// ...
 
   //obtener todos los menus 
   getAllmenus() {
@@ -243,6 +278,7 @@ export class MenuComponent implements OnInit {
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.menu);
         this.menusss = res.menu;
+        this.menusssOriginal = [...res.menu]; 
       },
       error: (err) => {
         //alert("Error en la carga de datos");
@@ -251,10 +287,10 @@ export class MenuComponent implements OnInit {
   }
   //obtener todos los platos para utlizarlo en el selection
   getAllplatos() {
-    this.MenuService.gettplatoselect().subscribe({
+    this.MenuService.obtenerplatosdeproductos().subscribe({
       next: (res) => {
-        this.dataSource = new MatTableDataSource(res.plato);
-        this.platosss = res.plato;
+        this.dataSource = new MatTableDataSource(res.platosUnicos);
+        this.platosss = res.platosUnicos;
       },
       error: (err) => {
         // alert("Error en la carga de datos");
@@ -262,7 +298,18 @@ export class MenuComponent implements OnInit {
     });
   }
 
-
+/*   getAllplatos() {
+    this.MenuService.obtenerplatosdeproductos().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.productosplatos);
+        this.platosss = res.productosplatos;
+        console.log(this.platosss);
+      },
+      error: (err) => {
+        // alert("Error en la carga de datos");
+      },
+    });
+  } */
   //Para el registro de plato usando modal
   nuevoCurso() {
     this.tituloForm = 'Registro de menú diario'; //cambio de nombre en el encabezado

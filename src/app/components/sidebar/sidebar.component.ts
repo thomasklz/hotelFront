@@ -8,23 +8,29 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Panel',  icon: 'dashboard', class: '' },
-    { path: '/user-profile', title: ' Usuario',  icon:'person_add', class: '' },
-    { path: '/alimentos', title: '  Productos',  icon:'circle', class: '' },
+  { path: '/dashboard', title: 'Panel',  icon: 'dashboard', class: '' },
+  { path: '/user-profile', title: ' Usuario',  icon:'person_add', class: '' },
+  { path: '/platos', title: ' Menú',  icon:'local_dining', class: '' },
+  { path: '/alimentos', title: '  Productos',  icon:'circle', class: '' },
 
-    { path: '/platos', title: ' Menú',  icon:'local_dining', class: '' },
-    { path: '/productosplato', title: ' Productos y  plato',  icon:'content_paste', class: '' },
 
-    { path: '/menu', title: ' Menú diario',  icon:'content_paste', class: '' },
- 
+  { path: '/ingredientes', title: ' Ingredientes',  icon:'list_alt', class: '' },
+
+  { path: '/menu', title: ' Menú diario',  icon:'content_paste', class: '' },
+
+
+
+
+  { path: '/productosplato', title: ' Cálculo de plato',  icon:'content_paste', class: '' },
+
+
+
+
   
+ /*  { path: '/pesos', title: 'Crear Pesos',  icon:'scale', class: '' }, */
 
-    
-   /*  { path: '/pesos', title: 'Crear Pesos',  icon:'scale', class: '' }, */
-    { path: '/ingredientes', title: ' Ingredientes',  icon:'list_alt', class: '' },
 
-  
-    { path: '/creditos', title: ' Créditos',  icon:'credit_card', class: '' },
+  { path: '/creditos', title: ' Créditos',  icon:'credit_card', class: '' },
    
   
 ];

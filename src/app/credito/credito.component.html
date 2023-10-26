@@ -1,164 +1,264 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link  href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet"
+/>
+
 
 <div class="main-content">
   <div class="container-fluid">
 
-
-    <div class="row">
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
-
-      <div class="col-md-12">
-
-        <div class="card">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/tarjeta-de-credito.png" class="edit" alt=""> Créditos
-            </h4>
-
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    Nº
-                  </th>
-                  <th>
-                    Nombres
-                  </th>
-                  <th>
-                    Email
-                  </th>
-                  <th>
-                    Teléfono
-                  </th>
-                  <th>
-                    Plato
-                  </th>
-                  <th>
-                    Cantidad
-                  </th>
-                  <th>
-                    Precio
-                  </th>
-                  <th>
-                    Fecha
-                  </th>
-                  <th>
-                    Pagado
-                  </th>
-
-                  <th>
-                    Acciones
-                  </th>
-
-                </thead>
-                <tbody *ngFor="let item of creditosss ;let i=index ">
-                  <tr>
-
-
-                    <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.persona.nombre}}
-                    </td>
-                    <td>
-                      {{item.persona.email}}
-                    </td>
-                    <td>
-                      {{item.persona.telefono}}
-                    </td>
-                    <td>
-                      {{item.plato.descripcion}}
-                    </td>
-                    <td>
-                      {{item.cantidad}}
-                    </td>
-                    <td>
-                      {{item.precio}}
-                    </td>
-                    <td>
-                      {{item.fecha}}
-                    </td>
-                    <td>
-                      {{item.pagado}}
-                    </td>
-                    <td>
-                      <button1 color="primary" (click)="editarCreditos(item)">
-                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                      </button1>
-
-
-                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
-                      </button2>
-                    </td>
-
-                  </tr>
-
-                </tbody>
-              </table>
-
-
-
+    <div class="form-row">
+      <div class="form-group  ">
+        <label for="filtroSelector">Filtrar por:</label>
+        <div class="d-flex align-items-center">
+          <div class="mr-4 text-center">
+            <div class="form-check">
+              <input
+                type="radio"
+                id="filtroNombre"
+                class="form-check-input"
+                name="filtro"
+                [(ngModel)]="filtroSeleccionado"
+                [value]="'nombre'"
+                (change)="aplicarFiltros()"
+              />
+              <label for="filtroNombre" class="form-check-label">Nombre</label>
             </div>
+            <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'nombre'">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+
+<!--             <i  class="material-icons mt-2">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+ -->          </div>
+
+
+          <div class="text-center">
+            <div class="form-check">
+              <input
+                type="radio"
+                id="filtroFecha"
+                class="form-check-input"
+                name="filtro"
+                [(ngModel)]="filtroSeleccionado"
+                [value]="'fecha'"
+                (change)="aplicarFiltros()"
+              />
+              <label for="filtroFecha" class="form-check-label">Fecha</label>
+            </div>
+<!--             <i class="material-icons mt-2">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+ -->            <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'fecha'">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+
           </div>
         </div>
       </div>
 
+
+        <!-- Campo de filtro de Nombre -->
+        <div class="form-row" *ngIf="filtroSeleccionado === 'nombre'">
+          <div class="form-group col-md-4">
+            <div class="formmm3">
+           
+           <div class="search-containerr"  *ngIf="filtroSeleccionado === 'nombre'">
+           <label class="label"  for="nombreFiltro">Buscar el nombre del plato:</label>
+            <div class="search-box">
+              <input type="text" class="form-control" [(ngModel)]="nombreFiltro" (input)="aplicarFiltros()" />
+        
+            </div>
+           </div>
+            </div>
+          </div>
+        </div>
+
+
+
+         <!-- Campo de filtro de  Fecha -->
+         <div class="form-row" *ngIf="filtroSeleccionado === 'fecha'">
+          <div class="form-group col-md-4">
+            <div class="formmm3">
+           
+              <div class="search-containerr"  *ngIf="filtroSeleccionado === 'fecha'">
+ 
+
+                <label class="label"  for="fechaFiltro">Buscar la fecha:</label>
+                <div class="search-box">
+                  <input type="date" class="form-control" [(ngModel)]="fechaFiltro" (input)="aplicarFiltrosfecha()" />
+              
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+    </div>
+
+    
+    <div class="row">
+      <button
+        mat-raised-button
+        type="submit"
+        class="btn1 btn-danger pull-right card-title"
+        data-toggle="modal"
+        data-target="#ventanaForm"
+        (click)="nuevoCurso()"
+      >
+        AGREGAR +
+      </button>
+
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled">
+              <img
+                src="/assets/img/tarjeta-de-credito.png"
+                class="edit"
+                alt=""
+              />
+              Créditos
+            </h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="text-primary">
+                  <th>Nº</th>
+                  <th>Nombres</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Plato</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Fecha</th>
+                  <th>Pagado</th>
+
+                  <th>Acciones</th>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of pagedCreditos; let i = index">
+                    <ng-container *ngIf="(!nombreFiltro || item.persona.nombre.toLowerCase().includes(nombreFiltro.toLowerCase()))||(!fechaFiltro || item.fecha.toLowerCase().includes(fechaFiltro.toLowerCase()))">
+
+                      <tr>
+                        <!-- Contenido de la tabla -->
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ item.persona.nombre }}</td>
+                        <td>{{ item.persona.email }}</td>
+                        <td>{{ item.persona.telefono }}</td>
+                        <td>{{ item.plato.descripcion }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>{{ item.precio }}</td>
+                        <td>{{ item.fecha }}</td>
+                        <td>{{ item.pagado }}</td>
+                        <td>
+                          <button1 color="primary" (click)="editarCreditos(item)">
+                            <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
+                          </button1>
+                          <button2>
+                            <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                          </button2>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                </tbody>
+                
+               
+                
+              </table>
+            </div>
+                      <!-- Contenedor para centrar la paginación -->
+<div class="pagination-containerrrr">
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+    <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content d-flex align-items-center">
-      <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/comida.png"
-            alt=""></h5>
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm }} <img src="assets/img/comida.png" alt="" />
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="creditosForm">
-          <div class="form-row">
 
+      <div class="modal-body modal-with-padding">
+        <form [formGroup]="creditosForm">
+
+          <div class="centered-horizontal">
+            <label for="inputState" class="select-grr el">Crédito a:</label>
+            <div *ngIf="nombreUsuarioInput">
+              <label class="el">{{ nombreUsuarioInput }}</label>
+            </div>
+          </div>
+          
+
+          <div class="form-row">
             <div class="form-group col-md-12">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label select-gr" for="input-datalist-usuario">Buscar cédula de usuario</label>
+                  <label class="label select-gr" for="input-datalist-usuario"
+                    >Buscar cédula de usuario</label
+                  >
                   <div class="search-box">
-                    <input type="text" class="form-control " list="list-timezone-usuario"
-                    [value]="usuarioSeleccionado.usuario" (input)="updateUsuarioId($event)"
-                    formControlName="id_persona" />
-             
-             
-       
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone-usuario"
+                      [value]="usuarioSeleccionado.usuario"
+                      (input)="updateUsuarioId($event)"
+                      formControlName="id_persona"
+                    />
+
                     <datalist id="list-timezone-usuario">
-                      <option *ngFor="let item2 of personas" [value]="item2.usuario">
+                      <option
+                        *ngFor="let item2 of personas"
+                        [value]="item2.usuario"
+                      >
                         {{ item2.usuario }}
                       </option>
                     </datalist>
-                    
                   </div>
                 </div>
               </div>
             </div>
-
-         
-
+          </div>
 
 
-            <div class="form-group col-md-11">
+
+
+
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label select-gr" for="input-datalist-plato">Buscar el nombre del plato:</label>
+                  <label class="label select-gr" 
+                    >Buscar el nombre del plato:</label
+                  >
                   <div class="search-box">
-                    <input type="text" class="form-control" list="list-timezone" id="input-datalist"
-                           [value]="platoSeleccionados.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
-            
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone"
+                     
+                      [value]="platoSeleccionados.descripcion"
+                      (input)="updatePlatoId($event)"
+                      formControlName="id_plato"
+                    />
+
                     <datalist id="list-timezone">
-                      <option *ngFor="let ingrediente of ingredientes" [value]="ingrediente.descripcion">
+                      <option
+                        *ngFor="let ingrediente of ingredientes"
+                        [value]="ingrediente.descripcion"
+                      >
                         {{ ingrediente.descripcion }}
                       </option>
                     </datalist>
@@ -166,70 +266,96 @@
                 </div>
               </div>
             </div>
-            
-         
+          </div>
+
+         <br>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputState" class="select-gr">Cantidad</label> <br />
+              <input
+                class="example-full-width estilosversion2"
+                type="number"
+                formControlName="cantidad"
+              />
+              <div *ngIf="showCantidadError" class="text-danger">
+                Campo requerido
+              </div>
+
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputState" class="select-gr">Precio</label> <br />
+              <input
+                class="example-full-width estilosversion2"
+                type="text"
+                formControlName="precio"
+              />
+              <div *ngIf="showPrecioError" class="text-danger">
+                Campo requerido
+              </div>
+
+            </div>
+
          
 
+           
+          
+          </div>
+<br>
+          <div class="centered-horizontal ">
+        
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <!-- Only show the label and radio buttons when in "edit" mode -->
+                <ng-container *ngIf="editandoCreditos">
+                  <label for="inputState" class="select-gr">Cancelar</label>
+                  <br />
+                  <!-- Elimina el input anterior y utiliza radio buttons -->
+                  <input
+                    type="radio"
+                    id="si"
+                    name="habilitado"
+                    formControlName="pagado"
+                    value="1"
+                  />
+                  <label for="si">Si</label>
+                  <br />
+                  <input
+                    type="radio"
+                    id="no"
+                    name="habilitado"
+                    formControlName="pagado"
+                    value="0"
+                  />
+                  <label for="no">No</label>
+                </ng-container>
+  
+                <div *ngIf="showPagadoError" class="text-danger">
+                  Campo requerido
+                </div>
+              </div>
+            </div>
+  
+        </div>
 
        
-
-
-
-
-          </div>
-
-
-
-
-
-
-
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Cantidad</label> <br>
-              <input class="example-full-width estilos" type="number" formControlName="cantidad">
-              <div *ngIf="showCantidadError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Precio</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="precio">
-              <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-          
-          
-        
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <!-- Only show the label and radio buttons when in "edit" mode -->
-              <ng-container *ngIf="editandoCreditos">
-                <label for="inputState" class="select-gr">Cancelar</label> <br>
-                <!-- Elimina el input anterior y utiliza radio buttons -->
-                <input type="radio" id="si" name="habilitado" formControlName="pagado" value="1">
-                <label for="si">Si</label>
-                <br>
-                <input type="radio" id="no" name="habilitado" formControlName="pagado" value="0">
-                <label for="no">No</label>
-              </ng-container>
-          
-              <div *ngIf="showPagadoError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-          
-          <input type="hidden" formControlName="funcion">
+          <input type="hidden" formControlName="funcion" />
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" >
+          Cerrar
+        </button>
        
 
+
         <button type="button" class="btn btn-danger" (click)="addCredito()" data-dismiss="modal">
-          {{ editandoCreditos ? 'Modificar' : 'Registrar' }}
+          {{ editandoCreditos   ? 'Modificar' : 'Registrar' }}
         </button>
       </div>
     </div>
   </div>
 </div>
+

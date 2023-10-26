@@ -36,7 +36,7 @@ export class PlatosComponent implements OnInit {
   showMoreOptions: boolean = false;
   selectedOption: any = null;
 
-
+  platosssOriginal: any[] = [];
 
   toggleShowMoreOptions() {
     this.showMoreOptions = !this.showMoreOptions;
@@ -69,6 +69,7 @@ export class PlatosComponent implements OnInit {
   ngOnInit() {
     this.getAllplato();
     this.loadPageData();
+    this.aplicarFiltros();
     this.menuForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
       id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)]),
@@ -126,6 +127,23 @@ export class PlatosComponent implements OnInit {
   onPageChange(event: number) {
     this.currentPage = event;
   }
+  nombreplatoFiltro: string = '';
+  filtroSeleccionado: string = ''; 
+  //filtrado
+  aplicarFiltros() {
+    // Aplica los filtros aquí según el valor de filtroSeleccionado
+    if (this.filtroSeleccionado === 'nombre') {
+      // Aplica el filtro por nombre
+      if (this.nombreplatoFiltro) {
+        this.platosss = this.platosssOriginal.filter(item => item.persona.nombre.includes(this.nombreplatoFiltro));
+      } else {
+        this.platosss = [...this.platosssOriginal];
+      }
+      // Limpia el filtro de fecha
+     
+    }
+  }
+  
   //--------------------------------------------------------------------------------------
   //Modal de Agregar Notificacion
   title = 'sweetAlert';
@@ -199,6 +217,8 @@ export class PlatosComponent implements OnInit {
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.platos);
         this.platosss = res.platos;
+        this.platosssOriginal = [...res.platos]; 
+        
       },
       error: (err) => {
         //alert("Error en la carga de datos");

@@ -96,5 +96,10 @@ editFoto(data:any, id:number){
 }
 
 
+//rotuer.get('/obtenerNombrePorUsuario/:nombreUsuario', obtenerNombrePorUsuario);
+obtenerNombrePorUsuario( nombreUsuario:string){
+  return this.http.get<any>('http://localhost:3000/api/obtenerNombrePorUsuario/'+nombreUsuario);
+}
+
 }
 

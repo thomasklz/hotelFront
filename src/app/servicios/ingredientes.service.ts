@@ -16,6 +16,16 @@ export class IngredientesService {
   getingrediente(){
     return this.http.get<any>('http://localhost:3000/api/mostraringredientes');
   }
+
+
+  obtenerplatosdeingredientes(){
+    return this.http.get<any>('http://localhost:3000/api/obtenerplatosdeingredientes');
+  }
+
+  
+
+
+
  //obtener ingredientes
  getingredienteporid( id?){
   return this.http.get<any>('http://localhost:3000/api/obtenerIngredientesPorPlato/'+id);
