@@ -88,7 +88,7 @@ export class PlatosComponent implements OnInit {
  
   //--------------------------------------------------------------------------------------
 
-  pageSize = 11;  // Tamaño de la página
+  pageSize = 10;  // Tamaño de la página
   currentPage = 1;  // Página actual
   totalItems = 0;  // Total de elementos
 

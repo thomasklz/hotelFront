@@ -17,6 +17,10 @@ import { CreditosService } from "app/servicios/creditos.service";
 import { UsuarioService } from "../servicios/usuario.service";
 import { NgZone } from "@angular/core";
 import { ElementRef, ViewChild } from "@angular/core";
+import * as XLSX from 'xlsx';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: "app-credito",
@@ -132,7 +136,127 @@ export class CreditoComponent implements OnInit {
     this.currentPage = event;
   }
 
+
+
+
+
+//-----------------------
+
+descargarPDF() {
+  const rows = [];
+
+  // Agregar el encabezado de la tabla
+  const headerRow = ['Nº', 'Nombres', 'Email', 'Teléfono', 'Plato', 'Cantidad', 'Precio', 'Fecha', 'Pagado'];
+  rows.push(headerRow);
+
+  // Iterar sobre los datos y agregar filas
+  this.creditosss.forEach((item, index) => {
+    const rowData = [
+      index + 1,
+      item.persona.nombre,
+      item.persona.email,
+      item.persona.telefono,
+      item.plato.descripcion,
+      item.cantidad,
+      item.precio,
+      item.fecha,
+      item.pagado ? 'Sí' : 'No',
+    ];
+    rows.push(rowData);
+  });
+
+  // Define la estructura del documento PDF
  
+  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
+  let columnWidths = [30, 60, 60, 50, 50, 40, 40, 65, 30]; // Anchos de las 9 columnas
+  const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+  let escala = 1;
+  
+  if (totalWidth > anchoPagina) {
+    escala = anchoPagina / totalWidth;
+    columnWidths = columnWidths.map(width => width * escala);
+  }
+  
+  const documentoPDF = {
+    content: [
+      { text: 'Listado de créditos ', style: 'header' },
+      '\n',
+      {
+        table: {
+          headerRows: 1,
+          widths: columnWidths,
+          body: rows,
+        }
+      }
+    ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+        alignment: 'center',
+        margin: [20, 0, 0, 20]
+      }
+    }
+  };
+  
+  
+
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  pdfMake.createPdf(documentoPDF).download('tabla.pdf');
+}
+
+//-----------------------
+
+
+  datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
+
+
+  //'''''''''''''''''''''''
+  descargarDatos() {
+    const datosParaDescargar = this.creditosss.map(item => ({
+      'Nombres': item.persona.nombre,
+      'Email': item.persona.email,
+      'Teléfono': item.persona.telefono,
+      'Plato': item.plato.descripcion,
+      'Cantidad': item.cantidad,
+      'Precio': item.precio,
+      'Fecha': item.fecha,
+      'Pagado': item.pagado ? 'Sí' : 'No',
+    }));
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Listado de créditos');
+    const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Listado de créditos.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+  
+
+
+  
+  // Función para convertir datos binarios en un array
+  s2ab(s: string): Uint8Array {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i !== s.length; ++i) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return new Uint8Array(buf);
+  }
+  
+  
+  
+  
+  
+  
+  
+
 //----------------filtro
 nombreFiltro: string = '';
 filtroSeleccionado: string = ''; 

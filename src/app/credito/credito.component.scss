@@ -8,13 +8,24 @@ img {
   font-size: 22px;
 
 }
-
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
 
 .btn1 {
   color: #ffffff;
+  
 }
-
-
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+.col{
+  color: #ffffff;
+}
+.dropdown-menu{
+  cursor: pointer;
+}
 .editable-row {
   cursor: pointer;
 }
@@ -340,6 +351,11 @@ header {
   /* Cambia el color a tu elección */
 }
 
+.labelversion2 {
+  display: block;
+  /* Esto hará que el label esté en una línea separada */
+  margin-bottom: 10px; /* Añade margen inferior para separación */
+}
 
 
 .modal-with-padding {
@@ -360,10 +376,10 @@ header {
 .cursor{
   cursor: pointer;
 }
-  .formmm3 {
-    margin-left: 30px;
-    width: 900px;
-    }
+.formmm3 {
+  margin-left: 30px;
+  width: 800px;
+  }
     .search-containerr {
       display: flex;
       align-items: center;
@@ -373,8 +389,21 @@ header {
       border: 1px solid #ccc;
       border-radius: 5px;
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-      width: 800px;
+      width: 700px;
     }
+    .containerversion2{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center; 
+      background-color: #ffffff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      width: 990px;
+    }
+
     
 .formmm2 {
   width: 500px;
