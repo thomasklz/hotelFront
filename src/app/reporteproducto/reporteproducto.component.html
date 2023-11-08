@@ -1,0 +1,182 @@
+<div class="main-content">
+    <div class="container-fluid">
+  
+      <div class="form-row">
+        <div class="form-group containerversion2 col-md-12">
+          <div class="col-lg-3">
+            <div class="labelversion2">
+              <div class="form-group">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Seleccionar el Ingrediente:</label>
+                    <div class="search-box">
+                      <input type="text" class="form-control" list="list-timezone-ingredient" [(ngModel)]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" />
+                      <datalist id="list-timezone-ingredient">
+                        <option *ngFor="let item2 of alimentoss" [value]="item2.descripcion"></option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+         
+
+
+
+
+
+          
+
+          <div class="col-lg-3">
+            <div class="labelversion2">
+              <div class="form-group">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Seleccionar el filtro:</label>
+                    <div class="search-box">
+                      <select class="form-control" id="filtroSelect" [(ngModel)]="filtroSeleccionado" (change)="aplicarFiltros()">
+                        <option value="Seleccionar" disabled selected>Seleccione</option>
+                        <option id="diaFiltro" [value]="'dia'">Día</option>
+                        <option id="semanaFiltro" [value]="'semana'">Semana</option>
+                        <option id="mesFiltro" [value]="'mes'">Mes</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-3" *ngIf="filtroSeleccionado === 'dia'">
+            <div class="labelversion2">
+              <div class="form-group">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Buscar la fecha:</label>
+                    <div class="search-box">
+                      <!-- Usa el formulario de Angular para manejar la fecha -->
+                      <form>
+                        <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada" name="fecha" id="input-datalist-fecha" />
+                      </form>
+                                          </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="col-lg-3" *ngIf="filtroSeleccionado === 'semana'">
+            <div class="labelversion2">
+              <div class="form-group">
+                <div class="formmm">
+                  <label class="label">Seleccionar fechas: inicio - fin:</label>
+                  <div class="search-container">
+                    <div class="search-box">
+                      <div class="form-inline"> <!-- Contenedor para alinear horizontalmente -->
+                        <input
+                          type="date"
+                          class="form-control"
+                          list="list-timezone-fecha"
+                          id="input-datalist-fecha"
+                          formControlName="fechas"
+                        />
+                        <input
+                          type="date"
+                          class="form-control"
+                          list="list-timezone-fecha"
+                          id="input-datalist-fecha"
+                          formControlName="fechas"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+
+          <div class="col-lg-3" *ngIf="filtroSeleccionado === 'mes'">
+            <div class="labelversion2">
+              <div class="form-group">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Seleccionar el mes:</label>
+                    <div class="search-box">
+                      <select class="form-control" formControlName="mesSeleccionado">
+                        <option value="" disabled selected>Seleccione</option> <!-- Opción inicial -->
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <div class="col-lg-3">
+            <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId()">
+              Filtrar <i class="fa fa-search fa-stack-1x"></i>
+            </button>
+          </div>
+        
+     
+      </div>
+          
+    </div>
+</div>
+
+
+
+
+
+<div class="col-md-12">
+    
+  <div class="card text-center">
+    <div class="card-header card-header-danger">
+      <h4 class="card-title disabled label">  Reporte de ingredientes por dia</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <th>Ingrediente</th>
+            <th>Fecha</th>
+            <th>Total de gramos por días</th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of ingredientesdiass; let i = index">
+              <tr>
+                <td>{{ item.id_alimento }}</td>
+                <td>{{ item.fecha }}</td>
+                <td>{{ item.ingredientesTotalesdia.totalCantidadFinal }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      
+
+
+
+    </div>
+  </div>
+
+</div>

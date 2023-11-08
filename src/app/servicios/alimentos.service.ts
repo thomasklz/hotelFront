@@ -53,4 +53,23 @@ creartipoalimentos(data:any){
   return this.http.delete<any>('http://localhost:3000/api/eliminartipo_alimento/'+id);
 }
 
+
+
+//-------------------------------------------------------------------------------------------
+
+// Servicio AlimentosService
+obtenerfiltropordias(fecha: string, id?: string) {
+  // Formatea la URL adecuadamente con los parámetros
+  let url = `http://localhost:3000/api/obtenerfiltropordias/${fecha}`;
+  
+  if (id) {
+    url += `/${id}`;
+  }
+
+  return this.http.get<any>(url);
+}
+
+
+
+
 }

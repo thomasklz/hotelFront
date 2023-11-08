@@ -17,7 +17,8 @@ export const ROUTES: RouteInfo[] = [
   { path: '/productosplato', title: ' Cálculo de plato',  icon:'content_paste', class: '' },
   { path: '/creditos', title: ' Créditos',  icon:'credit_card', class: '' },
   { path: '/reportePolitecnico', title: ' Reporte',  icon:'analytics', class: '' },
-
+    
+  
   
 ];
 

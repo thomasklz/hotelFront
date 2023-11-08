@@ -1,88 +1,190 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
-
 <div class="main-content">
   <div class="container-fluid">
+      <div class="row">
 
 
-    <div class="row">
-      <button mat-raised-button type="submit" class="btn btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm">AGREGAR</button>
-
-      <div class="col-md-12">
-
-        <div class="card">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="assets/img/reporte.png" alt=""> REPORTE POLITÉCNICO </h4>
-
+          <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                  <div class="card-header card-header-warning card-header-icon">
+                      <div class="card-icon">
+                          <i class="material-icons">description</i>
+                      </div>
+                      <p class="card-category">Generar</p>
+                      <h3 class="card-title">Reporte de Producto
+                          <small>ESPAM MFL</small>
+                      </h3>
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <i class="material-icons text-danger">play_arrow</i>
+                          <a href="javascript:void(0) " routerLink="/reportedeproducto">Generarlo </a>
+                      </div>
+                  </div>
+              </div>
           </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    No
-                  </th>
-                  <th>
-                    Nombres
-                  </th>
-                  <th>
-                    Correo
-                  </th>
-                  <th>
-                    Telefono
-                  </th>
-                  <th>
-                    Cancelado
-                  </th>
-                  <th>
-                    Monto
-                  </th>
-                  <th>
-                    Accion
-                  </th>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                  <div class="card-header card-header-success card-header-icon">
+                      <div class="card-icon">
+                          <i class="material-icons">assignment_ind</i>
+                      </div>
+                      <p class="card-category">Generar </p>
+                      <h3 class="card-title">Listado de Usuarios
+                      <small>Administrador</small></h3>
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                        <i class="material-icons text-danger">play_arrow</i>
+                      <!--   <a *ngIf="cuentaFija" href="javascript:void(0)" routerLink="/listadoUsuarios">Generarlo</a> -->
 
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      1
-                    </td>
-                    <td>
-                      Tomas Loor
-                    </td>
-                    <td>
-                      tomasloor@espam.edu.ec
-                    </td>
-                    <td>
-                      099987451
-                    </td>
-                    <td>
-                      No
-                    </td>
-                    <td>
-                      10$
-                    </td>
-                    <td>
-                      <button>
-                        <i class="material-icons" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                      </button>
-                      --- <button> <i class="material-icons">delete</i></button>
-                    </td>
-
-                  </tr>
-
-                </tbody>
-              </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
 
 
-
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">info_outline</i>
+                    </div>
+                    <p class="card-category">Fixed Issues</p>
+                    <h3 class="card-title">75</h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">local_offer</i> Tracked from Github
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
-    </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                    <div class="card-icon">
+                        <i class="fa fa-twitter"></i>
+                    </div>
+                    <p class="card-category">Followers</p>
+                    <h3 class="card-title">+245</h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons">update</i> Just Updated
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-secondary card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">assignment_ind</i>
+                    </div>
+                    <p class="card-category">Generar </p>
+                    <h3 class="card-title">Listado de Usuarios
+                    <small>Administrador</small></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons text-danger">play_arrow</i>
+                      <a href="javascript:void(0) " routerLink="/reportePolitecnico">Generarlo </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">assignment_ind</i>
+                    </div>
+                    <p class="card-category">Generar </p>
+                    <h3 class="card-title">Listado de Usuarios
+                    <small>Administrador</small></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons text-danger">play_arrow</i>
+                      <a href="javascript:void(0) " routerLink="/reportePolitecnico">Generarlo </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">assignment_ind</i>
+                    </div>
+                    <p class="card-category">Generar </p>
+                    <h3 class="card-title">Listado de Usuarios
+                    <small>Administrador</small></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons text-danger">play_arrow</i>
+                      <a href="javascript:void(0) " routerLink="/reportePolitecnico">Generarlo </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                        <i class="material-icons">assignment_ind</i>
+                    </div>
+                    <p class="card-category">Generar </p>
+                    <h3 class="card-title">Listado de Usuarios
+                    <small>Administrador</small></h3>
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons text-danger">play_arrow</i>
+                      <a href="javascript:void(0) " routerLink="/reportePolitecnico">Generarlo </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+        
+      </div>
+      <div class="row">
+          
+    
+         
+          
+          
+      </div>
+     
+      
+
+
+      
   </div>
+
 </div>

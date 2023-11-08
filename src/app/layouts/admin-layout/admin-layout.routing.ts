@@ -23,6 +23,7 @@ import { TipoalimentosComponent } from 'app/tipoalimentos/tipoalimentos.componen
 import { PesosComponent } from 'app/pesos/pesos.component';
 import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
 import { ProductosplatoComponent } from 'app/productosplato/productosplato.component';
+import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
 
 export const AdminLayoutRoutes: Routes = [
    
@@ -51,7 +52,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'pesos',        component: PesosComponent },
     { path: 'cantidadplatos',        component: CantidadplatosComponent },
     { path: 'productosplato',        component: ProductosplatoComponent },
-
+    { path: 'reportedeproducto',        component: ReporteproductoComponent },
     
     
     

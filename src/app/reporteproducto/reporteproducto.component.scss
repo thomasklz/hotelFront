@@ -1,0 +1,90 @@
+/* Estilos generales para el contenedor del filtro */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
+  
+  /* Estilos para los radios */
+  .filter-radio {
+    margin-right: 10px;
+  }
+  
+  /* Estilos para el texto junto a los radios (puedes personalizarlos según tus necesidades) */
+  label {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* Estilo para resaltar la opción seleccionada */
+  .filter-radio:checked + label {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .formmm3 {
+    margin-left: 30px;
+    width: 200px;
+    }
+
+    .search-containerr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #ffffff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      width: 200px;
+    }
+
+
+    .form-control {
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
+   .form-controll {
+      border: none;
+      box-shadow: none;
+      outline: none;
+      
+    }
+
+    /* Estilos para el cuadro de búsqueda */
+.search-box {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
+
+}
+/* Estilo para hacer la letra más grande en el label */
+.label {
+  font-size: 15px; /* Ajusta el tamaño de la fuente según tus preferencias */
+  margin-right: 25px;
+  color: rgb(141, 130, 130);
+}
+.radio-checked i {
+  color: #007bff; /* Color deseado para el círculo cuando está seleccionado */
+}
+.containerversion2{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center; 
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  width: 990px;
+}
+
+.labelversion2 {
+  display: block;
+  /* Esto hará que el label esté en una línea separada */
+  margin-bottom: 10px; /* Añade margen inferior para separación */
+}
