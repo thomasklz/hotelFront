@@ -6,89 +6,85 @@
   <div class="container-fluid">
 
     <div class="form-row">
-      <div class="form-group  ">
-        <label for="filtroSelector">Filtrar por:</label>
-        <div class="d-flex align-items-center">
-          <div class="mr-4 text-center">
-            <div class="form-check">
-              <input
-                type="radio"
-                id="filtroNombre"
-                class="form-check-input"
-                name="filtro"
-                [(ngModel)]="filtroSeleccionado"
-                [value]="'nombre'"
-                (change)="aplicarFiltros()"
-              />
-              <label for="filtroNombre" class="form-check-label">Nombre</label>
-            </div>
-            <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'nombre'">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
-
-<!--             <i  class="material-icons mt-2">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
- -->          </div>
-
-
-          <div class="text-center">
-            <div class="form-check">
-              <input
-                type="radio"
-                id="filtroFecha"
-                class="form-check-input"
-                name="filtro"
-                [(ngModel)]="filtroSeleccionado"
-                [value]="'fecha'"
-                (change)="aplicarFiltros()"
-              />
-              <label for="filtroFecha" class="form-check-label">Fecha</label>
-            </div>
-<!--             <i class="material-icons mt-2">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
- -->            <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'fecha'">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
-
-          </div>
+      <div class="form-group containerversion2 col-md-12">
+        <div class="labelversion2">
+          <label for="filtroSelector">Filtrar por:</label>
         </div>
-      </div>
-
-
-        <!-- Campo de filtro de Nombre -->
-        <div class="form-row" *ngIf="filtroSeleccionado === 'nombre'">
-          <div class="form-group col-md-4">
-            <div class="formmm3">
-           
-           <div class="search-containerr"  *ngIf="filtroSeleccionado === 'nombre'">
-           <label class="label"  for="nombreplatoFiltro">Buscar el nombre del plato:</label>
-            <div class="search-box">
-              <input type="text" class="form-control" [(ngModel)]="nombreplatoFiltro" (input)="aplicarFiltros()" />
+    
+        <div class="mr-4 text-center">
+          <div class="form-check">
+            <input
+              type="radio"
+              id="filtroNombre"
+              class="form-check-input"
+              name="filtro"
+              [(ngModel)]="filtroSeleccionado"
+              [value]="'nombre'"
+              (change)="aplicarFiltros()"
+            />
+            <label for="filtroNombre" class="form-check-label">Nombre</label>
+          </div>
+          <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'nombre'">{{ filtroSeleccionado === 'nombre' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+        </div>
+    
+        <div class="text-center">
+          <div class="form-check">
+            <input
+              type="radio"
+              id="filtroFecha"
+              class="form-check-input"
+              name="filtro"
+              [(ngModel)]="filtroSeleccionado"
+              [value]="'fecha'"
+              (change)="aplicarFiltros()"
+            />
+            <label for="filtroFecha" class="form-check-label">Fecha</label>
+          </div>
+          <i class="material-icons mt-2 cursor" (click)="filtroSeleccionado = 'fecha'">{{ filtroSeleccionado === 'fecha' ? 'radio_button_checked' : 'radio_button_unchecked' }}</i>
+        </div>
         
-            </div>
-           </div>
-            </div>
-          </div>
-        </div>
-
-
-
-         <!-- Campo de filtro de  Fecha -->
-         <div class="form-row" *ngIf="filtroSeleccionado === 'fecha'">
-          <div class="form-group col-md-4">
-            <div class="formmm3">
-           
-              <div class="search-containerr"  *ngIf="filtroSeleccionado === 'fecha'">
- 
-
-                <label class="label"  for="fechaFiltro">Buscar la fecha:</label>
-                <div class="search-box">
-                  <input type="date" class="form-control" [(ngModel)]="fechaFiltro" (input)="aplicarFiltrosfecha()" />
-              
+        <!-- Campo de filtro de Nombre -->
+        <div *ngIf="filtroSeleccionado === 'nombre'">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <div class="formmm3">
+                <div class="search-containerr">
+                  <label class="label" for="nombreFiltro">Buscar el nombre del plato :</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" [(ngModel)]="nombreplatoFiltro" (input)="aplicarFiltros()" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
     
+        <!-- Campo de filtro de Fecha -->
+        <div *ngIf="filtroSeleccionado === 'fecha'">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <div class="formmm3">
+                <div class="search-containerr">
+                  <label class="label" for="fechaFiltro">Buscar la fecha:</label>
+                  <div class="search-box">
+                    <input type="date" class="form-control" [(ngModel)]="fechaFiltro" (input)="aplicarFiltrosfecha()" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    
     </div>
 
 
-
+    <br>
 
 
 
@@ -248,7 +244,7 @@
               <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
             </div>
 
-           
+            
           
           </div>
 <br>
@@ -257,14 +253,15 @@
             <div class="form-group col-md-12">
               <label for="inputState" class="select-gr">Ver en la web</label> <br>
               <!-- Elimina el input anterior y utiliza radio buttons -->
-              <input type="radio" id="si" name="habilitado" formControlName="habilitado" value="1">
+              <input type="radio" id="si" name="habilitado" formControlName="habilitado" value="1" [checked]="menuForm.value.habilitado === '1'">
               <label for="si">Si</label>
               <br>
-              <input type="radio" id="no" name="habilitado" formControlName="habilitado" value="0">
+              <input type="radio" id="no" name="habilitado" formControlName="habilitado" value="0" [checked]="menuForm.value.habilitado === '0'">
               <label for="no">No</label>
-          
+              
               <div *ngIf="showHabilitadoError" class="text-danger">Campo requerido</div>
             </div>
+            
           </div>
         </div>
 

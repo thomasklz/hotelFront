@@ -43,6 +43,8 @@ import { ReporteComponent } from './reporte/reporte.component';
     CrearAdministradorComponent,
     ReporteComponent,
     
+  
+    
     
     
     

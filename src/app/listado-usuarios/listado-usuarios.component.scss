@@ -164,6 +164,66 @@ th {
 
 
 
+.pagination-containerrrr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+}
+
+.pagination {
+  /* Estilos adicionales para la paginación si es necesario */
+  /* ... */
+}
+/* Agrega estilos para quitar bordes a los botones de paginación */
+.pagination button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+.k{
+  font-weight: bold;
+}
+/* Estilo para los íconos dentro de los botones */
+.pagination button i {
+  margin-right: 5px; /* Puedes ajustar este valor según tu preferencia */
+}
+
+.texto-grueso {
+  font-weight: bold;
+  font-size: 22px;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.search-box {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
+
+}
+.label {
+  font-size: 18px; /* Ajusta el tamaño de la fuente según tus preferencias */
+  margin-right: 25px;
+  color: rgb(141, 130, 130);
+}
+
+.form-control {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
 
 
 

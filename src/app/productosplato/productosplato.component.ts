@@ -26,6 +26,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductosplatoComponent implements OnInit {
 
+  @ViewChild('fechaInput') fechaInput: ElementRef;
 
 
   dataSource = new MatTableDataSource<any>();
@@ -183,7 +184,7 @@ fecha: string = '';
 }
 
   
-
+ 
   
 buscarDescripcionporId() {
   const ingredientId = this.platoSeleccionado.descripcion; // Use the ID, not the description
@@ -244,11 +245,15 @@ buscarDescripcionporId() {
     const fechaSeleccionado = this.fechass.find((menu) => menu.fecha === fecha);
   
     if (fechaSeleccionado) {
-      this.fechaSeleccionado=fechaSeleccionado;
+      this.fechaSeleccionado = fechaSeleccionado;
       this.MenuService.buscarmenuporfecha(fechaSeleccionado.fecha).subscribe({
         next: (res) => {
           this.dataSource = new MatTableDataSource(res.platos);
           this.platosss = res.platos;
+  
+          // Limpiar el valor del campo de plato
+          this.platoSeleccionado = { id: null, descripcion: "" };
+          this.ingredientesForm.get("id_plato")?.setValue(null);
   
           // Actualizar el valor del campo fecha_menu en ingredientesForm
           this.ingredientesForm.get("fecha")?.setValue(fechaSeleccionado.fecha);
@@ -258,8 +263,8 @@ buscarDescripcionporId() {
         },
       });
     }
-
   }
+  
   
   updateRegistroFechaId(event: any) {
     const fecha = event.target.value;
@@ -557,7 +562,17 @@ buscarDescripcionporId() {
       }
     });
   }
-
+  onFechaInput(event: any) {
+    const manuallyEnteredDate = event.target.value;
+    const selectedDate = this.fechass.find(item => item.fecha === manuallyEnteredDate);
+  
+    // If the entered date is not in the list, clear the plate input field
+    if (!selectedDate) {
+      this.platoSeleccionado = { id: null, descripcion: '' };
+      this.ingredientesForm.get('id_plato').setValue(null);
+    }
+  }
+  
   showModalErrorEliminar() {
     Swal.fire({
       title: "Error al eliminar el alimento",

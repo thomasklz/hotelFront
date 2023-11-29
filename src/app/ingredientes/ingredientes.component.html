@@ -7,6 +7,8 @@
       AGREGAR +
     </button>
 
+
+
     <div class="search-container">
       <label class="label" >Buscar el nombre del plato:</label>
       <div class="search-box">
@@ -154,13 +156,13 @@
               </div>
             </div>
 
-            <div class="form-group col-md-8">
+         <!--    <div class="form-group col-md-8">
               <div class="formmm">
                 <div class="search-container">
                   <label class="label" >Buscar el nombre del ingrediente</label>
                   <div class="search-box">
                     <input type="text" class="form-control" list="list-timezone-ingredient" 
-       [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
+                      [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
 
         
                     <datalist id="list-timezone-ingredient">
@@ -169,7 +171,118 @@
                   </div>
                 </div>
               </div>
+            </div> -->
+
+
+
+
+
+
+
+
+
+
+                     
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="form-group col-md-8">
+              <div class="formmm">
+               
+                
+             
+                  <div class="col-md-12">
+
+                    <div class="card ">
+                     
+
+
+                      <div class="card-body">
+                        <div class="table-responsive">
+                      
+                       <!--    <div class="search-containerversion4">
+                            <label class="label">Filtrar ingrediente :</label>
+                            <div class="search-box">
+                              <input type="text" class="form-control" [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
+                            </div>
+                          </div> -->
+                          
+                        
+                          
+                        
+                          
+                        
+
+                            <div class="container">
+                              <label class="label text-center" >Seleccione los ingredientes: </label>
+                              <br>
+
+                              <div *ngIf="ingredientesSeleccionados.length > 0" style="display: inline-block;">
+                                <h3 class="h3" style="display: inline-block;">Elementos seleccionados :</h3>
+                                <div style="display: inline-block;">
+                                    <ng-container *ngFor="let selected of ingredientesSeleccionados; let i = index">
+                                        <ng-container *ngIf="i > 0 && i % 14 === 0">
+                                            <br /> <!-- Cambiar a una nueva fila después de 15 elementos -->
+                                        </ng-container>
+                                        <ng-container *ngIf="i > 0">, </ng-container> <!-- Agregar coma entre elementos -->
+                                        {{ selected.descripcion }}
+                                    </ng-container>
+                                </div>
+                            </div>
+                            
+                              <br>
+                              <div class="container">
+                                <div class="row">
+                                  <div class="col-2 border" *ngFor="let ingrediente of ingredientesUnicos">
+                                    <label class="form-check">
+                                      <input type="checkbox" class="form-check-input" (change)="seleccionarIngrediente(ingrediente)" formControlName="id_alimento">
+                                      <span [ngStyle]="{'color': ingrediente.seleccionado ? 'red' : 'black'}">
+                                        {{ ingrediente.descripcion }}
+                                      </span>
+                                    </label>
+                                  </div>
+                                </div>
+
+
+
+
+
+                                
+                              </div>
+                               
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+                        
+             
+                      </div>
+                    </div>
+                  </div>
+                
+                  
+                
+              </div>
             </div>
+
+
+
           </div>
 
         

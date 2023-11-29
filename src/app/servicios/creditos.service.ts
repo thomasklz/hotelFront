@@ -24,4 +24,9 @@ export class CreditosService {
       return this.http.get<any>('http://localhost:3000/api/obtenerreporteporusuario/'+id);
     }
     
+    ingresos(fecha: string, id: string) {
+      return this.http.get<any>(`http://localhost:3000/api/ingresos/${fecha}/${id}`);
+    }
+    
+    
 }

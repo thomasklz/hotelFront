@@ -15,14 +15,17 @@
       <label class="label" for="input-datalist-fecha">Buscar fecha:</label>
       <div class="search-box">
         <input
-          type="date"
-          class="form-control"
-          list="list-timezone-fecha"
-          id="input-datalist-fecha"
-          [value]="fechaSeleccionado.fecha"
-          (change)="updateFechaId($event)"
-          formControlName="fecha"
-        />
+        #fechaInput
+        type="date"
+        class="form-control"
+        list="list-timezone-fecha"
+        id="input-datalist-fecha"
+        [value]="fechaSeleccionado.fecha"
+        (change)="updateFechaId($event)"
+        (input)="onFechaInput($event)"
+        formControlName="fecha"
+      />
+      
         <datalist id="list-timezone-fecha">
           <option *ngFor="let item of fechass" [value]="item.fecha"></option>
         </datalist>

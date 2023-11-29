@@ -102,6 +102,15 @@ export class MenuComponent implements OnInit {
     this.menuForm.get('cantidad')?.valueChanges.subscribe(() => {
       this.showId_cantidadplatoError = this.menuForm.get('cantidad')?.invalid;
     });
+    this.menuForm.get('habilitado')?.setValue('1');
+
+    // Suscríbete a los cambios en el control 'habilitado' para detectar cuando se selecciona "No"
+    this.menuForm.get('habilitado')?.valueChanges.subscribe((value) => {
+      if (value === '0') {
+        // Cambia el valor del control 'habilitado' a 0 si se selecciona "No"
+        this.menuForm.get('habilitado')?.setValue('0');
+      }
+    });
   }
 
 
@@ -312,23 +321,25 @@ aplicarFiltrosfecha() {
   } */
   //Para el registro de plato usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de menú diario'; //cambio de nombre en el encabezado
+    this.tituloForm = 'Registro de menú diario';
     this.menuForm.reset();
     this.editandoPlato = false;
     this.idPlatoEditar = '';
-
+  
     this.selectedOption = null;
     this.menuForm.get('id_plato')?.setValue(null);
     this.showId_tipomenuError = false;
-
-   
+    
     this.showId_cantidadplatoError = false;
     this.showFechaError = false;
     this.showHabilitadoError = false;
     this.showDiasError = false;
     this.showPrecioError = false;
-
+  
+    // Establecer el valor del radio button predeterminado
+    this.menuForm.get('habilitado')?.setValue('1'); // Puedes ajustar esto según tu lógica
   }
+  
 
   editarMenu(item: any) {
     this.tituloForm = 'Editar menú diario';

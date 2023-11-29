@@ -1,7 +1,4 @@
-img {
-  font-weight: bold;
 
-}
 
 .texto-grueso {
   font-weight: bold;
@@ -16,12 +13,24 @@ img {
   color: #ffffff;
   
 }
+
+
 .tamimg{
   height: 25px;
   width: 25px;
 }
 .col{
   color: #ffffff;
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
 }
 .dropdown-menu{
   cursor: pointer;
@@ -82,7 +91,9 @@ th {
   font-size: 20px;
 }
 
-
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
 
 
 
@@ -389,7 +400,7 @@ header {
       border: 1px solid #ccc;
       border-radius: 5px;
       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-      width: 700px;
+      width: 800px;
     }
     .containerversion2{
       display: flex;

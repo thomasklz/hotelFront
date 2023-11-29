@@ -1,0 +1,107 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="search-container col-md-12">
+        <label class="label"  for="nombreproductoFiltro">Buscar el nombre:</label>
+        <div class="search-box">
+          <input type="text" 
+          class="form-control"
+         
+        
+          [(ngModel)]="nombreproductoFiltro" (input)="aplicarFiltros()"  />
+         
+        </div>
+     
+        
+      </div>
+
+    <div class="row">
+
+      <div class="col-md-12">
+
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title disabled"> <img src="assets/img/usuarios.png" alt=""> Usuarios administradores</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>
+                    No
+                  </th>
+                  <th>
+                    Usuario
+                  </th>
+                 
+                  <th>
+                    Nombres
+                  </th>
+                  <th>
+                    Email
+                  </th>
+                  <th>
+                    Teléfono
+                  </th>
+                  <th>
+                    Foto
+                  </th>
+              
+
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of usuariosss; let i = index">
+                        <ng-container *ngIf="(!nombreproductoFiltro || item.persona.nombre.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+      
+                  <tr>
+                    <td>
+                      {{i+1}}
+                    </td>
+                    <td>
+                      {{item.usuario}}
+                    </td>
+                   
+                    <td>
+                      {{item.persona.nombre}}
+                    </td>
+                    <td>
+                      {{item.persona.email}}
+                    </td>
+                    <td>
+                      {{item.persona.telefono}}
+                    </td>
+                    <td>
+                      {{item.persona.foto}}
+                    </td>
+                 
+
+                  </tr>
+
+                  
+                </ng-container>
+            </ng-container>
+                </tbody>
+              </table>
+            </div>
+
+                  <!-- Contenedor para centrar la paginación -->
+  <div class="pagination-containerrrr">
+    <!-- Paginación -->
+    <div class="pagination">
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+      <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+    </div>
+  </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+

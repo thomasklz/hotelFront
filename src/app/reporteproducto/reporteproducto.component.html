@@ -3,6 +3,30 @@
   
       <div class="form-row">
         <div class="form-group containerversion2 col-md-12">
+         
+
+          
+          <div class="col-lg-3">
+            <div class="labelversion2">
+              <div class="form-group">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Seleccionar el filtro:</label>
+                    <div class="search-box">
+                      <select class="form-control" id="filtroSelect" [(ngModel)]="filtroSeleccionado" (change)="limpiarInputYMostrarTabla()">
+                        <option value="Seleccionar" disabled selected>Seleccione</option>
+                        <option value="dia">Día</option>
+                        <option value="semana">Semana</option>
+                        <option value="mes">Mes</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+       
           <div class="col-lg-3">
             <div class="labelversion2">
               <div class="form-group">
@@ -21,34 +45,6 @@
             </div>
           </div>
           
-
-         
-
-
-
-
-
-          
-
-          <div class="col-lg-3">
-            <div class="labelversion2">
-              <div class="form-group">
-                <div class="formmm">
-                  <div class="search-container">
-                    <label class="label">Seleccionar el filtro:</label>
-                    <div class="search-box">
-                      <select class="form-control" id="filtroSelect" [(ngModel)]="filtroSeleccionado" (change)="aplicarFiltros()">
-                        <option value="Seleccionar" disabled selected>Seleccione</option>
-                        <option id="diaFiltro" [value]="'dia'">Día</option>
-                        <option id="semanaFiltro" [value]="'semana'">Semana</option>
-                        <option id="mesFiltro" [value]="'mes'">Mes</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           
           <div class="col-lg-3" *ngIf="filtroSeleccionado === 'dia'">
             <div class="labelversion2">
@@ -57,16 +53,16 @@
                   <div class="search-container">
                     <label class="label">Buscar la fecha:</label>
                     <div class="search-box">
-                      <!-- Usa el formulario de Angular para manejar la fecha -->
-                      <form>
+                      <div> 
                         <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada" name="fecha" id="input-datalist-fecha" />
-                      </form>
-                                          </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+    
           
 
           <div class="col-lg-3" *ngIf="filtroSeleccionado === 'semana'">
@@ -77,20 +73,8 @@
                   <div class="search-container">
                     <div class="search-box">
                       <div class="form-inline"> <!-- Contenedor para alinear horizontalmente -->
-                        <input
-                          type="date"
-                          class="form-control"
-                          list="list-timezone-fecha"
-                          id="input-datalist-fecha"
-                          formControlName="fechas"
-                        />
-                        <input
-                          type="date"
-                          class="form-control"
-                          list="list-timezone-fecha"
-                          id="input-datalist-fecha"
-                          formControlName="fechas"
-                        />
+                        <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada" name="fecha" id="input-datalist-fecha" />
+                        <input type="date" class="form-control" [(ngModel)]="fechafinalSeleccionada" name="fecha" id="input-datalist-fecha" />
                       </div>
                     </div>
                   </div>
@@ -108,7 +92,7 @@
                   <div class="search-container">
                     <label class="label">Seleccionar el mes:</label>
                     <div class="search-box">
-                      <select class="form-control" formControlName="mesSeleccionado">
+                      <select class="form-control" [(ngModel)]="mesSeleccionado">
                         <option value="" disabled selected>Seleccione</option> <!-- Opción inicial -->
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
@@ -129,13 +113,21 @@
               </div>
             </div>
           </div>
-          
 
+
+          
           <div class="col-lg-3">
-            <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId()">
-              Filtrar <i class="fa fa-search fa-stack-1x"></i>
-            </button>
+            <div class="labelversion2">
+              <button type="button" class="btn btn-danger" (click)="buscarIngredientePorFiltro()" style="display: flex; align-items: center;">
+                Filtrar&nbsp;
+                <i class="fa fa-search fa-stack-1x" style="vertical-align: middle; margin-left: 5px;"></i>
+              </button>
+            </div>
           </div>
+          
+          
+          
+          
         
      
       </div>
@@ -143,15 +135,36 @@
     </div>
 </div>
 
-
-
-
+<br><br><br><br>
 
 <div class="col-md-12">
-    
-  <div class="card text-center">
-    <div class="card-header card-header-danger">
-      <h4 class="card-title disabled label">  Reporte de ingredientes por dia</h4>
+  <div class="card text-center" *ngIf="mostrarTabla">
+    <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+      <h4 class="card-title disabled label2"> <img
+        src="/assets/img/estadisticas.png"
+        class="edit"
+        alt=""
+      /> Reporte de ingredientes por día</h4>
+     
+     
+      <li class="nav-item dropdown">
+        <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+          Descargar    <i class="material-icons">file_download</i> 
+          
+            <p>
+                <span class="d-lg-none d-md-block">Some Actions</span>
+            </p>
+        </a>
+        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" (click)="descargarDatosxDias()" >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+            <a class="dropdown-item"(click)="descargarPDFxDias()" > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+          
+            
+        </div>
+    </li>
+
+
+
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -159,24 +172,137 @@
           <thead class="text-primary">
             <th>Ingrediente</th>
             <th>Fecha</th>
-            <th>Total de gramos por días</th>
+            <th>Total de libras/litros</th>
           </thead>
           <tbody>
-            <ng-container *ngFor="let item of ingredientesdiass; let i = index">
+            <ng-container *ngFor="let item of ingredientesdiass">
               <tr>
                 <td>{{ item.id_alimento }}</td>
                 <td>{{ item.fecha }}</td>
-                <td>{{ item.ingredientesTotalesdia.totalCantidadFinal }}</td>
+                <td>{{ item.totalCantidadFinal }}</td>
               </tr>
             </ng-container>
+            
           </tbody>
         </table>
       </div>
-      
+    </div>
+  </div>
+</div>
+
+ 
+
+
+
+
+
+
+
+<div class="col-md-12">
+  <div class="card text-center" *ngIf="mostrarTablames">
+    <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+      <h4 class="card-title disabled label2"> <img
+        src="/assets/img/estadisticas.png"
+        class="edit"
+        alt=""
+      /> Reporte de ingredientes por mes</h4>
+     
+     
+      <li class="nav-item dropdown">
+        <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+          Descargar    <i class="material-icons">file_download</i> 
+          
+            <p>
+                <span class="d-lg-none d-md-block">Some Actions</span>
+            </p>
+        </a>
+        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" (click)="descargarDatosxMes()" >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+            <a class="dropdown-item"(click)="descargarPDFxMes()" > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+          
+            
+        </div>
+    </li>
 
 
 
     </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <th>Ingrediente</th>
+            <th>Fecha</th>
+            <th>Total de libras/litros</th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of ingredientesdiass">
+              <tr>
+                <td>{{ item.id_alimento }}</td>
+                <td>{{ item.mes }}</td>
+                <td>{{ item.sumaCantidadFinal }}</td>
+              </tr>
+            </ng-container>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+</div>
 
+
+<div class="col-md-12">
+  <div class="card text-center" *ngIf="mostrarTablasemana">
+    <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+      <h4 class="card-title disabled label2"> <img
+        src="/assets/img/estadisticas.png"
+        class="edit"
+        alt=""
+      /> Reporte de ingredientes por semanas</h4>
+     
+     
+      <li class="nav-item dropdown">
+        <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+          Descargar    <i class="material-icons">file_download</i> 
+          
+            <p>
+                <span class="d-lg-none d-md-block">Some Actions</span>
+            </p>
+        </a>
+        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" (click)="descargarDatosxSemana()" >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+            <a class="dropdown-item"(click)="descargarPDFxSemana()" > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+          
+            
+        </div>
+    </li>
+
+
+
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <th>Ingrediente</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Final</th>
+            <th>Total de libras/litros</th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of ingredientesdiass">
+              <tr>
+                <td>{{ item.id_alimento }}</td>
+                <td>{{ item.fechaInicio }}</td>
+                <td>{{ item.fechaFin }}</td>       
+                <td>{{ item.totalCantidadFinal }}</td>
+              </tr>
+            </ng-container>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

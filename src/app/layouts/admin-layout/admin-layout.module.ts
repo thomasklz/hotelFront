@@ -33,6 +33,14 @@ import { PesosComponent } from 'app/pesos/pesos.component';
 import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
 import { ProductosplatoComponent } from 'app/productosplato/productosplato.component';
 import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
+import { ReporteingresosComponent } from 'app/reporteingresos/reporteingresos.component';
+
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+import { MatListModule } from '@angular/material/list';
+import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
+
 
 
 @NgModule({
@@ -48,7 +56,9 @@ import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.co
     MatSelectModule,
     MatTooltipModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule,
+    MatListModule
   
   ],
   declarations: [
@@ -73,7 +83,9 @@ import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.co
    PesosComponent,
    CantidadplatosComponent,
    ProductosplatoComponent,
-   ReporteproductoComponent
+   ReporteproductoComponent,
+   ReporteingresosComponent,
+   ListadoadministradoresComponent
   ]
 })
 

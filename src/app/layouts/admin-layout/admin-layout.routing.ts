@@ -24,6 +24,8 @@ import { PesosComponent } from 'app/pesos/pesos.component';
 import { CantidadplatosComponent } from 'app/cantidadplatos/cantidadplatos.component';
 import { ProductosplatoComponent } from 'app/productosplato/productosplato.component';
 import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
+import { ReporteingresosComponent } from 'app/reporteingresos/reporteingresos.component';
+import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
 
 export const AdminLayoutRoutes: Routes = [
    
@@ -40,7 +42,9 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'CrearUsuarioComponent',        component: CrearUsuarioComponent },
     { path: 'login',        component: LoginComponent },
     { path: 'reportePolitecnico',        component: ReportePolitecnicoComponent },
-    { path: 'listadoUsuarios',        component: ListadoUsuariosComponent },
+    { path: 'listadodeclientes',        component: ListadoUsuariosComponent },
+
+
     { path: 'configuracionyprivacidad',        component: ConfiguracionPrivacidadComponent },
     { path: 'ayuda',        component: AyudaComponent },
     { path: 'alimentos',        component: AlimentosComponent },
@@ -53,7 +57,9 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'cantidadplatos',        component: CantidadplatosComponent },
     { path: 'productosplato',        component: ProductosplatoComponent },
     { path: 'reportedeproducto',        component: ReporteproductoComponent },
-    
+    { path: 'reportedeingresos',        component: ReporteingresosComponent },
+    { path: 'listadodeadministradores',        component: ListadoadministradoresComponent },
+
     
     
 ];

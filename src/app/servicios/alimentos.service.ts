@@ -70,6 +70,29 @@ obtenerfiltropordias(fecha: string, id?: string) {
 }
 
 
+obtenerfiltropormes( id: string, mes?: string) {
+  // Formatea la URL adecuadamente con los parámetros
+  let url = `http://localhost:3000/api/obtenerfiltropormes/${id}`;
+  
+  if (mes) {
+    url += `/${mes}`;
+  }
+
+  return this.http.get<any>(url);
+}
+
+obtenerFiltroPorSemanas(id: string, fechainicio?: string, fechafinal?: string) {
+  // Formatea la URL adecuadamente con los parámetros
+  let url = `http://localhost:3000/api/obtenerfiltroporsemanas/${id}`;
+  
+  if (fechainicio && fechafinal) {
+    // Asegúrate de que las fechas estén en el formato correcto y sean válidas
+    url += `/${fechainicio}/${fechafinal}`;
+  }
+
+  return this.http.get<any>(url);
+}
+
 
 
 }

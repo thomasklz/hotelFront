@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild  } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {
   FormBuilder,
@@ -17,6 +17,10 @@ import { MenuService } from "app/servicios/menu.service";
 import { PesosService } from "app/servicios/pesos.service";
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
+import { debounceTime, startWith, map } from 'rxjs/operators';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+
 
 
   @Component({
@@ -27,12 +31,16 @@ import { ChangeDetectorRef } from '@angular/core';
   })
   export class IngredientesComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
+
+  @ViewChild(MatAutocomplete) autocomplete: MatAutocomplete;
+
+
   id: string = "";
   estado: boolean = true;
   precio: string = "";
   id_peso: string = "";
   id_plato: string = "";
-  id_alimento: string = "";
+  id_alimento: string[] = [];
   pesosss: any[] = [];
   platosss: any[] = [];
   alimentosss: any[] = [];
@@ -63,6 +71,11 @@ import { ChangeDetectorRef } from '@angular/core';
   selectedOptionplato: any = null;
   selectedOptionalimento: any = null;
 
+
+
+  filteredToppings: Observable<string[]>;
+  @ViewChild('auto') autoCompleteInput: any;
+
   constructor(
     private http: HttpClient,
     private IngredientesService: IngredientesService,
@@ -76,23 +89,128 @@ import { ChangeDetectorRef } from '@angular/core';
   ) {
     this.getAllplatos();
   }
+  
 
+ 
+
+  
   ngOnInit() {
     this.getAllingredientes();
-    this.getAllalimentos();
+    this.getAllAlimentos();
     this.loadPageData();
     this.getAllPlatosDescripcion();
     this.ingredientesForm = this.formBuilder.group({
-      id_plato: new FormControl("", [
-        Validators.required,
-        Validators.maxLength(1),
-      ]),
-      id_alimento: new FormControl("", [
-        Validators.required,
-        Validators.maxLength(1),
-      ]),
+      id_plato: ["", [Validators.required, Validators.maxLength(1)]],
+      id_alimento: ["", Validators.required],
     });
+
+
+
+    
   }
+  
+
+
+
+
+        
+      
+
+  
+    
+
+  // Método para alternar la selección de un ingrediente
+  
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   botonBuscarPresionado = false;
 
@@ -225,18 +343,82 @@ import { ChangeDetectorRef } from '@angular/core';
       },
     });
   }
+  ingredientesUnicos: any[] = [];
 
-  getAllalimentos() {
+
+  getAllAlimentos() {
     this.AlimentosService.getalimentos().subscribe({
       next: (res) => {
-        this.dataSource = new MatTableDataSource(res.alimentos);
         this.alimentoss = res.alimentos;
+        this.obtenerIngredientesUnicos();
       },
       error: (err) => {
         console.error(err);
       },
     });
   }
+
+  obtenerIngredientesUnicos() {
+    const uniqueIngredientes = new Set(this.alimentoss.map(ingrediente => ingrediente.descripcion));
+    this.ingredientesUnicos = Array.from(uniqueIngredientes).map(descripcion => ({ descripcion }));
+  }
+
+  ingredientesSeleccionados: any[] = [];
+
+  // ... tu código existente
+
+/*   seleccionarIngrediente(ingrediente: any) {
+    // Verificar si el ingrediente ya está seleccionado
+    const index = this.ingredientesSeleccionados.findIndex(i => i.descripcion === ingrediente.descripcion);
+    ingrediente.seleccionado = !ingrediente.seleccionado;
+    if (index === -1) {
+      // Si no está seleccionado, agregarlo a la lista de seleccionados
+      this.ingredientesSeleccionados.push(ingrediente);
+    } else {
+      // Si ya está seleccionado, quitarlo de la lista de seleccionados
+      this.ingredientesSeleccionados.splice(index, 1);
+    }
+  } */
+ 
+  
+
+  seleccionarIngrediente(ingrediente: any) {
+    const index = this.ingredientesUnicos.findIndex(
+      (i) => i.descripcion === ingrediente.descripcion
+    );
+    ingrediente.seleccionado = !ingrediente.seleccionado;
+  
+    if (index !== -1) {
+      if (ingrediente.seleccionado) {
+        // Asignar un identificador único basado en la posición
+        ingrediente.id = index + 1;
+      } else {
+        // Remover el identificador cuando se deselecciona
+        delete ingrediente.id;
+      }
+    }
+  
+    // Obtener los identificadores de los ingredientes seleccionados
+    this.id_alimento = this.ingredientesUnicos
+      .filter((i) => i.seleccionado && i.id !== undefined)
+      .map((i) => i.id.toString());
+  
+    console.log("Identificadores de ingredientes seleccionadossssssssssssss:", this.id_alimento);
+
+
+    this.ingredientesSeleccionados = this.ingredientesUnicos
+    .
+ 
+filter(i => i.seleccionado)
+    .
+   
+map(i => ({ descripcion: i.descripcion }));
+
+  }
+  
+  
+  
+  
 
   getAllPlatosDescripcion() {
     this.MenuService.gettplato().subscribe({
@@ -317,7 +499,9 @@ import { ChangeDetectorRef } from '@angular/core';
     this.showAlimentoError = false;
     this.showCantidadPersonaError = false;
     this.showDiasError = false;
-    this.getAllalimentos();
+    this.getAllAlimentos();
+    this.ingredientesSeleccionados = [];
+
   }
 
   editarIngrediente(item: any) {
@@ -361,20 +545,30 @@ import { ChangeDetectorRef } from '@angular/core';
   }
 
   addIngredientes() {
+    console.log('Form Values:', this.ingredientesForm.value);
+  
     if (this.ingredientesForm.valid) {
       this.showIdplatoError = false;
-      this.showPrecioError = false;
       this.showIdalimentoError = false;
-      this.showDiasError = false;
-      this.showCantidadPersonaError = false;
-
+  
+      // Extracting selected ingredient ids
+      const id_alimento = this.ingredientesUnicos
+        .filter((ingrediente) => ingrediente.seleccionado && ingrediente.id !== undefined)
+        .map((ingrediente) => ingrediente.id.toString());
+  
+      // Ensure id_alimento is not an empty array
+      if (id_alimento.length === 0) {
+        console.error('No ingredients selected');
+        return;
+      }
+  
       const datos = {
         id_plato: this.ingredientesForm.value.id_plato,
-        id_alimento: this.ingredientesForm.value.id_alimento,
+        id_alimentos: id_alimento, // Use the correct field name expected by the server
       };
-
-      this.getAllalimentos();
-
+  
+      this.getAllAlimentos();
+  
       if (!this.editandoIngredientes) {
         this.IngredientesService.guardarproductosconsuplato(datos).subscribe(
           (result: any) => {
@@ -384,34 +578,52 @@ import { ChangeDetectorRef } from '@angular/core';
             this.alimentoSeleccionado.descripcion = "";
           },
           (error) => {
-            console.error(error);
-            this.showModalError();
+            console.error('Error while making the HTTP request:', error);
+  
+            if (error.status === 400) {
+              console.error('Server responded with a 400 Bad Request. Error message:', error.error.message);
+              this.showIdplatoError = true; // Set to true to indicate the error
+            } else {
+              console.error('Unhandled error. Response:', error);
+              this.showModalError();
+            }
           }
         );
       } else {
         this.IngredientesService.guardarproductosconsuplato(
-          datos, this.idIngredientesEditar
+          datos,
+          this.idIngredientesEditar
         ).subscribe(
           (result: any) => {
             this.showModalEdit();
             this.nuevoCurso();
           },
           (error) => {
-            console.error(error);
-            this.showModalErrorEdit();
+            console.error('Error while making the HTTP request:', error);
+  
+            if (error.status === 400) {
+              console.error('Server responded with a 400 Bad Request. Error message:', error.error.message);
+              this.showIdplatoError = true; // Set to true to indicate the error
+            } else {
+              console.error('Unhandled error. Response:', error);
+              this.showModalErrorEdit();
+            }
           }
         );
       }
     } else {
-      this.showPrecioError = this.ingredientesForm.controls.precio.invalid;
+      console.log('Form is invalid. Validation errors:', this.ingredientesForm.errors);
       this.showIdplatoError = this.ingredientesForm.controls.id_plato.invalid;
-      this.showIdalimentoError =
-        this.ingredientesForm.controls.id_alimento.invalid;
-      this.showDiasError = this.ingredientesForm.controls.numDias.invalid;
-      this.showCantidadPersonaError =
-        this.ingredientesForm.controls.cantidadPersona.invalid;
+      this.showIdalimentoError = this.ingredientesForm.controls.id_alimento.invalid;
     }
   }
+  
+  
+  
+  
+  
+  
+  
 
   showModalEliminar(id: any) {
     Swal.fire({
@@ -461,6 +673,8 @@ import { ChangeDetectorRef } from '@angular/core';
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
     this.idIngredientesEditar = "";
+    this.ingredientesSeleccionados = [];
+
 
     this.platoSeleccionado = { id: null, descripcion: "" };
     this.alimentoSeleccionado = { id: null, descripcion: "" };

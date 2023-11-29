@@ -11,7 +11,10 @@ export class UsuarioService {
   gettipousuario(){
     return this.http.get<any>('http://localhost:3000/api/mostrartipo_usuario/');
   }
-
+  getlistadoadministradores(){
+    return this.http.get<any>('http://localhost:3000/api/listadoadministradores/');
+  }
+  
 
   postusuario(data:any){
     return this.http.post<any>('http://localhost:3000/api/crearUsuario/', data);
