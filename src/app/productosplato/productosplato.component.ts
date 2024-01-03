@@ -16,6 +16,9 @@ import { AlimentosService } from "app/servicios/alimentos.service";
 import { MenuService } from "app/servicios/menu.service";
 import { PesosService } from "app/servicios/pesos.service";
 import { ActivatedRoute } from '@angular/router';
+import { format, parse } from 'date-fns';
+
+
 
 
 
@@ -158,7 +161,7 @@ fecha: string = '';
 
  
 
-  buscarIngredientePorId() { 
+/*   buscarIngredientePorId() { 
   const fecha = this.fechaSeleccionado.fecha;
   const id = this.platoSeleccionado.id;
   console.log("Plato seleccionado ID:", id);
@@ -181,11 +184,34 @@ fecha: string = '';
       this.showModalErrorsindatos();
     },
   });
-}
+} */
 
   
  
-  
+buscarIngredientePorId() { 
+  const fecha = this.fechaSeleccionado.fecha || this.formatDate(this.fechaInput.nativeElement.value);
+
+  if (!this.platoSeleccionado || !this.platoSeleccionado.id) {
+    console.error("this.platoSeleccionado.id is null or undefined.");
+    return;
+  }
+
+  this.IngredientesService.buscarFechaYPlato(this.platoSeleccionado.id, fecha).subscribe({
+    next: (res: any) => {
+      console.log("Ingredientes encontrados:", res.ingredientes);
+      this.ingredientesss = res.ingredientes;
+      this.totalItems = res.ingredientes.length;
+      this.buscarDescripcionporId();
+    },
+    error: (err) => {
+      this.showModalErrorsindatos();
+    },
+  });
+}
+
+
+
+
 buscarDescripcionporId() {
   const ingredientId = this.platoSeleccionado.descripcion; // Use the ID, not the description
   if (ingredientId) {
@@ -240,29 +266,89 @@ buscarDescripcionporId() {
     }
   }
   
+ // ...
+
+
+ platoInputValue: string = '';
+
+  // ... Resto del componente
+
   updateFechaId(event: any) {
-    const fecha = event.target.value;
-    const fechaSeleccionado = this.fechass.find((menu) => menu.fecha === fecha);
+    const fecha = this.fechaSeleccionado?.fecha || this.formatDate(event.target.value);
   
-    if (fechaSeleccionado) {
-      this.fechaSeleccionado = fechaSeleccionado;
-      this.MenuService.buscarmenuporfecha(fechaSeleccionado.fecha).subscribe({
+    if (fecha) {
+      this.MenuService.buscarmenuporfecha(fecha).subscribe({
         next: (res) => {
-          this.dataSource = new MatTableDataSource(res.platos);
-          this.platosss = res.platos;
+          if (res.platos.length > 0) {
+            this.dataSource = new MatTableDataSource(res.platos);
+            this.platosss = res.platos;
   
-          // Limpiar el valor del campo de plato
-          this.platoSeleccionado = { id: null, descripcion: "" };
-          this.ingredientesForm.get("id_plato")?.setValue(null);
+            // Reset the value of the plate field
+            this.platoSeleccionado = { id: null, descripcion: "" };
+            this.ingredientesForm.get("id_plato")?.setValue(null);
   
-          // Actualizar el valor del campo fecha_menu en ingredientesForm
-          this.ingredientesForm.get("fecha")?.setValue(fechaSeleccionado.fecha);
+            // Update the value of the fecha_menu field in ingredientesForm
+            this.ingredientesForm.get("fecha")?.setValue(fecha);
+            
+            // Clear the table data
+            this.ingredientesss = [];
+          } else {
+            console.error(`No existen registro de platos para la fecha ${fecha}`);
+            // Puedes agregar un mensaje en la consola o mostrar una notificación al usuario
+          }
         },
         error: (err) => {
           console.error(err);
         },
       });
     }
+  }
+  
+  
+  
+ // ... Otras partes de tu código ...
+
+ onFechaInput(event: any) {
+  const manuallyEnteredDate = event.target.value;
+  const selectedDate = this.fechass.find(item => item.fecha === manuallyEnteredDate);
+
+  // Si la fecha ingresada no está en la lista, restablecer el valor del campo de plato y limpiar la lista
+  if (!selectedDate) {
+    this.platoSeleccionado = { id: null, descripcion: '' };
+    this.ingredientesForm.get('id_plato').setValue(null);
+    
+    // Limpiar la lista de opciones para plato
+    this.platosss = [];
+    
+    // Limpiar la tabla
+    this.ingredientesss = [];
+  }
+}
+
+
+// ... Otras partes de tu código ...
+
+
+
+
+
+ 
+
+private formatDate(dateString: string): string {
+  
+ 
+  const date = parse(dateString, 'yyyy-MM-dd', new Date());
+    return format(date, 'yyyy-MM-dd');
+  }
+  
+  
+
+
+
+
+  
+  private padZero(value: number): string {
+    return value.toString().padStart(2, '0');
   }
   
   
@@ -562,16 +648,11 @@ buscarDescripcionporId() {
       }
     });
   }
-  onFechaInput(event: any) {
-    const manuallyEnteredDate = event.target.value;
-    const selectedDate = this.fechass.find(item => item.fecha === manuallyEnteredDate);
+
+
+
   
-    // If the entered date is not in the list, clear the plate input field
-    if (!selectedDate) {
-      this.platoSeleccionado = { id: null, descripcion: '' };
-      this.ingredientesForm.get('id_plato').setValue(null);
-    }
-  }
+
   
   showModalErrorEliminar() {
     Swal.fire({
@@ -581,13 +662,14 @@ buscarDescripcionporId() {
   }
 
   eliminarIngrediente(id: number) {
-    this.IngredientesService.deleteingrediente(id).subscribe({
+    this.IngredientesService.deleteingredientescreados(id).subscribe({
       next: (res) => {
         Swal.fire({
           title: "Datos eliminados exitosamente",
           icon: "success",
         }).then(() => {
           //      this.getAllingredientes();
+          this.buscarIngredientePorId(); 
         });
       },
       error: () => {

@@ -1,0 +1,26 @@
+.icon-text {
+    font-size: 18px; /* Ajusta el tamaño según tus preferencias */
+    vertical-align: middle; /* Asegura la alineación vertical */
+    margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+    color: rgb(136, 135, 134)3, 133, 133;
+  }
+  .esp{
+    margin-top: 20px;
+    cursor: pointer;
+    color: rgb(214, 212, 208)3, 133, 133;
+  }
+ 
+  
+  .cl {
+    color:rgb(145, 140, 140); /* Establece el color rojo para el icono */
+  }
+  
+  .icon-text {
+    color: rgb(145, 140, 140); /* Establece el color rojo para el texto */
+    font-size: 16px; /* Ajusta el tamaño según tus preferencias */
+    vertical-align: middle; /* Asegura la alineación vertical */
+    margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+  }
+  
+
+  

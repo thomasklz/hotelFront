@@ -46,6 +46,14 @@ deleteusuario(id:number){
   return this.http.delete<any>('http://localhost:3000/api/eliminarusuario/'+id);
   
 }
+
+
+
+cambiarestadousuario(data:any, id:any){
+  return this.http.put<any>('http://localhost:3000/api/cambiarestadousuario/'+id,data);
+}
+
+
 deletepersona(id:number){
   return this.http.delete<any>('http://localhost:3000/api/eliminarpersona/'+id);
   

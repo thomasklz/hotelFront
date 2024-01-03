@@ -12,6 +12,13 @@ export class PesosService {
     return this.http.get<any>('http://localhost:3000/api/mostrarpeso/');
   }
 
+
+  gettobtenerEstadoPersona(){
+    return this.http.get<any>('http://localhost:3000/api/obtenerEstadoPersona/');
+  }
+
+  
+
   guardar(data:any, id?){
     if (id) {
       return this.http.put<any>('http://localhost:3000/api/editarpeso/'+id,data);

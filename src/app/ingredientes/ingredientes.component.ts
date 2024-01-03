@@ -1,11 +1,6 @@
 import { Component, OnInit,ViewChild  } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormBuilder,  FormControl,  FormGroup,  Validators,} from "@angular/forms";
 import { Router } from "@angular/router";
 import { MatTableDataSource } from "@angular/material/table";
 import swal from "sweetalert";
@@ -71,6 +66,7 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
   selectedOptionplato: any = null;
   selectedOptionalimento: any = null;
 
+  mostrarTabla: boolean = false;
 
 
   filteredToppings: Observable<string[]>;
@@ -98,6 +94,8 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
     this.getAllingredientes();
     this.getAllAlimentos();
     this.loadPageData();
+
+    this.loadPageDatasss();
     this.getAllPlatosDescripcion();
     this.ingredientesForm = this.formBuilder.group({
       id_plato: ["", [Validators.required, Validators.maxLength(1)]],
@@ -224,6 +222,7 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
             this.showModalErrorsindatos();
           } else {
             this.productosplatosss = res.productosplato;
+            this.mostrarTabla = true;
           }
         },
         error: (err) => {
@@ -307,6 +306,13 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
   showModalError() {
     swal({
       title: "Error de registro de datos ",
+      icon: "error",
+    });
+  }
+
+  showModalErrorr() {
+    swal({
+      title: "Error de registro de datos, ya existe un registro con este plato  ",
       icon: "error",
     });
   }
@@ -463,11 +469,52 @@ map(i => ({ descripcion: i.descripcion }));
   get pagedMenus(): any[] {
     return this.productosplatosss.slice(this.startIndex, this.endIndex + 1);
   }
+  
+
+
+
+
+
+
+  pageSizes = 10;
+  currentPages = 1;
+  totalItemss = 0;
+
+  get totalPagess(): number {
+    return Math.ceil(this.totalItems / this.pageSizes);
+  }
+
+  get startIndexs(): number {
+    return (this.currentPages - 1) * this.pageSizes;
+  }
+
+  get endIndexs(): number {
+    return Math.min(this.startIndexs + this.pageSizes - 1, this.totalItemss - 1);
+  }
+
+  get pagedMenuss(): any[] {
+    return this.ingredientesUnicos.slice(this.startIndexs, this.endIndexs + 1);
+  }
+
+  loadPageDatasss() {
+    this.AlimentosService.getalimentos().subscribe({
+      next: (res) => {
+        this.ingredientesUnicos = res.alimentos;
+        this.ingredientesUnicos= res.alimentos;
+        this.totalItemss = res.alimentos.length;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
 
   loadPageData() {
     this.MenuService.gettplato().subscribe({
       next: (res) => {
         this.productosplatosss = res.productosplato;
+        this.ingredientesUnicos= res.productosplato;
         this.totalItems = res.productosplato.length;
       },
       error: (err) => {
@@ -481,6 +528,7 @@ map(i => ({ descripcion: i.descripcion }));
   }
 
   nuevoCurso() {
+    this.mostrarTabla = false;
     this.tituloForm = "Registro de ingredientes";
     this.cdr.detectChanges();
 
@@ -578,7 +626,7 @@ map(i => ({ descripcion: i.descripcion }));
             this.alimentoSeleccionado.descripcion = "";
           },
           (error) => {
-            console.error('Error while making the HTTP request:', error);
+           this.showModalErrorr();
   
             if (error.status === 400) {
               console.error('Server responded with a 400 Bad Request. Error message:', error.error.message);
@@ -648,13 +696,13 @@ map(i => ({ descripcion: i.descripcion }));
   }
 
   eliminarIngrediente(id: number) {
-    this.IngredientesService.deleteingrediente(id).subscribe({
+    this.IngredientesService.deleteproductoPlato(id).subscribe({
       next: (res) => {
         Swal.fire({
           title: "Datos eliminados exitosamente",
           icon: "success",
         }).then(() => {
-          // this.getAllingredientes();
+           this.buscarIngredientePorId();
         });
       },
       error: () => {
@@ -662,7 +710,6 @@ map(i => ({ descripcion: i.descripcion }));
       },
     });
   }
-
   closeModal() {
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
@@ -693,4 +740,36 @@ map(i => ({ descripcion: i.descripcion }));
   closeModalAfterCancel() {
     this.resetForm();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 }

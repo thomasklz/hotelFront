@@ -8,6 +8,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
+import { ElementRef, ViewChild } from "@angular/core";
+import * as XLSX from 'xlsx';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-reporte',
@@ -20,6 +24,7 @@ export class ReporteComponent implements OnInit {
   usuario:any;
   id:any;
   dataSource = new MatTableDataSource<any>();
+  @ViewChild("inputDatalist") inputDatalist: ElementRef;
 
   constructor(location: Location, private  CreditosService:CreditosService, private router:Router) { 
 
@@ -96,4 +101,117 @@ logout() {
     localStorage.removeItem('usuario');
     this.router.navigate(['/login']);
   }
+
+
+
+
+  //-----------------------
+
+descargarPDF() {
+  const rows = [];
+
+  // Agregar el encabezado de la tabla
+  const headerRow = ['Nº', 'Plato', 'Cantidad', 'Precio', 'Fecha'];
+  rows.push(headerRow);
+
+  // Iterar sobre los datos y agregar filas
+  this.creditosss.forEach((item, index) => {
+    const rowData = [
+      index + 1,
+      item.plato.descripcion,
+      item.cantidad,
+      item.precio,
+      item.fecha,
+     
+     
+    ];
+    rows.push(rowData);
+  });
+
+  // Define la estructura del documento PDF
+ 
+  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
+  let columnWidths = [30, 145, 80, 80, 120]; // Anchos de las 9 columnas
+  const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+  let escala = 1;
+  
+  if (totalWidth > anchoPagina) {
+    escala = anchoPagina / totalWidth;
+    columnWidths = columnWidths.map(width => width * escala);
+  }
+  
+  const documentoPDF = {
+    content: [
+      { text: 'Reporte ', style: 'header' },
+      '\n',
+      {
+        table: {
+          headerRows: 1,
+          widths: columnWidths,
+          body: rows,
+        }
+      }
+    ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+        alignment: 'center',
+        margin: [20, 0, 0, 20]
+      }
+    }
+  };
+  
+  
+
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  pdfMake.createPdf(documentoPDF).download('Reporte.pdf');
+}
+
+//-----------------------
+
+
+  datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
+
+
+  //'''''''''''''''''''''''
+  descargarDatos() {
+    const datosParaDescargar = this.creditosss.map(item => ({
+      'Plato': item.plato.descripcion,
+      'Cantidad': item.cantidad,
+      'Precio': item.precio,
+      'Fecha': item.fecha,
+     
+      
+    }));
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
+    const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Reporte.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+  
+
+
+  
+  // Función para convertir datos binarios en un array
+  s2ab(s: string): Uint8Array {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i !== s.length; ++i) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return new Uint8Array(buf);
+  }
+  
+  
+  
+  
 }

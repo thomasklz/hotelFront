@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -8,6 +9,7 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
+ 
   { path: '/user-profile', title: ' Usuario',  icon:'person_add', class: '' },
   { path: '/platos', title: ' Menú',  icon:'local_dining', class: '' },
   { path: '/alimentos', title: '  Productos',  icon:'circle', class: '' },
@@ -28,11 +30,26 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
-
-  constructor() { }
+  currentRoute: string;
+  constructor(private router: Router) {
+    this.currentRoute = this.router.url;
+   }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
+
+      
+this.router.events.subscribe(event => {
+      
+ 
+  if (event instanceof NavigationEnd) {
+          
+         
+  
+   
+  this.currentRoute = this.router.url;
+        }
+      });
   }
   isMobileMenu() {
       if ($(window).width() > 991) {
@@ -40,4 +57,13 @@ export class SidebarComponent implements OnInit {
       }
       return true;
   };
+
+  // Function to check if a route is the current active route
+  
+ 
+isActiveRoute(route: string): boolean {
+    
+    
+return this.currentRoute === route;
+  }
 }

@@ -1,4 +1,156 @@
-body {
+.tim-note2 {
+    text-align: right;
+  
+  }
+  
+  .table-row:hover {
+     
+  }
+  
+  .editable-row {
+    cursor: pointer;
+    
+  }
+  
+  .editable-row:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .edit-mode {
+    background-color: #fffacd;
+  }
+  
+  .danger {
+    background-color: rgb(204, 43, 43);
+    color: #ffffff;
+    font-size: smaller;
+  }
+  
+  
+  .x {
+    // width: 200px;
+    height: 80px;
+    //margin-right: 20px;
+    // margin-bottom: 0;
+  }
+  
+  
+  
+  .texto-grueso {
+    font-weight: bold;
+    font-size: 25px;
+  }
+  
+  
+  .btn1 {
+    color: #ffffff;
+  }
+  
+  
+  .editable-row {
+    cursor: pointer;
+  }
+  
+  .sele {
+    color: black;
+  }
+  
+  .editable-row:hover {
+    background-color: #ffffff;
+  }
+  
+  .edit-mode {
+    background-color: #ffffff;
+  }
+  
+  .edit {
+    height: 80px;
+    width: 80px;
+  
+  }
+  
+  .marco-div {
+    border: 2px solid black;
+    padding: 10px;
+  }
+  
+  button1 {
+    color: blue;
+  }
+  
+  button2 {
+    color: red;
+  }
+  
+  .heads {
+    background-color: rgb(206, 25, 25);
+  }
+  
+  h5 {
+    font-size: larger;
+    color: rgb(255, 255, 255);
+    text-align: center;
+  }
+  
+  .disabled {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  th {
+    color: rgb(182, 17, 17);
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  .select-gr {
+    font-size: 18px;
+    /* Tamaño de letra grande */
+    color: rgb(158, 155, 155);
+    text-align: center;
+  
+  
+  }
+  
+  
+  .estilos {
+    content: "";
+    margin-top: 10px;
+    /* Espacio de 5 píxeles arriba de cada opción */
+    border: none;
+    /* Removemos todos los bordes */
+    border-bottom: 1px solid #888888;
+    /* Agregamos solo el borde inferior */
+    width: 400px;
+    font-size: 18px;
+  }
+  
+  .heads {
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -93,8 +245,18 @@ height: 60px;
   
   .clsimg{
     height: 55px;
-
+    margin-left: 20px; 
   }
+  .j{
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .jm{
+    font-size: 30px;
+    cursor: pointer;
+  }
+
 
 /* styles.css o sidebar.component.css */
 .red-bold-text {
@@ -106,7 +268,8 @@ th{
   font-weight: bold !important;
 }
 h2{
-  color: #00831f;
+  color: #616060;
+  font-weight: 60px;
 }
 
 .disabled {
@@ -147,7 +310,9 @@ h2{
 .col{
   color: #ffffff;
 }
-
+.clr{
+  color: #ada7a7;
+}
 .dropdown-menu{
   cursor: pointer;
 }

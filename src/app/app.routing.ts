@@ -7,6 +7,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 import { ReporteComponent } from './reporte/reporte.component';
+import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component';
 
 
 
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path:'login', component: LoginComponent},
   {path:'crearAdministrador', component: CrearAdministradorComponent},
   {path:'reporte', component: ReporteComponent},
-  
+  {path:'editardatosperfil', component: PerfilclienteComponent},
+
    {
     path: '',
     component: AdminLayoutComponent,

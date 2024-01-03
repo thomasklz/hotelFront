@@ -24,21 +24,23 @@ button2 {
   color: red;
 }
 button3 {
-  color: rgb(33, 127, 2);
+ 
   cursor: pointer; 
 }
 
 .heads {
   background-color: rgb(206, 25, 25);
 }
-.material-icons.toggle_on {
-  color: green; /* Color cuando el botón está activado */
 
-}
 
-.material-icons.toggle_on.inactive {
-  color: #888; /* Cambia a tu color "plomo" o gris cuando el botón está desactivado */
-}
+
+
+
+/* Puedes agregar más estilos según sea necesario */
+
+
+
+
 h5 {
   font-size: larger;
   color: antiquewhite;
@@ -266,4 +268,42 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+//--------------------------------------------descarga
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+
+.custom-dropdown {
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 190px;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
+
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.col{
+  color: #ffffff;
+}
+
+.dropdown-menu{
+  cursor: pointer;
 }

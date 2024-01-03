@@ -161,7 +161,7 @@
                         <td>{{ item.cantidad }}</td>
                         <td>{{ item.precio }}</td>
                         <td>{{ item.fecha }}</td>
-                        <td>{{ item.pagado }}</td>
+                        <td>{{ item.pagado ? 'Sí' : 'No' }}</td>
                         <td>
                           <button1 color="primary" (click)="editarCreditos(item)">
                             <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
@@ -222,30 +222,32 @@
           <div class="form-row">
             <div class="form-group col-md-12">
               <div class="formmm">
-                <div class="search-container">
-                  <label class="label select-gr" for="input-datalist-usuario"
-                    >Buscar cédula de usuario</label
-                  >
-                  <div class="search-box">
-                    <input
-                      type="text"
-                      class="form-control"
-                      list="list-timezone-usuario"
-                      [value]="usuarioSeleccionado.usuario"
-                      (input)="updateUsuarioId($event)"
-                      formControlName="id_persona"
-                    />
+                <!-- ... (resto del código) -->
 
-                    <datalist id="list-timezone-usuario">
-                      <option
-                        *ngFor="let item2 of personas"
-                        [value]="item2.usuario"
-                      >
-                        {{ item2.usuario }}
-                      </option>
-                    </datalist>
-                  </div>
-                </div>
+<div class="search-container" *ngIf="!editandoCreditos">
+  <label class="label select-gr" for="input-datalist-usuario"
+    >Buscar cédula de usuario</label
+  >
+  <div class="search-box">
+    <input
+      type="text"
+      class="form-control"
+      list="list-timezone-usuario"
+      [value]="usuarioSeleccionado.usuario"
+      (input)="updateUsuarioId($event)"
+      formControlName="id_persona"
+    />
+
+    <datalist id="list-timezone-usuario">
+      <option *ngFor="let item2 of personas" [value]="item2.usuario">
+        {{ item2.usuario }}
+      </option>
+    </datalist>
+  </div>
+</div>
+
+<!-- ... (resto del código) -->
+
               </div>
             </div>
           </div>

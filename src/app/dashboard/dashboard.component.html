@@ -1,10 +1,40 @@
-<div class="main-content">
-  <div class="container-fluid">
-     <img src="/assets/img/hotel.webp" alt="">
+<div class="main-container">
+  <form class="login-form">
+    <div class="login-text espaciado2">
+    
+    <h1>Empieza cada día con una sonrisa y termina con gratitud</h1>
+     
+      </div>
+
+     
+   
+      <div class="login-text espaciado1">
+        <h2>{{ currentDate | date:'dd MMMM y' }}</h2>
+      
+      </div>
+
+
+
+      <div class="login-text">
+        <div class="counter-container">
+          <span class="hours">{{ hours }}</span>
+          <span class="separator">:</span>
+          <span class="minutes">{{ minutes }}</span>
+          <span class="separator">:</span>
+          <span class="seconds">{{ seconds }}</span>
+        </div>
+      </div>
+      
       
 
+  </form>
 
-      
-  </div>
-
+  <div class="underlay-photo "></div>
+  <div class="underlay-black"></div>
+  <router-outlet></router-outlet>
 </div>
+
+
+
+
+

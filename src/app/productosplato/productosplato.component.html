@@ -4,6 +4,8 @@
   <div class="container-fluid">
     
 
+<!-- ... Otro código HTML -->
+
     <div class="search-container">
  
 
@@ -12,49 +14,58 @@
 
 
 
-      <label class="label" for="input-datalist-fecha">Buscar fecha:</label>
-      <div class="search-box">
-        <input
-        #fechaInput
-        type="date"
-        class="form-control"
-        list="list-timezone-fecha"
-        id="input-datalist-fecha"
-        [value]="fechaSeleccionado.fecha"
-        (change)="updateFechaId($event)"
-        (input)="onFechaInput($event)"
-        formControlName="fecha"
-      />
-      
-        <datalist id="list-timezone-fecha">
-          <option *ngFor="let item of fechass" [value]="item.fecha"></option>
-        </datalist>
-      </div>
+  <label class="label" for="input-datalist-fecha">Buscar fecha:</label>
+  <div class="search-box">
+ <!-- ... Otras partes de tu código ... -->
 
-     <br><br>
-    
-     <label class="label" >Seleccione el plato:</label>
-     <div class="search-box">
-      <input
-        type="text"
-        class="form-control"
-        list="list-timezone-plato"
-       
-        [value]="platoSeleccionado.descripcion"
-        (input)="updatePlatoId($event)"
-      />
+<input
+#fechaInput
+type="date"
+class="form-control"
+list="list-timezone-fecha"
+id="input-datalist-fecha"
+[value]="fechaSeleccionado.fecha"
+(change)="updateFechaId($event)"
+(input)="onFechaInput($event)"
+formControlName="fecha"
+/>
 
-    
+<!-- ... Otras partes de tu código ... -->
 
-      <datalist id="list-timezone-plato">
-        <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
-      </datalist>
-    </div>
-    <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId() "  (click)="buscarDescripcionporId()">
-      Buscar <i class="fa fa-search fa-stack-1x"></i>
-    </button>
-      
-    </div>
+  
+    <datalist id="list-timezone-fecha">
+      <option *ngFor="let item of fechass" [value]="item.fecha"></option>
+    </datalist>
+  </div>
+
+ <br><br>
+
+ <label class="label" >Seleccione el plato:</label>
+ <div class="search-box">
+  <input
+    type="text"
+    class="form-control"
+    list="list-timezone-plato"
+   
+    [value]="platoSeleccionado.descripcion"
+    (input)="updatePlatoId($event)"
+  />
+
+
+
+  <datalist id="list-timezone-plato">
+    <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
+  </datalist>
+</div>
+<button type="button" class="btn btn-danger" (click)="buscarIngredientePorId() "  (click)="buscarDescripcionporId()">
+  Buscar <i class="fa fa-search fa-stack-1x"></i>
+</button>
+  
+</div>
+
+
+<!-- ... Otro código HTML -->
+
 
 
 
@@ -70,7 +81,7 @@
               Ingredientes
             </h4>
           </div>
-          <div class="card-body">
+          <div class="card-body text-center">
             <div class="table-responsive">
               
               <ng-container *ngIf="ingredientId">
@@ -83,7 +94,7 @@
               </ng-container>
               
               
-              <table class="table"  *ngIf="ingredientesss.length > 0">
+              <table class="table text-center"  *ngIf="ingredientesss.length > 0">
                 <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
                   <th>Plato: {{ item.plato.descripcion }}</th>
                 </thead>

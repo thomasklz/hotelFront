@@ -55,9 +55,17 @@ getobtenerDescripcionPlatoPrecio( id?){
     deleteingrediente(id:number){
       return this.http.delete<any>('http://localhost:3000/api/eliminaringredientes/'+id);
     }
+    deleteingredientescreados(id:number){
+      return this.http.delete<any>('http://localhost:3000/api/eliminaringredientescreados/'+id);
+    }
+    
 
-
-
+       //eliminar ingredientes con su plato
+       deleteproductoPlato(id:number){
+        return this.http.delete<any>('http://localhost:3000/api/eliminarproductoPlato/'+id);
+      }
+  
+    
 
 
  //Crear y Modificar productos para su plato

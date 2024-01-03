@@ -7,13 +7,18 @@ import { MatTableDataSource } from '@angular/material/table';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
+import { NgZone } from "@angular/core";
+import { ElementRef, ViewChild } from "@angular/core";
+import * as XLSX from 'xlsx';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 @Component({
   selector: 'app-listado-usuarios',
   templateUrl: './listado-usuarios.component.html',
   styleUrls: ['./listado-usuarios.component.scss']
 })
 export class ListadoUsuariosComponent implements OnInit {
-
+  @ViewChild("inputDatalist") inputDatalist: ElementRef;
   usuario: string = '';
   contrasena: string = '';
   usuariosss: any[] = [];
@@ -31,7 +36,7 @@ export class ListadoUsuariosComponent implements OnInit {
   constructor(private http: HttpClient, private UsuarioService: UsuarioService, private router: Router, private formBuilder: FormBuilder) {
     this.getAllusuarios();
 
-
+   
 
     this.usuarioForm = new FormGroup({
       usuario: new FormControl(),
@@ -45,98 +50,20 @@ export class ListadoUsuariosComponent implements OnInit {
       contrasena: new FormControl(),
 
     });
-  }
+   
 
+  }
+ 
+  
+
+  
   ngOnInit(): void {
   }
 
-  //Modal de Modificacion Notificacion
-
-  showModalEdit() {
-    swal({
-      title: 'Datos modificado exitosamente',
-      icon: "success",
-    });
-  }
-
-
-  //Modal de  error de Modificacion Notificacion
-  showModalErrorEdit() {
-    swal({
-      title: 'Error de modificación de datos ',
-      icon: "error",
-    });
-  }
-
-
-
-  //Modal de Eliminar Usuario Notificacion
-  title = 'sweetAlert';
-  showModal() {
-    swal({
-      title: 'Usuario eliminado exitosamente',
-      icon: "success",
-    });
-  }
-  //Modal de error de Eliminar Usuario Notificacion
-  showModalError() {
-    swal({
-      title: 'Error en eliminar usuario',
-      icon: "error",
-    });
-  }
-
-  showModalEliminar(id: number) {
-    Swal.fire({
-      title: '¿Estás seguro que deseas eliminar este usuario?',
-      icon: 'warning',
-      showCancelButton: true,
-
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#bf0d0d',
-
-
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.eliminarusuario(id);
-      }
-    });
-  }
-
-  showModalErrorEliminar() {
-    Swal.fire({
-      title: 'Error al eliminar el usuario',
-      icon: 'error',
-    });
-  }
-
-  // Variable para controlar el estado del botón y el ícono
-  isToggleOn: boolean = false;
-
-  // Función para cambiar el estado y el ícono del botón
-  toggleButtonState() {
-    this.isToggleOn = !this.isToggleOn;
-  }
-
-
+ 
 
   
-  //obtener todos los usuarios 
-  getAllusuarios() {
-    this.UsuarioService.getusuario().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.usuarios);
-        this.usuariosss = res.usuarios;
-        this.totalItems = res.usuariosss.length; 
-      },
-      error: (err) => {
-        // alert("Error en la carga de datos");
-      },
-    });
-  }
-
-
+ 
 
     //PAGINATOR------------------------------
     pageSize = 10; // Tamaño de la página
@@ -163,7 +90,110 @@ export class ListadoUsuariosComponent implements OnInit {
     onPageChange(event: number) {
       this.currentPage = event;
     }
-  
+
+
+
+
+//---------------------MODALES--------------------------------------------------------------------
+//Modal datos modificadamente
+  showModalEdit() {
+    swal({
+      title: 'Datos modificado exitosamente',
+      icon: "success",
+    });
+  }
+
+
+//Modal de  error de Modificacion Notificacion
+  showModalErrorEdit() {
+    swal({
+      title: 'Error de modificación de datos ',
+      icon: "error",
+    });
+  }
+
+
+  //Modal de Eliminar Usuario Notificacion
+  title = 'sweetAlert';
+  showModal() {
+    swal({
+      title: 'Usuario eliminado exitosamente',
+      icon: "success",
+    });
+  }
+
+
+  //Modal de error de Eliminar Usuario Notificacion
+  showModalError() {
+    swal({
+      title: 'Error en eliminar usuario',
+      icon: "error",
+    });
+  }
+
+
+//Modal de cambiar el estado de este usuario Notificacion
+  showModalCambiarEstado(id: number) {
+    Swal.fire({
+      title: '¿Estás seguro que deseas cambiar el estado de este usuario?',
+      icon: 'warning',
+      showCancelButton: true,
+
+      confirmButtonText: 'Sí, cambiar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#bf0d0d',
+
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cambiarestadousuario(id);
+      }
+    });
+  }
+
+ //Modal de elimanar el estado de este usuario Notificacion
+  showModalEliminar(id: number) {
+    Swal.fire({
+      title: '¿Estás seguro que deseas eliminar este usuario?',
+      icon: 'warning',
+      showCancelButton: true,
+
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#bf0d0d',
+
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.eliminarusuario(id);
+      }
+    });
+  }
+
+  showModalErrorEliminar() {
+    Swal.fire({
+      title: 'Error al eliminar el usuario',
+      icon: 'error',
+    });
+  }
+
+
+//--------------------------------------------------------------------------------------------------------
+   //obtener todos los usuarios
+   getAllusuarios() {
+    this.UsuarioService.getusuario().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.usuarios);
+        this.usuariosss = res.usuarios;
+        this.usuariosssOriginal = [...res.usuarios]; 
+        this.totalItems = res.usuarios.length; 
+      },
+      error: (err) => {
+        //alert("Error en la carga de datos");
+      },
+    });
+  }
+ 
     usuariosssOriginal: any[] = [];
   
     nombreproductoFiltro: string = '';
@@ -264,6 +294,7 @@ export class ListadoUsuariosComponent implements OnInit {
           this.showModal();
 
           this.getAllusuarios();
+          
         },
         error: () => {
           this.showModalError();
@@ -285,11 +316,144 @@ export class ListadoUsuariosComponent implements OnInit {
   }
 
 
+  cambiarestadousuario(item) {
+    const newEstado = item.persona.estado === 1 ? 0 : 1; // Toggle the state (1 to 0 and 0 to 1)
+  
+    // Call the service to update the estado
+    this.UsuarioService.cambiarestadousuario({ estado: newEstado }, item.id).subscribe(
+      (usuarios) => {
+        console.log(usuarios);
+        this.showModalEdit();
+        this.getAllusuarios();
+       
+      },
+      (error) => {
+        console.log(error);
+        this.showModalErrorEdit();
+      }
+    );
+  }
+  
   // Restablecer el formulario cuando se cierre el modal
   closeModal() {
     this.usuarioForm.reset();
     this.editandousuario = false;
     this.idUsuarioEditar = '';
   }
+
+
+  //-------------------------------------------------Descargar pdf o excel
+  
+
+//-----------------------
+
+descargarPDF() {
+  const rows = [];
+
+  // Agregar el encabezado de la tabla
+  const headerRow = ['Nº', 'Usuario', 'Nombres', 'Email', 'Teléfono', 'Foto'];
+  rows.push(headerRow);
+
+  // Iterar sobre los datos y agregar filas
+  this.usuariosss.forEach((item, index) => {
+    const rowData = [
+      index + 1,
+      item.usuario,
+      item.persona.nombre,
+      item.persona.email,
+      item.persona.telefono,
+      item.persona.foto,
+      
+     
+    ];
+    rows.push(rowData);
+  });
+
+  // Define la estructura del documento PDF
+ 
+  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
+  let columnWidths = [30, 70, 80, 120, 80, 70]; // Anchos de las 9 columnas
+  const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+  let escala = 1;
+  
+  if (totalWidth > anchoPagina) {
+    escala = anchoPagina / totalWidth;
+    columnWidths = columnWidths.map(width => width * escala);
+  }
+  
+  const documentoPDF = {
+    content: [
+      { text: 'Listado de Clientes ', style: 'header' },
+      '\n',
+      {
+        table: {
+          headerRows: 1,
+          widths: columnWidths,
+          body: rows,
+        }
+      }
+    ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+        alignment: 'center',
+        margin: [20, 0, 0, 20]
+      }
+    }
+  };
+  
+  
+
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  pdfMake.createPdf(documentoPDF).download('Listado de clientes.pdf');
+}
+
+//-----------------------
+
+
+  datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
+
+
+  //'''''''''''''''''''''''
+  descargarDatos() {
+    const datosParaDescargar = this.usuariosss.map(item => ({
+      'Usuario': item.usuario,
+      'Nombres': item.persona.nombre,
+      'Email': item.persona.email,
+      'Teléfono': item.persona.telefono,
+      'Foto': item.persona.foto,
+      
+    }));
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Listado de clientes');
+    const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Listado de clientes.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+  
+
+
+  
+  // Función para convertir datos binarios en un array
+  s2ab(s: string): Uint8Array {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i !== s.length; ++i) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return new Uint8Array(buf);
+  }
+  
+  
+  
+  
 
 }

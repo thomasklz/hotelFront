@@ -23,7 +23,7 @@
       
     </div>
 
-    <div class="row">
+    <div class="row"  >
       <div class="col-md-12">
         <div class="card text-center">
           <div class="card-header card-header-danger">
@@ -32,7 +32,7 @@
               Productos con su plato
             </h4>
           </div>
-          <div class="card-body ">
+          <div class="card-body " *ngIf="mostrarTabla">
             <div class="table-responsive">
               
               <ng-container *ngIf="ingredientId">
@@ -70,9 +70,7 @@
                  
 
                     <td>
-                      <button1 color="primary" (click)="editarIngrediente(item)">
-                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                      </button1>
+                  
 
                       <button2>
                         <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
@@ -156,22 +154,7 @@
               </div>
             </div>
 
-         <!--    <div class="form-group col-md-8">
-              <div class="formmm">
-                <div class="search-container">
-                  <label class="label" >Buscar el nombre del ingrediente</label>
-                  <div class="search-box">
-                    <input type="text" class="form-control" list="list-timezone-ingredient" 
-                      [value]="alimentoSeleccionado.descripcion" (input)="updateAlimentoId($event)" formControlName="id_alimento" />
-
-        
-                    <datalist id="list-timezone-ingredient">
-                      <option *ngFor="let item2 of alimentoss" [value]="item2.descripcion"></option>
-                    </datalist>
-                  </div>
-                </div>
-              </div>
-            </div> -->
+          
 
 
 
@@ -210,15 +193,7 @@
                       <div class="card-body">
                         <div class="table-responsive">
                       
-                       <!--    <div class="search-containerversion4">
-                            <label class="label">Filtrar ingrediente :</label>
-                            <div class="search-box">
-                              <input type="text" class="form-control" [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
-                            </div>
-                          </div> -->
-                          
-                        
-                          
+                       
                         
                           
                         

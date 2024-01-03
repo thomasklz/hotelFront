@@ -278,3 +278,45 @@ img {
     background-color: #c0c0c0;
     /* Cambia el color a tu elección */
   }
+
+
+
+
+  
+//--------------------------------------------descarga
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+
+.custom-dropdown {
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 190px;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
+
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.col{
+  color: #ffffff;
+}
+
+.dropdown-menu{
+  cursor: pointer;
+}

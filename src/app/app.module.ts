@@ -16,6 +16,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { LoginComponent } from './login/login.component';
 import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 import { ReporteComponent } from './reporte/reporte.component';
+import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { ReporteComponent } from './reporte/reporte.component';
     LoginComponent,
     CrearAdministradorComponent,
     ReporteComponent,
+    PerfilclienteComponent,
     
   
     

@@ -125,21 +125,21 @@ export class NavbarComponent implements OnInit {
     }
 
     showModalcerrar() {
-        Swal.fire({
-          title: '¿Estás seguro que deseas cerrar sesión?',
-          icon: 'warning',
-          showCancelButton: true,
-         
-          confirmButtonText: 'Sí, cerrar',
-          cancelButtonText: 'Cancelar',
-          confirmButtonColor: '#bf0d0d',
-          
-          
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.logout();
-          }
-        });
+      Swal.fire({
+        title: '¿Estás seguro que deseas cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#bf0d0d',
+        customClass: {
+          confirmButton: 'my-confirm-button-class' // Nombre de la clase personalizada
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.logout();
+        }
+      });
       }
     logout() {
         localStorage.removeItem('idPersona');

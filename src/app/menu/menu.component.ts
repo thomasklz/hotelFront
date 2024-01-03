@@ -126,7 +126,7 @@ export class MenuComponent implements OnInit {
   get startIndex(): number {
     return (this.currentPage - 1) * this.pageSize;
   }
-
+ 
   get endIndex(): number {
     return Math.min(this.startIndex + this.pageSize - 1, this.totalItems - 1);
   }
@@ -136,7 +136,7 @@ export class MenuComponent implements OnInit {
   }
 
   // ... otras funciones del componente
-
+ 
   loadPageData() {
     // Lógica para cargar datos de la página actual (no es necesario pasar parámetros a la API)
     this.MenuService.gettMenu().subscribe({
@@ -169,6 +169,15 @@ export class MenuComponent implements OnInit {
     swal({
 
       title: 'Error de registro de datos ',
+      icon: "error",
+
+    });
+  }
+
+  showModalErrorr() {
+    swal({
+
+      title: 'Error de registro de datos, ya existe un menú para este plato en la misma fecha  ',
       icon: "error",
 
     });
@@ -384,14 +393,24 @@ aplicarFiltrosfecha() {
       this.showFechaError = false;
       this.showHabilitadoError = false;
       this.showDiasError = false;
-   
+  
       const datos = {
         id_plato: this.menuForm.value.id_plato,
         cantidad: this.menuForm.value.cantidad,
         habilitado: this.menuForm.value.habilitado,
         fecha: this.menuForm.value.fecha,
-        numDias: this.menuForm.value.numDias
+        numDias: this.menuForm.value.numDias,
       };
+  
+      // Verificar si ya existe un menú para el mismo plato y fecha
+      const existingMenu = this.menusss.find(
+        (menu) => menu.id_plato === datos.id_plato && menu.fecha === datos.fecha
+      );
+  
+      if (existingMenu) {
+        this.showModalErrorr();
+        return; // No proceder con la creación del menú
+      }
   
       if (!this.editandoPlato) {
         this.MenuService.guardarMenu(datos).subscribe(
@@ -404,7 +423,7 @@ aplicarFiltrosfecha() {
           },
           (error) => {
             console.log(error);
-            this.showModalError();
+            this.showModalErrorr();
           }
         );
       } else {
@@ -429,9 +448,9 @@ aplicarFiltrosfecha() {
       this.showFechaError = this.menuForm.controls.fecha.invalid;
       this.showHabilitadoError = this.menuForm.controls.habilitado.invalid;
       this.showDiasError = this.menuForm.controls.numDias.invalid;
-      
     }
   }
+  
   
 
   showModalEliminar(id: number) {

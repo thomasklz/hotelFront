@@ -1,14 +1,433 @@
-img{
-    height: 450px;
-    width: 800px;
-    
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,700);
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+
+
+body,
+html {
+  height: 100%;
 }
-.tamaño{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+body {
+  font-family: "Open Sans";
+  font-weight: 100;
+  display: flex;
+  overflow: hidden;
 }
-h3{
-    font-weight: bold;
-    font-size: 20px;
+
+
+
+input {
+  ::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  ::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  :-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &:focus {
+    outline: 0 transparent solid;
+
+    ::-webkit-input-placeholder {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    ::-moz-placeholder {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    :-ms-input-placeholder {
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+}
+
+
+.login-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-text .logo-container {
+  margin-bottom: 0;
+  /* Quita el margen inferior */
+}
+
+.registro-usuario {
+  margin-top: 0;
+  /* Quita el margen superior */
+}
+
+.login-username,
+.login-password {
+  background: rgb(248, 247, 242);
+  border: 0 solid;
+  box-shadow: none;
+  border-bottom: 1px solid rgba(rgb(189, 188, 188), 0.5);
+  color: rgb(0, 0, 0);
+  display: block;
+  margin: 0 1rem 0.5rem;
+  /* Modificación realizada aquí */
+  padding: 0.5rem;
+  transition: 250ms background ease-in;
+  width: calc(100% - 2rem);
+  border-radius: 10px;
+  border: 2px solid rgb(84, 84, 84);
+}
+h1{
+    color: #ffffff;
+}
+.login-form {
+  min-height: 10rem;
+  margin: auto;
+  width: 60%;
+  border-radius: 20px;
+ 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 0 1rem;
+  margin-top: 1rem;
+}
+
+.login-form input[type="submit"] {
+  margin-top: 1rem;
+}
+
+
+.login-password:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px rgb(208, 206, 198) inset !important;
+  -webkit-text-fill-color: rgb(0, 0, 0) !important;
+}
+
+
+.login-forgot-pass {
+  //border-bottom: 1px solid white;
+  bottom: 0;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font-size: 75%;
+  left: 0;
+  opacity: 0.6;
+  padding: 0.5rem;
+  position: absolute;
+  text-align: center;
+  //text-decoration: none;
+  width: 100%;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.login-submit {
+  background: rgb(222, 21, 21);
+  color: white;
+  display: block;
+  width: 30%;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  margin: 1rem auto;
+  text-align: center;
+  padding: 0.25rem;
+  transition: 250ms background ease-in;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.login-submit:hover,
+.login-submit:focus {
+  background: #c50000;
+}
+
+.login-submit:before {
+
+
+  margin-right: 0.5rem;
+}
+
+.login-submit span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+[class*="underlay"] {
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  top: 0;
+}
+
+.underlay-photo {
+  animation: hue-rotate 6s infinite;
+  background: url("/assets/img/hotel.webp") no-repeat center center fixed;
+
+  background-size: cover;
+  -webkit-filter: grayscale(30%);
+  z-index: -1;
+
+}
+
+
+.underlay-black {
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+}
+
+@keyframes hue-rotate {
+  from {
+    -webkit-filter: grayscale(30%) hue-rotate(0deg);
+  }
+
+  to {
+    -webkit-filter: grayscale(30%) hue-rotate(360deg);
+  }
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.logo-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+.register-link {
+  text-align: center;
+  margin-top: 1rem;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.register-link a {
+  color: rgb(255, 0, 0);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.login-text .fa-user {
+  margin: 0.4rem 0;
+  margin-top: 0.1rem;
+
+}
+
+
+.login-submit-secondary {
+  background: #999;
+  color: white;
+  display: block;
+  width: 30%;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  margin: 1rem auto;
+  text-align: center;
+  padding: 0.25rem;
+  transition: 250ms background ease-in;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.login-submit-secondary:hover,
+.login-submit-secondary:focus {
+  background: #777;
+}
+
+.login-submit-secondary:before {
+  content: "\f00d";
+  font-family: FontAwesome;
+  margin-right: 0.5rem;
+}
+
+.login-submit-secondary span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.close-button {
+  background-color: #ffffff;
+  position: fixed;
+  right: 20px;
+  z-index: 9999;
+  border: none;
+  background: none;
+  outline: none;
+
+  font-size: 1.5rem;
+
+  margin-top: 1rem;
+  /* Agrega un espaciado superior */
+  margin-right: 1rem;
+  /* Agrega un espaciado derecho */
+}
+
+.close-button:focus,
+button:hover {
+  background-color: red;
+}
+
+
+
+.error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.error-text {
+  width: calc(100% - 2rem);
+  margin-left: 1rem;
+}
+
+
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+
+
+.input-container {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.login-username,
+.login-password {
+  padding-left: 30px; /* Adjust this value based on icon width and padding */
+  border-radius: 10px; /* Optional: Match the input field's border-radius */
+}
+
+/* Rest of your existing CSS styles */
+.input-container {
+  position: relative;
+}
+
+.password-input-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.login-password {
+  padding-right: 20px; /* Ajusta según sea necesario para dejar espacio para el ícono */
+}
+
+.show-password-icon {
+  position: absolute;
+  right: 30px; /* Ajusta según sea necesario */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
+
+
+
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.login-text {
+  text-align: center;
+}
+
+.counter-container {
+  display: flex;
+  align-items: center;
+  font-size: 2em;
+  color: #e0e0e0;
+}
+
+.seconds,
+.minutes {
+  margin: 0 5px;
+}
+
+.separator {
+  font-weight: bold;
+}
+
+/* Puedes agregar otros estilos según sea necesario */
+.espaciado1 {
+  margin-top: 80px;
+}
+.espaciado2 {
+  margin-top: 150px;
+}
+
+h2 {
+  color: #cfcbcb;
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  font-size: 2em;
+  font-style: italic;
+}
+
+h1 {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  font-size: 3em;
+  font-style: italic;
+}
+/* Estilos para los spans */
+.counter-container span {
+  display: inline-block;
+  padding: 10px;
+  margin: 0 5px;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
 }

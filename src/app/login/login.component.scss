@@ -129,15 +129,19 @@ input {
   }
 }
 
+.login-form input[type="submit"] {
+  margin-top: 0.3rem; /* Ajusta el valor de margin-top según sea necesario */
+}
+
 .login-submit {
   background: rgb(222, 21, 21);
   color: white;
   display: block;
-  width: 30%;
+  width: calc(100% - 2rem);
   height: 40px;
   border: none;
   border-radius: 10px;
-  margin: 1rem auto;
+  margin: 1rem auto 1rem; /* Ajusta el valor de margin-top y margin-bottom según sea necesario */
   text-align: center;
   padding: 0.25rem;
   transition: 250ms background ease-in;
@@ -146,10 +150,16 @@ input {
   font-size: 1rem;
 }
 
+/* Si el elemento .register-link no está presente, aplica un margen inferior adicional al botón */
+.login-form:not(:has(.register-link)) .login-submit {
+  margin-bottom: 50px; /* Ajusta el valor según sea necesario */
+}
+
 .login-submit:hover,
 .login-submit:focus {
   background: #c50000;
 }
+
 
 .login-submit:before {
 

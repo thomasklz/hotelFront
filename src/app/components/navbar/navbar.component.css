@@ -15,3 +15,15 @@ img{
   a{
     cursor: pointer;
   }
+
+  /* Agrega estilos personalizados para el botón de confirmación */
+.my-confirm-button-class {
+  border: none;
+}
+/* Anula el borde del botón de confirmación de SweetAlert2 */
+/* Anula el borde del botón de confirmación de SweetAlert2 */
+.swal2-confirm.my-confirm-button-class {
+  border: none !important;
+  box-shadow: none !important;
+}
+

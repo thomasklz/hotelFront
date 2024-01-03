@@ -20,10 +20,12 @@
 
 <!-- Password Input with Icon -->
 <div class="input-container">
-  <span class="input-icon">
-    <i class="fa fa-lock"></i>
-  </span>
+ 
   <div class="password-input-container">
+
+    <span class="input-icon">
+      <i class="fa fa-lock"></i>
+    </span>
     <input type="{{ showPassword ? 'text' : 'password' }}" class="login-password" required="true" placeholder="Contraseña" formControlName="contrasena" />
     <span class="show-password-icon" (click)="togglePasswordVisibility()">
       <i class="fa fa-eye" *ngIf="showPassword"></i>
