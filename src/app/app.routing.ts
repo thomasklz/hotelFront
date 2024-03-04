@@ -13,23 +13,25 @@ import { LogoutGuard } from './guard/logout.guard';
 import { CrearAdminGuard } from './guard/crear-admin.guard';
 
 
-
-const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, canActivate: [LogoutGuard] },
-  { path: 'crearAdministrador', component: CrearAdministradorComponent, canActivate: [CrearAdminGuard] },
-  { path: 'reporte', component: ReporteComponent, canActivate: [LoginGuard] },
-  { path: 'editardatosperfil', component: PerfilclienteComponent, canActivate: [LoginGuard] },
-  {
-    path: '',
-    component: AdminLayoutComponent,
-    canActivate: [LoginGuard], // Proteger toda la sección de administrador
-    children: [{
+ 
+  const routes: Routes = [
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
+    { path: 'login', component: LoginComponent, canActivate: [LogoutGuard] },
+    { path: 'crearAdministrador', component: CrearAdministradorComponent, canActivate: [CrearAdminGuard] },
+    { path: 'reporte', component: ReporteComponent, canActivate: [LoginGuard] },
+    { path: 'editardatosperfil', component: PerfilclienteComponent, canActivate: [LoginGuard] },
+    {
       path: '',
-      loadChildren: () => import('./layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule)
-    }]
-  },
-];
+      component: AdminLayoutComponent,
+      canActivate: [LoginGuard],
+      children: [
+        {
+          path: '',
+          loadChildren: () => import('./layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule),
+        },
+      ],
+    },
+  ];
 
 @NgModule({
   imports: [
@@ -39,6 +41,6 @@ const routes: Routes = [
       useHash: true
     })
   ],
-  exports: [],
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

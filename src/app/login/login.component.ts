@@ -51,6 +51,8 @@ export class LoginComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.getAllusuarios();
+
     this.loginForm = this.formBuilder.group({
       Identificacion: new FormControl("", Validators.minLength(3)),
       contrasena: new FormControl("", Validators.minLength(4)),

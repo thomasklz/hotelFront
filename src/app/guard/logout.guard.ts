@@ -13,16 +13,18 @@ export class LogoutGuard implements CanActivate {
   
 
   constructor(location: Location,private router: Router) {     this.idUsuario = +localStorage.getItem('idUsuario');   this.location = location;}
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      let idUsuario = localStorage.getItem("idUsuario");
-      if(idUsuario){
-        this.router.navigate(['/home']);
-        return false;
-      }else{
-        return true;
-      }
+ 
+  
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const idUsuario = localStorage.getItem('idUsuario');
+    
+    if (!idUsuario) {
+      return true;
+    } else {
+      // Hay un usuario autenticado, redirigir a la página principal
+      this.router.navigate(['/']);
+      return false;
+    }
   }
   
 }

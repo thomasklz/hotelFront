@@ -43,6 +43,7 @@ export class CrearAdministradorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllusuarios();
     this.loginForm = this.formBuilder.group({
       usuario: new FormControl("", Validators.minLength(3)),
       contrasena: new FormControl("", Validators.minLength(4)),

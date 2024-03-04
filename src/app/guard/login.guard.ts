@@ -9,14 +9,17 @@ import { Location } from '@angular/common';
 export class LoginGuard implements CanActivate {
   constructor(private router: Router, private location: Location) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    let idUsuario = localStorage.getItem('idUsuario');
+
+  
+
+
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const idUsuario = localStorage.getItem('idUsuario');
+    
     if (idUsuario) {
       return true;
     } else {
+      // No hay usuario autenticado, redirigir a la página de login
       this.router.navigate(['/login']);
       return false;
     }
