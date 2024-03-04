@@ -20,21 +20,30 @@ export class CrearAdminGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Observable<boolean>((observer) => {
-      // Llama a getAllusuarios dentro de canActivate para obtener los usuarios antes de verificar
-      this.getAllusuarios();
-
-      // Espera a que getAllusuarios complete antes de evaluar hayUsuarios
-      setTimeout(() => {
-        // Verifica si hayUsuarios es true (hay al menos un usuario)
-        if (this.hayUsuarios) {
-          observer.next(false); // Deniega el acceso a la ruta crearAdministrador
-        } else {
-          observer.next(true); // Permite el acceso a la ruta crearAdministrador
-        }
-        observer.complete();
-      }, 0);
+      this.UsuarioService.getusua().subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.usuarios);
+          this.usuariosss = res.usuarios;
+          this.hayUsuarios = this.usuariosss.length > 0;
+  
+          // Verifica si hayUsuarios es true (hay al menos un usuario)
+          if (this.hayUsuarios) {
+            observer.next(false); // Deniega el acceso a la ruta crearAdministrador
+          } else {
+            observer.next(true); // Permite el acceso a la ruta crearAdministrador
+          }
+          observer.complete();
+        },
+        error: (err) => {
+          // Maneja el error adecuadamente
+          observer.next(false); // En caso de error, deniega el acceso a la ruta crearAdministrador
+          observer.complete();
+        },
+      });
     });
   }
+  
+  
 
   getAllusuarios() {
     this.UsuarioService.getusua().subscribe({
