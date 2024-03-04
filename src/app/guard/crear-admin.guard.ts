@@ -17,17 +17,23 @@ export class CrearAdminGuard implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return new Observable<boolean>((observer) => {
       // Llama a getAllusuarios dentro de canActivate para obtener los usuarios antes de verificar
       this.getAllusuarios();
 
-      // Verifica si hayUsuarios es true (hay al menos un usuario)
-      if (this.hayUsuarios) {
-        return false; // No permitir el acceso a la ruta crearAdministrador
-      } else {
-        return true; // Permitir el acceso a la ruta crearAdministrador
-      }
+      // Espera a que getAllusuarios complete antes de evaluar hayUsuarios
+      setTimeout(() => {
+        // Verifica si hayUsuarios es true (hay al menos un usuario)
+        if (this.hayUsuarios) {
+          observer.next(false); // Deniega el acceso a la ruta crearAdministrador
+        } else {
+          observer.next(true); // Permite el acceso a la ruta crearAdministrador
+        }
+        observer.complete();
+      }, 0);
+    });
   }
 
   getAllusuarios() {
