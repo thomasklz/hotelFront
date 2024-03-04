@@ -16,8 +16,7 @@ import { LoginComponent } from './login/login.component';
 import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 import { ReporteComponent } from './reporte/reporte.component';
 import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component';
-import { UsuarioCedulaComponent } from './usuario-cedula/usuario-cedula.component';
-
+ 
 
 @NgModule({
   imports: [
@@ -43,8 +42,7 @@ import { UsuarioCedulaComponent } from './usuario-cedula/usuario-cedula.componen
     CrearAdministradorComponent,
     ReporteComponent,
     PerfilclienteComponent,
-    UsuarioCedulaComponent,
-    
+     
   
     
     

@@ -25,8 +25,7 @@ import { ProductosplatoComponent } from 'app/productosplato/productosplato.compo
 import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
 import { ReporteingresosComponent } from 'app/reporteingresos/reporteingresos.component';
 import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
-import { UsuarioCedulaComponent } from 'app/usuario-cedula/usuario-cedula.component';
-
+ 
 
 
 
@@ -62,7 +61,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'reportedeingresos',        component: ReporteingresosComponent },
     { path: 'listadodeadministradores',        component: ListadoadministradoresComponent },
 
-    { path: 'UsuarioCedulaComponent',        component: UsuarioCedulaComponent },
-
+ 
     
 ];
