@@ -27,3 +27,22 @@ img{
   box-shadow: none !important;
 }
 
+
+
+
+
+
+.clsimg{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  overflow: hidden; 
+}
+
+.circular-image {
+  width: 40px; /* Ajusta el tamaño según sea necesario */
+  height: 40px; /* Ajusta el tamaño según sea necesario */
+  border-radius: 50%;
+  overflow: hidden;
+}

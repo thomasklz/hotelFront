@@ -257,7 +257,7 @@ export class MenuComponent implements OnInit {
 
 //----------------filtro
   nombreplatoFiltro: string = '';
-  filtroSeleccionado: string = ''; 
+  filtroSeleccionado: string = 'nombre'; 
   fechaFiltro: string = '';
 
   // ...

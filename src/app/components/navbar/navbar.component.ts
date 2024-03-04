@@ -3,25 +3,40 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { UsuarioService } from 'app/servicios/usuario.service';
+import { HttpClient } from '@angular/common/http';
+import { MatTableDataSource } from '@angular/material/table';
+
+ 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  dataSource = new MatTableDataSource<any>();
+  usuariosss: any[] = [];
     private listTitles: any[];
     location: Location;
       mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
-    usuario:any;
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    Identificacion:any;
+    idUsuario: number;
+
+    constructor(location: Location,  private http: HttpClient, private element: ElementRef, private router: Router, private UsuarioService:UsuarioService) {
         this.location = location;
         this.sidebarVisible = false;
-      this.usuario= localStorage.getItem('usuario');
+      this.Identificacion= localStorage.getItem('Identificacion');
+      this.idUsuario = +localStorage.getItem('idUsuario');
     }
 
     ngOnInit(){
+      this.getAllusuario();
+      setInterval(() => {
+        this.getAllusuario();
+        
+      }, 5000);
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -33,6 +48,19 @@ export class NavbarComponent implements OnInit {
            this.mobile_menu_visible = 0;
          }
      });
+    }
+
+    getAllusuario() {
+      this.UsuarioService.buscarUsuario(this.idUsuario).subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.usuario);
+          this.usuariosss = res.usuario;
+  
+        },
+        error: (err) => {
+          // Maneja el error de carga de datos aquí
+        },
+      });
     }
 
     sidebarOpen() {

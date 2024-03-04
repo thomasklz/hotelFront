@@ -187,7 +187,9 @@ fecha: string = '';
 } */
 
   
- 
+  total:any;
+  totalPrecio: number = 0;
+
 buscarIngredientePorId() { 
   const fecha = this.fechaSeleccionado.fecha || this.formatDate(this.fechaInput.nativeElement.value);
 
@@ -195,12 +197,15 @@ buscarIngredientePorId() {
     console.error("this.platoSeleccionado.id is null or undefined.");
     return;
   }
-
+  
   this.IngredientesService.buscarFechaYPlato(this.platoSeleccionado.id, fecha).subscribe({
     next: (res: any) => {
       console.log("Ingredientes encontrados:", res.ingredientes);
       this.ingredientesss = res.ingredientes;
+       // Calcular la suma de precios
+       this.totalPrecio = this.ingredientesss.reduce((total, item) => total + item.precioporcion, 0);
       this.totalItems = res.ingredientes.length;
+     
       this.buscarDescripcionporId();
     },
     error: (err) => {
@@ -211,7 +216,7 @@ buscarIngredientePorId() {
 
 
 
-
+ 
 buscarDescripcionporId() {
   const ingredientId = this.platoSeleccionado.descripcion; // Use the ID, not the description
   if (ingredientId) {

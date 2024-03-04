@@ -6,6 +6,8 @@ import { ElementRef, ViewChild } from "@angular/core";
 import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { ImageService } from 'app/servicios/image.service';
+
 @Component({
   selector: 'app-listadoadministradores',
   templateUrl: './listadoadministradores.component.html',
@@ -17,7 +19,7 @@ export class ListadoadministradoresComponent implements OnInit {
   usuariosss: any[] = [];
 
   dataSource = new MatTableDataSource<any>();
-  constructor(private UsuarioService:UsuarioService) { }
+  constructor(private UsuarioService:UsuarioService, private imageService:ImageService) { }
 
   ngOnInit(): void {
     this.getAllusuarios();
@@ -75,7 +77,7 @@ export class ListadoadministradoresComponent implements OnInit {
     if (this.filtroSeleccionado === 'nombre') {
       // Aplica el filtro por nombre
       if (this.nombreproductoFiltro) {
-        this.usuariosss = this.usuariosssOriginal.filter(item => item.persona.nombre.includes(this.nombreproductoFiltro));
+        this.usuariosss = this.usuariosssOriginal.filter(item => item.Identificacion.includes(this.nombreproductoFiltro));
       } else {
         this.usuariosss = [...this.usuariosssOriginal];
       }
@@ -91,67 +93,99 @@ export class ListadoadministradoresComponent implements OnInit {
 
 //-----------------------
 
-descargarPDF() {
-  const rows = [];
-
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Nº', 'Usuario', 'Nombres', 'Email', 'Teléfono', 'Foto'];
-  rows.push(headerRow);
-
-  // Iterar sobre los datos y agregar filas
-  this.usuariosss.forEach((item, index) => {
-    const rowData = [
-      index + 1,
-      item.usuario,
-      item.persona.nombre,
-      item.persona.email,
-      item.persona.telefono,
-      item.persona.foto,
-      
-     
-    ];
-    rows.push(rowData);
-  });
-
-  // Define la estructura del documento PDF
  
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [30, 70, 80, 120, 80, 70]; // Anchos de las 9 columnas
+
+descargarPDF() {
+  const rows = this.usuariosss.map((item, index) => [
+    index + 1,
+    item.Identificacion,
+    item.persona.Apellido1,
+    item.persona.Apellido2,
+    item.persona.Nombre1,
+    item.persona.Nombre2,
+    item.persona.EmailInstitucional,
+    item.persona.TelefonoC,
+    
+    
+  ]);
+
+  const anchoPagina = 595.28;
+  let columnWidths =  [30,68,55,55, 55, 55, 60, 68 ];
   const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
   let escala = 1;
-  
+
   if (totalWidth > anchoPagina) {
     escala = anchoPagina / totalWidth;
     columnWidths = columnWidths.map(width => width * escala);
   }
-  
-  const documentoPDF = {
-    content: [
-      { text: 'Listado de administradores ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
-      }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
-    }
-  };
-  
-  
 
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('Listado de administradores.pdf');
+  // Obtener las representaciones en base64 de las imágenes
+  Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+    const headerTable = {
+      table: {
+        widths: [120, '*', 120],
+        body: [
+          [
+            { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+            { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+            { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+          ],
+          [
+            {},
+            { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+            {},
+          ],
+        ],
+      },
+      layout: 'noBorders',
+    };
+
+    const documentoPDF = {
+      content: [
+        headerTable,
+        '\n\n',
+        { text: 'INFORME DE ADMINISTRADORES', style: 'header', alignment: 'center' },
+        '\n',
+        {
+          table: {
+            headerRows: 1,
+            widths: columnWidths,
+            body: [
+
+              ['Nº', 'Usuario', 'Apellido1',  'Apellido2', 'Nombre1', 'Nombre2','Email', 'Teléfono' ].map((cell, index) => ({
+                text: cell,
+                bold: true,
+                fillColor: '#D3D3D3',
+              })),
+              ...rows.map(row => row.map(cell => ({ text: cell }))),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          font: 'Roboto',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 14,
+          font: 'Roboto',
+        },
+      },
+    };
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    pdfMake.createPdf(documentoPDF).download('INFORME DE ADMINISTRADORES.pdf');
+  });
 }
+
+
+
+
+
+
+
 
 //-----------------------
 
@@ -162,12 +196,14 @@ descargarPDF() {
   //'''''''''''''''''''''''
   descargarDatos() {
     const datosParaDescargar = this.usuariosss.map(item => ({
-      'Usuario': item.usuario,
-      'Nombres': item.persona.nombre,
-      'Email': item.persona.email,
-      'Teléfono': item.persona.telefono,
-      'Foto': item.persona.foto,
-      
+      'Usuario': item.Identificacion,
+      'Apellido1': item.persona.Apellido1,
+      'Apellido2': item.persona.Apellido2,
+      'Nombre1': item.persona.Nombre1,
+      'Nombre2': item.persona.Nombre2,
+      'Email': item.persona.EmailInstitucional,
+      'Teléfono': item.persona.TelefonoC,
+       
     }));
    
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);

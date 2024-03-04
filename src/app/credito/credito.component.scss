@@ -515,3 +515,121 @@ header {
   top: 10px;
   right: 10px;
 }
+
+
+
+
+.custom-container3 {
+  border: 2px solid #ccc; /* Color del borde del contenedor */
+  border-radius: 8px; /* Ajusta según tus preferencias */
+  overflow: hidden; /* Para ocultar el borde del mat-form-field dentro del contenedor */
+   padding: 0 15px; /* Espaciado izquierda y derecha */
+  background-color:rgb(255, 255, 255);
+}
+.CLR{
+ color: #fff;
+ font-weight: bold;
+
+}
+.CLR, .mat-form-field .mat-select-value, .mat-form-field .mat-select-arrow {
+  color: #474646 !important;
+}
+ 
+
+
+
+
+
+
+
+
+
+
+.search-boxv2 {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
+  width: 105px;
+
+
+  max-height: 35px; /* Puedes ajustar este valor según tus necesidades */
+  overflow: hidden;
+  font-weight: bold; /* Texto en negrita */
+  cursor: pointer;
+ }
+
+.d {
+   font-weight: bold; /* Puedes agregar negrita u otros estilos según sea necesario */
+}
+
+
+.btn-danger i {
+  margin-left: 5px; /* Espacio entre el texto y el icono (ajusta según sea necesario) */
+}
+.formmmk{
+  width: 110px;
+  margin-right: 20px;
+  
+   }
+/* Estilo para cambiar el color del texto de las opciones desplegadas */
+ 
+ 
+ 
+#filtroSelect {
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: transparent; /* Elimina el fondo azul predeterminado */
+
+ 
+ }
+
+#filtroSelect option:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al pasar el cursor */
+}
+ 
+/* Cambia el color de la letra en las opciones del select */
+#filtroSelect option {
+  color: black; /* Puedes ajustar el color según tus preferencias */
+
+
+  width: 180px; /* Ajusta el ancho según tus necesidades */
+  font-size: 16px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  cursor: pointer;
+}
+
+   .search-containerv2 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #eb4747;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold; /* Texto en negrita */
+
+ 
+    max-height: 35px; /* Puedes ajustar este valor según tus necesidades */
+    overflow: hidden;
+    width: 110px;
+  }
+ 
+
+
+
+
+
+
+
+
+  /* Estilo para cambiar el color del texto de las opciones en el select */
+#filtroSelect option[value="Seleccionar"]:before {
+  content: 'AGREGAR +';
+  color: #ffffff; /* Color blanco */
+}
+
+#filtroSelect option:not([value="Seleccionar"]):before {
+  content: '\00a0'; /* Carácter de espacio no rompible para mantener el tamaño del espacio */
+}

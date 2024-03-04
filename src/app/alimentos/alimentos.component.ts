@@ -32,6 +32,7 @@ export class AlimentosComponent implements OnInit {
   showCantidadPersonaError = false;
   showEquivalenteGramoError = false;
   showIdTipoalimentoError = false; //evitando que se muestren los mensajes de campo requerido
+  showPrecioError = false; //evitando que se muestren los mensajes de campo requerido
 
   TipoalimentoForm!: FormGroup;
   showTipoError = false; //evitando que se muestren los mensajes de campo requerido
@@ -82,6 +83,11 @@ export class AlimentosComponent implements OnInit {
       cantidadPersona: new FormControl("", [
         Validators.required,
         Validators.pattern(/^[0-9]+$/), // Acepta solo números
+        Validators.minLength(1),
+      ]),
+
+      precio: new FormControl("", [
+        Validators.required,
         Validators.minLength(1),
       ]),
     });
@@ -191,6 +197,15 @@ export class AlimentosComponent implements OnInit {
     });
   }
 
+
+  showModalErrorConflict() {
+    swal({
+      title: "Ya existe ese producto con sus mismos datos ",
+      icon: "error",
+    });
+  }
+
+
   //registrar el id tipo alimento el nuevo que se selecciona y enviarlo a la data
   getId_Tipoalimento() {
     this.http
@@ -246,6 +261,7 @@ export class AlimentosComponent implements OnInit {
     this.showEquivalenteGramoError = false;
 
     this.showIdTipoalimentoError = false;
+    this.showPrecioError=false;
   }
 
   //Para el registro de alimento usando modal
@@ -271,6 +287,7 @@ export class AlimentosComponent implements OnInit {
       descripcion: item.descripcion,
       equivalenteGramo: item.equivalenteGramo,
       cantidadPersona: item.cantidadPersona,
+      precio:item.precio
     });
 
     this.editandoAlimento = true;
@@ -279,6 +296,7 @@ export class AlimentosComponent implements OnInit {
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipoalimentoError = false;
+    this.showPrecioError=false;
   }
 
   // Registro de alimento...
@@ -287,10 +305,13 @@ export class AlimentosComponent implements OnInit {
       this.showDescripcionError = false;
       this.showCantidadPersonaError = false;
       this.showEquivalenteGramoError = false;
+      this.showPrecioError=false;
       const datos = {
         descripcion: this.alimentoForm.value.descripcion,
         equivalenteGramo: this.alimentoForm.value.equivalenteGramo,
         cantidadPersona: this.alimentoForm.value.cantidadPersona,
+        precio: this.alimentoForm.value.precio,
+
       };
       //Registrar Alimento ----------------------------
       if (!this.editandoAlimento) {
@@ -306,7 +327,12 @@ export class AlimentosComponent implements OnInit {
           },
           (error) => {
             console.log(error);
-            this.showModalError();
+        
+            if (error.status === 409) {
+              this.showModalErrorConflict(); // Mostrar modal específico para conflicto
+            } else {
+              this.showModalError(); // Mostrar modal genérico para otros errores
+            }
           }
         );
       } else {
@@ -336,54 +362,7 @@ export class AlimentosComponent implements OnInit {
   }
 
   //registro de tipo alimento
-  addtipoAlimento() {
-    if (this.TipoalimentoForm.valid) {
-      this.showTipoError = false;
-
-      const datos = {
-        tipo: this.TipoalimentoForm.value.tipo,
-      };
-
-      // Registro tipo de Alimento -----------------------------
-      if (!this.editandoTipoAlimento) {
-        this.AlimentosService.guardartiposalimentos(datos).subscribe(
-          (tipo_alimentos) => {
-            console.log(tipo_alimentos);
-            this.showModal();
-            this.getAlltipoalimento(); // Actualizar la tabla después de agregar un alimento
-            this.loadPageData();
-
-            this.TipoalimentoForm.reset(); // Restablecer los valores del formulario
-          },
-          (error) => {
-            console.log(error);
-            this.showModalError();
-          }
-        );
-      } else {
-        // Modificar tipo de Alimento -----------------------------
-        this.AlimentosService.guardartiposalimentos(
-          datos,
-          this.idTipoAlimentoEditar
-        ).subscribe(
-          (tipo_alimentos) => {
-            console.log(tipo_alimentos);
-            this.showModalEdit();
-            this.nuevaModaltipoAlimento(); // Restablecer el formulario después de editar
-            this.loadPageData();
-
-            this.getAlltipoalimento();
-          },
-          (error) => {
-            console.log(error);
-            this.showModalErrorEdit();
-          }
-        );
-      }
-    } else {
-      this.showTipoError = this.TipoalimentoForm.controls.tipo.invalid;
-    }
-  }
+  
   // ...
   showModalEliminar(id: number) {
     Swal.fire({

@@ -7,8 +7,7 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { CrearUsuarioComponent } from './paginas/crear-usuario/crear-usuario.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
+ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
@@ -17,6 +16,7 @@ import { LoginComponent } from './login/login.component';
 import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 import { ReporteComponent } from './reporte/reporte.component';
 import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component';
+import { UsuarioCedulaComponent } from './usuario-cedula/usuario-cedula.component';
 
 
 @NgModule({
@@ -39,11 +39,11 @@ import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component'
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    CrearUsuarioComponent,
-    LoginComponent,
+     LoginComponent,
     CrearAdministradorComponent,
     ReporteComponent,
     PerfilclienteComponent,
+    UsuarioCedulaComponent,
     
   
     

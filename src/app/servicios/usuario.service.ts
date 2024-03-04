@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
-  constructor( private http:HttpClient) { }
+  constructor( private http:HttpClient, private https:HttpClient,) { }
 
   gettipousuario(){
     return this.http.get<any>('http://localhost:3000/api/mostrartipo_usuario/');
@@ -24,6 +25,12 @@ export class UsuarioService {
   getusuario(){
     return this.http.get<any>('http://localhost:3000/api/mostrarusuario/');
   }
+
+  obtenerusuarioestado(){
+    return this.http.get<any>('http://localhost:3000/api/obtenerusuarioestado/');
+  }
+
+  
   getusua(){
     return this.http.get<any>('http://localhost:3000/api/obtusuario/');
   }
@@ -69,9 +76,36 @@ getpersona(){
   return this.http.get<any>('http://localhost:3000/api/mostrarpersona/');
 }
 
+cedula (cedula: any) {
+  const params = new HttpParams().set("identificacion",cedula);
+  const headers= new HttpHeaders({
+    'Content-Type':'application/x-www-form-urlencoded',
+  });
+  const body ={};
+  return this.http.post<any>('https://servicios.espam.edu.ec/Datos/personainfo', body,{params,headers});
+}
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+ 
+
 getpersonacedula(){
   return this.http.get<any>('http://localhost:3000/api/obtenerusuariocedula/');
 }
+
 
 
 
@@ -102,8 +136,12 @@ editTelefono(data:any, id:number){
   return this.http.put<any>('http://localhost:3000/api/editTelefono/'+id,data);
 }
 
-editFoto(data:any, id:number){
+/* editFoto(data:any, id:number){
   return this.http.put<any>('http://localhost:3000/api/editFoto/'+id,data);
+} */
+ 
+editFoto(id: number, formData: FormData) {
+  return this.http.post<any>(`http://localhost:3000/api/persona/imagen/${id}`, formData);
 }
 
 

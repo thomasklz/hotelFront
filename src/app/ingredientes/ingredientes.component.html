@@ -197,45 +197,53 @@
                         
                           
                         
-
-                            <div class="container">
-                              <label class="label text-center" >Seleccione los ingredientes: </label>
-                              <br>
-
-                              <div *ngIf="ingredientesSeleccionados.length > 0" style="display: inline-block;">
-                                <h3 class="h3" style="display: inline-block;">Elementos seleccionados :</h3>
-                                <div style="display: inline-block;">
-                                    <ng-container *ngFor="let selected of ingredientesSeleccionados; let i = index">
-                                        <ng-container *ngIf="i > 0 && i % 14 === 0">
-                                            <br /> <!-- Cambiar a una nueva fila después de 15 elementos -->
-                                        </ng-container>
-                                        <ng-container *ngIf="i > 0">, </ng-container> <!-- Agregar coma entre elementos -->
-                                        {{ selected.descripcion }}
-                                    </ng-container>
-                                </div>
+                          <div class="container">
+                            <label class="label text-center">Seleccione los ingredientes:</label>
+                            <br>
+                          
+                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                              <input type="search" class="form-control mb-2" placeholder="Buscar ingredientes" style="width: 150px;" (input)="filtrarIngredientes($event.target.value)">
+                              <i class="fa fa-search bm" aria-hidden="true" style="margin-left: 5px;"></i>
                             </div>
                             
-                              <br>
-                              <div class="container">
-                                <div class="row">
-                                  <div class="col-2 border" *ngFor="let ingrediente of ingredientesUnicos">
-                                    <label class="form-check">
-                                      <input type="checkbox" class="form-check-input" (change)="seleccionarIngrediente(ingrediente)" formControlName="id_alimento">
-                                      <span [ngStyle]="{'color': ingrediente.seleccionado ? 'red' : 'black'}">
-                                        {{ ingrediente.descripcion }}
-                                      </span>
-                                    </label>
-                                  </div>
-                                </div>
+                            
+                           
 
+                            
+                            <!-- Elementos seleccionados -->
+                            <div *ngIf="ingredientesSeleccionados.length > 0" style="display: inline-block;">
+                              <h3 class="h3" style="display: inline-block; margin-right: 10px; font-weight: bold;">Elementos seleccionados: </h3>
 
-
-
-
-                                
+                              <div style="display: inline-block; font-style: italic;">
+                                <ng-container *ngFor="let selected of ingredientesSeleccionados; let i = index">
+                                  <ng-container *ngIf="i > 0 && i % 14 === 0">
+                                    <br /> <!-- Cambiar a una nueva fila después de 15 elementos -->
+                                  </ng-container>
+                                  <ng-container *ngIf="i > 0">, </ng-container> <!-- Agregar coma entre elementos -->
+                                  {{ selected.descripcion }}
+                                </ng-container>
                               </div>
-                               
+                              
                             </div>
+                          
+                            <br>
+                          
+                            <!-- Listado de ingredientes con checkboxes -->
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-2 border" *ngFor="let ingrediente of ingredientesUnicos">
+                                  <label class="form-check" *ngIf="ingrediente.visible !== false">
+                                    <input type="checkbox" class="form-check-input" (change)="seleccionarIngrediente(ingrediente)" formControlName="id_alimento">
+                                    <span [ngStyle]="{'color': ingrediente.seleccionado ? 'red' : 'black'}">
+                                      {{ ingrediente.descripcion }}
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
 
 
 

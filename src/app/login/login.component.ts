@@ -52,16 +52,21 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      usuario: new FormControl("", Validators.minLength(3)),
+      Identificacion: new FormControl("", Validators.minLength(3)),
       contrasena: new FormControl("", Validators.minLength(4)),
     });
 
     this.personaForm = this.formBuilder.group({
-      nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      telefono: new FormControl('', [Validators.required, Validators.minLength(10)]),
-      foto: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      Nombre1: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Nombre2: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Apellido1: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Apellido2: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      TelefonoC: new FormControl("", [  Validators.required,Validators.minLength(10)]),
+      EmailInstitucional: new FormControl('', [Validators.required, ]),
+    
+      identificacion: new FormControl(),
+    
+      Identificacion: new FormControl("", [  Validators.required,Validators.minLength(10)]),
       contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
     });
 
@@ -99,7 +104,7 @@ export class LoginComponent implements OnInit {
           // Guardar datos en el almacenamiento local
           localStorage.setItem('idPersona', res.idPersona);
           localStorage.setItem('idUsuario', res.idUsuario);
-          localStorage.setItem('usuario', res.usuario);
+          localStorage.setItem('usuario', res.Identificacion);
           localStorage.setItem('contrasena', res.contrasena);
           localStorage.setItem('id_tipousuario', res.id_tipousuario);
   

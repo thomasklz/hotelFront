@@ -10,6 +10,12 @@ img {
     font-weight: bold;
   
   }
+  .circular-image {
+    width: 40px; /* Ajusta el tamaño según sea necesario */
+    height: 40px; /* Ajusta el tamaño según sea necesario */
+    border-radius: 50%;
+    overflow: hidden;
+  }
   
   .search-container {
     display: flex;

@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver';
 import swal from "sweetalert";
 import { MenuService } from 'app/servicios/menu.service';
 import { CreditosService } from 'app/servicios/creditos.service';
+import { ImageService } from 'app/servicios/image.service';
 
 @Component({
   selector: 'app-reporteingresos',
@@ -26,7 +27,7 @@ export class ReporteingresosComponent implements OnInit {
   fechaSeleccionada: string | null = null;
   reporteForm!: FormGroup;
 
-  constructor(private CreditosService:CreditosService,private formBuilder:FormBuilder, private MenuService :MenuService) { }
+  constructor(private CreditosService:CreditosService,private formBuilder:FormBuilder, private MenuService :MenuService, private imageService:ImageService) { }
 
   ngOnInit(): void {
     this.getAlldescripcionplatos();
@@ -61,7 +62,7 @@ export class ReporteingresosComponent implements OnInit {
 
   //Obtencion de platos-----------------------------------------------------
   getAlldescripcionplatos() {
-    this.MenuService.gettplato().subscribe({
+    this.MenuService.mostrarplatomenu().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.platos);
         this.platosss = res.platos;
@@ -75,141 +76,124 @@ export class ReporteingresosComponent implements OnInit {
 
 
 
-    //--------------metodo para buscar el reporte de ingresos del plato segun la fecha-----------------------------
-    Reporteingresosplatos  () {
-     
-      this.reportesss = [];
-    
-      // Asegúrate de que tanto idAlimento como fechaSeleccionada estén definidos antes de hacer la llamada
-      if (this.idPlato && this.fechaSeleccionada) {
-        const fecha = this.fechaSeleccionada;
-    
-  this.CreditosService.ingresos(fecha, this.idPlato).subscribe({
-    next: (res: any) => {
-      if (res && res.reporte) {
-        if (res.reporte.length === 0) {
-        
-          console.log("No se encontraron datos para esta fecha y plato.");
-        } else {
-        
-        // Asigna los datos al arreglo ingredientesdiass
-          this.reportesss = [res.reporte];
-        }
-      } else {
-        console.log("La respuesta no contiene datos.");
-      }
-    },
-    error: (err) => {
-     
-      this.showModalError();
-    },
-  });
-  
-      } else {
-        console.log("El idplato o la fecha no están definidos.");
-      }
-      
-    
-
-      
-    }
+  mostrarMensajeError: boolean = false;
 
 
     showModalError() {
+      this.mostrarMensajeError = true;
       swal({
         title: "No existe reporte de ese plato para esa fecha ",
         icon: "error",
       });
     }
+    showModalErrorMes() {
+      this.mostrarMensajeError = true;
+      swal({
+        title: "No existe reporte de ese plato para ese mes ",
+        icon: "error",
+      });
+    }
+
+
+        //-----Metodos de pdf y excel por  dias 
+        
 
 
 
-        //-----Metodos de pdf y excel por  Semana 
+
         descargarPDF() {
-          const rows = [];
+          const rows = this.reportesss.map((item, index) => [
+            item.plato,
+            item.fecha,
+            item.cantidadPlato,
+            item.conCreditos,
+            item.sinCreditos,
+          ]);
         
-          // Agregar el encabezado de la tabla en negrita
-          const headerRow = [
-            { text: 'Plato', bold: true },
-            { text: 'Fecha', bold: true },
-            { text: 'Con créditos', bold: true },
-            { text: 'Sin créditos', bold: true },
-          ];
-          rows.push(headerRow);
         
-          // Iterar sobre los datos y agregar filas
-          this.reportesss.forEach((item) => {
-            const rowData = [
-              item.plato,
-              item.fecha,
-              item.conCreditos,
-              item.sinCreditos,
-            ];
-            rows.push(rowData);
-          });
+         
         
-          // Define la estructura del documento PDF
-          const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-          let columnWidths = [110, 90, 90, 90]; // Anchos de las 4 columnas
+          const anchoPagina = 595.28;
+          let columnWidths = [150, 95,90, 90, 90,];
           const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
           let escala = 1;
         
           if (totalWidth > anchoPagina) {
             escala = anchoPagina / totalWidth;
-            columnWidths = columnWidths.map((width) => width * escala);
+            columnWidths = columnWidths.map(width => width * escala);
           }
         
-          const documentoPDF = {
-            content: [
-              { text: 'Reporte de ingresos de plato por día', style: 'header' },
-              '\n',
-              {
-                table: {
-                  headerRows: 1,
-                  widths: columnWidths,
-                  body: rows,
-                },
-                layout: {
-                  hLineWidth: function () {
-                    return 1;
-                  },
-                  vLineWidth: function () {
-                    return 1;
-                  },
-                  hLineColor: function () {
-                    return '#ccc';
-                  },
-                  vLineColor: function () {
-                    return '#ccc';
-                  },
-                  paddingLeft: function () {
-                    return 10;
-                  },
-                  paddingRight: function () {
-                    return 10;
-                  },
-                  paddingTop: function () {
-                    return 10;
-                  },
-                  paddingBottom: function () {
-                    return 10;
-                  },
-                },
+          // Obtener las representaciones en base64 de las imágenes
+          Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+            const headerTable = {
+              table: {
+                widths: [120, '*', 120],
+                body: [
+                  [
+                    { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+                    { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+                    { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+                  ],
+                  [
+                    {},
+                    { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+                    {},
+                  ],
+                ],
               },
-            ],
-            styles: {
-              header: {
-                fontSize: 18,
-                bold: true,
-                alignment: 'center',
-                margin: [0, 20, 0, 20], // Ajustar el margen superior e inferior
-              },
-            },
-          };
+              layout: 'noBorders',
+            };
         
-          pdfMake.vfs = pdfFonts.pdfMake.vfs;
-          pdfMake.createPdf(documentoPDF).download('reporte_ingresos_platoXdia.pdf');
+            const documentoPDF = {
+              content: [
+                headerTable,
+                '\n\n',
+                { text: 'INFORME DE INGRESOS DE PLATO POR DÍA', style: 'header', alignment: 'center' },
+                ' \n',   ' \n',  
+                { text: 'Cantidad diaria de ingresos en plato', style: 'subheader', alignment: 'left' , bold: true },
+                '\n',
+                {
+                  // Contenedor externo para la tabla
+                  alignment: 'center',
+                  table: {
+                    headerRows: 1,
+                    // Ancho de la tabla
+                    widths: ['*', '*', '*', '*', '*'],
+                    // Alineación de la tabla en el centro
+                    alignment: 'center',
+                    body: [
+                      ['Plato', 'Fecha', 'Cantidad', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
+                        text: cell,
+                        bold: true,
+                        fillColor: '#D3D3D3',
+                        alignment: 'center',
+                      })),
+                      ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                    ],
+                  },
+                },
+              ],
+              styles: {
+                header: {
+                  fontSize: 18,
+                  font: 'Roboto',
+                  bold: true,
+                },
+                subheader: {
+                  fontSize: 14,
+                  font: 'Roboto',
+                },
+              },
+            };
+            
+            
+        
+            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS POR DÍA.pdf');
+          });
         }
+        
+        
         
 
 //---------------------
@@ -217,6 +201,7 @@ descargarDatos() {
   const datosParaDescargar = this.reportesss.map(item => ({
     'Plato': item.plato,
     'Fecha ': item.fecha,
+    'Cantidad ': item.cantidadPlato,
     'Con créditos': item.conCreditos,
     'Sin créditos': item.sinCreditos,
   }));
@@ -234,4 +219,573 @@ descargarExcel(datos: any[], nombreHoja: string) {
   const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   FileSaver.saveAs(blob, 'Reporte de ingresos de plato por dia .xlsx');
 }
+
+
+
+
+
+
+        //-----Metodos de pdf y excel por  Semana 
+        
+        descargarSemanaPDF() {
+          const rows = this.reportesss.map((item, index) => [
+            item.plato,
+              item.fechaInicio,
+              item.fechaFin,
+              item.cantidadPlato,
+              item.conCreditos,
+              item.sinCreditos,
+          ]);
+        
+        
+         
+        
+          const anchoPagina = 595.28;
+          let columnWidths = [150, 95, 95,90, 90, 90,];
+          const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+          let escala = 1;
+        
+          if (totalWidth > anchoPagina) {
+            escala = anchoPagina / totalWidth;
+            columnWidths = columnWidths.map(width => width * escala);
+          }
+        
+          // Obtener las representaciones en base64 de las imágenes
+          Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+            const headerTable = {
+              table: {
+                widths: [120, '*', 120],
+                body: [
+                  [
+                    { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+                    { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+                    { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+                  ],
+                  [
+                    {},
+                    { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+                    {},
+                  ],
+                ],
+              },
+              layout: 'noBorders',
+            };
+        
+            const documentoPDF = {
+              content: [
+                headerTable,
+                '\n\n',
+                { text: 'INFORME DE INGRESOS DE PLATO POR SEMANA', style: 'header', alignment: 'center' },
+                ' \n',   ' \n',  
+                { text: 'Cantidad semanal de ingresos en plato', style: 'subheader', alignment: 'left' , bold: true },
+                '\n',
+                {
+                  // Contenedor externo para la tabla
+                  alignment: 'center',
+                  table: {
+                    headerRows: 1,
+                    // Ancho de la tabla
+                    widths: ['*', '*', '*', '*', '*', '*'],
+                    // Alineación de la tabla en el centro
+                    alignment: 'center',
+                    body: [
+                      ['Plato', 'Fecha inicio', 'Fecha fin','Cantidad', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
+                        text: cell,
+                        bold: true,
+                        fillColor: '#D3D3D3',
+                        alignment: 'center',
+                      })),
+                      ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                    ],
+                  },
+                },
+              ],
+              styles: {
+                header: {
+                  fontSize: 18,
+                  font: 'Roboto',
+                  bold: true,
+                },
+                subheader: {
+                  fontSize: 14,
+                  font: 'Roboto',
+                },
+              },
+            };
+            
+            
+        
+            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS POR SEMANA.pdf');
+          });
+        }
+
+
+//---------------------
+descargarDatosSemana() {
+  const datosParaDescargar = this.reportesss.map(item => ({
+    'Plato': item.plato,
+    'Fecha Inicio ': item.fechaInicio,
+    'Fecha Final ': item.fechaFin,
+    'Cantidad': item.cantidadPlato,
+    'Con créditos': item.conCreditos,
+    'Sin créditos': item.sinCreditos,
+  }));
+
+  const nombreHoja = 'data'; // Ajusta el nombre de la hoja según tus necesidades
+
+  this.descargarExcelsemana(datosParaDescargar, nombreHoja);
+}
+
+descargarExcelsemana(datos: any[], nombreHoja: string) {
+  const workSheet = XLSX.utils.json_to_sheet(datos);
+  const workBook: XLSX.WorkBook = { Sheets: { [nombreHoja]: workSheet }, SheetNames: [nombreHoja] };
+  const excelBuffer: any = XLSX.write(workBook, { bookType: 'xlsx', type: 'array' });
+
+  const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  FileSaver.saveAs(blob, 'Reporte de ingresos de plato por semana .xlsx');
+}
+
+
+
+
+
+
+
+
+  //-----Metodos de pdf y excel por  Mes---------------------------------------------------------------------------------------------------- 
+  descargarMesPDF() {
+    const rows = this.reportesss.map((item, index) => [
+      item.plato,
+      this.meses[item.mes - 1],
+      item.cantidadPlato,
+              item.conCreditos,
+              item.sinCreditos,
+    ]);
+  
+  
+   
+  
+    const anchoPagina = 595.28;
+    let columnWidths = [150, 95, 90,90, 90,];
+    const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+    let escala = 1;
+  
+    if (totalWidth > anchoPagina) {
+      escala = anchoPagina / totalWidth;
+      columnWidths = columnWidths.map(width => width * escala);
+    }
+  
+    // Obtener las representaciones en base64 de las imágenes
+    Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+      const headerTable = {
+        table: {
+          widths: [120, '*', 120],
+          body: [
+            [
+              { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+              { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+              { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+            ],
+            [
+              {},
+              { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+              {},
+            ],
+          ],
+        },
+        layout: 'noBorders',
+      };
+  
+      const documentoPDF = {
+        content: [
+          headerTable,
+          '\n\n',
+          { text: 'INFORME DE INGRESOS DE PLATO POR MES', style: 'header', alignment: 'center' },
+          ' \n',   ' \n',  
+          { text: 'Cantidad mensual de ingresos en plato', style: 'subheader', alignment: 'left' , bold: true },
+          '\n',
+          {
+            // Contenedor externo para la tabla
+            alignment: 'center',
+            table: {
+              headerRows: 1,
+              // Ancho de la tabla
+              widths: ['*', '*', '*', '*', '*'],
+              // Alineación de la tabla en el centro
+              alignment: 'center',
+              body: [
+                ['Plato', 'Mes','Cantidad', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
+                  text: cell,
+                  bold: true,
+                  fillColor: '#D3D3D3',
+                  alignment: 'center',
+                })),
+                ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+              ],
+            },
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            font: 'Roboto',
+            bold: true,
+          },
+          subheader: {
+            fontSize: 14,
+            font: 'Roboto',
+          },
+        },
+      };
+      
+      
+  
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS POR MES.pdf');
+    });
+  }
+   
+  
+  
+  
+  
+
+//---------------------
+descargarMesDatos() {
+  const datosParaDescargar = this.reportesss.map(item => ({
+    'Plato': item.plato,
+    'Mes':  this.meses[item.mes - 1],
+'Cantidad': item.cantidadPlato,
+    'Con créditos': item.conCreditos,
+    'Sin créditos': item.sinCreditos,
+  }));
+
+  const nombreHoja = 'data'; // Ajusta el nombre de la hoja según tus necesidades
+
+  this.descargarExcelMes(datosParaDescargar, nombreHoja);
+}
+
+descargarExcelMes(datos: any[], nombreHoja: string) {
+  const workSheet = XLSX.utils.json_to_sheet(datos);
+  const workBook: XLSX.WorkBook = { Sheets: { [nombreHoja]: workSheet }, SheetNames: [nombreHoja] };
+  const excelBuffer: any = XLSX.write(workBook, { bookType: 'xlsx', type: 'array' });
+
+  const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  FileSaver.saveAs(blob, 'Reporte de ingresos de plato por mes .xlsx');
+}
+
+
+
+
+
+
+
+meses: string[] = [
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+];
+
+//---F I L T R O S--------
+
+
+
+
+  //Filtros
+  diaFiltro: string = "";
+  filtroSeleccionado: string = "";
+  semanaFiltro: string = "";
+  mesFiltro: string = "";
+
+  aplicarFiltros() {
+    if (this.filtroSeleccionado === "dia") {
+      // Aplica el filtro por nombre y restablece el filtro de fecha
+      this.diaFiltro = "";
+    } else if (this.filtroSeleccionado === "semana") {
+      // Si se selecciona el filtro de fecha, vacía el filtro de nombre
+      this.semanaFiltro = "";
+    } else if (this.filtroSeleccionado === "mes") {
+      // Si se selecciona el filtro de fecha, vacía el filtro de nombre
+      this.mesFiltro = "";
+    }
+
+  
+  }
+
+  //--------------metodo para filtrar
+  //----------Mestodo de busqueda por semanas-------------
+fechafinalSeleccionada: string | null = null;
+mostrarTablames: boolean = false;
+mostrarTablasemana: boolean = false;
+mesSeleccionado: string | null = null;
+reporteingresosdiass: any[] = [];
+
+
+
+
+ // Variables adicionales para controlar la visualización de la tabla
+ mostrarTablallena: boolean = false;
+ mostrarTablamesllena: boolean = false;
+ mostrarTablasemanallena: boolean = false;
+
+
+  buscarIngredientePorFiltro() {
+    console.log("id " + this.idPlato);
+  
+    // Limpia el arreglo de ingredientes
+    this.reporteingresosdiass = [];
+  
+    switch (this.filtroSeleccionado) {
+      case 'dia':
+        console.log("fecha " + this.fechaSeleccionada);
+        this.  ReporteingresosDiasplatos ();
+        break;
+      case 'semana':
+        console.log("fecha " + this.fechaSeleccionada);
+        console.log("fecha final " + this.fechafinalSeleccionada);
+      this.ReporteingresosSemanasplatos(); 
+        break;
+      case 'mes':
+        console.log("mes " + this.mesSeleccionado);
+          this.ReporteingresosMesplatos(); 
+        break;
+      default:
+        console.log("Filtro no válido");
+        break;
+    }
+  }
+
+
+
+
+  
+  //--------------metodo para filtrar
+  buscarReportePorFiltro() {
+    console.log("id " + this.idPlato);
+  
+    // Limpia el arreglo de ingredientes
+    this.reporteingresosdiass = [];
+  
+    switch (this.filtroSeleccionado) {
+      case 'dia':
+        console.log("fecha " + this.fechaSeleccionada);
+        this.  ReporteingresosDiasplatos ();
+        break;
+      case 'semana':
+        console.log("fecha " + this.fechaSeleccionada);
+        console.log("fecha final " + this.fechafinalSeleccionada);
+         this.ReporteingresosSemanasplatos(); 
+        break;
+      case 'mes':
+        console.log("mes " + this.mesSeleccionado);
+       this.ReporteingresosMesplatos();
+         break;
+      default:
+        console.log("Filtro no válido");
+        break;
+    }
+  }
+
+
+
+
+
+
+
+
+
+  //-------------------------metodos de busquedas--------------------------------------
+   //--------------metodo para buscar el reporte de ingresos del plato segun la fecha ´por dia-----------------------------
+  
+   mostrarTabla: boolean = false;
+   ReporteingresosDiasplatos() {
+    this.reportesss = [];
+  
+    // Asegúrate de que tanto idAlimento como fechaSeleccionada estén definidos antes de hacer la llamada
+    if (this.idPlato && this.fechaSeleccionada) {
+      const fecha = this.fechaSeleccionada;
+  
+      this.CreditosService.ingresos(fecha, this.idPlato).subscribe({
+        next: (res: any) => {
+          if (res && res.reporte) {
+            if (res.reporte.length === 0) {
+              console.log("No se encontraron datos para esta fecha y plato.");
+              this.mostrarTabla = false;
+              this.mostrarTablallena = false;
+            } else {
+              // Asigna los datos al arreglo reportesss
+              this.reportesss = [res.reporte];
+              this.mostrarTabla = true;
+              this.mostrarTablallena = true;
+            }
+          } else {
+            console.log("La respuesta no contiene datos.");
+          }
+        },
+        error: (err) => {
+          
+          this.showModalError( );
+        },
+      });
+  
+    } else {
+      console.log("El idplato o la fecha no están definidos.");
+      this.showModalErrors("El idplato o la fecha no están definidos.");
+    }
+  }
+  
+  showModalErrors(errorMessage: string) {
+    // Implementa la lógica para mostrar un modal o mensaje de error aquí
+    console.error(errorMessage);
+    // Puedes usar alguna librería de manejo de modales o simplemente mostrar un mensaje en la consola
+  }
+  
+   //--------------metodo para buscar el reporte de ingresos del plato segun la fecha por semana-----------------------------
+
+   ReporteingresosSemanasplatos  () {
+     
+    this.reportesss = [];
+  
+    // Asegúrate de que tanto idAlimento como fechaSeleccionada estén definidos antes de hacer la llamada
+    if (this.idPlato && this.fechaSeleccionada) {
+      const fecha = this.fechaSeleccionada;
+      const fechafinal= this.fechafinalSeleccionada;
+        this.CreditosService.reporteIngresosporsemanasdeplatos( this.idPlato,fecha,fechafinal ).subscribe({
+          next: (res: any) => {
+            if (res && res.reporte) {
+              if (res.reporte.length === 0) {
+              
+                console.log("No se encontraron datos para esta fecha y plato.");
+                this.mostrarTablasemana = false;
+              } else {
+              
+              // Asigna los datos al arreglo ingredientesdiass
+                this.reportesss = [res.reporte];
+                this.mostrarTablasemana = true;
+              }
+            } else {
+              console.log("La respuesta no contiene datos.");
+            }
+          },
+          error: (err) => {
+          
+            this.showModalError();
+          },
+        });
+
+    } else {
+      console.log("El idplato o la fecha no están definidos.");
+    }
+    
+  
+
+    
+  }
+
+
+  getNombreMes(numeroMes: number): string {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[numeroMes - 1]; // Restamos 1 porque los meses en JavaScript van de 0 a 11
+  }
+  
+  ReporteingresosMesplatos  () {
+     
+    this.reportesss = [];
+  
+    // Asegúrate de que tanto idAlimento como fechaSeleccionada estén definidos antes de hacer la llamada
+    if (this.idPlato && this.mesSeleccionado) {
+      const mes = this.mesSeleccionado;
+      
+        this.CreditosService.reporteIngresospormesdeplatos( this.idPlato,mes ).subscribe({
+          next: (res: any) => {
+            if (res && res.reporte) {
+              if (res.reporte.length === 0) {
+              
+                console.log("No se encontraron datos para esta fecha y plato.");
+                this.mostrarTablames = false;
+              } else {
+              
+              // Asigna los datos al arreglo ingredientesdiass
+                this.reportesss = [res.reporte];
+                this.mostrarTablames = true;
+              }
+            } else {
+              console.log("La respuesta no contiene datos.");
+            }
+          },
+          error: (err) => {
+          
+            this.showModalErrorMes();
+          },
+        });
+
+    } else {
+      console.log("El idplato o la fecha no están definidos.");
+    }
+    
+  
+
+    
+  }
+
+   
+
+
+ 
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //-----------------------------------------------------------------------------
+  filtroAnterior: string | null = null;
+
+  // ... otros métodos
+  mostrarImagen: boolean = false;
+
+  limpiarInputYMostrarTabla() {
+    if (this.filtroSeleccionado !== this.filtroAnterior) {
+      this.platoSeleccionado.descripcion = ''; // Limpiar el input
+      this.fechaSeleccionada = ''; // Limpiar el input
+      this.fechafinalSeleccionada = ''; // Limpiar el input
+      this.filtroAnterior = this.filtroSeleccionado; // Actualizar el filtro anterior
+    }
+  
+    this.mostrarTabla = false; // Ocultar la tabla anterior de día
+    this.mostrarTablames = false; // Ocultar la tabla anterior de meses
+    this.mostrarTablasemana = false; // Ocultar la tabla anterior de semanas
+  
+    // Agregar la lógica para mostrar la imagen y la línea <div> aquí
+    if (!this.reportesss || this.reportesss.length === 0) {
+      this.mostrarImagen = true; // Mostrar la imagen
+    } else {
+      this.mostrarImagen = this.filtroSeleccionado === 'dia' || this.filtroSeleccionado === 'semana' || this.filtroSeleccionado === 'mes';
+    }
+  }
+  
+
+
+  
 }

@@ -12,6 +12,8 @@ import { ElementRef, ViewChild } from "@angular/core";
 import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { ImageService } from 'app/servicios/image.service';
+
 @Component({
   selector: 'app-listado-usuarios',
   templateUrl: './listado-usuarios.component.html',
@@ -33,17 +35,17 @@ export class ListadoUsuariosComponent implements OnInit {
 
   showDescripcionError = false; //evitando que se muestren los mensajes de campo requerido 
   showIdTipomenuError = false;//evitando que se muestren los mensajes de campo requerido
-  constructor(private http: HttpClient, private UsuarioService: UsuarioService, private router: Router, private formBuilder: FormBuilder) {
+  constructor(private http: HttpClient, private UsuarioService: UsuarioService, private router: Router, private formBuilder: FormBuilder, private imageService:ImageService) {
     this.getAllusuarios();
 
    
 
     this.usuarioForm = new FormGroup({
-      usuario: new FormControl(),
+      Identificacion: new FormControl(),
 
-      nombre: new FormControl(),
-      email: new FormControl(),
-      telefono: new FormControl(),
+      Nombre1: new FormControl(),
+      EmailInstitucional: new FormControl(),
+      TelefonoC: new FormControl(),
       foto: new FormControl(),
     });
     this.usuarioForm2 = new FormGroup({
@@ -181,7 +183,7 @@ export class ListadoUsuariosComponent implements OnInit {
 //--------------------------------------------------------------------------------------------------------
    //obtener todos los usuarios
    getAllusuarios() {
-    this.UsuarioService.getusuario().subscribe({
+    this.UsuarioService.obtenerusuarioestado().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.usuarios);
         this.usuariosss = res.usuarios;
@@ -204,7 +206,7 @@ export class ListadoUsuariosComponent implements OnInit {
       if (this.filtroSeleccionado === 'nombre') {
         // Aplica el filtro por nombre
         if (this.nombreproductoFiltro) {
-          this.usuariosss = this.usuariosssOriginal.filter(item => item.persona.nombre.includes(this.nombreproductoFiltro));
+          this.usuariosss = this.usuariosssOriginal.filter(item => item.Identificacion.includes(this.nombreproductoFiltro));
         } else {
           this.usuariosss = [...this.usuariosssOriginal];
         }
@@ -218,10 +220,10 @@ export class ListadoUsuariosComponent implements OnInit {
     });
     this.tituloForm = 'Editar  Menu';
     this.usuarioForm.patchValue({
-      usuario: item.usuario,
-      nombre: item.persona.nombre,
-      email: item.persona.email,
-      telefono: item.persona.telefono,
+      Identificacion: item.Identificacion,
+      Nombre1: item.persona.Nombre1,
+      EmailInstitucional: item.persona.EmailInstitucional,
+      TelefonoC: item.persona.TelefonoC,
       foto: item.persona.foto
 
     });
@@ -244,10 +246,10 @@ export class ListadoUsuariosComponent implements OnInit {
   //Para el editar de usuario usando modal
   usuarioedit() {
     const datos = {
-      usuario: this.usuarioForm.value.usuario,
-      nombre: this.usuarioForm.value.nombre,
-      email: this.usuarioForm.value.email,
-      telefono: this.usuarioForm.value.telefono,
+      Identificacion: this.usuarioForm.value.Identificacion,
+      Nombre1: this.usuarioForm.value.Nombre1,
+      EmailInstitucional: this.usuarioForm.value.EmailInstitucional,
+      TelefonoC: this.usuarioForm.value.TelefonoC,
       foto: this.usuarioForm.value.foto,
 
     };
@@ -348,66 +350,90 @@ export class ListadoUsuariosComponent implements OnInit {
 //-----------------------
 
 descargarPDF() {
-  const rows = [];
+  const rows = this.usuariosss.map((item, index) => [
+    index + 1,
+    item.Identificacion,
+    item.persona.Apellido1,
+    item.persona.Apellido2,
+    item.persona.Nombre1,
+    item.persona.Nombre2,
+    item.persona.EmailInstitucional,
+    item.persona.TelefonoC,
+    
+    
+  ]);
 
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Nº', 'Usuario', 'Nombres', 'Email', 'Teléfono', 'Foto'];
-  rows.push(headerRow);
-
-  // Iterar sobre los datos y agregar filas
-  this.usuariosss.forEach((item, index) => {
-    const rowData = [
-      index + 1,
-      item.usuario,
-      item.persona.nombre,
-      item.persona.email,
-      item.persona.telefono,
-      item.persona.foto,
-      
-     
-    ];
-    rows.push(rowData);
-  });
-
-  // Define la estructura del documento PDF
- 
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [30, 70, 80, 120, 80, 70]; // Anchos de las 9 columnas
+  const anchoPagina = 595.28;
+  let columnWidths =  [30,68,55,55, 55, 55, 60, 68 ];
   const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
   let escala = 1;
-  
+
   if (totalWidth > anchoPagina) {
     escala = anchoPagina / totalWidth;
     columnWidths = columnWidths.map(width => width * escala);
   }
-  
-  const documentoPDF = {
-    content: [
-      { text: 'Listado de Clientes ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
-      }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
-    }
-  };
-  
-  
 
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('Listado de clientes.pdf');
+  // Obtener las representaciones en base64 de las imágenes
+  Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+    const headerTable = {
+      table: {
+        widths: [120, '*', 120],
+        body: [
+          [
+            { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+            { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+            { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+          ],
+          [
+            {},
+            { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+            {},
+          ],
+        ],
+      },
+      layout: 'noBorders',
+    };
+
+    const documentoPDF = {
+      content: [
+        headerTable,
+        '\n\n',
+        { text: 'INFORME DE CLIENTES', style: 'header', alignment: 'center' },
+        '\n',
+        {
+          table: {
+            headerRows: 1,
+            widths: columnWidths,
+            body: [
+
+              ['Nº', 'Usuario', 'Apellido1',  'Apellido2', 'Nombre1', 'Nombre2','Email', 'Teléfono' ].map((cell, index) => ({
+                text: cell,
+                bold: true,
+                fillColor: '#D3D3D3',
+              })),
+              ...rows.map(row => row.map(cell => ({ text: cell }))),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          font: 'Roboto',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 14,
+          font: 'Roboto',
+        },
+      },
+    };
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    pdfMake.createPdf(documentoPDF).download('INFORME DE CLIENTES.pdf');
+  });
 }
+
 
 //-----------------------
 
@@ -418,12 +444,14 @@ descargarPDF() {
   //'''''''''''''''''''''''
   descargarDatos() {
     const datosParaDescargar = this.usuariosss.map(item => ({
-      'Usuario': item.usuario,
-      'Nombres': item.persona.nombre,
-      'Email': item.persona.email,
-      'Teléfono': item.persona.telefono,
-      'Foto': item.persona.foto,
-      
+      'Usuario': item.Identificacion,
+      'Apellido1': item.persona.Apellido1,
+      'Apellido2': item.persona.Apellido2,
+      'Nombre1': item.persona.Nombre1,
+      'Nombre2': item.persona.Nombre2,
+      'Email': item.persona.EmailInstitucional,
+      'Teléfono': item.persona.TelefonoC,
+       
     }));
    
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);

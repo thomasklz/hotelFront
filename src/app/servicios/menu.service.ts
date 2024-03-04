@@ -16,6 +16,17 @@ export class MenuService {
   gettplato(){
     return this.http.get<any>('http://localhost:3000/api/mostrarplato');
   }
+  mostrarplatomenu(){
+    return this.http.get<any>('http://localhost:3000/api/mostrarplatomenu');
+  }
+
+
+  
+  mostrarplatocredito(){
+    return this.http.get<any>('http://localhost:3000/api/mostrarplatocredito');
+  }
+
+  
 
   obtenerplatos(){
     return this.http.get<any>('http://localhost:3000/api/mostrartodoslosplatos');

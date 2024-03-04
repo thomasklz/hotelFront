@@ -1,5 +1,8 @@
 <link  href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet"
 />
+
+<link href="https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap" rel="stylesheet">
+
 <img src="/path/to/icons/example-icon.svg" alt="An example icon" style="width:24px;height:24px" />
 
 
@@ -7,8 +10,10 @@
 <div class="main-content">
   <div class="container-fluid">
 
+    
+
     <div class="form-row">
-      <div class="form-group containerversion2 col-md-12">
+      <div class="form-group containerversion2 col-md-12 ">
         <div class="labelversion2">
           <label for="filtroSelector">Filtrar por:</label>
         </div>
@@ -79,26 +84,43 @@
       </div>
     </div>
     
+<br>
+    <div class="form-group">
+      <div class="formmmk">
+        <div class="search-containerv2">
+          <div class="search-boxv2">
+            <select class="form-control" id="filtroSelect" (change)="openModal($event.target.value)">
+              <option class="d" value="Seleccionar" disabled selected>AGREGAR +</option>
+              <option value="option1">Sin crédito</option>
+              <option value="option3">Con crédito</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
 
     
 
 
 
-<br>
+
 
     
     <div class="row">
-      <button
-        mat-raised-button
-        type="submit"
-        class="btn1 btn-danger pull-right card-title"
-        data-toggle="modal"
-        data-target="#ventanaForm"
-        (click)="nuevoCurso()"
-      >
-        AGREGAR +
-      </button>
 
+     
+    
+  
+
+
+    
+    
+      
+    
+
+      
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
@@ -136,7 +158,8 @@
               <table class="table">
                 <thead class="text-primary">
                   <th>Nº</th>
-                  <th>Nombres</th>
+                  <th>Apellido</th>
+                  <th>Nombre</th>
                   <th>Email</th>
                   <th>Teléfono</th>
                   <th>Plato</th>
@@ -149,14 +172,15 @@
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let item of pagedCreditos; let i = index">
-                    <ng-container *ngIf="(!nombreFiltro || item.persona.nombre.toLowerCase().includes(nombreFiltro.toLowerCase()))||(!fechaFiltro || item.fecha.toLowerCase().includes(fechaFiltro.toLowerCase()))">
+                    <ng-container *ngIf="(!nombreFiltro || item.persona.Nombre1.toLowerCase().includes(nombreFiltro.toLowerCase()))||(!fechaFiltro || item.fecha.toLowerCase().includes(fechaFiltro.toLowerCase()))">
 
                       <tr>
                         <!-- Contenido de la tabla -->
                         <td>{{ i + 1 }}</td>
-                        <td>{{ item.persona.nombre }}</td>
-                        <td>{{ item.persona.email }}</td>
-                        <td>{{ item.persona.telefono }}</td>
+                        <td>{{ item.persona.Apellido1 }}</td>
+                        <td>{{ item.persona.Nombre1 }}</td>
+                        <td>{{ item.persona.EmailInstitucional }}</td>
+                        <td>{{ item.persona.TelefonoC }}</td>
                         <td>{{ item.plato.descripcion }}</td>
                         <td>{{ item.cantidad }}</td>
                         <td>{{ item.precio }}</td>
@@ -176,7 +200,7 @@
                 </tbody>
                 
                
-                
+                 
               </table>
             </div>
                       <!-- Contenedor para centrar la paginación -->
@@ -214,7 +238,7 @@
           <div class="centered-horizontal">
             <label for="inputState" class="select-grr el">Crédito a:</label>
             <div *ngIf="nombreUsuarioInput">
-              <label class="el">{{ nombreUsuarioInput }}</label>
+              <label class="el">{{ nombreUsuarioInput }} {{ nombre2UsuarioInput }} {{ apellido1UsuarioInput }} {{ apellido2UsuarioInput }}</label>
             </div>
           </div>
           
@@ -233,18 +257,23 @@
       type="text"
       class="form-control"
       list="list-timezone-usuario"
-      [value]="usuarioSeleccionado.usuario"
+      [value]="usuarioSeleccionado.Identificacion"
       (input)="updateUsuarioId($event)"
       formControlName="id_persona"
     />
 
     <datalist id="list-timezone-usuario">
-      <option *ngFor="let item2 of personas" [value]="item2.usuario">
-        {{ item2.usuario }}
+      <option *ngFor="let item2 of personas" [value]="item2.Identificacion">
+        {{ item2.Identificacion }}
       </option>
     </datalist>
   </div>
 </div>
+
+<!-- En tu archivo HTML -->
+ 
+<input type="hidden" formControlName="id_ingreso" />
+
 
 <!-- ... (resto del código) -->
 
@@ -380,3 +409,158 @@
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm2" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm2 }} <img src="assets/img/comida.png" alt="" />
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body modal-with-padding">
+        <form [formGroup]="reporteIngresosForm">
+
+         
+          
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <div class="formmm">
+                <!-- ... (resto del código) -->
+
+ 
+<!-- ... (resto del código) -->
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label select-gr" 
+                    >Buscar el nombre del plato:</label
+                  >
+                  <div class="search-box">
+                    <input
+                      type="text"
+                      class="form-control"
+                      list="list-timezone"
+                     
+                      [value]="platoSeleccionados.descripcion"
+                      (input)="updatePlatoIdReporteIngresos($event)"
+
+                      
+                      formControlName="id_plato"
+                    />
+
+                    <datalist id="list-timezone">
+                      <option
+                        *ngFor="let ingrediente of ingredientes"
+                        [value]="ingrediente.descripcion"
+                      >
+                        {{ ingrediente.descripcion }}
+                      </option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         <br>
+
+     
+
+
+
+
+
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputState" class="select-gr">Cantidad</label> <br />
+            <input
+              class="example-full-width estilosversion2"
+              type="number"
+              formControlName="cantidad"
+            />
+            <div *ngIf="showCantidadError" class="text-danger">
+              Campo requerido
+            </div>
+
+          </div>
+
+          <div class="form-group col-md-6">
+            <label for="inputState" class="select-gr">Precio</label> <br />
+            <input
+              class="example-full-width estilosversion2"
+              type="text"
+              formControlName="precio"
+            />
+            <div *ngIf="showPrecioError" class="text-danger">
+              Campo requerido
+            </div>
+
+          </div>
+
+       
+
+         
+        
+        </div>
+
+          <input type="hidden" formControlName="id_ingreso" />
+
+
+
+<br>
+         
+
+       
+          <input type="hidden" formControlName="funcion" />
+        </form>
+      </div>
+
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" >
+          Cerrar
+        </button>
+       
+
+
+        <button type="button" class="btn btn-danger" (click)="AddcrearreporteIngresos()" data-dismiss="modal">
+          {{ editandoCreditos   ? 'Modificar' : 'Cobrar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

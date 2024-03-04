@@ -1,72 +1,197 @@
 <div class="main-content">
-    <div class="container-fluid">
-  
-      <div class="form-row">
-        <div class="form-group containerversion2 col-md-12">
-          
-          <div class="col-lg-3">
-            <div class="labelversion2">
-              <div class="form-group">
-                <div class="formmm">
-                  <div class="search-container">
-                    <label class="label">Seleccionar el plato:</label>
-                    <div class="search-box">
-                      <input type="text" class="form-control" list="list-timezone-platos" [(ngModel)]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" />
-                      <datalist id="list-timezone-platos">
-                        <option *ngFor="let item2 of platosss" [value]="item2.descripcion"></option>
-                      </datalist>
-                    </div>
+  <div class="container-fluid mx-auto">
+   
+
+    <div class="form-row">
+      
+          <div class="text-center col-md-12 ">
+            <label class="ñ" for="">Reporte de ingresos $</label>
+          </div>
+
+      <div class="form-group containerversion2 col-md-12">
+
+
+
+ 
+
+        
+        <div class="col-lg-3">
+          <div class="labelversion2">
+            <div class="form-group">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label">Seleccionar el filtro:</label>
+                  <div class="search-box">
+                    <select class="form-control" id="filtroSelect" [(ngModel)]="filtroSeleccionado" (change)="limpiarInputYMostrarTabla()">
+                      <option value="Seleccionar" disabled selected>Seleccione</option>
+                      <option value="dia">Día</option>
+                      <option value="semana">Semana</option>
+                      <option value="mes">Mes</option>
+                    </select>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
-          
-          <div class="col-lg-3">
-            <div class="labelversion2">
-              <div class="form-group">
-                <div class="formmm">
-                  <div class="search-container">
-                    <label class="label">Buscar la fecha:</label>
-                    <div class="search-box">
-                      <div> 
-                        <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada" name="fecha" id="input-datalist-fecha" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-    
-          
-
-
-          
-          <div class="col-lg-3">
-            <div class="labelversion2">
-              <button type="button" class="btn btn-danger" (click)="Reporteingresosplatos()" style="display: flex; align-items: center;">
-                Filtrar&nbsp;
-                <i class="fa fa-search fa-stack-1x" style="vertical-align: middle; margin-left: 5px;"></i>
-              </button>
-            </div>
-          </div>
-          
-          
-          
-          
+        </div>
         
      
-      </div>
-          
+        <div class="col-lg-3">
+          <div class="labelversion2">
+            <div class="form-group">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label">Seleccionar el plato:</label>
+                  <div class="search-box">
+                    <input type="text" class="form-control" list="list-timezone-platos" [(ngModel)]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" />
+                    <datalist id="list-timezone-platos">
+                      <option *ngFor="let item2 of platosss" [value]="item2.descripcion"></option>
+                    </datalist>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        <div class="col-lg-3" *ngIf="filtroSeleccionado === 'dia'">
+          <div class="labelversion2">
+            <div class="form-group">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label">Buscar la fecha:</label>
+                  <div class="search-box">
+                    <div> 
+                      <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada" name="fecha" id="input-datalist-fecha" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        
+
+        <div class="col-lg-3" *ngIf="filtroSeleccionado === 'semana'">
+          <div class="labelversion2">
+            <div class="form-group">
+              <div class="formmm">
+                <label class="label">Seleccionar fechas: inicio - fin:</label>
+                <div class="search-container">
+                  <div class="search-box">
+                    <div class="form-inline"> <!-- Contenedor para alinear horizontalmente -->
+                      <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada" name="fecha" id="input-datalist-fecha" />
+                      <input type="date" class="form-control" [(ngModel)]="fechafinalSeleccionada" name="fecha" id="input-datalist-fecha" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+
+        <div class="col-lg-3" *ngIf="filtroSeleccionado === 'mes'">
+          <div class="labelversion2">
+            <div class="form-group">
+              <div class="formmm">
+                <div class="search-container">
+                  <label class="label">Seleccionar el mes:</label>
+                  <div class="search-box">
+                    <select class="form-control" [(ngModel)]="mesSeleccionado">
+                      <option value="" disabled selected>Seleccione</option> <!-- Opción inicial -->
+                      <option value="1">Enero</option>
+                      <option value="2">Febrero</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Abril</option>
+                      <option value="5">Mayo</option>
+                      <option value="6">Junio</option>
+                      <option value="7">Julio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Septiembre</option>
+                      <option value="10">Octubre</option>
+                      <option value="11">Noviembre</option>
+                      <option value="12">Diciembre</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        
+        <div class="col-lg-3">
+          <div class="labelversion2">
+            <button type="button" class="btn btn-danger" (click)="buscarIngredientePorFiltro()" style="display: flex; align-items: center;">
+              Filtrar&nbsp;
+              <i class="fa fa-search fa-stack-1x" style="vertical-align: middle; margin-left: 5px;"></i>
+            </button>
+          </div>
+        </div>
+        
+        
+        
+        
+      
+   
     </div>
+
+
+
+    
+        
+  </div>
+  
+
+
+
+  
+<!-- Agrega esta parte en tu HTML donde desees mostrar la imagen y la línea <div> -->
+  <div class="text-center" *ngIf="!reportesss || reportesss.length === 0 || !mostrarImagen" >
+    <br><br>
+    <img src="/assets/img/reporteIngreso.png" alt="" class="center-img">
+  </div>
+  
+
+  
+  
+
+
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 <br><br><br><br>
 
 <div class="col-md-12">
-  <div class="card text-center">
+  <div class="card text-center "  *ngIf="mostrarTabla && reportesss && reportesss.length > 0">
     <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
       <h4 class="card-title disabled label2"> <img
         src="/assets/img/estadisticas.png"
@@ -100,6 +225,7 @@
           <thead class="text-primary">
             <th>Plato</th>
             <th>Fecha</th>
+            <th>Cantidad</th>
             <th>Con créditos</th>
             <th>Sin créditos</th>
           </thead>
@@ -108,6 +234,68 @@
               <tr>
                 <td>{{ item.plato }}</td>
                 <td>{{ item.fecha }}</td>
+                <td>{{ item.cantidadPlato }}</td>
+                <td>{{ item.conCreditos }}</td>
+                
+                <td>{{ item.sinCreditos }}</td>
+              </tr>
+            </ng-container>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-12">
+  <div class="card text-center " *ngIf="mostrarTablasemana && reportesss && reportesss.length > 0">
+    <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+      <h4 class="card-title disabled label2"> <img
+        src="/assets/img/estadisticas.png"
+        class="edit"
+        alt=""
+      /> Reporte de Plato por Semana</h4>
+     
+     
+      <li class="nav-item dropdown">
+        <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+          Descargar    <i class="material-icons">file_download</i> 
+          
+            <p>
+                <span class="d-lg-none d-md-block">Some Actions</span>
+            </p>
+        </a>
+        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" (click)="descargarDatosSemana()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+            <a class="dropdown-item" (click)="descargarSemanaPDF()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+          
+            
+        </div>
+    </li>
+
+
+
+    </div>
+    <div class="card-body text-center">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <th>Plato</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Final</th>
+            <th>Cantidad</th>
+            <th>Con créditos</th>
+            <th>Sin créditos</th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of reportesss">
+              <tr>
+                <td>{{ item.plato }}</td>
+                <td>{{ item.fechaInicio }}</td>
+                <td>{{ item.fechaFin }}</td>
+                <td>{{ item.cantidadPlato }}</td>
                 <td>{{ item.conCreditos }}</td>
                 <td>{{ item.sinCreditos }}</td>
               </tr>
@@ -119,3 +307,64 @@
     </div>
   </div>
 </div>
+
+
+<div class="col-md-12">
+  <div class="card text-center " *ngIf="mostrarTablames && reportesss && reportesss.length > 0">
+    <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+      <h4 class="card-title disabled label2"> <img
+        src="/assets/img/estadisticas.png"
+        class="edit"
+        alt=""
+      /> Reporte de Plato por Mes</h4>
+     
+     
+      <li class="nav-item dropdown">
+        <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+          Descargar    <i class="material-icons">file_download</i> 
+          
+            <p>
+                <span class="d-lg-none d-md-block">Some Actions</span>
+            </p>
+        </a>
+        <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" (click)="descargarMesDatos()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+            <a class="dropdown-item" (click)="descargarMesPDF()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+          
+            
+        </div>
+    </li>
+
+
+
+    </div>
+    <div class="card-body text-center">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <th>Plato</th>
+            <th>Mes</th>
+            <th>Cantidad</th>
+            <th>Con créditos</th>
+            <th>Sin créditos</th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of reportesss">
+              <tr>
+                <td>{{ item.plato }}</td>
+                <td>{{ getNombreMes(item.mes) }}</td>
+                <td>{{ item.cantidadPlato }}</td>
+                <td>{{ item.conCreditos }}</td>
+                <td>{{ item.sinCreditos }}</td>
+              </tr>
+            </ng-container>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ 

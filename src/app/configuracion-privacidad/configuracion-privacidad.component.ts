@@ -6,9 +6,9 @@ import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import swal from 'sweetalert';
 import swal2 from 'sweetalert';
-import { ViewChild } from '@angular/core';
+import { ViewChild,ElementRef } from '@angular/core';
 import { interval } from 'rxjs';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-configuracion-privacidad',
   templateUrl: './configuracion-privacidad.component.html',
@@ -21,6 +21,11 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   usuarioForm!: FormGroup;
   private intervalSubscription: any;
 
+
+
+
+  @ViewChild('ventanaFoto') ventanaFoto: ElementRef;
+
   constructor(private UsuarioService: UsuarioService, private http: HttpClient, private router: Router, private formBuilder: FormBuilder) {
     this.idUsuario = +localStorage.getItem('idUsuario');
 
@@ -32,10 +37,10 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   ngOnInit(): void {
     this.getAllusuario();
     this.usuarioForm = this.formBuilder.group({
-      usuario: new FormControl("", [Validators.required, Validators.minLength(3)]),
-      nombre: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      email: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      telefono: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      Identificacion: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      Nombre1: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      EmailInstitucional: new FormControl("", [Validators.required, Validators.maxLength(1)]),
+      TelefonoC: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       contrasena: new FormControl("", [Validators.required, Validators.maxLength(1)]),
       foto: new FormControl("", [Validators.required, Validators.maxLength(1)]),
     });
@@ -61,7 +66,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editarusuario(item: any) {
 
     this.usuarioForm.patchValue({
-      usuario: item.usuario
+      Identificacion: item.Identificacion
     });
     this.editandox = true;
     this.idEditar = item.id;
@@ -83,7 +88,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editarnombre(item: any) {
 
     this.usuarioForm.patchValue({
-      nombre: item.persona.nombre
+      Nombre1: item.persona.Nombre1
     });
 
     this.editandox = true;
@@ -96,7 +101,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editaremail(item: any) {
 
     this.usuarioForm.patchValue({
-      email: item.persona.email
+      EmailInstitucional: item.persona.EmailInstitucional
     });
 
     this.editandox = true;
@@ -109,7 +114,7 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editartelefono(item: any) {
 
     this.usuarioForm.patchValue({
-      telefono: item.persona.telefono
+      TelefonoC: item.persona.TelefonoC
     });
 
     this.editandox = true;
@@ -120,21 +125,38 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
     this.showIdTipomenuError = false;
   }
 
+  
+  
   editarfoto(item: any) {
-
-    this.usuarioForm.patchValue({
-      foto: item.persona.foto
-    });
-
+    this.modalVisible = true;
+  
+    // Verificar si la propiedad imagenUrl está definida
+    if (item.persona.foto) {
+      // Mostrar la imagen actual del usuario
+      this.selectedImage = 'http://localhost:3000/imagenes/' + item.persona.foto;
+    } else {
+      // Si imagenUrl no está definida, podrías construir la URL en el cliente
+      this.selectedImage = `/uploads/imagenes/usuario/${item.persona.foto}`;
+    }
+  
+    // Establecer otras propiedades necesarias para la edición
     this.editandox = true;
     this.idEditar = item.id;
-
+  
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showIdTipomenuError = false;
   }
+  
+  
 
+/*   onFileChange(event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.usuarioForm.get('foto').setValue(file);
+  }
+ */
 
+  
   //Modal de Modificacion Notificacion
   showModalEdit() {
     swal2({
@@ -170,12 +192,12 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editarUsuario() {
 
     const datos = {
-      usuario: this.usuarioForm.value.usuario
+      Identificacion: this.usuarioForm.value.Identificacion
 
     };
     this.UsuarioService.editUsuario(datos, this.idUsuario).subscribe(
-      (usuario) => {
-        console.log(usuario);
+      (Identificacion) => {
+        console.log(Identificacion);
         this.showModalEdit();
 
       },
@@ -189,12 +211,12 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editarNombre() {
 
     const datos = {
-      nombre: this.usuarioForm.value.nombre
+      Nombre1: this.usuarioForm.value.Nombre1
 
     };
     this.UsuarioService.editNombre(datos, this.idUsuario).subscribe(
-      (nombre) => {
-        console.log(nombre);
+      (Nombre1) => {
+        console.log(Nombre1);
         this.showModalEdit();
 
       },
@@ -209,12 +231,12 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editarEmail() {
 
     const datos = {
-      email: this.usuarioForm.value.email
+      EmailInstitucional: this.usuarioForm.value.EmailInstitucional
 
     };
     this.UsuarioService.editEmail(datos, this.idUsuario).subscribe(
-      (email) => {
-        console.log(email);
+      (EmailInstitucional) => {
+        console.log(EmailInstitucional);
         this.showModalEdit();
 
       },
@@ -229,12 +251,12 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
   editarTelefono() {
 
     const datos = {
-      telefono: this.usuarioForm.value.telefono
+      TelefonoC: this.usuarioForm.value.TelefonoC
 
     };
     this.UsuarioService.editTelefono(datos, this.idUsuario).subscribe(
-      (telefono) => {
-        console.log(telefono);
+      (TelefonoC) => {
+        console.log(TelefonoC);
         this.showModalEdit();
 
       },
@@ -265,34 +287,112 @@ export class ConfiguracionPrivacidadComponent implements OnInit {
       }
     );
   }
+  selectedFile: File | null = null;
+  
+
+  selectedImage: string | null = null;  // Add this line
+   
 
 
-  //editar FOTO
-  editarFoto() {
 
-    const datos = {
-      foto: this.usuarioForm.value.foto
 
-    };
-    this.UsuarioService.editFoto(datos, this.idUsuario).subscribe(
-      (foto) => {
-        console.log(foto);
-        this.showModalEdit();
 
-      },
-      (error) => {
-        console.log(error);
-        this.showModalErrorEdit();
-      }
-    );
+  // Método para manejar el cambio en el input de archivo
+  onFileChange(event: any): void {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.selectedFile = file;
+    this.displaySelectedImage();
+  }
+  
+  // Método para mostrar la vista previa de la nueva imagen
+  displaySelectedImage(): void {
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectedImage = e.target?.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.selectedImage = null;
+    } }
+
+  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
+
+  clearFileInput(input: ElementRef<HTMLInputElement>): void {
+    input.nativeElement.value = ''; // Clear the input value
   }
 
+// En tu componente
+mostrarTextoCambiar: boolean = false;
+
+  modalVisible: boolean = false;
+
+  editarFoto() {
+    if (this.selectedFile) {
+      // Create a FormData object to append the file
+      const formData = new FormData();
+      formData.append('image', this.selectedFile);
+
+      // Call the API to edit the photo
+      this.UsuarioService.editFoto(this.idUsuario, formData).subscribe(
+        (response) => {
+          console.log('Image edited successfully', response);
+          // Optionally, close the modal or perform any other necessary action
+          this.modalVisible = false;
+          this.showModalEdit();
+          
+        },
+        (error) => {
+          console.error('Error editing image', error);
+          // Handle errors appropriately
+        }
+      );
+       
+    } else {
+      // Handle the case where no file is selected
+      console.warn('No file selected');
+    }
+    this.closeModal();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
   // Restablecer el formulario cuando se cierre el modal
   closeModal() {
     this.usuarioForm.reset();
     // this.editandoPlato = false;
     //   this.idPlatoEditar = '';
+    this.modalVisible = false;
+
+    this.modalVisible = false;
+    this.usuarioForm.reset();
+    // Otros reinicios necesarios
+  
+    // Desactiva el fondo oscuro
+    document.body.classList.remove('modal-open');
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    if (modalBackdrop) {
+      modalBackdrop.remove();
+    }
+    this.ventanaFoto.nativeElement.style.display = 'none';
   }
 
 }

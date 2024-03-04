@@ -96,14 +96,21 @@ formControlName="fecha"
               
               <table class="table text-center"  *ngIf="ingredientesss.length > 0">
                 <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
-                  <th>Plato: {{ item.plato.descripcion }}</th>
+                  <th class="rojo"> <h1 class="m">Plato:</h1> {{ item.plato.descripcion }}</th>
+                  <th class="rojo"> <h1 class="m">Precio del plato:</h1> {{ item.plato.precio }}</th>
+                  <th class="rojo"> <h1 class="m">Total precio porción </h1> {{ totalPrecio}}</th>
+        
+        
                 </thead>
                 <thead class="text-primary">
                   <th>Nº</th>
 
                   <th>Ingrediente</th>
-                  <th>Cantidad persona</th>
+                 
                   <th>Libra/litro</th>
+                  <th>Costo de mercado </th>
+                  <th>Costo por porción </th>
+                  <th>Cantidad personas</th>
                   <th>Opciones de día</th>
                   <th>Cantidad final</th>
                  
@@ -119,11 +126,23 @@ formControlName="fecha"
                     <td>
                       {{ item.alimento.descripcion }}
                     </td>
-                    <td>
-                      {{ item.cantidad }}
-                    </td>
+                   
                     <td>
                       {{ item.cantidadGramo }}
+                    </td>
+                   
+                    <td>
+                      {{ item.precio | number:'1.2-2' }}
+                    </td>
+                   <!-- En la sección donde deseas mostrar el valor precio por porción -->
+                      <td>
+                        {{ item.precioporcion |  number:'1.2-2' }}
+                      </td>
+
+
+                    
+                    <td>
+                      {{ item.cantidad }}
                     </td>
                     <td>
                       {{ item.numDias }}
@@ -131,6 +150,8 @@ formControlName="fecha"
                     <td>
                       {{ item.cantidadFinal }}
                     </td>
+                     
+                   
 
                 
 

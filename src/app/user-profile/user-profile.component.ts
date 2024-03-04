@@ -6,6 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UsuarioService } from 'app/servicios/usuario.service';
 import swal from 'sweetalert';
 import swal2 from 'sweetalert';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -13,13 +16,13 @@ import swal2 from 'sweetalert';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
+  
   dataSource = new MatTableDataSource<any>();
   submitted = false;
   usuarioForm!: FormGroup;
   showMoreOptions: boolean = false;
   selectedOption: any = null;
-
-  tipousuariosss: any[] = [];
+   tipousuariosss: any[] = [];
   id_tipousuario: string = '';
 
   toggleShowMoreOptions() {
@@ -55,14 +58,21 @@ selectOption(item: any) {
     this.getAllusuarios();
 
     this.usuarioForm = new FormGroup({
-      usuario: new FormControl(),
+    identificacion: new FormControl(),
 
       nombre: new FormControl(),
       email: new FormControl(),
       telefono: new FormControl(),
-      foto: new FormControl(),
+       
+
     });
 
+
+
+
+   
+     
+ 
   }
 
   
@@ -89,19 +99,104 @@ selectOption(item: any) {
   ngOnInit() {
     this.getAlltipousuarios();
     this.loadPageData();
-    this.personaForm = this.formBuilder.group({
-      nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      telefono: new FormControl('', [Validators.required, Validators.minLength(10)]),
-      foto: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      usuario: new FormControl('', [Validators.required, Validators.minLength(10)]),
-      contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      id_tipousuario: new FormControl(),  // Agregar este campo
-/*       id_tipousuario: new FormControl(null, [Validators.required]),  // Agregar este campo
- */
 
+    this.personaForm = this.formBuilder.group({
+       
+ 
+      Nombre1: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Nombre2: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Apellido1: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Apellido2: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      TelefonoC: new FormControl("", [  Validators.required,Validators.minLength(10)]),
+      EmailInstitucional: new FormControl('', [Validators.required, ]),
+    
+      identificacion: new FormControl(),
+    
+      Identificacion: new FormControl("", [  Validators.required,Validators.minLength(10)]),
+      contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      id_tipousuario: new FormControl(),  //       id_tipousuario: new FormControl('', [Validators.required, ]),  // Agregar este campo
+
+     
+    });
+
+     
+ 
+  }
+
+  identificacion:string;
+
+  
+ // ... Otro código del componente ...
+
+isIdTipousuarioInvalid(): boolean {
+  const control = this.personaForm.get('id_tipousuario');
+  return control?.invalid && (control?.touched || this.submitted);
+}
+
+// ... Otro código del componente ...
+
+  
+  BuscarCedula() {
+    this.identificacion = this.personaForm.get('identificacion')?.value;
+  
+    if (this.identificacion) {
+      this.UsuarioService.cedula(this.identificacion).subscribe(
+        (result: any) => {
+          console.log("Respuesta del servicio:", result);
+  
+          // Verificar que 'data' existe y contiene información
+          if (result.data && result.data.Identificacion) {
+            // Asigna los valores a los controles del formulario
+            this.personaForm.patchValue({
+              Nombre1: result.data.Nombre1 || '',
+              Nombre2: result.data.Nombre2 || '',
+              Apellido1: result.data.Apellido1 || '',
+              Apellido2: result.data.Apellido2 || '',
+              EmailInstitucional: result.data.EmailInstitucional || '',
+              TelefonoC: result.data.TelefonoC || '',
+              Identificacion: result.data.Identificacion || ''
+            });
+  
+            const identificacion = this.personaForm.get('Identificacion')?.value;
+            const defaultPassword = identificacion + 'ESPAM';
+            this.personaForm.get('contrasena')?.setValue(defaultPassword);
+          } else {
+            this.showModalErrorCI ();   
+            // Puedes mostrar un mensaje de error o tomar otras acciones necesarias.
+          }
+        },
+        (error) => {
+          console.log("Error al obtener los datos", error);
+          
+          // Manejar el error y mostrar un mensaje adecuado
+          if (error.status === 404) {
+            this.showModalErrorCI ();           // Aquí puedes mostrar un mensaje de error en tu interfaz de usuario o tomar otras acciones necesarias.
+          }
+        }
+      );
+    } else {
+     this.showModalErrorCInull();
+    }
+  }
+  
+  showModalErrorCInull() {
+    swal({
+      title: 'La identificación no tiene un valor',
+      icon: 'warning',
     });
   }
+  
+  showModalErrorCI() {
+    swal({
+      title: 'No existe ese número de cédula',
+      icon: 'error',
+    });
+  }
+  
+  
+
+
+
 
 
   pageSize = 10;  // Tamaño de la página
@@ -185,9 +280,10 @@ selectOption(item: any) {
           this.showModal();
           this.getAllusuarios();
           this.personaForm.reset();
-          this.selectedOption = null; // Establecer selectedOption en null después de reiniciar el formulario
+          this.selectedOption = null;
         },
         error: (error) => {
+          console.error("Error al agregar persona:", error);
           this.showModalError();
         }
       });

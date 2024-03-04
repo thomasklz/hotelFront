@@ -12,6 +12,8 @@ import { ElementRef, ViewChild } from "@angular/core";
 import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { UsuarioService } from 'app/servicios/usuario.service';
+import { ImageService } from 'app/servicios/image.service';
 
 @Component({
   selector: 'app-reporte',
@@ -26,8 +28,19 @@ export class ReporteComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   @ViewChild("inputDatalist") inputDatalist: ElementRef;
 
-  constructor(location: Location, private  CreditosService:CreditosService, private router:Router) { 
 
+
+
+
+   usuariosss: any[] = [];
+    private listTitles: any[];
+       mobile_menu_visible: any = 0;
+    private toggleButton: any;
+    private sidebarVisible: boolean;
+    idPersona: number;
+
+  constructor(location: Location,private imageService:ImageService ,private  CreditosService:CreditosService, private router:Router, private UsuarioService:UsuarioService) { 
+    this.getAllusuario();
     this.location = location;
    
   this.usuario= localStorage.getItem('usuario');
@@ -35,12 +48,29 @@ export class ReporteComponent implements OnInit {
   }
   fecha: Date = new Date();
   ngOnInit(): void {
+    this.getAllusuario();
+    setInterval(() => {
+      this.getAllusuario();
+      
+    }, 5000);
     this.getAllcreditos();
     this.fecha = new Date();
   }
 
 
+    //obtener el usuario 
+    getAllusuario() {
+      this.UsuarioService.buscarUsuario(this.id).subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.usuario);
+          this.usuariosss = res.usuario;
   
+        },
+        error: (err) => {
+          // Maneja el error de carga de datos aquí
+        },
+      });
+    }
 
   getAllcreditos() {
     this.CreditosService.getReporteUsuario(this.id).subscribe({
@@ -107,65 +137,87 @@ logout() {
 
   //-----------------------
 
-descargarPDF() {
-  const rows = [];
-
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Nº', 'Plato', 'Cantidad', 'Precio', 'Fecha'];
-  rows.push(headerRow);
-
-  // Iterar sobre los datos y agregar filas
-  this.creditosss.forEach((item, index) => {
-    const rowData = [
-      index + 1,
-      item.plato.descripcion,
-      item.cantidad,
-      item.precio,
-      item.fecha,
-     
-     
-    ];
-    rows.push(rowData);
-  });
-
-  // Define la estructura del documento PDF
  
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [30, 145, 80, 80, 120]; // Anchos de las 9 columnas
+
+
+
+descargarPDF() {
+  const rows = this.creditosss.map((item, index) => [
+    index + 1,
+    item.plato.descripcion,
+    item.cantidad,
+    item.precio,
+    item.fecha,
+  ]);
+
+  const anchoPagina = 595.28;
+  let columnWidths = [30, 145, 80, 80, 120];
   const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
   let escala = 1;
-  
+
   if (totalWidth > anchoPagina) {
     escala = anchoPagina / totalWidth;
     columnWidths = columnWidths.map(width => width * escala);
   }
-  
-  const documentoPDF = {
-    content: [
-      { text: 'Reporte ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
-      }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
-    }
-  };
-  
-  
 
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('Reporte.pdf');
+  // Obtener las representaciones en base64 de las imágenes
+  Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+    const headerTable = {
+      table: {
+        widths: [120, '*', 120],
+        body: [
+          [
+            { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+            { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+            { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+          ],
+          [
+            {},
+            { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+            {},
+          ],
+        ],
+      },
+      layout: 'noBorders',
+    };
+
+    const documentoPDF = {
+      content: [
+        headerTable,
+        '\n\n',
+        { text: 'INFORME DE CRÉDITOS DEL RESTAURANTE', style: 'header', alignment: 'center' },
+        '\n',
+        {
+          table: {
+            headerRows: 1,
+            widths: columnWidths,
+            body: [
+              ['Nº', 'Plato', 'Cantidad', 'Precio', 'Fecha'].map((cell, index) => ({
+                text: cell,
+                bold: true,
+                fillColor: '#D3D3D3',
+              })),
+              ...rows.map(row => row.map(cell => ({ text: cell }))),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          font: 'Roboto',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 14,
+          font: 'Roboto',
+        },
+      },
+    };
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    pdfMake.createPdf(documentoPDF).download('INFORME DE CRÉDITOS DEL RESTAURANTE.pdf');
+  });
 }
 
 //-----------------------

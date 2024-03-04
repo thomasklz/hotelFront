@@ -54,6 +54,10 @@
                   <th>
                     Gramo por persona
                   </th>
+
+                  <th>
+                   precio
+                  </th>
                   <th>
                     Acciones
                   </th>
@@ -80,7 +84,9 @@
                     <td>
                       {{item.gramoPersona}}
                     </td>
-
+                    <td>
+                      {{item.precio}}
+                    </td>
                     <td>
                     <!-- Botones de editar y eliminar alimentos -->
                       <button1 color="primary" (click)="editarAlimento(item)">
@@ -136,7 +142,7 @@
           <div class="form-row">
             <div class="form-group col-md-8">
               <label for="inputState" class="select-gr">Equivalente gramo <h6>* 1 libra equivale a 453.592 gramos /LT</h6>	</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="equivalenteGramo" >
+              <input class="example-full-width estilos" type="number" formControlName="equivalenteGramo" >
               <div *ngIf="showEquivalenteGramoError" class="text-danger">Campo requerido</div>
             </div>
           </div>
@@ -144,13 +150,20 @@
           <div class="form-row">
             <div class="form-group col-md-8">
               <label for="inputState" class="select-gr">Cantidad de persona</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="cantidadPersona">
+              <input class="example-full-width estilos" type="number" formControlName="cantidadPersona">
               <div *ngIf="showCantidadPersonaError" class="text-danger">Campo requerido</div>
               <div *ngIf="showCantidadPersonaError && alimentoForm.get('cantidadPersona')?.hasError('pattern')" class="text-danger">El campo de cantidadPersona solo permite números.</div>
             </div>
           </div>
           
-        
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Precio</label> <br>
+              <input class="example-full-width estilos" type="number" formControlName="precio">
+              <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
+              <div *ngIf="showPrecioError && alimentoForm.get('precio')?.hasError('pattern')" class="text-danger">El campo de cantidadPersona solo permite números.</div>
+            </div>
+          </div>
       
           <input type="hidden" formControlName="funcion">
         </form>

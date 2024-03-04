@@ -218,6 +218,43 @@ img {
     cursor: pointer;
     width: 400px;
   }
+
+
+
+
+
+
+  .custom-dropdown {
+    position: relative;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    width: 400px;
+  }
+  
+  .custom-dropdownss {
+    position: relative;
+    border: 1px solid #b3aeae;
+    cursor: pointer;
+    width: 200px;
+  }
+  
+  
+
+  .border-error {
+    border: 1px solid #be0000 !important;
+  }
+  
+  .error-border {
+    border: 1px solid #be0000 !important;
+  }
+  
+  
+  .error-message {
+    color: #be0000;
+  }
+  
+  
+  
   
  
 
@@ -288,3 +325,79 @@ img {
     background-color: #c0c0c0;
     /* Cambia el color a tu elección */
   }
+
+
+
+  .circular-image {
+    width: 40px; /* Ajusta el tamaño según sea necesario */
+    height: 40px; /* Ajusta el tamaño según sea necesario */
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  .input-groupss {
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-outliness {
+    position: relative;
+    margin-right: 10px; /* Ajusta el margen derecho según sea necesario */
+  }
+  
+  .form-controlss {
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+   font-size: 14px;
+  }
+  
+  .form-controlss:focus + .form-outliness .form-labelss,
+  .form-controlss:valid + .form-outliness .form-labelss {
+    font-size: 12px;
+    transform: translateY(-120%);
+    color: #2196F3; /* Cambia el color del texto cuando está enfocado o tiene contenido */
+  }
+  
+  .form-labelss {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px; /* Ajusta el espacio a la izquierda según sea necesario */
+    pointer-events: none;
+    transition: 0.3s;
+    opacity: 1; /* Asegura que el label esté visible por defecto */
+  }
+  
+  .form-controlss:not(:placeholder-shown) + .form-outliness .form-labelss {
+    opacity: 0; /* Oculta el label cuando hay contenido en el campo de búsqueda */
+  }
+  
+  .btn-primaryss {
+     color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  

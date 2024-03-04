@@ -92,6 +92,17 @@
   width: 990px;
 }
 
+
+.containerversion2-header {
+  /* Estilos para el encabezado */
+  margin-bottom: 10px; /* Agrega un espacio entre el encabezado y el cuerpo */
+}
+
+.containerversion2-body {
+  /* Estilos para el cuerpo */
+}
+
+
 .labelversion2 {
   display: block;
   /* Esto hará que el label esté en una línea separada */
@@ -137,3 +148,29 @@
 }
 /* Estilo para el cambio de color al pasar el cursor sobre la fila */
 /* Estilo para el cambio de color al pasar el cursor sobre las opciones */
+
+
+
+/* Estilos para el fondo de la clase container-principal */
+.container-principal {
+  position: relative;
+  background-image: url('/assets/img/reporteIngreso.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+}
+
+/* Estilos para las tablas dentro de container-principal */
+.container-principal .card {
+  /* Ajusta los estilos según tus necesidades */
+  margin: 20px;
+  padding: 20px;
+  background-color: white;
+}
+
+.ñ{
+  font-size: 28px;
+    font-weight: bold;
+  
+}

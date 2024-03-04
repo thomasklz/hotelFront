@@ -5,7 +5,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="search-container col-md-12">
-      <label class="label"  for="nombreproductoFiltro">Buscar el nombre:</label>
+      <label class="label"  for="nombreproductoFiltro">Buscar el cédula:</label>
       <div class="search-box">
         <input type="text" 
         class="form-control"
@@ -53,10 +53,20 @@
                   <th>
                     Usuario
                   </th>
-                
                   <th>
-                    Nombres
+                    Apellido1
                   </th>
+                 
+                  <th>
+                    Apellido2
+                  </th>
+                  <th>
+                    Nombre1
+                  </th>
+                  <th>
+                    Nombre2
+                  </th>
+                 
                   <th>
                     Email
                   </th>
@@ -66,6 +76,7 @@
                   <th>
                     Foto
                   </th>
+              
                   <th>
                     Acción
                   </th>
@@ -73,37 +84,43 @@
                 </thead>
                 <tbody >
                   <ng-container *ngFor="let item of pagedMenus; let i = index">
-                    <ng-container *ngIf="(!nombreproductoFiltro || item.persona.nombre.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+                    <ng-container *ngIf="(!nombreproductoFiltro || item.Identificacion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
    
                   <tr>
                     <td>
                       {{i+1}}
                     </td>
                     <td>
-                      {{item.usuario}}
+                      {{item.Identificacion}}
                     </td>
-                    
+                   
                     <td>
-                      {{item.persona.nombre}}
-                    </td>
-                    <td>
-                      {{item.persona.email}}
+                      {{item.persona.Apellido1}}
                     </td>
                     <td>
-                      {{item.persona.telefono}}
+                      {{item.persona.Apellido2}}
                     </td>
                     <td>
-                      {{item.persona.foto}}
+                      {{item.persona.Nombre1}}
+                    </td>
+                    <td>
+                      {{item.persona.Nombre2}}
+                    </td>
+                    <td>
+                      {{item.persona.EmailInstitucional}}
+                    </td>
+                    <td>
+                      {{item.persona.TelefonoC}}
+                    </td>
+                    <td>
+                      <img *ngIf="item.persona.foto" [src]="'http://localhost:3000/imagenes/' + item.persona.foto" alt="Foto de usuario" class="circular-image">
                     </td>
                     <td>
                       <button0 color="primary" (click)="editcontrasena(item)">
                         <i class="material-icons  editable-row" data-toggle="modal"
                           data-target="#ventanaContrasena">https</i>
                       </button0>
-                      <button1 color="primary" (click)="editarUsuario(item)">
-                        <i class="material-icons  editable-row" data-toggle="modal"
-                          data-target="#ventanaUsuario">edit</i>
-                      </button1>
+                     
 
                       <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
                       </button2>
@@ -205,20 +222,20 @@
         <form [formGroup]="usuarioForm">
           <div class="form-group col-md-8">
             <label for="inputState" class="select-gr">Usuario</label> <br>
-            <input class="example-full-width estilos" type="text" formControlName="usuario">
+            <input class="example-full-width estilos" type="text" formControlName="Identificacion">
           </div>
 
           <div class="form-group col-md-8">
             <label for="inputState" class="select-gr">Nombres</label> <br>
-            <input class="example-full-width estilos" type="text" formControlName="nombre">
+            <input class="example-full-width estilos" type="text" formControlName="Nombre1">
           </div>
           <div class="form-group col-md-8">
             <label for="inputState" class="select-gr">Email</label> <br>
-            <input class="example-full-width estilos" type="text" formControlName="email">
+            <input class="example-full-width estilos" type="text" formControlName="EmailInstitucional">
           </div>
           <div class="form-group col-md-8">
             <label for="inputState" class="select-gr">Teléfono</label> <br>
-            <input class="example-full-width estilos" type="text" formControlName="telefono">
+            <input class="example-full-width estilos" type="text" formControlName="TelefonoC">
           </div>
         
 

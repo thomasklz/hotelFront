@@ -8,8 +8,7 @@ import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
-import { CrearUsuarioComponent } from 'app/paginas/crear-usuario/crear-usuario.component';
-import { LoginComponent } from 'app/login/login.component';
+ import { LoginComponent } from 'app/login/login.component';
 import { ReportePolitecnicoComponent } from 'app/reporte-politecnico/reporte-politecnico.component';
 import { ListadoUsuariosComponent } from 'app/listado-usuarios/listado-usuarios.component';
 import { ConfiguracionPrivacidadComponent } from 'app/configuracion-privacidad/configuracion-privacidad.component';
@@ -26,6 +25,10 @@ import { ProductosplatoComponent } from 'app/productosplato/productosplato.compo
 import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
 import { ReporteingresosComponent } from 'app/reporteingresos/reporteingresos.component';
 import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
+import { UsuarioCedulaComponent } from 'app/usuario-cedula/usuario-cedula.component';
+
+
+
 
 export const AdminLayoutRoutes: Routes = [
    
@@ -39,8 +42,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'maps',           component: MapsComponent },
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'upgrade',        component: UpgradeComponent },
-    { path: 'CrearUsuarioComponent',        component: CrearUsuarioComponent },
-    { path: 'login',        component: LoginComponent },
+     { path: 'login',        component: LoginComponent },
     { path: 'reportePolitecnico',        component: ReportePolitecnicoComponent },
     { path: 'listadodeclientes',        component: ListadoUsuariosComponent },
 
@@ -60,6 +62,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'reportedeingresos',        component: ReporteingresosComponent },
     { path: 'listadodeadministradores',        component: ListadoadministradoresComponent },
 
-    
+    { path: 'UsuarioCedulaComponent',        component: UsuarioCedulaComponent },
+
     
 ];

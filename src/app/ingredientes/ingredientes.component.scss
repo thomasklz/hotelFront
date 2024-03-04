@@ -10,12 +10,20 @@ img {
     font-size: 22px;
   
   }
+  .selected {
+    background-color: rgb(43, 255, 0);
+  }
   
-  
+  .fl{
+    width: 190px;
+    margin-left: 600px;
+  }
   .btn1 {
     color: #ffffff;
   }
-  
+  .bm{
+    color: #706f6f;
+  }
   
 .pagination-containerrrr {
   display: flex;

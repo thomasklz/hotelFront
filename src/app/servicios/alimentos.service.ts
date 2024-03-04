@@ -18,6 +18,12 @@ creartipoalimentos(data:any){
     return this.http.get<any>('http://localhost:3000/api/mostrartipo_alimento/');
   }
 
+  mostraralimentomenu(){
+    return this.http.get<any>('http://localhost:3000/api/mostraralimentomenu/');
+  }
+
+  
+
   //obtener alimentos
   getalimentos(){
     return this.http.get<any>('http://localhost:3000/api/mostraralimento');

@@ -17,44 +17,102 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div class="row espaciado-columnas">
-                <div class="col-md-6 ">
-                  <label for="inputState" class="select-gr">Nombres*</label> <br>
-                  <input class="example-full-width estilos" type="text" formControlName="nombre">
-                  <div *ngIf="personaForm.get('nombre').invalid && (personaForm.get('nombre').touched || submitted)"
-                    [ngClass]="{ 'error-message': personaForm.get('nombre').errors }">
-                    El nombre es requerido y debe tener al menos 3 caracteres.
+
+              <div class="row">
+                <div class="col-md-5 mx-auto">
+                  <div class="example-full-width disabled text-center">
+                    <div class="input-groupss">
+                      <div class="form-outliness" data-mdb-input-init>
+                        <!-- Agrega el formulario y el campo de identificación aquí -->
+                        <form [formGroup]="personaForm">
+                          <input formControlName="identificacion" type="search" class="form-controlss" placeholder="Cédula:">
+                        </form>
+                      </div>
+                      <button type="button" class="btn btn-primaryss btn-danger " data-mdb-ripple-init (click)="BuscarCedula()">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
+              </div>
+              
+              <br>
+
+
+
+              <div class="row espaciado-columnas">
                 <div class="col-md-6 ">
-                  <label for="inputState" class="select-gr">Email*</label> <br>
-                  <input class="example-full-width estilos" type="email" formControlName="email">
-                  <div *ngIf="personaForm.get('email').invalid && (personaForm.get('email').touched || submitted)"
-                    [ngClass]="{ 'error-message': personaForm.get('email').errors }">
-                    El email es requerido.
+                  <label for="inputState" class="select-gr">Primer Apellido*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="Apellido1">
+                  <div *ngIf="personaForm.get('Apellido1').invalid && (personaForm.get('Apellido1').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('Apellido1').errors }">
+                    El apellido es requerido y debe tener al menos 3 caracteres.
+                  </div>
+                </div>
+
+                <div class="col-md-6 ">
+                  <label for="inputState" class="select-gr">Segundo Apellido*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="Apellido2">
+                  <div *ngIf="personaForm.get('Apellido2').invalid && (personaForm.get('Apellido2').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('Apellido2').errors }">
+                    El apellido es requerido y debe tener al menos 3 caracteres.
                   </div>
                 </div>
               </div>
               <br>
+
+
+
+
               <div class="row espaciado-columnas">
+                <div class="col-md-6 ">
+                  <label for="inputState" class="select-gr">Primer Nombre*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="Nombre1">
+                  <div *ngIf="personaForm.get('Nombre1').invalid && (personaForm.get('Nombre1').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('Nombre1').errors }">
+                    El nombre es requerido y debe tener al menos 3 caracteres.
+                  </div>
+                </div>
+
+                <div class="col-md-6 ">
+                  <label for="inputState" class="select-gr">Segundo Nombre*</label> <br>
+                  <input class="example-full-width estilos" type="text" formControlName="Nombre2">
+                  <div *ngIf="personaForm.get('Nombre2').invalid && (personaForm.get('Nombre2').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('Nombre2').errors }">
+                    El nombre es requerido y debe tener al menos 3 caracteres.
+                  </div>
+                </div>
+
+
+
+              
+              </div>
+
+
+              <br>
+              <div class="row espaciado-columnas">
+
+                <div class="col-md-6 ">
+                  <label for="inputState" class="select-gr">Email*</label> <br>
+                  <input class="example-full-width estilos" type="email" formControlName="EmailInstitucional">
+                  <div *ngIf="personaForm.get('EmailInstitucional').invalid && (personaForm.get('EmailInstitucional').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('EmailInstitucional').errors }">
+                    El email es requerido.
+                  </div>
+                </div>
+
+
                 <div class="col-md-6">
                   <label for="inputState" class="select-gr">Teléfono*</label> <br>
-                  <input class="example-full-width estilos" type="text" formControlName="telefono">
-                  <div *ngIf="personaForm.get('telefono').invalid && (personaForm.get('telefono').touched || submitted)"
-                    [ngClass]="{ 'error-message': personaForm.get('telefono').errors }">
+                  <input class="example-full-width estilos" type="text" formControlName="TelefonoC">
+                  <div *ngIf="personaForm.get('TelefonoC').invalid && (personaForm.get('TelefonoC').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('TelefonoC').errors }">
                     El teléfono es requerido y debe tener al menos 10 dígitos.
                   </div>
 
                   
                 </div>
-                <div class="col-md-6">
-                  <label for="inputState" class="select-gr">Foto*</label> <br>
-                  <input class="example-full-width estilos" type="file" formControlName="foto">
-                  <div *ngIf="personaForm.get('foto').invalid && (personaForm.get('foto').touched || submitted)"
-                    [ngClass]="{ 'error-message': personaForm.get('foto').errors }">
-                    La foto es requerida.
-                  </div>
-                </div>
+               
               </div>
               <div class="row">
                 <div class="col-md-5 mx-auto">
@@ -63,36 +121,49 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div class="row espaciado-columnas">
-                <div class="form-group col-md-6">
-                  <label for="inputState" class="select-gr text-center">Tipo Usuario</label> <br>
-                  <div class="custom-dropdown" [class.show-more-options]="showMoreOptions">
-                    <div class="selected-option" (click)="toggleShowMoreOptions()">
-                      {{ getSelectedOptionLabel() }}
-                      <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+
+
+              <div class="row">
+                <div class="col-md-3 mx-auto">
+                  <div class="example-full-width text-center">
+                    <label for="inputState" class="select-gr text-center">Tipo Usuario</label> <br>
+                    <div class="custom-dropdownss text-center" 
+                         [class.show-more-options]="showMoreOptions" 
+                         [ngClass]="{'error-border': personaForm.get('id_tipousuario').invalid && (personaForm.get('id_tipousuario').touched || submitted)}">
+                      <div class="selected-option text-center" (click)="toggleShowMoreOptions()">
+                        {{ getSelectedOptionLabel() }}
+                        <img src="assets/img/flecha-hacia-abajo.png" alt="" class="down-arrow">
+                      </div>
+                      <div class="options-container text-center">
+                        <ng-container *ngFor="let item of tipousuariosss; let i = index">
+                          <div class="option example-full-width estilos" *ngIf="!showMoreOptions && i >= 7" (click)="selectOption(item)">{{ item.tipo }}</div>
+                          <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.tipo }}</div>
+                        </ng-container>
+                      </div>
                     </div>
-                    <div class="options-container">
-                      <ng-container *ngFor="let item of tipousuariosss; let i = index">
-                        <div class="option example-full-width estilos" *ngIf="!showMoreOptions && i >= 7"
-                          (click)="selectOption(item)">{{ item.tipo }}</div>
-                        <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.tipo }}</div>
-                      </ng-container>
+                    <input type="hidden" formControlName="id_tipousuario">
+                    <div *ngIf="personaForm.get('id_tipousuario').invalid && (personaForm.get('id_tipousuario').touched || submitted)" class="error-message">
+                      Campo Tipo Usuario es requerido.
                     </div>
-                  </div>
-                  <input type="hidden" formControlName="id_tipousuario">
-                  <div *ngIf="personaForm.get('id_tipousuario').invalid && (personaForm.get('id_tipousuario').touched || submitted)"
-                    [ngClass]="{ 'error-message': personaForm.get('id_tipousuario').errors }">
-                    Campo Tipo Usuario es requerido.
                   </div>
                 </div>
               </div>
+              
+              
+
+              
+
+
+
+
+             
               <br>
               <div class="row espaciado-columnas">
                 <div class="col-md-6">
                   <label for="inputState" class="select-gr">Cédula*</label> <br>
-                  <input class="example-full-width estilos" type="text" formControlName="usuario">
-                  <div *ngIf="personaForm.get('usuario').invalid && (personaForm.get('usuario').touched || submitted)"
-                    [ngClass]="{ 'error-message': personaForm.get('usuario').errors }">
+                  <input class="example-full-width estilos" type="text" formControlName="Identificacion">
+                  <div *ngIf="personaForm.get('Identificacion').invalid && (personaForm.get('Identificacion').touched || submitted)"
+                    [ngClass]="{ 'error-message': personaForm.get('Identificacion').errors }">
                     La Cédula es requerida y debe tener al menos 10 caracteres.
                   </div>
                 </div>
@@ -151,10 +222,16 @@
                     Usuario
                   </th>
                   <th>
-                    Contraseña
+                    Apellido1
                   </th>
                   <th>
-                    Nombres
+                    Apellido2
+                  </th>
+                  <th>
+                    Nombre1
+                  </th>
+                  <th>
+                    Nombre2
                   </th>
                   <th>
                     Email
@@ -174,22 +251,29 @@
                       {{i+1}}
                     </td>
                     <td>
-                      {{item.usuario}}
+                      {{item.Identificacion}}
                     </td>
                     <td>
-                      **************
+                      {{item.persona.Apellido1}}
                     </td>
                     <td>
-                      {{item.persona.nombre}}
+                      {{item.persona.Apellido2}}
                     </td>
                     <td>
-                      {{item.persona.email}}
+                      {{item.persona.Nombre1}}
                     </td>
                     <td>
-                      {{item.persona.telefono}}
+                      {{item.persona.Nombre2}}
                     </td>
                     <td>
-                      {{item.persona.foto}}
+                      {{item.persona.EmailInstitucional}}
+                    </td>
+                    <td>
+                      {{item.persona.TelefonoC}}
+                    </td>
+                    <td>
+                      <img *ngIf="item.persona.foto" [src]="'http://localhost:3000/imagenes/' + item.persona.foto" alt="Foto de usuario" class="circular-image">
+
                     </td>
 
 

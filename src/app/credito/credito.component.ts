@@ -16,6 +16,9 @@ import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { saveAs } from 'file-saver';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { ImageService } from "app/servicios/image.service";
 
 @Component({
   selector: "app-credito",
@@ -24,7 +27,7 @@ import { saveAs } from 'file-saver';
 })
 export class CreditoComponent implements OnInit {
   @ViewChild("inputDatalist") inputDatalist: ElementRef;
-
+  selected = 'option2';
   dataSource = new MatTableDataSource<any>();
   id: string = "";
   id_persona: string = "";
@@ -37,9 +40,14 @@ export class CreditoComponent implements OnInit {
   ingredientes: any[] = [];
   ingredientId: string = "";
   ingredientedescripcionsss: any[] = [];
+ 
+
 
   tituloForm;
+  tituloForm2;
   creditosForm!: FormGroup;
+  reporteIngresosForm!: FormGroup;
+
   editandoCreditos: boolean = false; // Variable para indicar si se está editando un alimento existente
   idCreditosEditar: string = ""; // Variable para almacenar el ID del alimento en caso de edición
   showPrecioError = false; //evitando que se muestren los mensajes de campo requerido
@@ -49,6 +57,10 @@ export class CreditoComponent implements OnInit {
   showPersonaError = false;
   showCantidadError = false;
   nombreUsuarioInput: string = "";
+  nombre2UsuarioInput: string = "";
+  apellido1UsuarioInput: string = "";
+  apellido2UsuarioInput: string = "";
+
   creditosssOriginal: any[] = [];
 
   constructor(
@@ -60,22 +72,28 @@ export class CreditoComponent implements OnInit {
     private zone: NgZone,
     private changeDetector: ChangeDetectorRef,
     private UsuarioService: UsuarioService,
-    private IngredientesService: IngredientesService
+    private IngredientesService: IngredientesService,
+    private imageService: ImageService
   ) {
     this.getAllplatos();
     this.getAllpersonas();
     this.getAllcreditos();
   }
 
+
+
+  idIngreso: number = 1;
   //cargar los datos de la seleccion de la tabla  en la modal
   ngOnInit() {
+    this.idIngreso = 1;
+  console.log(this.idIngreso);
     console.log("Valor de ingredientId:", this.ingredientId);
 
     this.getAllcreditos();
     this.getAlldescripcionplatos();
     this.getAllpersonascedula();
     this. aplicarFiltros();
-
+ 
     this.creditosForm = this.formBuilder.group({
       precio: new FormControl("", [
         Validators.required,
@@ -89,6 +107,8 @@ export class CreditoComponent implements OnInit {
         Validators.required,
         Validators.maxLength(1),
       ]),
+
+      id_ingreso: new FormControl("", ),
       pagado: new FormControl(""),
 
       cantidad: new FormControl("", [
@@ -96,7 +116,32 @@ export class CreditoComponent implements OnInit {
         Validators.minLength(1),
       ]),
       nombreUsuarioInput: new FormControl(""),
+      nombre2UsuarioInput: new FormControl(""),
+      apellido1UsuarioInput: new FormControl(""),
+      apellido2UsuarioInput: new FormControl(""),
+
     });
+
+
+    this.reporteIngresosForm = this.formBuilder.group({
+       
+      id_plato: new FormControl("", [
+        Validators.required,
+        Validators.maxLength(1),
+      ]),
+     
+
+      id_ingreso: new FormControl("" ),
+ 
+      cantidad: new FormControl("", [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      precio: ['', Validators.required],
+     
+    });
+
+    
 
     this.inputDatalist.nativeElement.addEventListener("change", () => {
       this.onDescriptionSelected();
@@ -133,72 +178,108 @@ export class CreditoComponent implements OnInit {
 
 
 
+ 
+  
 
 
+  
 //-----------------------
 
+
+
+
+
+
 descargarPDF() {
-  const rows = [];
+  const rows = this.creditosss.map((item, index) => [
+    index + 1,
+    item.persona.Apellido1,
+    item.persona.Nombre1,
+    item.persona.EmailInstitucional,
+    item.persona.TelefonoC,
+    item.plato.descripcion,
+    item.cantidad,
+    item.precio,
+    item.fecha,
+    item.pagado ? 'Sí' : 'No',
+  ]);
 
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Nº', 'Nombres', 'Email', 'Teléfono', 'Plato', 'Cantidad', 'Precio', 'Fecha', 'Pagado'];
-  rows.push(headerRow);
-
-  // Iterar sobre los datos y agregar filas
-  this.creditosss.forEach((item, index) => {
-    const rowData = [
-      index + 1,
-      item.persona.nombre,
-      item.persona.email,
-      item.persona.telefono,
-      item.plato.descripcion,
-      item.cantidad,
-      item.precio,
-      item.fecha,
-      item.pagado ? 'Sí' : 'No',
-    ];
-    rows.push(rowData);
-  });
-
-  // Define la estructura del documento PDF
- 
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [30, 60, 60, 50, 50, 40, 40, 65, 30]; // Anchos de las 9 columnas
+  const anchoPagina = 595.28;
+  let columnWidths = [20, 45, 45, 50, 50, 45, 50, 35, 45, 43];
   const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
   let escala = 1;
-  
+
   if (totalWidth > anchoPagina) {
     escala = anchoPagina / totalWidth;
     columnWidths = columnWidths.map(width => width * escala);
   }
-  
-  const documentoPDF = {
-    content: [
-      { text: 'Listado de créditos ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
-      }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
-    }
-  };
-  
-  
 
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('tabla.pdf');
+  // Obtener las representaciones en base64 de las imágenes
+  Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+    const headerTable = {
+      table: {
+        widths: [120, '*', 120],
+        body: [
+          [
+            { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+            { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+            { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+          ],
+          [
+            {},
+            { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+            {},
+          ],
+        ],
+      },
+      layout: 'noBorders',
+    };
+
+    const documentoPDF = {
+      content: [
+        headerTable,
+        '\n\n',
+        { text: 'INFORME DE CRÉDITOS DEL RESTAURANTE', style: 'header', alignment: 'center' },
+        '\n',
+        {
+          table: {
+            headerRows: 1,
+            widths: columnWidths,
+            body: [
+              ['Nº', 'Apellido','Nombre', 'Email', 'Teléfono', 'Plato', 'Cantidad', 'Precio', 'Fecha', 'Pagado'].map((cell, index) => ({
+                text: cell,
+                bold: true,
+                fillColor: '#D3D3D3',
+              })),
+              ...rows.map(row => row.map(cell => ({ text: cell }))),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          font: 'Roboto',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 14,
+          font: 'Roboto',
+        },
+      },
+    };
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    pdfMake.createPdf(documentoPDF).download('INFORME DE CRÉDITOS DEL RESTAURANTE.pdf');
+  });
 }
+
+
+
+
+
+
+
 
 //-----------------------
 
@@ -209,9 +290,10 @@ descargarPDF() {
   //'''''''''''''''''''''''
   descargarDatos() {
     const datosParaDescargar = this.creditosss.map(item => ({
-      'Nombres': item.persona.nombre,
-      'Email': item.persona.email,
-      'Teléfono': item.persona.telefono,
+      'Apellido': item.persona.Apellido1,
+      'Nombre': item.persona.Nombre1,
+      'Email': item.persona.EmailInstitucional,
+      'Teléfono': item.persona.TelefonoC,
       'Plato': item.plato.descripcion,
       'Cantidad': item.cantidad,
       'Precio': item.precio,
@@ -254,9 +336,8 @@ descargarPDF() {
 
 //----------------filtro
 nombreFiltro: string = '';
-filtroSeleccionado: string = ''; 
-fechaFiltro: string = '';
-
+ fechaFiltro: string = '';
+filtroSeleccionado: string = 'nombre';
 // ...
 aplicarFiltros() {
 if (this.filtroSeleccionado === 'nombre') {
@@ -268,7 +349,7 @@ if (this.filtroSeleccionado === 'nombre') {
 }
 
 this.creditosss = this.creditosssOriginal.filter(item => {
-  return !this.nombreFiltro || item.persona.nombre.toLowerCase().includes(this.nombreFiltro.toLowerCase());
+  return !this.nombreFiltro || item.persona.Nombre1.toLowerCase().includes(this.nombreFiltro.toLowerCase());
 });
 }
 
@@ -295,6 +376,7 @@ this.creditosss = this.creditosssOriginal.filter(item => {
   onDescriptionSelected() {
     // Llamada a la función buscarPrecioPorDescripcion al seleccionar una descripción
     this.buscarPrecioPorDescripcion();
+    this.buscarPrecioPorDescripcionSincredito();
   }
 
   // ... (resto del código)
@@ -405,7 +487,7 @@ this.creditosss = this.creditosssOriginal.filter(item => {
   }
 
   getAlldescripcionplatos() {
-    this.MenuService.gettplato().subscribe({
+    this.MenuService.mostrarplatocredito().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.platos);
         this.ingredientes = res.platos;
@@ -454,10 +536,13 @@ this.creditosss = this.creditosssOriginal.filter(item => {
       },
     });
   }
+ 
+  
 
   //Para el registro de plato usando modal
   nuevoCurso() {
     this.tituloForm = "Registro de créditos"; //cambio de nombre en el encabezado
+    this.tituloForm2 = "Registro de consumidor final"; //
     this.creditosForm.reset();
     this.editandoCreditos = false;
     this.idCreditosEditar = "";
@@ -470,6 +555,8 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     this.selectedOptionplato = null;
     this.creditosForm.get("id_plato")?.setValue(null);
 
+    this.creditosForm.get("id_ingreso")?.setValue(null);
+    
     // Establecer variables a false al editar
     this.showPersonaError = false;
     this.showFechaError = false;
@@ -477,12 +564,64 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     this.showCantidadError = false;
     this.showPrecioError = false;
     this.showPagadoError = false;
+
+
+
+
+
+
+    console.log("this.tituloForm:", this.tituloForm);
+   
+    if (this.tituloForm === "Registro de créditos") {
+      this.creditosForm.get('id_ingreso').setValue(1);
+    }  
+    console.log("id_ingreso:", this.creditosForm.get('id_ingreso').value);
+  
+
+ 
+
+  }
+
+  nuevoCurso2() {
+     this.tituloForm2 = "Registro de consumidor final"; //
+    this.reporteIngresosForm.reset();
+    this.editandoCreditos = false;
+    this.idCreditosEditar = "";
+
+    
+
+    // Reset the selectedOption and clear the form field value
+    this.selectedOptionplato = null;
+    this.reporteIngresosForm.get("id_plato")?.setValue(null);
+
+    this.reporteIngresosForm.get("id_ingreso")?.setValue(null);
+    
+    // Establecer variables a false al editar
+     this.showIdplatoError = false;
+    this.showCantidadError = false;
+ 
+
+
+
+
+
+     console.log("this.tituloForm2:", this.tituloForm2);
+  
+    if (this.tituloForm2 === "Registro de consumidor final") {
+      this.reporteIngresosForm.get('id_ingreso').setValue(2);
+    }  
+    console.log("id_ingreso:", this.reporteIngresosForm.get('id_ingreso').value);
+  
+
+ 
+
   }
   //Para el editar de credito usando modal
 
   editarCreditos(item: any) {
     this.tituloForm = 'Editar  créditos';
     this.creditosForm.patchValue({
+      
       precio: item.precio,
       cantidad: item.cantidad,
       pagado: item.pagado,
@@ -511,8 +650,10 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     this.idCreditosEditar = item.id;
   
     // Cargar el valor del campo "Crédito a:" con el nombre del usuario
-    this.nombreUsuarioInput = item.persona.nombre;
-  
+    this.nombreUsuarioInput = item.persona.Nombre1;
+    this.nombre2UsuarioInput = item.persona.Nombre2;
+    this.apellido1UsuarioInput = item.persona.Apellido1;
+    this.apellido2UsuarioInput = item.persona.Apellido2;
     // Establecer variables a false al editar
     this.showPrecioError = false;
     this.showIdplatoError = false;
@@ -533,13 +674,13 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     console.log("Usuario Input:", usuarioInput);
 
     const usuarioSeleccionado = this.personas.find(
-      (usuario) => usuario.usuario === usuarioInput
+      (Identificacion) => Identificacion.Identificacion === usuarioInput
     );
     console.log("Usuario Seleccionado:", usuarioSeleccionado);
 
     this.usuarioSeleccionado = usuarioSeleccionado || {
       id: null,
-      usuario: usuarioInput,
+      Identificacion: usuarioInput,
     };
     this.creditosForm.get("id_persona")?.setValue(this.usuarioSeleccionado.id);
     this.onPersonaClick();
@@ -563,9 +704,33 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     this.buscarPrecioPorDescripcion();
   }
 
-  usuarioSeleccionado: { id: number | null; usuario: string } = {
+
+
+
+
+  
+
+
+  updatePlatoIdReporteIngresos(event: any) {
+    const descripcion = event.target.value;
+    const platoSeleccionado = this.ingredientes.find(
+      (plato) => plato.descripcion === descripcion
+    );
+    this.platoSeleccionados = platoSeleccionado || {
+      id: null,
+      descripcion: descripcion,
+    };
+    this.reporteIngresosForm.get("id_plato")?.setValue(this.platoSeleccionados.id);
+
+    // Actualiza ingredientId con la descripción del plato seleccionado
+    this.ingredientId = this.platoSeleccionados.descripcion || "";
+
+    // Llama a buscarPrecioPorDescripcion directamente al seleccionar la descripción
+    this.buscarPrecioPorDescripcionSincredito();
+  }
+  usuarioSeleccionado: { id: number | null; Identificacion: string } = {
     id: null,
-    usuario: "",
+    Identificacion: "",
   };
 
   // ... (resto del código)
@@ -573,6 +738,45 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     id: null,
     descripcion: "",
   };
+
+  buscarPrecioPorDescripcionSincredito() {
+    // Verifica si ingredientId tiene un valor
+    if (this.ingredientId) {
+      // Lógica para buscar el precio por descripción
+      this.IngredientesService.getobtenerDescripcionPlatoPrecio(
+        this.ingredientId
+      ).subscribe(
+        (result: any) => {
+          console.log("Respuesta del servicio:", result);
+          const plato = result.platos[0].plato; // Accedemos a la propiedad 'plato' del primer elemento del arreglo
+          if (plato && plato.precio !== undefined) {
+            // Actualiza el valor del precio en el formulario
+            this.reporteIngresosForm.get("precio")?.setValue(plato.precio);
+ 
+          } else {
+            // Maneja el caso cuando no se encuentra el plato o el precio no está definido
+            console.error("Plato no encontrado o precio no definido");
+          }
+        },
+        (error) => {
+          console.error("Error al obtener precio del plato", error);
+        }
+      );
+    } else {
+      console.error("ingredientId no tiene un valor");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   buscarPrecioPorDescripcion() {
     // Verifica si ingredientId tiene un valor
@@ -602,13 +806,18 @@ this.creditosss = this.creditosssOriginal.filter(item => {
   }
 
   onPersonaClick() {
-    const nombreUsuario = this.usuarioSeleccionado.usuario;
+    const nombreUsuario = this.usuarioSeleccionado.Identificacion;
     this.UsuarioService.obtenerNombrePorUsuario(nombreUsuario).subscribe(
       (result: any) => {
-        if (result.nombre) {
-          this.nombreUsuarioInput = result.nombre;
+        if (result.Nombre1) {
+          this.nombreUsuarioInput = result.Nombre1;
+          this.nombre2UsuarioInput = result.Nombre2;
+          this.apellido1UsuarioInput = result.Apellido1;
+          this.apellido2UsuarioInput = result.Apellido2;
+
           this.changeDetector.detectChanges(); // Forzar la actualización de la vista
-          console.log("Nombre del usuario actualizado:", result.nombre);
+          console.log("Nombre del usuario actualizado:", result.Nombre1);
+          console.log("Nombre del usuario actualizado:", result.Nombre2);
         } else {
           console.error("Nombre de usuario no encontrado");
         }
@@ -624,14 +833,69 @@ this.creditosss = this.creditosssOriginal.filter(item => {
     console.log("Valor seleccionado o escrito:", this.ingredientId);
     // Puedes realizar la lógica necesaria aquí
     this.buscarPrecioPorDescripcion();
+    this.buscarPrecioPorDescripcionSincredito();
   }
 
   onDescriptionChange(newValue: string) {
     console.log("Nuevo valor seleccionado o escrito:", newValue);
     this.buscarPrecioPorDescripcion();
+    this.buscarPrecioPorDescripcionSincredito();
   }
 
   // Registro de Credito...
+
+
+
+
+  AddcrearreporteIngresos() {
+    console.log("Entro a AddcrearreporteIngresos");
+    
+    if (this.reporteIngresosForm.valid) {
+      console.log("Formulario válido");
+  
+      this.showCantidadError = false;
+      this.showIdplatoError = false;
+  
+      const datos = {
+        cantidad: this.reporteIngresosForm.value.cantidad,
+        id_plato: this.reporteIngresosForm.value.id_plato,
+        id_ingreso: this.reporteIngresosForm.value.id_ingreso
+      };
+  
+      if (!this.editandoCreditos) {
+        this.CreditosService.crearreporteIngresos(datos).subscribe(
+          (result: any) => {
+            console.log(result);
+            this.showModal();
+            this.getAllcreditos(); // Actualizar la tabla después de agregar un crédito
+            this.reporteIngresosForm.reset(); // Restablecer los valores del formulario
+            const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+            filtroSelect.value = "Seleccionar";
+          },
+          (error) => {
+            console.log(error);
+            this.showModalError();
+            const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+            if (filtroSelect) {
+                filtroSelect.value = "Seleccionar";
+            }
+          }
+        );
+      } 
+    } else {
+      const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+      if (filtroSelect) {
+          filtroSelect.value = "Seleccionar";
+      }
+      console.log("Formulario inválido");
+      console.dir(this.reporteIngresosForm);
+  
+      this.showCantidadError = this.reporteIngresosForm.controls.cantidad.invalid;
+      this.showIdplatoError = this.reporteIngresosForm.controls.id_plato.invalid;
+      // Agregar otras validaciones si es necesario
+    }
+  }
+  
 
   addCredito() {
     if (this.creditosForm.valid) {
@@ -641,40 +905,48 @@ this.creditosss = this.creditosssOriginal.filter(item => {
       this.showPagadoError = false;
       this.showCantidadError = false;
       this.showFechaError = false;
-     
+  
       // Set the default value of pagado to false when adding a new credit
       if (!this.editandoCreditos) {
         this.creditosForm.get("pagado")?.setValue("0");
-       
       }
-
-      const datos = {
-        precio: this.creditosForm.value.precio,
-        cantidad: this.creditosForm.value.cantidad,
-        pagado: this.creditosForm.value.pagado,
-        fecha: this.creditosForm.value.fecha,
-        id_plato: this.creditosForm.value.id_plato,
-        id_persona: this.creditosForm.value.id_persona,
-      };
-
+  
+     
+  
       if (!this.editandoCreditos) {
-        this.CreditosService.guardar(datos).subscribe(
+        this.CreditosService.guardar(this.creditosForm.value).subscribe(
           (result: any) => {
             console.log(result);
             this.showModal();
             this.getAllcreditos(); // Actualizar la tabla después de agregar un crédito
             this.nombreUsuarioInput = "";
+            this.nombre2UsuarioInput = "";
+            this.apellido1UsuarioInput = "";
+            this.apellido2UsuarioInput = "";
+  
             this.creditosForm.reset(); // Restablecer los valores del formulario
+            const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+            if (filtroSelect) {
+              filtroSelect.value = "Seleccionar";
+            }
           },
           (error) => {
             console.log(error);
             this.nombreUsuarioInput = "";
+            this.nombre2UsuarioInput = "";
+            this.apellido1UsuarioInput = "";
+            this.apellido2UsuarioInput = "";
+  
             this.showModalError();
+            const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+            if (filtroSelect) {
+              filtroSelect.value = "Seleccionar";
+            }
           }
         );
       } else {
         // m o d i f i c a r -----------------------------
-        this.CreditosService.guardar(datos, this.idCreditosEditar).subscribe(
+        this.CreditosService.guardar(this.creditosForm.value, this.idCreditosEditar).subscribe(
           (result: any) => {
             console.log(result);
             this.showModalEdit();
@@ -684,54 +956,97 @@ this.creditosss = this.creditosssOriginal.filter(item => {
           (error) => {
             console.log(error);
             this.showModalErrorEdit();
+            const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+            if (filtroSelect) {
+              filtroSelect.value = "Seleccionar";
+            }
           }
         );
       }
-      
+  
     } else {
-      this.showPrecioError = this.creditosForm.controls.precio.invalid;
-      this.showPagadoError = this.creditosForm.controls.pagado.invalid;
-      this.nombreUsuarioInput = "";
-      this.showFechaError = this.creditosForm.controls.fecha.invalid;
-      this.showCantidadError = this.creditosForm.controls.cantidad.invalid;
-      this.showIdplatoError = this.creditosForm.controls.id_plato.invalid;
-      this.showPersonaError = this.creditosForm.controls.id_persona.invalid;
-      
+      // Manejar errores de validación del formulario
+      this.showModalError();  
+      // Mostrar errores de cada control individual
+      Object.keys(this.creditosForm.controls).forEach(controlName => {
+        const control = this.creditosForm.get(controlName);
+        if (control?.invalid) {
+          console.log(`Control '${controlName}' tiene errores:`, control.errors);
+          this.showModalError();  
+        }
+      });
+  
+      // Limpiar el formulario y mostrar mensajes de error
+      this.limpiarFormularioYMostrarError();
     }
   }
-
+  
+  
+  // Función para restablecer el formulario
+  resetFormulario() {
+    this.nombreUsuarioInput = "";
+    this.nombre2UsuarioInput = "";
+    this.apellido1UsuarioInput = "";
+    this.apellido2UsuarioInput = "";
+    this.creditosForm.reset(); // Restablecer los valores del formulario
+    const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+    if (filtroSelect) {
+      filtroSelect.value = "Seleccionar";
+    }
+  }
+  
+  // Función para limpiar el formulario y mostrar errores
+  limpiarFormularioYMostrarError() {
+    this.nombreUsuarioInput = "";
+    this.nombre2UsuarioInput = "";
+    this.apellido1UsuarioInput = "";
+    this.apellido2UsuarioInput = "";
+    const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+    if (filtroSelect) {
+      filtroSelect.value = "Seleccionar";
+    }
+    this.showPrecioError = this.creditosForm.controls.precio.invalid;
+    this.showPagadoError = this.creditosForm.controls.pagado.invalid;
+    this.showCantidadError = this.creditosForm.controls.cantidad.invalid;
+    this.showIdplatoError = this.creditosForm.controls.id_plato.invalid;
+    this.showPersonaError = this.creditosForm.controls.id_persona.invalid;
+  }
+  
+ 
   // ...
+  
   showModalEliminar(id: any) {
     Swal.fire({
-      title: "¿Estás seguro que deseas eliminar el ingrediente?",
+      title: "¿Estás seguro que deseas eliminar el crédito?",
       icon: "warning",
       showCancelButton: true,
-
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
       confirmButtonColor: "#bf0d0d",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.eliminarIngrediente(id);
+        this.eliminarcredito(id);
       }
     });
   }
+  
 
   showModalErrorEliminar() {
     Swal.fire({
-      title: "Error al eliminar el alimento",
+      title: "Error al eliminar el crédito",
       icon: "error",
     });
-  }
+  } 
   //aqui hay que corregir porque no hemos hecho eliminar
-  eliminarIngrediente(id: number) {
-    this.CreditosService.guardar(id).subscribe({
+  eliminarcredito(id: number) {
+    this.CreditosService.eliminarcredito(id).subscribe({
       next: (res) => {
         Swal.fire({
           title: "Datos eliminados exitosamente",
           icon: "success",
         }).then(() => {
           this.getAllcreditos();
+ 
         });
       },
       error: () => {
@@ -739,11 +1054,37 @@ this.creditosss = this.creditosssOriginal.filter(item => {
       },
     });
   }
+  
+ 
+
+  
+  openModal(value: string) {
+    if (value === 'option1') {
+      this.nuevoCurso2();
+      (<any>$('#ventanaForm2')).modal('show'); // Open the modal for "Sin crédito"
+    } else if (value === 'option3') {
+      this.nuevoCurso();
+      (<any>$('#ventanaForm')).modal('show'); // Open the modal for "Con crédito"
+    }
+  }
+  
+  @ViewChild("filtroSelect") filtroSelect: ElementRef;
+
   // Restablecer el formulario cuando se cierre el modal
   closeModal() {
     this.creditosForm.reset();
+    this.reporteIngresosForm.reset();
+
     this.nombreUsuarioInput = "";
+    this.nombre2UsuarioInput = "";
+    this.apellido1UsuarioInput = "";
+    this.apellido2UsuarioInput = "";
     this.editandoCreditos = false;
     this.idCreditosEditar = "";
+
+       // Limpiar el valor seleccionado en el filtro
+       const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+       filtroSelect.value = "Seleccionar";
+     }
+
   }
-}

@@ -8,6 +8,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import * as FileSaver from 'file-saver';
 import swal from "sweetalert";
+import { ImageService } from "app/servicios/image.service";
 
 // Resto de tu código...
 
@@ -24,7 +25,7 @@ export class ReporteproductoComponent implements OnInit {
   ingredientesdiasssOriginal: any[] = [];
   idAlimento: string = "";
 
-  constructor(private AlimentosService: AlimentosService,private formBuilder:FormBuilder) {}
+  constructor(private AlimentosService: AlimentosService,private formBuilder:FormBuilder, private imageService:ImageService) {}
 
 
   ngOnInit(): void {
@@ -71,7 +72,7 @@ export class ReporteproductoComponent implements OnInit {
 
 
   getAllalimentos() {
-    this.AlimentosService.getalimentos().subscribe({
+    this.AlimentosService.mostraralimentomenu().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.alimentos);
         this.alimentoss = res.alimentos;
@@ -292,64 +293,105 @@ error: (err) => {
 
 
 //----------Metodos de pdf y excel por  Dia
+
+
 descargarPDFxDias() {
-  const rows = [];
-
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Ingrediente', 'Fecha', 'Total de libras/litros'];
-  rows.push(headerRow);
-
-  // Iterar sobre los datos y agregar filas
-  this.ingredientesdiass.forEach((item) => {
-    const rowData = [
-    
-      item.id_alimento,
+  const rows = this.ingredientesdiass.map((item, index) => [
+    item.id_alimento,
       item.fecha,
       item.totalCantidadFinal,
-    
-    ];
-    rows.push(rowData);
-  });
+  ]);
 
-  // Define la estructura del documento PDF
+
  
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [60, 65, 105,]; // Anchos de las 9 columnas
+
+  const anchoPagina = 595.28;
+  let columnWidths = [90, 95, 150,];
   const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
   let escala = 1;
-  
+
   if (totalWidth > anchoPagina) {
     escala = anchoPagina / totalWidth;
     columnWidths = columnWidths.map(width => width * escala);
   }
-  
-  const documentoPDF = {
-    content: [
-      { text: 'Reporte de Ingrediente por Día ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
-      }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
-    }
-  };
-  
-  
 
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('tabla.pdf');
+  // Obtener las representaciones en base64 de las imágenes
+  Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+    const headerTable = {
+      table: {
+        widths: [120, '*', 120],
+        body: [
+          [
+            { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+            { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+            { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+          ],
+          [
+            {},
+            { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+            {},
+          ],
+        ],
+      },
+      layout: 'noBorders',
+    };
+
+    const documentoPDF = {
+      content: [
+        headerTable,
+        '\n\n',
+        { text: 'INFORME DE INGREDIENTE POR DÍA', style: 'header', alignment: 'center' },
+        ' \n',   ' \n',  
+        { text: 'Cantidad diaria de ingrediente en gramos', style: 'subheader', alignment: 'left' , bold: true },
+        '\n',
+        {
+          // Contenedor externo para la tabla
+          alignment: 'center',
+          table: {
+            headerRows: 1,
+            // Ancho de la tabla
+            widths: ['*', '*', '*'],
+            // Alineación de la tabla en el centro
+            alignment: 'center',
+            body: [
+              ['Ingrediente', 'Fecha', 'Total de libras/litros'].map((cell, index) => ({
+                text: cell,
+                bold: true,
+                fillColor: '#D3D3D3',
+                alignment: 'center',
+              })),
+              ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          font: 'Roboto',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 14,
+          font: 'Roboto',
+        },
+      },
+    };
+    
+    
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    pdfMake.createPdf(documentoPDF).download('INFORME DE INGREDIENTE POR DÍA.pdf');
+  });
 }
+
+
+
+
+
+
+
+ 
   datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
   descargarDatosxDias() {
     const datosParaDescargar = this.ingredientesdiass.map(item => ({
@@ -390,65 +432,100 @@ descargarPDFxDias() {
 
 
     //-----Metodos de pdf y excel por  Semana 
-descargarPDFxSemana() {
-  const rows = [];
 
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Ingrediente', 'Fecha Inicio', 'Fecha Fin', 'Total de libras/litros'];
-  rows.push(headerRow);
 
-  // Iterar sobre los datos y agregar filas
-  this.ingredientesdiass.forEach((item) => {
-    const rowData = [
-    
+    descargarPDFxSemana() {
+      const rows = this.ingredientesdiass.map((item, index) => [
+       
       item.id_alimento,
       item.fechaInicio,
       item.fechaFin,
       item.totalCantidadFinal,
+      ]);
     
-    ];
-    rows.push(rowData);
-  });
-
-  // Define la estructura del documento PDF
- 
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [60, 65, 65, 105,]; // Anchos de las 9 columnas
-  const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
-  let escala = 1;
-  
-  if (totalWidth > anchoPagina) {
-    escala = anchoPagina / totalWidth;
-    columnWidths = columnWidths.map(width => width * escala);
-  }
-  
-  const documentoPDF = {
-    content: [
-      { text: 'Reporte de Ingrediente por Semana ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
+    
+     
+    
+      const anchoPagina = 595.28;
+      let columnWidths = [90, 95, 95,  150,];
+      const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+      let escala = 1;
+    
+      if (totalWidth > anchoPagina) {
+        escala = anchoPagina / totalWidth;
+        columnWidths = columnWidths.map(width => width * escala);
       }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
+    
+      // Obtener las representaciones en base64 de las imágenes
+      Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+        const headerTable = {
+          table: {
+            widths: [120, '*', 120],
+            body: [
+              [
+                { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+                { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+                { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+              ],
+              [
+                {},
+                { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+                {},
+              ],
+            ],
+          },
+          layout: 'noBorders',
+        };
+    
+        const documentoPDF = {
+          content: [
+            headerTable,
+            '\n\n',
+            { text: 'INFORME DE INGREDIENTE POR SEMANA', style: 'header', alignment: 'center' },
+            ' \n',   ' \n',  
+            { text: 'Cantidad semanal de ingrediente en gramos', style: 'subheader', alignment: 'left' , bold: true },
+            '\n',
+            {
+              // Contenedor externo para la tabla
+              alignment: 'center',
+              table: {
+                headerRows: 1,
+                // Ancho de la tabla
+                widths: ['*', '*', '*', '*'],
+                // Alineación de la tabla en el centro
+                alignment: 'center',
+                body: [
+                  ['Ingrediente', 'Fecha Inicio', 'Fecha Fin', 'Total de libras/litros'].map((cell, index) => ({
+                    text: cell,
+                    bold: true,
+                    fillColor: '#D3D3D3',
+                    alignment: 'center',
+                  })),
+                  ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                ],
+              },
+            },
+          ],
+          styles: {
+            header: {
+              fontSize: 18,
+              font: 'Roboto',
+              bold: true,
+            },
+            subheader: {
+              fontSize: 14,
+              font: 'Roboto',
+            },
+          },
+        };
+        
+        
+    
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.createPdf(documentoPDF).download('INFORME DE INGREDIENTE POR SEMANA.pdf');
+      });
     }
-  };
-  
-  
-
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('tabla.pdf');
-}
+ 
 
 //---------------------
 descargarDatosxSemana() {
@@ -478,90 +555,146 @@ descargarExcel(datos: any[], nombreHoja: string) {
 
 
   //-----Metodos de pdf y excel por  mes
-descargarPDFxMes() {
-  const rows = [];
 
-  // Agregar el encabezado de la tabla
-  const headerRow = ['Ingrediente', 'Mes', 'Total de libras/litros'];
-  rows.push(headerRow);
-
-  // Iterar sobre los datos y agregar filas
-  this.ingredientesdiass.forEach((item) => {
-    const rowData = [
-    
+  descargarPDFxMes() {
+    const rows = this.ingredientesdiass.map((item, index) => [
       item.id_alimento,
-      item.mes,
+      this.meses[item.mes - 1],
       item.sumaCantidadFinal,
-    
-    ];
-    rows.push(rowData);
-  });
-
-  // Define la estructura del documento PDF
- 
-  const anchoPagina = 595.28; // Ancho de la página A4 en puntos
-  let columnWidths = [60, 60, 105,]; // Anchos de las 9 columnas
-  const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
-  let escala = 1;
+    ]);
   
-  if (totalWidth > anchoPagina) {
-    escala = anchoPagina / totalWidth;
-    columnWidths = columnWidths.map(width => width * escala);
+  
+   
+  
+    const anchoPagina = 595.28;
+    let columnWidths = [90, 95, 150,];
+    const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+    let escala = 1;
+  
+    if (totalWidth > anchoPagina) {
+      escala = anchoPagina / totalWidth;
+      columnWidths = columnWidths.map(width => width * escala);
+    }
+  
+    // Obtener las representaciones en base64 de las imágenes
+    Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+      const headerTable = {
+        table: {
+          widths: [120, '*', 120],
+          body: [
+            [
+              { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+              { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+              { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+            ],
+            [
+              {},
+              { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+              {},
+            ],
+          ],
+        },
+        layout: 'noBorders',
+      };
+  
+      const documentoPDF = {
+        content: [
+          headerTable,
+          '\n\n',
+          { text: 'INFORME DE INGREDIENTE POR MES', style: 'header', alignment: 'center' },
+          ' \n',   ' \n',  
+          { text: 'Cantidad mensual de ingrediente en gramos', style: 'subheader', alignment: 'left' , bold: true },
+          '\n',
+          {
+            // Contenedor externo para la tabla
+            alignment: 'center',
+            table: {
+              headerRows: 1,
+              // Ancho de la tabla
+              widths: ['*', '*', '*'],
+              // Alineación de la tabla en el centro
+              alignment: 'center',
+              body: [
+                ['Ingrediente', 'Mes', 'Total de libras/litros'].map((cell, index) => ({
+                  text: cell,
+                  bold: true,
+                  fillColor: '#D3D3D3',
+                  alignment: 'center',
+                })),
+                ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+              ],
+            },
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            font: 'Roboto',
+            bold: true,
+          },
+          subheader: {
+            fontSize: 14,
+            font: 'Roboto',
+          },
+        },
+      };
+      
+      
+  
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      pdfMake.createPdf(documentoPDF).download('INFORME DE INGREDIENTE POR MES.pdf');
+    });
   }
   
-  const documentoPDF = {
-    content: [
-      { text: 'Reporte de Ingrediente por Mes ', style: 'header' },
-      '\n',
-      {
-        table: {
-          headerRows: 1,
-          widths: columnWidths,
-          body: rows,
-        }
-      }
-    ],
-    styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [20, 0, 0, 20]
-      }
-    }
-  };
-  
-  
-
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  pdfMake.createPdf(documentoPDF).download('tabla.pdf');
-}
+ 
 
 //---------------------
-  descargarDatosxMes() {
-    const datosParaDescargar = this.ingredientesdiass.map(item => ({
-      'Ingrediente':  item.id_alimento,
-      'Mes':  item.mes,
-      'Total de libras/litros': item.sumaCantidadFinal,
+descargarDatosxMes() {
+  const datosParaDescargar = this.ingredientesdiass.map(item => ({
+    'Ingrediente':  item.id_alimento,
+    'Mes':  this.meses[item.mes - 1],
+    'Total de libras/litros': item.sumaCantidadFinal,
+  }));
 
-     
-     
-      
-     
-    }));
-  
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Reporte de Ingrediente por Mes');
-    const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Reporte de Ingrediente por Mes.xlsx';
-    a.click();
-    window.URL.revokeObjectURL(url);
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
+
+  // Establecer estilos para la tabla
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let R = range.s.r; R <= range.e.r; ++R) {
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cell_address = { c: C, r: R };
+      const cell_ref = XLSX.utils.encode_cell(cell_address);
+
+      // Configurar color de fondo negro y bordes para todas las celdas
+      ws[cell_ref].s = {
+        fill: { fgColor: { rgb: '000000' } },
+        font: { color: { rgb: 'FFFFFF' } },
+        alignment: { horizontal: 'center', vertical: 'middle' },
+        border: {
+          top: { style: 'thin', color: { rgb: 'FFFFFF' } },
+          bottom: { style: 'thin', color: { rgb: 'FFFFFF' } },
+          left: { style: 'thin', color: { rgb: 'FFFFFF' } },
+          right: { style: 'thin', color: { rgb: 'FFFFFF' } },
+        },
+      };
+    }
   }
+
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Reporte de Ingrediente por Mes');
+  const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Reporte de Ingrediente por Mes.xlsx';
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
+
+
+
+
 
   
 
@@ -570,9 +703,35 @@ descargarPDFxMes() {
 
   //-----------------------------------------------------------------------------
   filtroAnterior: string | null = null;
-
+  mostrarImagen: boolean = false;
   // ... otros métodos
 
+ 
+
+
+  /* limpiarInputYMostrarTabla() {
+    if (this.filtroSeleccionado !== this.filtroAnterior) {
+      this.alimentoSeleccionado.descripcion = ''; // Limpiar el input
+      this.fechaSeleccionada = ''; // Limpiar el input
+      this.fechafinalSeleccionada = ''; // Limpiar el input
+      this.filtroAnterior = this.filtroSeleccionado; // Actualizar el filtro anterior
+    }
+  
+    this.mostrarTabla = false; // Ocultar la tabla anterior de día
+    this.mostrarTablames = false; // Ocultar la tabla anterior de meses
+    this.mostrarTablasemana = false; // Ocultar la tabla anterior de semanas
+  
+    // Agregar la lógica para mostrar la imagen y la línea <div> aquí
+    this.mostrarImagen =
+      !this.alimentoss || this.alimentoss.length === 0 || this.mostrarMensajeError;
+  
+    if (this.alimentoss && this.alimentoss.length > 0) {
+      this.mostrarImagen = false;
+    }
+  } */
+
+
+  
   limpiarInputYMostrarTabla() {
     if (this.filtroSeleccionado !== this.filtroAnterior) {
       this.alimentoSeleccionado.descripcion = ''; // Limpiar el input
@@ -580,14 +739,26 @@ descargarPDFxMes() {
       this.fechafinalSeleccionada = ''; // Limpiar el input
       this.filtroAnterior = this.filtroSeleccionado; // Actualizar el filtro anterior
     }
-
+  
     this.mostrarTabla = false; // Ocultar la tabla anterior de día
     this.mostrarTablames = false; // Ocultar la tabla anterior de meses
     this.mostrarTablasemana = false; // Ocultar la tabla anterior de semanas
+  
+    // Agregar la lógica para mostrar la imagen y la línea <div> aquí
+    if (!this.ingredientesdiass || this.ingredientesdiass.length === 0) {
+      this.mostrarImagen = true; // Mostrar la imagen
+    } else {
+      this.mostrarImagen = this.filtroSeleccionado === 'dia' || this.filtroSeleccionado === 'semana' || this.filtroSeleccionado === 'mes';
+    }
   }
-
+  
+  
+  
+  
+  mostrarMensajeError: boolean = false;
 
   showModalError() {
+    this.mostrarMensajeError = true;
     swal({
       title: "No existe reporte de ese ingrediente para esa fecha ",
       icon: "error",
@@ -595,17 +766,27 @@ descargarPDFxMes() {
   }
 
   showModalErrorsemana() {
+    this.mostrarMensajeError = true;
     swal({
       title: "No existe reporte de ese ingrediente para esas fechas ",
       icon: "error",
     });
   }
   showModalErrormes() {
+    this.mostrarMensajeError = true;
     swal({
       title: "No existe reporte de ese ingrediente para ese mes ",
       icon: "error",
     });
   }
+
+
+
+  meses: string[] = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+  
 }
 
 

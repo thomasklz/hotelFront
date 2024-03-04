@@ -267,7 +267,12 @@ export class PlatosComponent implements OnInit {
   }
 
 
-
+  showModalErrorConflict() {
+    swal({
+      title: "Ya existe ese nombre de plato ",
+      icon: "error",
+    });
+  }
 
   // Registro de Plato...
 
@@ -291,11 +296,15 @@ export class PlatosComponent implements OnInit {
             this.getAllplato(); // Actualizar la tabla después de agregar un menú
             this.loadPageData();
             this.menuForm.reset(); // Restablecer los valores del formulario
-
           },
           (error) => {
             console.log(error);
-            this.showModalError();
+        
+            if (error.status === 409) {
+              this.showModalErrorConflict(); // Mostrar modal específico para conflicto
+            } else {
+              this.showModalError(); // Mostrar modal genérico para otros errores
+            }
           }
         );
       } else {

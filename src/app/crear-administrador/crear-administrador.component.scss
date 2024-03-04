@@ -68,11 +68,10 @@ input {
 
 .login-username,
 .login-password {
-  background: rgb(248, 247, 242);
-  border: 0 solid;
+  
+  
   box-shadow: none;
-  border-bottom: 1px solid rgba(rgb(189, 188, 188), 0.5);
-  color: rgb(0, 0, 0);
+   color: rgb(0, 0, 0);
   display: block;
   margin: 0 1rem 0.5rem;
   /* Modificación realizada aquí */
@@ -80,13 +79,41 @@ input {
   transition: 250ms background ease-in;
   width: calc(100% - 2rem);
   border-radius: 10px;
-  border: 2px solid rgb(84, 84, 84);
+   
+ 
+
+
+
+  content: "";
+  margin-top: 5;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  
+  font-size: 15px;
+}
+
+
+.estilos{
+  content: "";
+  margin-top: 5;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+ /*  width: 400px; */
+  font-size: 15px;
+  background-color: transparent;
+  
 }
 
 .login-form {
   min-height: 10rem;
   margin: auto;
-  width: 30%;
+  width: 50%;
   border-radius: 30px;
   background-color: rgba(235, 234, 227, 0.956);
   position: absolute;
@@ -133,7 +160,7 @@ input {
   background: rgb(222, 21, 21);
   color: white;
   display: block;
-  width: calc(100% - 2rem);
+  width: 150px;
   height: 40px;
   border: none;
   border-radius: 10px;
@@ -205,7 +232,7 @@ input {
 }
 
 .logo-container img {
-  max-width: 100%;
+  max-width: 25%;
   height: auto;
 }
 
@@ -289,7 +316,7 @@ button:hover {
 }
 
 h1 {
-  color: #4c4c4c;
+  color: #45455a;
   font-weight: bold;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   text-align: center;
@@ -351,3 +378,59 @@ h1 {
 .error {
   border: 1px solid red; /* Estilo de borde rojo para indicar un error */
 }
+
+
+
+
+
+
+
+
+  
+  .input-groupss {
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-outliness {
+    position: relative;
+    margin-right: 10px; /* Ajusta el margen derecho según sea necesario */
+  }
+  
+  .form-controlss {
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+   font-size: 14px;
+  }
+  
+  .form-controlss:focus + .form-outliness .form-labelss,
+  .form-controlss:valid + .form-outliness .form-labelss {
+    font-size: 12px;
+    transform: translateY(-120%);
+    color: #2196F3; /* Cambia el color del texto cuando está enfocado o tiene contenido */
+  }
+  
+  .form-labelss {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px; /* Ajusta el espacio a la izquierda según sea necesario */
+    pointer-events: none;
+    transition: 0.3s;
+    opacity: 1; /* Asegura que el label esté visible por defecto */
+  }
+  
+  .form-controlss:not(:placeholder-shown) + .form-outliness .form-labelss {
+    opacity: 0; /* Oculta el label cuando hay contenido en el campo de búsqueda */
+  }
+  
+  .btn-primaryss {
+     color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  

@@ -5,7 +5,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="search-container col-md-12">
-        <label class="label"  for="nombreproductoFiltro">Buscar el nombre:</label>
+        <label class="label"  for="nombreproductoFiltro">Buscar la cedula:</label>
         <div class="search-box">
           <input type="text" 
           class="form-control"
@@ -53,10 +53,20 @@
                   <th>
                     Usuario
                   </th>
+                  <th>
+                    Apellido1
+                  </th>
                  
                   <th>
-                    Nombres
+                    Apellido2
                   </th>
+                  <th>
+                    Nombre1
+                  </th>
+                  <th>
+                    Nombre2
+                  </th>
+                 
                   <th>
                     Email
                   </th>
@@ -71,27 +81,36 @@
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let item of pagedMenus; let i = index">
-                        <ng-container *ngIf="(!nombreproductoFiltro || item.persona.nombre.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+                        <ng-container *ngIf="(!nombreproductoFiltro || item.Identificacion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
       
                   <tr>
                     <td>
                       {{i+1}}
                     </td>
                     <td>
-                      {{item.usuario}}
+                      {{item.Identificacion}}
                     </td>
                    
                     <td>
-                      {{item.persona.nombre}}
+                      {{item.persona.Apellido1}}
                     </td>
                     <td>
-                      {{item.persona.email}}
+                      {{item.persona.Apellido2}}
                     </td>
                     <td>
-                      {{item.persona.telefono}}
+                      {{item.persona.Nombre1}}
                     </td>
                     <td>
-                      {{item.persona.foto}}
+                      {{item.persona.Nombre2}}
+                    </td>
+                    <td>
+                      {{item.persona.EmailInstitucional}}
+                    </td>
+                    <td>
+                      {{item.persona.TelefonoC}}
+                    </td>
+                    <td>
+                      <img *ngIf="item.persona.foto" [src]="'http://localhost:3000/imagenes/' + item.persona.foto" alt="Foto de usuario" class="circular-image">
                     </td>
                  
 

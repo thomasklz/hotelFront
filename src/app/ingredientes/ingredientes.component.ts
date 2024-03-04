@@ -131,7 +131,15 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
 
 
 
-
+  filtrarIngredientes(termino: string): void {
+    const terminoLowerCase = termino.toLowerCase();
+  
+    // Filtrar ingredientes según el término de búsqueda
+    this.ingredientesUnicos.forEach((ingrediente) => {
+      ingrediente.visible = ingrediente.descripcion.toLowerCase().includes(terminoLowerCase);
+    });
+  }
+         
 
 
 
@@ -660,6 +668,7 @@ map(i => ({ descripcion: i.descripcion }));
         );
       }
     } else {
+      this.showModalError();
       console.log('Form is invalid. Validation errors:', this.ingredientesForm.errors);
       this.showIdplatoError = this.ingredientesForm.controls.id_plato.invalid;
       this.showIdalimentoError = this.ingredientesForm.controls.id_alimento.invalid;

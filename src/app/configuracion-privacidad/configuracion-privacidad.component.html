@@ -10,117 +10,80 @@
             <h2>Tu Información</h2>
           </div>
           <div class="row" *ngIf="usuariosss">
-            <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaUsuario"
-              (click)="editarusuario(usuariosss)">
-              <h3>
-                <span class="tim-note">Usuario</span>{{usuariosss.usuario}}
-              </h3>
+            <!-- Columna principal con el contenido -->
+            <div class="col-md-8">
+              <div class="tim-typo table-rowt editable-rowr" data-toggle="modal" data-target="#ventanaUsuario" (click)="editarusuario(usuariosss)">
+                <h3>
+                  <span class="tim-note">Usuario</span>{{usuariosss.Identificacion}}
+                </h3>
+              </div>
+              
+              <div class="tim-typo table-rowt editable-rowr" data-toggle="modal" data-target="#ventanaNombre" (click)="editarnombre(usuariosss)">
+                <h3>
+                  <span class="tim-note">Apellido1</span>{{usuariosss.persona.Apellido1}}
+                </h3>
+              </div>
 
+              <div class="tim-typo table-rowt editable-rowr" data-toggle="modal" data-target="#ventanaNombre" (click)="editarnombre(usuariosss)">
+                <h3>
+                  <span class="tim-note">Apellido2</span>{{usuariosss.persona.Apellido2}}
+                </h3>
+              </div>
+
+              <div class="tim-typo table-rowt editable-rowr" data-toggle="modal" data-target="#ventanaNombre" (click)="editarnombre(usuariosss)">
+                <h3>
+                  <span class="tim-note">Nombre1</span>{{usuariosss.persona.Nombre1}}
+                </h3>
+              </div>
+
+              <div class="tim-typo table-rowt editable-rowr" data-toggle="modal" data-target="#ventanaNombre" (click)="editarnombre(usuariosss)">
+                <h3>
+                  <span class="tim-note">Nombre2</span>{{usuariosss.persona.Nombre2}}
+                </h3>
+              </div>
+
+              <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaEmail" (click)="editaremail(usuariosss)">
+                <h3>
+                  <span class="tim-note ">Email</span>{{usuariosss.persona.EmailInstitucional}}
+                </h3>
+              </div>
+              <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaTelefono" (click)="editartelefono(usuariosss)">
+                <h3>
+                  <span class="tim-note">Telèfono</span>{{usuariosss.persona.TelefonoC}}
+                </h3>
+              </div>
+              <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaContrasena" (click)="editarcontrasena(usuariosss)">
+                <h3>
+                  <span class="tim-note">Contraseña</span> ****************
+                </h3>
+              </div>
             </div>
-            <div class="tim-typo table-row editable-row " data-toggle="modal" data-target="#ventanaNombre"
-              (click)=" editarnombre(usuariosss)">
-              <h3>
-                <span class="tim-note">Nombres</span>{{usuariosss.persona.nombre}}
-              </h3>
+            
+            <!-- Columna para la foto en el lado derecho -->
+            <div class="col-md-4 text-right">
+              <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaFoto" (click)="editarfoto(usuariosss)">
+                <h4>
+                  <span class="tim-note"> </span>
+                </h4>
+                <!-- Muestra la imagen con la clase de tamaño carnet sin recorte -->
+                <img *ngIf="usuariosss.persona.foto" [src]="'http://localhost:3000/imagenes/' + usuariosss.persona.foto" alt="Foto de usuario" class="img-carnet2">
+              </div>
             </div>
-            <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaEmail"
-              (click)=" editaremail(usuariosss)">
-              <h3>
-                <span class="tim-note ">Email</span>{{usuariosss.persona.email}}
-              </h3>
-            </div>
-            <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaTelefono"
-              (click)=" editartelefono(usuariosss)">
-              <h3>
-                <span class="tim-note">Telèfono</span>{{usuariosss.persona.telefono}}
-              </h3>
-            </div>
-            <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaContrasena"
-              (click)="editarcontrasena(usuariosss)">
-              <h3>
-                <span class="tim-note">Contraseña</span> ****************
-
-              </h3>
-            </div>
-
-
-
-
-            <div class="tim-typo table-row editable-row " data-toggle="modal" data-target="#ventanaFoto"
-              (click)=" editarfoto(usuariosss)">
-              <h4>
-                <span class="tim-note">Foto</span>{{usuariosss.persona.foto}}
-              </h4>
-            </div>
-
-
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+
+ 
 
 
 
-  <!-- Modal Usuario-->
-  <div class="modal fade" id="ventanaUsuario" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content d-flex align-items-center ">
-        <div class=" heads x">
-          <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Usuario <img src="assets/img/usuario.png"
-              alt=""></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="usuarioForm">
-            <div class="form-row">
-              <div class="form-group col-md-8">
-                <label for="inputState" class="select-gr">Usuario</label> <br>
-                <input class="example-full-width estilos" type="text" formControlName="usuario">
-              </div>
-            </div>
-            <input type="hidden" formControlName="funcion">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-          <button type="button" class="btn btn-danger" (click)=" editarUsuario()" data-dismiss="modal">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Modal Nombre -->
-  <div class="modal fade" id="ventanaNombre" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content d-flex align-items-center">
-        <div class=" heads x">
-          <h5 class="modal-title texto-grueso " id="exampleModalLabel">Editar Nombres <img
-              src="assets/img/editar-informacion (1).png" alt=""></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-          </button>
-        </div>
-        <div class="modal-body">
 
-          <form [formGroup]="usuarioForm">
-            <div class="form-row">
-              <div class="form-group col-md-8">
-                <label for="inputState" class="select-gr">Nombres</label> <br>
-                <input class="example-full-width estilos" type="text" formControlName="nombre">
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-          <button type="button" class="btn btn-danger" (click)=" editarNombre()" data-dismiss="modal">Guardar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
   <!-- Modal Email-->
@@ -139,7 +102,7 @@
           <form [formGroup]="usuarioForm">
             <div class="form-group col-md-8">
               <label for="inputState" class="select-gr">Email</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="email">
+              <input class="example-full-width estilos" type="text" formControlName="EmailInstitucional">
             </div>
           </form>
         </div>
@@ -168,7 +131,7 @@
           <form [formGroup]="usuarioForm">
             <div class="form-group col-md-8">
               <label for="inputState" class="select-gr">Teléfono</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="telefono">
+              <input class="example-full-width estilos" type="text" formControlName="TelefonoC">
             </div>
           </form>
         </div>
@@ -210,30 +173,49 @@
   </div>
 
 
-  <!-- Modal Foto -->
-  <div class="modal fade" id="ventanaFoto" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content d-flex align-items-center">
-        <div class=" heads x">
-          <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Foto <img src="assets/img/imagen.png"
-              alt=""></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+ 
+  
 
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="usuarioForm">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Foto</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="foto">
+
+
+
+
+  <!-- Modal Foto -->
+<!-- Agrega el evento (change) al input para detectar cambios en el archivo -->
+ 
+
+<!-- Resto de tu código HTML para la modal -->
+<div class="modal fade" id="ventanaFoto"   data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- ... Otras partes del código ... -->
+
+  <div class="modal-dialog" role="document">
+    <div class="modal-content d-flex align-items-center text-center">
+      <div class="heads x">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Foto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form>
+          <div class="form-group col-md-8 mx-auto">
+            <div class="custom-file d-flex justify-content-center">
+              <input type="file" class="custom-file-input" id="customFile" name="image" #fileInput (change)="onFileChange($event)" style="display:none;">
+              <img [src]="selectedImage" alt="" class="img-carnet letrita" (click)="fileInput.click()">
+           
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-          <button type="button" class="btn btn-danger" (click)=" editarFoto()" data-dismiss="modal">Guardar</button>
-        </div>
+            <br>  
+          </div>
+        </form>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-danger" (click)="editarFoto()" data-dismiss="modal">Guardar</button>
       </div>
     </div>
   </div>
+  
+  
+  
+
+</div>

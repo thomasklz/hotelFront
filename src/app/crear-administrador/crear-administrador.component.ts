@@ -50,15 +50,93 @@ export class CrearAdministradorComponent implements OnInit {
 
 
     this.personaForm = this.formBuilder.group({
-      nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      telefono: new FormControl('', [Validators.required, Validators.minLength(10)]),
-      foto: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
+       
+ 
+      Nombre1: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Nombre2: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Apellido1: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      Apellido2: new FormControl("", [  Validators.required,Validators.minLength(3)]),
+      TelefonoC: new FormControl("", [  Validators.required,Validators.minLength(10)]),
+      EmailInstitucional: new FormControl('', [Validators.required, ]),
+    
+      identificacion: new FormControl(),
+    
+      Identificacion: new FormControl("", [  Validators.required,Validators.minLength(10)]),
       contrasena: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      id_tipousuario: new FormControl(),  // Agregar este campo
+     
     });
   }
 
+
+
+  
+  identificacion:string;
+
+  
+ 
+  
+  BuscarCedula() {
+    this.identificacion = this.personaForm.get('identificacion')?.value;
+  
+    if (this.identificacion) {
+      this.UsuarioService.cedula(this.identificacion).subscribe(
+        (result: any) => {
+          console.log("Respuesta del servicio:", result);
+  
+          // Verificar que 'data' existe y contiene información
+          if (result.data && result.data.Identificacion) {
+            // Asigna los valores a los controles del formulario
+            this.personaForm.patchValue({
+              Nombre1: result.data.Nombre1 || '',
+              Nombre2: result.data.Nombre2 || '',
+              Apellido1: result.data.Apellido1 || '',
+              Apellido2: result.data.Apellido2 || '',
+              EmailInstitucional: result.data.EmailInstitucional || '',
+              TelefonoC: result.data.TelefonoC || '',
+              Identificacion: result.data.Identificacion || ''
+            });
+  
+            const identificacion = this.personaForm.get('Identificacion')?.value;
+            const defaultPassword = identificacion + 'ESPAM';
+            this.personaForm.get('contrasena')?.setValue(defaultPassword);
+          } else {
+            this.showModalErrorCI();
+            // Puedes mostrar un mensaje de error o tomar otras acciones necesarias.
+          }
+        },
+        (error) => {
+          console.log("Error al obtener los datos", error);
+          
+          // Manejar el error y mostrar un mensaje adecuado
+          if (error.status === 404) {
+            this.showModalErrorCI();
+            // Aquí puedes mostrar un mensaje de error en tu interfaz de usuario o tomar otras acciones necesarias.
+          }
+        }
+      );
+    } else {
+     this.showModalErrorCInull();
+    }
+  }
+  
+
+
+  showModalErrorCInull() {
+    swal({
+      title: 'La identificación no tiene un valor',
+      icon: 'warning',
+    });
+  }
+  
+  showModalErrorCI() {
+    swal({
+      title: 'No existe ese número de cédula',
+      icon: 'error',
+    });
+  }
+  
+  
   //----Agg persona
   addPersona() {
     if (this.personaForm.invalid) {
