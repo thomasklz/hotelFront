@@ -227,6 +227,7 @@ isIdTipousuarioInvalid(): boolean {
       next: (res) => {
         this.usuariosss = res.usuarios;
         this.totalItems = res.usuarios.length;  // Actualizar el total de elementos
+      
       },
       error: (err) => {
         console.error(err);
@@ -296,6 +297,7 @@ isIdTipousuarioInvalid(): boolean {
       next: (res) => {
         this.dataSource = new MatTableDataSource(res.persona);
         this.usuariosss = res.usuarios;
+        this.totalItems = res.usuarios.length;  
       },
       error: (err) => {
         // alert("Error en la carga de datos");

@@ -302,14 +302,21 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
       ?.setValue(this.alimentoSeleccionado.id);
   }
 
+   
+
   showModal() {
     swal2({
       title: 'Datos registrado exitosamente',
       icon: 'success',
     }).then(() => {
-      window.location.reload();
+      this.ingredientesSeleccionados = [];
+      this.id_alimento = [];
+      this.getAllplatos(); // Actualizar la lista de ingredientes
+      // Otro código necesario
+      this.  getAllingredientes();
     });
   }
+  
 
   showModalError() {
     swal({
