@@ -65,12 +65,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'listadodeadministradores',        component: ListadoadministradoresComponent },
     { path: 'panelAdministrador',        component: PanelAdministradorComponent },
     { path: 'compras',        component: ComprasComponent },
-<<<<<<< HEAD
-    { path: 'recetabasica',        component: RecetarioComponent },
-=======
-    { path: 'recetario',        component: RecetarioComponent },
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-
+     { path: 'recetabasica',        component: RecetarioComponent },
 
 
     

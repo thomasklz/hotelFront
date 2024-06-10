@@ -33,11 +33,9 @@
           <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
             <h4 class="card-title disabled">
               <img src="/assets/img/alimentos.png" class="edit" alt="" />
-<<<<<<< HEAD
+
               Lista de recetas detalladas con cálculos para n (menú-personas)
-=======
-              Productos con su menú (cálculos para n menú-persona)
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
             </h4>
 
             <li class="nav-item dropdown">
@@ -80,20 +78,14 @@
                 
                 <thead class="text-primary">
                   <th>Nº</th>
-<<<<<<< HEAD
+
                   <th>Ingredientes</th>
                   <th>Unidades de medidas</th>
                   <th>Cantidades de personas que comen</th>
                   <th>Porciones por persona</th>
                   <th>Porciones por {{ cantidad }} personas</th> 
                   <th>Cantidades en unidades de medidas</th>
-=======
-                  <th>Producto</th>
-                  <th>Unidad de medida</th>
-                  <th>Cantidad de persona que come</th>
-                  <th>Porción por persona</th>
-                  <th>Porción por {{ cantidad }} personas</th> 
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
                 </thead>
                 
                 <tbody *ngFor="let item of productosplatosss; let i = index">
@@ -103,11 +95,9 @@
                     <td>{{ item.unidadMedida.unidadMedida }}</td>
                     <td>{{ item.cantidadPersonaCome }}</td>
                     <td>
-<<<<<<< HEAD
+
                       {{ item.cantidadPersonaGramo }}   {{ getUnidadMedida(item) }}
-=======
-                      {{ item.cantidadPersonaGramo }}
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
@@ -122,7 +112,7 @@
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
-<<<<<<< HEAD
+
                     </td>
                     <td>
                       {{ item.cantidadPersonaGramo * cantidad }}
@@ -141,31 +131,13 @@
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
                       <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
                    
-=======
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
                     </td>
                     <td>
-<<<<<<< HEAD
+
                       {{  item.cantidadPersonaGramo * cantidad  / item.unidadMedida.valorMedida  }}
                     
-=======
-                      {{ item.cantidadPersonaGramo * cantidad }}
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
-                      <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
-                   
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
                     </td>
                   </tr>
                 </tbody>
@@ -298,11 +270,9 @@
               <div class="form-group col-md-12">
                 <div class="formmm">
                   <div class="search-container">
-<<<<<<< HEAD
+
                     <label class="label">Buscar el nombre del menú:</label>
-=======
-                    <label class="label">Buscar el nombre del plato:</label>
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
                    
 
 
@@ -351,13 +321,10 @@
                         <tr>
                          <th></th>
                           <th class="liu">Ingredientes</th>
-<<<<<<< HEAD
+
                           <th class="liu">Unidades medidas</th>
                           <th class="liu">Cantidades de personas que comen</th>
-=======
-                          <th class="liu">Unidad medida</th>
-                          <th class="liu">Cantidad de personas que come</th>
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+
                         </tr>
                         
                         <ng-container *ngFor="let alimentos of alimentosFiltrados; let i = index">

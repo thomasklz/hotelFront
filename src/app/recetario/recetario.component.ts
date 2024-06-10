@@ -561,12 +561,8 @@ map(i => ({ descripcion: i.descripcion }));
 
   nuevoCurso() {
     this.mostrarTabla = false;
-<<<<<<< HEAD
-    this.tituloForm = "Registros de recetas básicas";
-=======
-    this.tituloForm = "Registro de receta";
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-    this.cdr.detectChanges();
+     this.tituloForm = "Registros de recetas básicas";
+  this.cdr.detectChanges();
 
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
@@ -587,11 +583,8 @@ map(i => ({ descripcion: i.descripcion }));
     this.ingredientesSeleccionados = [];
 
   }
-
-<<<<<<< HEAD
-  
-=======
-  editarIngrediente(item: any) {
+ 
+   editarIngrediente(item: any) {
     this.tituloForm = "Editar ingredientes";
     this.ingredientesForm.patchValue({
       
@@ -628,8 +621,7 @@ map(i => ({ descripcion: i.descripcion }));
     this.showDiasError = false;
     this.showCantidadPersonaError = false;
   }
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-
+ 
  
 
   cantidadPersonaCome:any;
@@ -1006,11 +998,8 @@ map(i => ({ descripcion: i.descripcion }));
               content: [
                 headerTable,
                 '\n\n',
-<<<<<<< HEAD
-                { text: 'INFORME DE LISTA DE RECETAS BÁSICAS', style: 'header', alignment: 'center' },
-=======
-                { text: 'INFORME DE PRODUCTOS CON SU MENÚ', style: 'header', alignment: 'center' },
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+                 { text: 'INFORME DE LISTA DE RECETAS BÁSICAS', style: 'header', alignment: 'center' },
+         
                 '\n\n',
                  
                 ...ingredientHeaders,
@@ -1024,12 +1013,8 @@ map(i => ({ descripcion: i.descripcion }));
                     // Alineación de la tabla en el centro
                     alignment: 'center',
                     body: [
-<<<<<<< HEAD
-                      ['Nº', 'Ingredientes'].map((cell, index) => ({
-=======
-                      ['Nº', 'Producto'].map((cell, index) => ({
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-                        text: cell,
+                       ['Nº', 'Ingredientes'].map((cell, index) => ({
+                           text: cell,
                         bold: true,
                         fillColor: '#D3D3D3',
                         alignment: 'center',
@@ -1053,12 +1038,8 @@ map(i => ({ descripcion: i.descripcion }));
             };
         
             pdfMake.vfs = pdfFonts.pdfMake.vfs;
-<<<<<<< HEAD
-            pdfMake.createPdf(documentoPDF).download('INFORME DE LISTA DE RECETAS BÁSICAS.pdf');
-=======
-            pdfMake.createPdf(documentoPDF).download('INFORME DE PRODUCTOS CON SU MENÚ.pdf');
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-          });
+             pdfMake.createPdf(documentoPDF).download('INFORME DE LISTA DE RECETAS BÁSICAS.pdf');
+             });
         }
         
     
@@ -1069,12 +1050,8 @@ map(i => ({ descripcion: i.descripcion }));
         async descargarExcel() {
           const ExcelJS = require('exceljs');
           const workbook = new ExcelJS.Workbook();
-<<<<<<< HEAD
-          const worksheet = workbook.addWorksheet('INFORME DE LISTA DE RECETAS BÁSICAS');
-=======
-          const worksheet = workbook.addWorksheet('INFORME DE PRODUCTOS CON SU MENÚ');
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-      
+           const worksheet = workbook.addWorksheet('INFORME DE LISTA DE RECETAS BÁSICAS');
+        
           // Organizar créditos por persona
           const creditosPorPersona = {};
       
@@ -1092,12 +1069,8 @@ map(i => ({ descripcion: i.descripcion }));
           // Agregar encabezados de la tabla
           const headers = [
               'Nº',
-<<<<<<< HEAD
-              'Ingredientes'
-=======
-              'Producto'
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-          ];
+               'Ingredientes'
+            ];
       
           worksheet.addRow(headers);
           const headerRow = worksheet.getRow(worksheet.lastRow.number);
@@ -1145,12 +1118,9 @@ map(i => ({ descripcion: i.descripcion }));
       
           // Guardar el libro de trabajo
           const buffer = await workbook.xlsx.writeBuffer();
-<<<<<<< HEAD
-          saveAs(new Blob([buffer]), 'INFORME DE LISTA DE RECETAS BÁSICAS.xlsx');
-=======
-          saveAs(new Blob([buffer]), 'INFORME DE PRODUCTOS CON SU MENÚ.xlsx');
->>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
-      }
+           saveAs(new Blob([buffer]), 'INFORME DE LISTA DE RECETAS BÁSICAS.xlsx');
+           saveAs(new Blob([buffer]), 'INFORME DE PRODUCTOS CON SU MENÚ.xlsx');
+       }
       
       
         
