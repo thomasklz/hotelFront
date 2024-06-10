@@ -10,6 +10,7 @@ import swal from 'sweetalert';
 import swal2 from 'sweetalert';
 
 import Swal from 'sweetalert2';
+import { RecetarioService } from 'app/servicios/recetario.service';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -48,13 +49,8 @@ export class MenuComponent implements OnInit {
   toggleShowMoreOptions() {
     this.showMoreOptions = !this.showMoreOptions;
   }
-  selectOption(item: any) {
-    this.selectedOption = item;
-    this.showMoreOptions = false;
+   
 
-    // Update the form control with the selected option's ID
-    this.menuForm.get('id_plato')?.setValue(item.id);
-  }
   getSelectedOptionLabel() {
     return this.selectedOption ? this.selectedOption.descripcion : 'Seleccione  ';
   }
@@ -68,7 +64,8 @@ export class MenuComponent implements OnInit {
     private MenuService: MenuService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef  // Inyecta ChangeDetectorRef
+    private cdr: ChangeDetectorRef  ,
+    private RecetarioService:RecetarioService
 
   ) {
     this.getAllplatos();
@@ -80,6 +77,8 @@ export class MenuComponent implements OnInit {
   //cargar los datos de la seleccion de la tabla  en la modal
 
   ngOnInit() {
+    this.obtenerListaplatosconIngrediente();
+
     this.getAllmenus();
   this.loadPageData();
   this.aplicarFiltros();
@@ -95,8 +94,7 @@ export class MenuComponent implements OnInit {
         Validators.pattern(/^[0-9]+$/), // Acepta solo números
         Validators.minLength(1),
       ]),
-      numDias: ['', Validators.required]
-    });
+     });
 
 
     this.menuForm.get('cantidad')?.valueChanges.subscribe(() => {
@@ -113,7 +111,22 @@ export class MenuComponent implements OnInit {
     });
   }
 
+  listaPlatos: any[] = [];
 
+
+  obtenerListaplatosconIngrediente() {
+    this.RecetarioService.obtenerListaplatosconIngrediente().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.platosUnicos);
+        this.listaPlatos = res.platosUnicos;
+        console.log("lista",this.listaPlatos)
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+ 
   
   pageSize = 10;  // Tamaño de la página
   currentPage = 1;  // Página actual
@@ -206,28 +219,18 @@ export class MenuComponent implements OnInit {
     descripcion: "",
   };
   
-
   updatePlatoId(event: any) {
     const descripcion = event.target.value;
-    const platoSeleccionado = this.platosss.find(
+    const platoSeleccionado = this.listaPlatos.find(
       (plato) => plato.descripcion === descripcion
     );
-  
-    if (platoSeleccionado) {
-      this.platoSeleccionado = {
-        id: null,
-        descripcion: platoSeleccionado.descripcion,
-      };
-      this.menuForm.get("id_plato")?.setValue(platoSeleccionado.id);
-    } else {
-      this.platoSeleccionado = {
-        id: null,
-        descripcion: descripcion,
-      };
-      this.menuForm.get("id_plato")?.setValue(null);
-    }
+    this.platoSeleccionado = platoSeleccionado || {
+      id: null,
+      descripcion: descripcion,
+    };
+    this.menuForm.get("id_plato")?.setValue(this.platoSeleccionado.id);
   }
-  
+
   
   
   
@@ -356,9 +359,8 @@ aplicarFiltrosfecha() {
       id_plato: item.plato.id,
       cantidad: item.cantidad,
       habilitado: item.habilitado,
-      fecha:item.fecha,
-      numDias:5
-    });
+      fecha:item.fecha
+     });
   
     // Selecciona automáticamente el radio button correspondiente
     const radioValue = +item.habilitado === 1 ? '1' : '0';
@@ -385,45 +387,39 @@ aplicarFiltrosfecha() {
 
 
   // Registro de Plato...
-
+ 
+ 
   addMenu() {
+    const idPlato = this.menuForm.get('id_plato').value;
     if (this.menuForm.valid) {
-      this.showId_cantidadplatoError = false;
-      this.showId_tipomenuError = false;
-      this.showFechaError = false;
-      this.showHabilitadoError = false;
-      this.showDiasError = false;
-  
+      
+
       const datos = {
-        id_plato: this.menuForm.value.id_plato,
+        id_plato:idPlato,
         cantidad: this.menuForm.value.cantidad,
         habilitado: this.menuForm.value.habilitado,
-        fecha: this.menuForm.value.fecha,
-        numDias: this.menuForm.value.numDias,
+        fecha: this.menuForm.value.fecha
       };
-  
-      // Verificar si ya existe un menú para el mismo plato y fecha
-      const existingMenu = this.menusss.find(
-        (menu) => menu.id_plato === datos.id_plato && menu.fecha === datos.fecha
-      );
-  
-      if (existingMenu) {
-        this.showModalErrorr();
-        return; // No proceder con la creación del menú
-      }
-  
+
       if (!this.editandoPlato) {
         this.MenuService.guardarMenu(datos).subscribe(
           (platos) => {
             console.log(platos);
             this.showModal();
-            this.getAllmenus(); // Actualizar la tabla después de agregar un menú
-            this.loadPageData();
-            this.menuForm.reset(); // Restablecer los valores del formulario
+            this.getAllmenus(); // Actualizar la tabla después de agregar/editar un menú
+          this.loadPageData();
+          this.menuForm.reset();// Restablecer los valores del formulario
           },
           (error) => {
-            console.log(error);
-            this.showModalErrorr();
+            console.error("Error al guardar menú:", error);
+            if (error.status === 400 && error.error && error.error.message === 'Ya existe un menú para este plato en la misma fecha') {
+              this.showModalErrorrq(error.error.message); // Mostrar mensaje de error específico
+            } else if (error.status === 400 && error.error && error.error.message) {
+              const errorMessage = error.error.message;
+              this.showModalErrorrq(errorMessage); // Mostrar mensaje de error del servidor
+            } else {
+              this.showModalError2(error.error); // Mostrar mensaje de error genérico
+            }
           }
         );
       } else {
@@ -432,10 +428,11 @@ aplicarFiltrosfecha() {
           (plato) => {
             console.log(plato);
             this.showModalEdit();
+             this.getAllmenus(); // Actualizar la tabla después de agregar/editar un menú
             this.loadPageData();
-            this.nuevoCurso(); // Restablecer el formulario después de editar
-            this.getAllmenus();
-          },
+            this.menuForm.reset();
+           this.loadPageData();
+           },
           (error) => {
             console.log(error);
             this.showModalErrorEdit();
@@ -447,12 +444,70 @@ aplicarFiltrosfecha() {
       this.showId_tipomenuError = this.menuForm.controls.id_plato.invalid;
       this.showFechaError = this.menuForm.controls.fecha.invalid;
       this.showHabilitadoError = this.menuForm.controls.habilitado.invalid;
-      this.showDiasError = this.menuForm.controls.numDias.invalid;
     }
   }
+
+
+
+  showModalErrorrq(message: string) {
+    swal({
+      title: "Error al registrar menú",
+      text: message,
+      icon: "error",
+    });
+  }
+
+
+
+
+
+    
+  showModalErrorPlatoExistente() {
+    swal({
+      title: "Error al registrar menú",
+      text: "Este plato ya tiene un menú registrado para la misma fecha.",
+      icon: "error",
+    });
+  }
+  
+
+ 
+
+
+
+  
+  showModalError2(error: any) {
+    let errorMessage = "Error de registro de datos";
+    if (error && error.errores && error.errores.length > 0) {
+      errorMessage = error.errores[0].message;
+    }
+    swal({
+      title: "Error de registro de datos",
+      text: errorMessage,
+      icon: "error",
+    });
+  }
+  
+
+  
+
   
   
 
+  
+
+
+
+
+
+
+
+
+ 
+  
+  
+
+ 
   showModalEliminar(id: number) {
     Swal.fire({
       title: '¿Estás seguro que deseas eliminar el menú diario?',

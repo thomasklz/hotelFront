@@ -7,6 +7,7 @@ import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ImageService } from 'app/servicios/image.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-listadoadministradores',
@@ -195,30 +196,78 @@ descargarPDF() {
 
   //'''''''''''''''''''''''
   descargarDatos() {
-    const datosParaDescargar = this.usuariosss.map(item => ({
-      'Usuario': item.Identificacion,
-      'Apellido1': item.persona.Apellido1,
-      'Apellido2': item.persona.Apellido2,
-      'Nombre1': item.persona.Nombre1,
-      'Nombre2': item.persona.Nombre2,
-      'Email': item.persona.EmailInstitucional,
-      'Teléfono': item.persona.TelefonoC,
-       
-    }));
+    const ExcelJS = require('exceljs');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Listado de administradores');
+    
+    // Organizar créditos por persona
+    const creditosPorPersona = {};
+    
    
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Listado de administradores');
-    const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Listado de administradores.xlsx';
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }
-  
+    
+    // Agregar encabezados de la tabla
+    const headers = [
+      'Usuario',
+      'Apellido1' ,
+      'Apellido2' ,
+      'Nombre1' ,
+      'Nombre2' ,
+      'Email' ,
+      'Teléfono' ,
+    ];
+    
+    worksheet.addRow(headers);
+    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+    
+    // Establecer estilos para encabezados
+    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+    cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+    });
+    
+    // Agregar datos a la hoja de cálculo
+    this.usuariosss.forEach((item, index) => {
+    const rowData = [
+     item.Identificacion,
+     item.persona.Apellido1,
+     item.persona.Apellido2,
+     item.persona.Nombre1,
+     item.persona.Nombre2,
+     item.persona.EmailInstitucional,
+     item.persona.TelefonoC,
+    ];
+    
+    worksheet.addRow(rowData);
+    });
+    
+    // Establecer estilos para datos
+    for (let i = worksheet.lastRow.number - this.usuariosss.length + 1; i <= worksheet.lastRow.number; i++) {
+    worksheet.getRow(i).eachCell(cell => {
+        cell.font = { bold: false }; // No negrita para datos
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    });
+    }
+    
+    // Establecer ancho de columnas
+    worksheet.columns.forEach(column => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, cell => {
+        const length = cell.value ? cell.value.toString().length : 10;
+        if (length > maxLength) {
+            maxLength = length;
+        }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength;
+    });
+    
+    // Guardar el libro de trabajo
+    workbook.xlsx.writeBuffer().then(buffer => {
+    saveAs(new Blob([buffer]), 'Listado de administradores.xlsx');
+    });
+    }
+   
 
 
   

@@ -1,0 +1,915 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<link href="https://fonts.google.com/icons?selected=Material+Symbols+Outlined:quick_reference:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=INFORMA&icon.size=24&icon.color=%235f6368&icon.platform=android" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+
+<div class="main-content" style="background-color: #ebebeb; padding: 20px;">
+  <div class="container-fluid">
+    
+    <div class="form-row">
+      <div class="col-md-12">
+
+    <!-- Pestañas asincrónicas -->
+    <div *ngIf="(asyncTabs | async) === null">
+     
+    </div>
+
+    
+    <mat-tab-group *ngIf="(asyncTabs | async) !== null">
+      <mat-tab *ngFor="let tab of asyncTabs | async">
+        <ng-template mat-tab-label>{{ tab.label }}</ng-template>
+        <!-- Contenido de la pestaña "Sin créditos" -->
+        <div *ngIf="tab.label === 'Registro de compra'">
+
+        
+         <br>
+  
+            <div class="container-fluid">
+              <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
+              data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
+          
+              <div class="search-container col-md-10">
+                <label class="label"  for="nombreproductoFiltro">Buscar el nombre del producto:</label>
+                <div class="search-box">
+                  <input type="text" 
+                  class="form-control"
+                 
+               
+                  [(ngModel)]="nombreproductoFiltro" (input)="aplicarFiltros()"  />
+                 
+                </div>
+             
+                
+              </div>
+          
+          
+          
+          
+          
+              <div class="row">
+                <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
+               
+               
+                <div class="col-md-12">
+          
+                  <div class="card text-center">
+                   
+          
+          
+                    <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+                      <h4 class="card-title disabled">
+                        <img src="/assets/img/alimentos.png" class="edit" alt="">
+                        Lista de productos 
+                      </h4>
+          
+                
+          
+                    <li class="nav-item dropdown">
+                      <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+                        Descargar    <i class="material-icons">file_download</i> 
+                        
+                          <p>
+                              <span class="d-lg-none d-md-block"> </span>
+                          </p>
+                      </a>
+                      <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" (click)="descargarExcel()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+                          <a class="dropdown-item" (click)="descargarPDF()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+                        
+                          
+                      </div>
+                  </li>
+          
+          
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class=" text-primary">
+                            <th>
+                              Nº
+                            </th>
+                            <th>
+                              Fecha 
+                            </th>
+                            <th>
+                              Producto 
+                            </th>
+                            <th>
+                              Unidad de medida
+                            </th>
+                            <th>
+                              Cantidad de medida
+                            </th>
+                            <th>
+                              Precio unitario
+                            </th>
+                            <th>
+                              Precio
+                            </th>
+                            <th>
+                              Porción
+                            </th>
+                            <th>
+                              Acción
+                            </th>
+          
+                          </thead>
+                          <tbody >
+                            <ng-container *ngFor="let item of pagedMenus; let i = index">
+                            <ng-container *ngIf="(!nombreproductoFiltro || item.alimento.descripcion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+          
+                            <tr>
+                              <td> {{i+1}} </td>
+                              <td> {{item.fecha}} </td>
+                              <td>{{item.alimento.descripcion}}</td>
+                              <td>{{item.unidadMedida.unidadMedida }} </td>
+                              <td>{{item.cantidadmedidaUnidad }}</td>
+                              <td> 
+                                <ng-container *ngIf="item.preciounidad !== null">
+                                  <span *ngIf="item.preciounidad.toString().startsWith('0')">
+                                    {{ truncateZeros(item.preciounidad) }} ctvs
+                                  </span>
+                                  <span *ngIf="!item.preciounidad.toString().startsWith('0')">
+                                    {{ item.preciounidad }} $
+                                  </span>
+                                </ng-container>
+                              </td>        
+                              <td>
+                                <ng-container *ngIf="item.precio !== null">
+                                  <span *ngIf="item.precio.toString().startsWith('0')">
+                                    {{ truncateZeros(item.precio) }} ctvs
+                                  </span>
+                                  <span *ngIf="!item.precio.toString().startsWith('0')">
+                                    {{ item.precio }} $
+                                  </span>
+                                </ng-container>
+                              </td>
+                              <td>{{item.porcion }}
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
+                                <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
+                             
+                              </td>
+                              <td>                  
+                                <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                                </button2>
+                              </td>
+          
+          
+                            </tr>
+          
+                          </ng-container>
+                        </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+          
+          
+          
+                      <div *ngIf="!pagedMenus || pagedMenus.length === 0" class="text-center">
+                        <img src="/assets/img/carrito-de-supermercado.png" class="edit" alt="" />
+                      </div>
+                        <!-- Contenedor para centrar la paginación -->
+            <div class="pagination-containerrrr">
+              <!-- Paginación -->
+              <div class="pagination">
+                <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+                <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+                <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+              </div>
+            </div>
+                    </div>
+          
+          
+                 
+                  
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          
+          
+          
+
+
+        </div>
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------->
+       
+        <!-- Contenido de la pestaña "Con Créditos" -->
+        <div *ngIf="tab.label === 'Filtros de compra'">
+
+
+
+          <div class="container-fluid">
+<br><br>
+            <div class="filtros-container2">
+              <div class="filtro-container"  >
+                <div class="filtro-label">
+                  Filtro <i class="fa fa-filter" aria-hidden="true"></i>
+                </div>
+                <div class="filtro-select" (click)="hideSelectText()">
+                  <select class="filtro" [(ngModel)]="filtro" (change)="onFilterChange()" [(ngModel)]="filtroSeleccionado2">
+                    <option value="todo" [selected]="filtro === 'todo'">Todos</option>
+                    <option value="conExistencia" [selected]="filtro === 'conExistencia'">Con existencia</option>
+                    <option value="sinExistencia" [selected]="filtro === 'sinExistencia'">Sin existencia</option>
+                  </select>
+                  <span class="seleccionar-texto" [class.hidden]="!mostrarSeleccionar">Seleccionar</span>
+                  <span class="seleccionar-icon" [class.hidden]="!mostrarSeleccionar">&#9660;</span>
+                </div>
+                <div class="spinner-container" [class.hidden]="!mostrarSpinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            
+              <div class="filtro-container r"  (click)="onFilterChange()" (click)="Actualizar()"  >
+                <div class="filtro-container" (click)="actualizarYMostrarImagen()">
+                  <div class="filtro-labelvw">
+                    Refrescar &nbsp;&nbsp; <!-- Agrega espacios entre el texto y el ícono -->
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                  </div>
+                
+                  <div class="spinner-container" [class.hidden]="!mostrarSpinner">
+                    <div class="spinner"></div>
+                  </div>
+                </div>
+                
+                
+                <div class="spinner-container" [class.hidden]="!mostrarSpinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+            <br><br>
+            
+
+            <div class="  col-md-12 text-center ch" *ngIf="!filtro" >
+              <div class="text-center" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                <img src="/assets/img/ventas.png" class="edit" alt="" style="display: block; margin: 0 auto;"/>
+              </div>
+
+            </div>
+            
+            
+            
+            
+        
+          
+        
+        
+        
+        
+        
+            <div class="row" *ngIf="filtroSeleccionado2 === 'todo'">
+              <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
+             
+             
+              <div class="col-md-12">
+        
+                <div class="card text-center ">
+                 
+        
+        
+                  <div class="card-header card-header-danger d-flex align-items-center justify-content-between ">
+                    <h4 class="card-title disabled">
+                      <img src="/assets/img/alimentos.png" class="edit" alt="">
+                      Lista de productos 
+                    </h4>
+        
+              
+        
+                  <li class="nav-item dropdown">
+                    <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+                      Descargar    <i class="material-icons">file_download</i> 
+                      
+                        <p>
+                            <span class="d-lg-none d-md-block"> </span>
+                        </p>
+                    </a>
+                    <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" (click)="descargarExcelTodos()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+                        <a class="dropdown-item" (click)="descargarPDFTodos()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+                      
+                        
+                    </div>
+                </li>
+        
+        
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class=" text-primary">
+                          <th>
+                            Nº
+                          </th>
+                          <th>
+                            Fecha 
+                          </th>
+                          <th>
+                            Producto 
+                          </th>
+                          <th>
+                            Unidad de medida
+                          </th>
+                          <th>
+                            Cantidad de medida
+                          </th>
+                          <th>
+                            Precio unitario
+                          </th>
+                          <th>
+                            Precio
+                          </th>
+                          <th>
+                            Porción
+                          </th>
+                          <th>
+                            Acción
+                          </th>
+        
+                        </thead>
+                        <tbody >
+                          <ng-container *ngFor="let item of compratodosss; let i = index">
+                          <ng-container *ngIf="(!nombreproductoFiltro || item.alimento.descripcion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+        
+                          <tr>
+                            <td> {{i+1}} </td>
+                            <td> {{item.fecha}} </td>
+                            <td>{{item.alimento.descripcion}}</td>
+                            <td>{{item.unidadMedida.unidadMedida }} </td>
+                            <td>{{item.cantidadmedidaUnidad }}</td>
+                            <td> 
+                              <ng-container *ngIf="item.preciounidad !== null">
+                                <span *ngIf="item.preciounidad.toString().startsWith('0')">
+                                  {{ truncateZeros(item.preciounidad) }} ctvs
+                                </span>
+                                <span *ngIf="!item.preciounidad.toString().startsWith('0')">
+                                  {{ item.preciounidad }} $
+                                </span>
+                              </ng-container>
+                            </td>        
+                            <td>
+                              <ng-container *ngIf="item.precio !== null">
+                                <span *ngIf="item.precio.toString().startsWith('0')">
+                                  {{ truncateZeros(item.precio) }} ctvs
+                                </span>
+                                <span *ngIf="!item.precio.toString().startsWith('0')">
+                                  {{ item.precio }} $
+                                </span>
+                              </ng-container>
+                            </td>
+                            <td>{{item.porcion }}
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
+                           
+                            </td>
+                            <td>                  
+                              <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                              </button2>
+                            </td>
+        
+        
+                          </tr>
+        
+                        </ng-container>
+                      </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+        
+        
+        
+                    <div *ngIf="!compratodosss || compratodosss.length === 0" class="text-center">
+                      <h1 class="kio">No hay productos para esa categoría</h1>
+                    </div>
+                      <!-- Contenedor para centrar la paginación -->
+          <div class="pagination-containerrrr">
+            <!-- Paginación -->
+            <div class="pagination">
+              <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+              <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+              <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+            </div>
+          </div>
+                  </div>
+        
+        
+               
+                
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+            
+            <div class="row" *ngIf="filtroSeleccionado2 === 'conExistencia'">
+              <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
+             
+             
+              <div class="col-md-12">
+        
+                <div class="card text-center">
+                 
+        
+        
+                  <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+                    <h4 class="card-title disabled">
+                      <img src="/assets/img/alimentos.png" class="edit" alt="">
+                      Lista de productos 
+                    </h4>
+        
+              
+        
+                  <li class="nav-item dropdown">
+                    <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+                      Descargar    <i class="material-icons">file_download</i> 
+                      
+                        <p>
+                            <span class="d-lg-none d-md-block"> </span>
+                        </p>
+                    </a>
+                    <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" (click)="descargarExcelExistencia()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+                        <a class="dropdown-item" (click)="descargarPDFExistencia()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+                      
+                        
+                    </div>
+                </li>
+        
+        
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class=" text-primary">
+                          <th>
+                            Nº
+                          </th>
+                          <th>
+                            Fecha 
+                          </th>
+                          <th>
+                            Producto 
+                          </th>
+                          <th>
+                            Unidad de medida
+                          </th>
+                          <th>
+                            Cantidad de medida
+                          </th>
+                          <th>
+                            Precio unitario
+                          </th>
+                          <th>
+                            Precio
+                          </th>
+                          <th>
+                            Porción
+                          </th>
+                          <th>
+                            Acción
+                          </th>
+        
+                        </thead>
+                        <tbody >
+                          <ng-container *ngFor="let item of compraconexistenciasss; let i = index">
+                          <ng-container *ngIf="(!nombreproductoFiltro || item.alimento.descripcion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+        
+                          <tr>
+                            <td> {{i+1}} </td>
+                            <td> {{item.fecha}} </td>
+                            <td>{{item.alimento.descripcion}}</td>
+                            <td>{{item.unidadMedida.unidadMedida }} </td>
+                            <td>{{item.cantidadmedidaUnidad }}</td>
+                            <td> 
+                              <ng-container *ngIf="item.preciounidad !== null">
+                                <span *ngIf="item.preciounidad.toString().startsWith('0')">
+                                  {{ truncateZeros(item.preciounidad) }} ctvs
+                                </span>
+                                <span *ngIf="!item.preciounidad.toString().startsWith('0')">
+                                  {{ item.preciounidad }} $
+                                </span>
+                              </ng-container>
+                            </td>        
+                            <td>
+                              <ng-container *ngIf="item.precio !== null">
+                                <span *ngIf="item.precio.toString().startsWith('0')">
+                                  {{ truncateZeros(item.precio) }} ctvs
+                                </span>
+                                <span *ngIf="!item.precio.toString().startsWith('0')">
+                                  {{ item.precio }} $
+                                </span>
+                              </ng-container>
+                            </td>
+                            <td>{{item.porcion }}
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
+                           
+                            </td>
+                            <td>                  
+                              <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                              </button2>
+                            </td>
+        
+        
+                          </tr>
+        
+                        </ng-container>
+                      </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+        
+        
+                    <div *ngIf="!compraconexistenciasss|| compraconexistenciasss.length === 0" class="text-center">
+                      <h1 class="kio">No hay productos para esa categoría</h1>
+                    </div>
+                      <!-- Contenedor para centrar la paginación -->
+          <div class="pagination-containerrrr">
+            <!-- Paginación -->
+            <div class="pagination">
+              <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+              <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+              <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+            </div>
+          </div>
+                  </div>
+        
+        
+               
+                
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+            
+            <div class="row" *ngIf="filtroSeleccionado2 === 'sinExistencia'">
+              <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
+             
+             
+              <div class="col-md-12">
+        
+                <div class="card text-center">
+                 
+        
+        
+                  <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+                    <h4 class="card-title disabled">
+                      <img src="/assets/img/alimentos.png" class="edit" alt="">
+                      Lista de productos 
+                    </h4>
+        
+              
+        
+                  <li class="nav-item dropdown">
+                    <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+                      Descargar    <i class="material-icons">file_download</i> 
+                      
+                        <p>
+                            <span class="d-lg-none d-md-block"> </span>
+                        </p>
+                    </a>
+                    <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" (click)="descargarExcelSinExistencia()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+                        <a class="dropdown-item" (click)="descargarPDFSinExistencia()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+                      
+                        
+                    </div>
+                </li>
+        
+        
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class=" text-primary">
+                          <th>
+                            Nº
+                          </th>
+                          <th>
+                            Fecha 
+                          </th>
+                          <th>
+                            Producto 
+                          </th>
+                          <th>
+                            Unidad de medida
+                          </th>
+                          <th>
+                            Cantidad de medida
+                          </th>
+                          <th>
+                            Precio unitario
+                          </th>
+                          <th>
+                            Precio
+                          </th>
+                          <th>
+                            Porción
+                          </th>
+                          <th>
+                            Acción
+                          </th>
+        
+                        </thead>
+                        <tbody >
+                          <ng-container *ngFor="let item of comprasinexistenciasss; let i = index">
+                          <ng-container *ngIf="(!nombreproductoFiltro || item.alimento.descripcion.toLowerCase().includes(nombreproductoFiltro.toLowerCase()))">
+        
+                          <tr>
+                            <td> {{i+1}} </td>
+                            <td> {{item.fecha}} </td>
+                            <td>{{item.alimento.descripcion}}</td>
+                            <td>{{item.unidadMedida.unidadMedida }} </td>
+                            <td>{{item.cantidadmedidaUnidad }}</td>
+                            <td> 
+                              <ng-container *ngIf="item.preciounidad !== null">
+                                <span *ngIf="item.preciounidad.toString().startsWith('0')">
+                                  {{ truncateZeros(item.preciounidad) }} ctvs
+                                </span>
+                                <span *ngIf="!item.preciounidad.toString().startsWith('0')">
+                                  {{ item.preciounidad }} $
+                                </span>
+                              </ng-container>
+                            </td>        
+                            <td>
+                              <ng-container *ngIf="item.precio !== null">
+                                <span *ngIf="item.precio.toString().startsWith('0')">
+                                  {{ truncateZeros(item.precio) }} ctvs
+                                </span>
+                                <span *ngIf="!item.precio.toString().startsWith('0')">
+                                  {{ item.precio }} $
+                                </span>
+                              </ng-container>
+                            </td>
+                            <td>{{item.porcion }}
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
+                              <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
+                           
+                            </td>
+                            <td>                  
+                              <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                              </button2>
+                            </td>
+        
+        
+                          </tr>
+        
+                        </ng-container>
+                      </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+        
+        
+        
+                    <div *ngIf="!comprasinexistenciasss || comprasinexistenciasss.length === 0" class="text-center">
+                      <h1 class="kio">No hay productos para esa categoría</h1>
+                    </div>
+                      <!-- Contenedor para centrar la paginación -->
+          <div class="pagination-containerrrr">
+            <!-- Paginación -->
+            <div class="pagination">
+              <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
+              <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+              <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
+            </div>
+          </div>
+                  </div>
+        
+        
+               
+                
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+        
+           
+  
+  
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Listado de los alimentos. -->
+
+
+<style>
+  @media (max-width: 768px) {
+    /* Estilos para pantallas pequeñas */
+    #ventanaForm .modal-dialog {
+      top: 50%;
+    }
+  }
+  
+  /* Estilos para pantallas más grandes */
+  @media (min-width: 769px) {
+    #ventanaForm .modal-dialog {
+      top: 45%;
+    }
+  }
+  </style>
+
+
+
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm }} <img src="assets/img/comida.png" alt="" />
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body modal-with-padding">
+        <div class="common-width-container">
+          <form [formGroup]="ingredientesForm">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Registre la fecha:</label>
+                    <input 
+                        class="estilosversion2" 
+                        type="date" 
+                        formControlName="fecha" 
+                        [value]="getCurrentDate()"
+                    >
+                </div>
+                
+                </div>
+
+
+
+                
+              </div>
+            </div>
+
+
+
+
+
+
+            <div class="form-row">     
+              <div class="form-group col-md-12">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label" >Buscar el nombre del producto:</label>
+                    <div class="search-box">
+                      <input
+                        type="text"
+                        class="form-control"
+                        list="list-timezone-plato"
+                       
+                        [value]="alimentoSeleccionado.descripcion"
+                        (input)="updateAlimentoId($event)"
+                        formControlName="id_alimento"
+                      
+                        aria-readonly="true"
+  
+                      />
+                      <datalist id="list-timezone-plato">
+                        <option *ngFor="let item of alimentosss" [value]="item.descripcion"></option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+
+        <div class="form-row justify-content-center col-md-12">
+          <div class="form-group col-md-4 mx-auto">
+            <label for="inputState" class="select-gr">Cantidad</label>
+            <br />
+            <input class="example-full-width estilosversion2" type="number" formControlName="cantidadmedidaUnidad" />
+            <div *ngIf="showId_cantidadplatoError" class="text-danger">
+              Campo requerido
+            </div>
+          </div>
+        
+          <div class="form-group col-md-4 mx-auto">
+            <label for="inputState" class="select-gr">Precio</label>
+            <br />
+            <input class="example-full-width estilosversion2" type="text" formControlName="precio">
+            <div *ngIf="showId_precioError" class="text-danger">Campo requerido</div>
+          </div>
+        </div>
+
+
+
+
+
+
+            
+            <!-- Campo oculto para enviar los alimentos seleccionados -->
+           </form>
+          
+         
+        </div>
+      </div>
+
+      <div class="modal-footer fixed-footer justify-content-center">
+        <button type="button" class="btn" (click)="closeModal()" (click)="closeModalAfterCancel()">
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addCompras()">
+          {{ editandoIngredientes ? 'Modificar' : 'Registrar' }}
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+

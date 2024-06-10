@@ -21,6 +21,16 @@ import { format, parse } from 'date-fns';
 
 
 
+import * as XLSX from 'xlsx';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as FileSaver from 'file-saver';
+ import { ImageService } from "app/servicios/image.service";
+
+
+
+  import { saveAs } from 'file-saver';
+ 
 
 @Component({
   selector: 'app-productosplato',
@@ -88,7 +98,7 @@ fecha: string = '';
     private router: Router,
     private formBuilder: FormBuilder,
     private renderer: Renderer2 ,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private imageService:ImageService,
     
   ) {
     this.platoSeleccionado = { id: null, descripcion: "" };
@@ -190,32 +200,73 @@ fecha: string = '';
   total:any;
   totalPrecio: number = 0;
 
-buscarIngredientePorId() { 
-  const fecha = this.fechaSeleccionado.fecha || this.formatDate(this.fechaInput.nativeElement.value);
 
-  if (!this.platoSeleccionado || !this.platoSeleccionado.id) {
-    console.error("this.platoSeleccionado.id is null or undefined.");
-    return;
-  }
+  personas: number = 0;
+  fechaa: Date; // Mantener fechaa como Date
+  fechaFormateada: string; // Nueva variable para la fecha formateada
+
   
-  this.IngredientesService.buscarFechaYPlato(this.platoSeleccionado.id, fecha).subscribe({
-    next: (res: any) => {
-      console.log("Ingredientes encontrados:", res.ingredientes);
-      this.ingredientesss = res.ingredientes;
-       // Calcular la suma de precios
-       this.totalPrecio = this.ingredientesss.reduce((total, item) => total + item.precioporcion, 0);
-      this.totalItems = res.ingredientes.length;
-     
-      this.buscarDescripcionporId();
-    },
-    error: (err) => {
-      this.showModalErrorsindatos();
-    },
-  });
-}
+  formatDateCustom(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getUTCDate(); // Obtener el día correcto
+    const month = date.getUTCMonth() + 1; // Obtener el mes correcto (0-11)
+    const year = date.getUTCFullYear(); // Obtener el año
+    return `${day}/${month}/${year}`;
+  }
 
+  buscarIngredientePorId() { 
+    const fecha = this.fechaSeleccionado.fecha || this.formatDate(this.fechaInput.nativeElement.value);
+  
+    if (!this.platoSeleccionado || !this.platoSeleccionado.id) {
+      console.error("this.platoSeleccionado.id is null or undefined.");
+      return;
+    }
+    
+    this.IngredientesService.buscarFechaYPlato(this.platoSeleccionado.id, fecha).subscribe({
+      next: (res: any) => {
+        console.log("Ingredientes encontrados:", res.ingredientes);
+        this.ingredientesss = res.ingredientes;
+        
+        // Calcular la suma de precios
+        this.totalPrecio = this.calculateTotalPrice(this.ingredientesss);
 
+        // Tomar la cantidad del primer ingrediente y formatear la fecha
+        if (this.ingredientesss.length > 0) {
+          this.personas = this.ingredientesss[0].cantidad;
+          this.fechaa = new Date(this.ingredientesss[0].fecha);
+          this.fechaFormateada = this.formatDateCustom(this.ingredientesss[0].fecha);
+        } else {
+          this.personas = 0; // O cualquier valor por defecto
+          this.fechaFormateada = '';
+        }
+      
+        this.totalItems = res.ingredientes.length;
+        console.log("Total de personas:", this.personas);
+        console.log("Fecha formateada:", this.fechaFormateada);
 
+        this.buscarDescripcionporId();
+      },
+      error: (err) => {
+        this.showModalErrorsindatos();
+      },
+    });
+  }
+
+   
+
+  
+  truncateZeros(value: number): string {
+    const stringValue = value.toFixed(4);
+    const parts = stringValue.split('.');
+    const integerPart = parts[0];
+    let decimalPart = parts[1];
+  
+    // Eliminar los ceros finales del decimalPart
+    decimalPart = decimalPart.replace(/0+$/, '');
+  
+    // Concatenar la parte entera y la parte decimal
+    return decimalPart.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
+  }
  
 buscarDescripcionporId() {
   const ingredientId = this.platoSeleccionado.descripcion; // Use the ID, not the description
@@ -239,7 +290,10 @@ buscarDescripcionporId() {
     this.ingredientedescripcionsss = [];
   }
 }
-
+calculateTotalPrice(items: any[]): number {
+  const total = items.reduce((acc, item) => acc + item.costeo, 0);
+  return parseFloat(total.toFixed(2)); // Redondea el total a 2 decimales
+}
   platoSeleccionado: { id: number | null; descripcion: string } = {
     id: null,
     descripcion: "",
@@ -722,6 +776,261 @@ closeModalAfterCancel() {
 
   // Cierra el modal
   // Aquí puedes agregar la lógica para cerrar el modal, si es necesario
+}
+
+
+
+
+      
+      
+
+
+
+descargarPDF() {
+  const n = this.cantidad;
+  const rows = this.ingredientesss.map((item, index) => [
+    (index + 1).toString(), // Número
+    item.alimento.descripcion, // Producto
+    item.unidadMedida.unidadMedida, // Unidad de medida
+    item.cantidadPersonaCome,
+    `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+
+    
+     
+     this.formatPrice(item.preciounidad),
+    this.formatPrice(item.costeounaPersona),
+    `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+
+    
+     this.formatPrice(item.costeo)
+  ]);
+
+  const anchoPagina = 595.28;
+  let columnWidths = [30, 55, 45, 50, 50,40,60,60,50 ];
+  const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+  let escala = 1;
+
+  if (totalWidth > anchoPagina) {
+    escala = anchoPagina / totalWidth;
+    columnWidths = columnWidths.map(width => width * escala);
+  }
+
+  // Obtener las representaciones en base64 de las imágenes
+  Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+    const headerTable = {
+      table: {
+        widths: [120, '*', 120],
+        body: [
+          [
+            { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+            { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+            { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+          ],
+          [
+            {},
+            { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+            {},
+          ],
+        ],
+      },
+      layout: 'noBorders',
+    };
+
+    // Encabezados adicionales
+    const ingredientHeaders = {
+      table: {
+        widths: ['*', '*', '*', '*', '*'],
+        body: [
+          [
+            { text: `Menú: ${this.ingredientedescripcionsss[0].plato.descripcion}`, bold: true, fillColor: '#D3D3D3', border: [true, true, true, true] },
+            { text: `Precio del Menú: ${this.formatPrice(this.ingredientedescripcionsss[0].plato.precio)}`, bold: true, fillColor: '#D3D3D3', border: [true, true, true, true] },
+            { text: `Costeo del Menú: ${this.formatPrice(this.totalPrecio)}`, bold: true, fillColor: '#D3D3D3', border: [true, true, true, true] },
+            { text: `Cantidad de personas: ${this.personas}`, bold: true, fillColor: '#D3D3D3', border: [true, true, true, true] },
+            { text: `Fecha: ${this.fechaFormateada}`, bold: true, fillColor: '#D3D3D3', border: [true, true, true, true] },
+          ],
+        ],
+      },
+      layout: {
+        fillColor: function (rowIndex: number, node: any, columnIndex: number) {
+          return (rowIndex === 0) ? '#D3D3D3' : null;
+        },
+      },
+      margin: [0, 10, 0, 10], // Margen entre encabezados y tabla
+    };
+
+    const documentoPDF = {
+      content: [
+        headerTable,
+        '\n\n',
+        { text: 'INFORME DE PRODUCTOS CON SU MENÚ', style: 'header', alignment: 'center' },
+        '\n\n',
+        { text: 'Cálculos para  menú-persona', style: 'subheader', alignment: 'left', bold: true },
+        '\n',
+        ingredientHeaders,
+        {
+          // Contenedor externo para la tabla
+          alignment: 'center',
+          table: {
+            headerRows: 1,
+            // Ancho de la tabla
+            widths: columnWidths,
+            // Alineación de la tabla en el centro
+            alignment: 'center',
+            body: [
+              [  'Nº', 'Producto', 'Unidad de medida','Cantidad persona come	       			', 'Porción por cantidad de persona','	Precio unidad','Costeo una persona',`Porción para  ${this.personas} personas`, 'Costo por cantidad de persona'
+            ].map((cell, index) => ({
+                text: cell,
+                bold: true,
+                fillColor: '#D3D3D3',
+                alignment: 'center',
+              })),
+              ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+            ],
+          },
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          font: 'Roboto',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 14,
+          font: 'Roboto',
+        },
+      },
+    };
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    pdfMake.createPdf(documentoPDF).download('INFORME DE PRODUCTOS CON SU MENÚ.pdf');
+  });
+}
+
+
+cantidad:number;
+
+descargarExcel() {
+  
+const ExcelJS = require('exceljs');
+const workbook = new ExcelJS.Workbook();
+const worksheet = workbook.addWorksheet('Informe de productos con su menú');
+
+// Organizar créditos por persona
+const creditosPorPersona = {};
+
+this.ingredientedescripcionsss.forEach(item => {
+const platoDescripcion = `Menú: ${item.plato.descripcion}`;
+const precioMenu = `Precio del Menú: ${this.formatPrice(item.plato.precio)}`;
+const costeoMenu = `Costeo del Menú: ${this.formatPrice(this.totalPrecio)}`;
+const cantidadpersona = `Cantidad de personas: ${this.personas}`;
+const fecha = `Costeo del Menú: ${this.fechaFormateada}`;
+
+const row = worksheet.addRow([platoDescripcion, precioMenu, costeoMenu,cantidadpersona,fecha]);
+
+row.eachCell(cell => {
+    cell.font = { size: 12, bold: true }; // Letra más grande y negrita
+    cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCCCFF' } }; // Fondo color (lavanda)
+});
+});
+
+// Agregar encabezados de la tabla
+const headers = [
+  'Nº', 'Producto', 'Unidad de medida','Cantidad persona come	       			', 'Porción por cantidad de persona','	Precio unidad','Costeo una persona',`Porción para  ${this.personas} personas`, 'Costo por cantidad de persona'
+];
+
+worksheet.addRow(headers);
+worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+
+// Establecer estilos para encabezados
+worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+cell.alignment = { vertical: 'middle', horizontal: 'center' };
+cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+});
+
+// Agregar datos a la hoja de cálculo
+this.ingredientesss.forEach((item, index) => {
+ 
+const rowData = [
+    index + 1,
+    item.alimento.descripcion, // Producto
+    item.unidadMedida.unidadMedida, // Unidad de medida
+    item.cantidadPersonaCome,
+    `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+
+    
+     this.formatPrice(item.preciounidad),
+     this.formatPrice(item.costeounaPersona),
+    `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+
+    
+     this.formatPrice(item.costeo)
+];
+
+worksheet.addRow(rowData);
+});
+
+// Establecer estilos para datos
+for (let i = worksheet.lastRow.number - this.ingredientesss.length + 1; i <= worksheet.lastRow.number; i++) {
+worksheet.getRow(i).eachCell(cell => {
+    cell.font = { bold: false }; // No negrita para datos
+    cell.alignment = { vertical: 'middle', horizontal: 'left' };
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+});
+}
+
+// Establecer ancho de columnas
+worksheet.columns.forEach(column => {
+let maxLength = 0;
+column.eachCell({ includeEmpty: true }, cell => {
+    const length = cell.value ? cell.value.toString().length : 10;
+    if (length > maxLength) {
+        maxLength = length;
+    }
+});
+column.width = maxLength < 10 ? 10 : maxLength;
+});
+
+// Guardar el libro de trabajo
+workbook.xlsx.writeBuffer().then(buffer => {
+saveAs(new Blob([buffer]), 'Informe de productos con su menú.xlsx');
+});
+}
+
+getUnidadMedida(unidad: string): string {
+  switch (unidad) {
+    case 'libra':
+    case 'kilo':
+    case 'onza':
+    case 'atado':
+    case 'medio atado':
+    case '1/2 atado':
+    case 'cucharada':
+    case 'taza':
+      return 'gramos';
+    case 'litro':
+    case 'vaso':
+    case 'cucharadita':
+      return 'mililitros';
+    case 'pieza':
+    case 'unidad':
+    case 'cubeta':
+      return 'unidad';
+    default:
+      return '';
+  }
+}
+
+formatPrice(price: number): string {
+  if (price === null) return 'N/A';
+  if (price.toString().startsWith('0')) {
+    return `${this.truncateZeros(price)} ctvs`;
+  } else {
+    return `${price} $`;
+  }
 }
 
   

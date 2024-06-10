@@ -40,7 +40,7 @@ formControlName="fecha"
 
  <br><br>
 
- <label class="label" >Seleccione el plato:</label>
+ <label class="label" >Seleccione el menú:</label>
  <div class="search-box">
   <input
     type="text"
@@ -75,12 +75,32 @@ formControlName="fecha"
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-danger">
+          <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
             <h4 class="card-title disabled">
               <img src="/assets/img/alimentos.png" class="edit" alt="" />
               Ingredientes
             </h4>
+
+
+
+
+            <li class="nav-item dropdown">
+              <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+                Descargar    <i class="material-icons">file_download</i> 
+                
+                  <p>
+                      <span class="d-lg-none d-md-block"> </span>
+                  </p>
+              </a>
+              <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" (click)="descargarExcel()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+                  <a class="dropdown-item" (click)="descargarPDF()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+                
+                  
+              </div>
+          </li>
           </div>
+          <br>
           <div class="card-body text-center">
             <div class="table-responsive">
               
@@ -95,29 +115,60 @@ formControlName="fecha"
               
               
               <table class="table text-center"  *ngIf="ingredientesss.length > 0">
-                <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
-                  <th class="rojo"> <h1 class="m">Plato:</h1> {{ item.plato.descripcion }}</th>
-                  <th class="rojo"> <h1 class="m">Precio del plato:</h1> {{ item.plato.precio }}</th>
-                  <th class="rojo"> <h1 class="m">Total precio porción </h1> {{ totalPrecio}}</th>
-        
-        
+                <thead class="text-primary">
+                  
+                    <th>Menú</th>
+                    <th>Precio del Menú</th>
+                    <th>Costeo del Menú</th>
+                    <th>Cantidad de personas</th>
+                    <th>Fecha</th>
+                 
                 </thead>
+                <tbody>
+                  <tr *ngFor="let item of ingredientedescripcionsss">
+                    <td>{{ item.plato.descripcion }}</td>
+                    <td>
+                      <ng-container *ngIf="item.plato.precio !== null">
+                        <span *ngIf="item.plato.precio.toString().startsWith('0')">
+                          {{ truncateZeros(item.plato.precio) }} ctvs
+                        </span>
+                        <span *ngIf="!item.plato.precio.toString().startsWith('0')">
+                          {{ item.plato.precio }} $
+                        </span>
+                      </ng-container>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="totalPrecio !== null">
+                        <span *ngIf="totalPrecio.toString().startsWith('0')">
+                          {{ truncateZeros(totalPrecio) }} ctvs
+                        </span>
+                        <span *ngIf="!totalPrecio.toString().startsWith('0')">
+                          {{ totalPrecio }} $
+                        </span>
+                      </ng-container>
+                    </td>
+                    <td>{{ personas }}</td>
+                    <td>{{ fechaFormateada }}</td>
+                  </tr>
+                </tbody>
+                <br><br>   <br> 
                 <thead class="text-primary">
                   <th>Nº</th>
 
-                  <th>Ingrediente</th>
-                 
-                  <th>Libra/litro</th>
-                  <th>Costo de mercado </th>
-                  <th>Costo por porción </th>
-                  <th>Cantidad personas</th>
-                  <th>Opciones de día</th>
-                  <th>Cantidad final</th>
+                  <th>Poducto</th>
+                  <th>Unidad de medida</th>
+                  <th>Cantidad persona come</th>
+                  <th>Porción por cantidad de persona</th>
+                   <th>Precio unidad</th>
+                   <th>Costeo una persona</th>
+                   <th>Porción para n personas</th>
+                  <th>Costo por cantidad de persona</th>
+
                  
 
                   <th>Acción</th>
                 </thead>
-                <tbody *ngFor="let item of pagedIngredientes; let i = index">
+                <tbody *ngFor="let item of ingredientesss; let i = index">
                   <tr>
                     <td>
                       {{ i + 1 }}
@@ -126,40 +177,89 @@ formControlName="fecha"
                     <td>
                       {{ item.alimento.descripcion }}
                     </td>
-                   
                     <td>
-                      {{ item.cantidadGramo }}
+                      {{item.unidadMedida.unidadMedida}}
                     </td>
+                   <td>{{item.cantidadPersonaCome}} </td>
+                       
+                   <td>
+                    {{ item.cantidadPersonaGramo }}
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
+                  </td> 
+                   <td> 
+                    <ng-container *ngIf="item.preciounidad !== null">
+                      <span *ngIf="item.preciounidad.toString().startsWith('0')">
+                        {{ truncateZeros(item.preciounidad) }} ctvs
+                      </span>
+                      <span *ngIf="!item.preciounidad.toString().startsWith('0')">
+                        {{ item.preciounidad }} $
+                      </span>
+                    </ng-container>
+                  
+                  </td>
+                   <td> 
+                    <ng-container *ngIf="item.costeounaPersona !== null">
+                      <span *ngIf="item.costeounaPersona.toString().startsWith('0')">
+                        {{ truncateZeros(item.costeounaPersona) }} ctvs
+                      </span>
+                      <span *ngIf="!item.costeounaPersona.toString().startsWith('0')">
+                        {{ item.costeounaPersona }} $
+                      </span>
+                    </ng-container>
+                   </td>
+
+                   <td>
+                    {{ item.porcion }}
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'kilo'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'onza'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'atado'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'medio atado'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === '1/2 atado'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharada'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'taza'">(gramos)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'vaso'">(mililitros)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cucharadita'">(mililitros)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'pieza'">(unidad)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'unidad'">(unidad)</span>
+                    <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
+                  </td> 
+                   
+                   
                    
                     <td>
-                      {{ item.precio | number:'1.2-2' }}
+                      <ng-container *ngIf="item.costeo !== null">
+                        <span *ngIf="item.costeo.toString().startsWith('0')">
+                          {{ truncateZeros(item.costeo) }} ctvs
+                        </span>
+                        <span *ngIf="!item.costeo.toString().startsWith('0')">
+                          {{ item.costeo }} $
+                        </span>
+                      </ng-container>
                     </td>
                    <!-- En la sección donde deseas mostrar el valor precio por porción -->
-                      <td>
-                        {{ item.precioporcion |  number:'1.2-2' }}
-                      </td>
+                  
 
 
                     
-                    <td>
-                      {{ item.cantidad }}
-                    </td>
-                    <td>
-                      {{ item.numDias }}
-                    </td>
-                    <td>
-                      {{ item.cantidadFinal }}
-                    </td>
-                     
-                   
-
+                 
                 
 
-                    <td>
-                     <!--  <button1 color="primary" (click)="editarIngrediente(item)">
-                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                      </button1>
- -->
+                    <td>               
                       <button2>
                         <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
                       </button2>
@@ -168,6 +268,13 @@ formControlName="fecha"
                 </tbody>
               </table>
             </div>
+
+
+
+            <div *ngIf="!ingredientesss || ingredientesss.length === 0" class="text-center">
+              <img src="/assets/img/libb.png" class="edit" alt="" />
+            </div>
+            
                         <!-- Contenedor para centrar la paginación -->
             <div class="pagination-containerrrr">
              <!-- Paginación -->
@@ -178,6 +285,9 @@ formControlName="fecha"
                </div>
             </div>
           </div>
+
+
+      
         </div>
       </div>
     </div>

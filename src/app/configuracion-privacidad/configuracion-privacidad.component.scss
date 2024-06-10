@@ -16,6 +16,12 @@
 .edit-mode {
   background-color: #fffacd;
 }
+.img-carnet2 {
+  width: 200px; /* Ajusta este valor según el tamaño que necesites */
+  height: 200px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  border-radius: 50%;
+  object-fit: cover;
+}
 
 .danger {
   background-color: rgb(204, 43, 43);
@@ -24,11 +30,23 @@
 }
 
 
+ 
 .x {
   // width: 200px;
   height: 80px;
+  background-color: rgb(206, 25, 25);
+//  background-color: brown;
   //margin-right: 20px;
   // margin-bottom: 0;
+}
+.img-carnet6 {
+  height: 100px; /* ajusta la altura según tus necesidades */
+  width: 250px; /* ajusta el ancho según tus necesidades */
+  object-fit: contain;
+}
+.mimg {
+  max-width: 100%; /* Ensure the image does not exceed the container's width */
+  max-height: 80px; /* Set the maximum height for the carnet size */
 }
 
 .editable-rowr{
@@ -177,19 +195,10 @@ header {
   height: 250px;
 
 }
-img {
-  max-width: 100%; /* Ensure the image does not exceed the container's width */
-  max-height: 80px; /* Set the maximum height for the carnet size */
-}
+ 
 
 
 /* Puedes ajustar el tamaño según tus preferencias */
-.img-carnet2 {
-  width: 100%;
-  max-height: 100%; /* O el valor que desees */
-  height: auto;
-}
-
  
 
 

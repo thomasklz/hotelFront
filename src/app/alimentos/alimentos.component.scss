@@ -3,36 +3,21 @@ img {
 
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #ffffff;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-
+.texto-grueso {
+  font-weight: bold;
+  font-size: 22px;
 }
 
-.search-box {
-  flex: 1;
-  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
-  margin-right: 10px; 
 
-}
-.label {
-  font-size: 18px; /* Ajusta el tamaño de la fuente según tus preferencias */
-  margin-right: 25px;
-  color: rgb(141, 130, 130);
+.btn1 {
+  color: #ffffff;
 }
 
-.form-control {
-  border: none;
-  box-shadow: none;
-  outline: none;
-}
 
+.formmm3 {
+  margin-left: 30px;
+  width: 900px;
+  }
 .pagination-containerrrr {
   display: flex;
   justify-content: center;
@@ -59,21 +44,6 @@ img {
 .pagination button i {
   margin-right: 5px; /* Puedes ajustar este valor según tu preferencia */
 }
-
-.texto-grueso {
-  font-weight: bold;
-  font-size: 22px;
-}
-
-h6{
-font-family:  Helvetica;  font-size: 12px;
-text-transform: lowercase;
-}
-
-.btn1 {
-  color: #ffffff;
-}
-
 
 .editable-row {
   cursor: pointer;
@@ -127,12 +97,35 @@ th {
 }
 
 
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+ 
+}
 
+.search-box {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
 
+}
+.label {
+  font-size: 18px; /* Ajusta el tamaño de la fuente según tus preferencias */
+  margin-right: 25px;
+  color: rgb(141, 130, 130);
+}
 
-
-
-
+.form-control {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
 
 
 
@@ -214,12 +207,24 @@ header {
   top: 100%;
   left: 0;
   right: 0;
+
   background-color: #fff;
-  border: 1px solid #ccc;
-  max-height: 200px;
+  border: 2px solid #ccc;
+  max-height: 140px;
   overflow-y: auto;
   z-index: 1;
+
+  display: none;
+
 }
+
+
+
+.show-more-options .options-container {
+  display: block;
+  /* Agregar esta línea para mostrar las opciones cuando se haga clic */
+}
+
 
 .option {
   padding: 8px;
@@ -269,4 +274,33 @@ header {
 .editable-row:hover {
   background-color: #c0c0c0;
   /* Cambia el color a tu elección */
+}
+
+
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+.col{
+  color: #ffffff;
+}
+
+.dropdown-menu{
+  cursor: pointer;
 }

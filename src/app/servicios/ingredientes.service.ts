@@ -51,6 +51,16 @@ getobtenerDescripcionPlatoPrecio( id?){
     }
 
 
+    crearingredientesconsuplato(data:any, id?){
+      if (id) {
+        return this.http.put<any>('http://localhost:3000/api/editaringredientes/'+id,data);
+      }else{
+        return this.http.post<any>('http://localhost:3000/api/crearingredientesconsuplato', data);
+      }
+      }
+  
+    
+
     //eliminar ingredientes
     deleteingrediente(id:number){
       return this.http.delete<any>('http://localhost:3000/api/eliminaringredientes/'+id);

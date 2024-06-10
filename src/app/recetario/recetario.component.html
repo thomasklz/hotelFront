@@ -1,0 +1,250 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<div class="main-content">
+  <div class="container-fluid">
+    <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title" data-toggle="modal"
+      data-target="#ventanaForm" (click)="nuevoCurso()">
+      AGREGAR +
+    </button>
+
+
+
+    <div class="search-container">
+      <label class="label" >Buscar el nombre del plato:</label>
+      <div class="search-box">
+        <input type="text" class="form-control" list="list-timezone"  [(ngModel)]="ingredientId" />
+        <datalist id="list-timezone">
+          <option *ngFor="let ingrediente of descripcplato" [value]="ingrediente.descripcion"></option>
+        </datalist>
+      </div>
+      <button type="button" class="btn btn-danger" (click)="buscarIngredientePorId(); buscarDescripcionporId()">
+        Buscar<i class="fa fa-search fa-stack-1x"></i>
+      </button>
+      
+    </div>
+
+    <div class="row"  >
+      <div class="col-md-12">
+        <div class="card text-center">
+          <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
+            <h4 class="card-title disabled">
+              <img src="/assets/img/receta.png" class="edit" alt="" />
+             Recetario
+            </h4>
+
+
+            <li class="nav-item dropdown">
+              <a class="nav-link label2 col" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+                Descargar    <i class="material-icons">file_download</i> 
+                
+                  <p>
+                      <span class="d-lg-none d-md-block"> </span>
+                  </p>
+              </a>
+              <div class="dropdown-menu  dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" (click)="descargarExcel()"  >Exportar a excel <img class="tamimg" src="/assets/img/microsoft-excel.svg" alt=""> </a>
+                  <a class="dropdown-item" (click)="descargarPDF()"  > Exportar a pdf <i class="material-icons">picture_as_pdf</i></a>
+                
+                  
+              </div>
+          </li>
+  
+          </div>
+          <br>
+          <div class="card-body " *ngIf="mostrarTabla">
+            <div class="table-responsive">
+              
+              <ng-container *ngIf="ingredientId">
+                <div *ngIf="productosplatosss.length === 0">
+                  <p>
+                    
+                    
+                  </p>
+                </div>
+              </ng-container>
+              
+               
+              <table class="table" *ngIf="productosplatosss && productosplatosss.length > 0">
+                <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
+                  <th>Menú: {{ item.plato.descripcion }}</th>
+                 
+
+                
+
+
+
+                 </thead>
+              
+                <thead class="text-primary">
+                  <th>Nº</th>
+                  <th>Producto</th>
+                
+                   
+                  <th>Acciones</th>
+                </thead>
+                <tbody *ngFor="let item of productosplatosss; let i = index">
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.alimento.descripcion }}</td>
+                   
+                    <td>
+                      <button2>
+                        <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                      </button2>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+            </div>
+          </div>
+          <div *ngIf="!ingredientedescripcionsss || ingredientedescripcionsss.length === 0" class="text-center">
+            <img src="/assets/img/libroreceta.png" class="edit" alt="" />
+          </div>
+
+          <!-- Contenedor para centrar la paginación -->
+<div class="pagination-containerrrr">
+  <!-- Paginación -->
+ <!-- Paginación -->
+<div class="pagination">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+    <i class="fa fa-arrow-left"></i> Anterior
+  </button>
+  <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages">
+    Siguiente <i class="fa fa-arrow-right"></i>
+  </button>
+  
+  
+</div>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media (max-width: 768px) {
+    /* Estilos para pantallas pequeñas */
+    #ventanaForm .modal-dialog {
+      top: 50%;
+    }
+  }
+  
+  /* Estilos para pantallas más grandes */
+  @media (min-width: 769px) {
+    #ventanaForm .modal-dialog {
+      top: 45%;
+    }
+  }
+  </style>
+
+
+
+
+
+<div class="modal fade tam1 my-custom-modal" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="modal-content tam">
+      <div class="heads x tam1 ">
+        <h5 class="modal-title texto-grueso " id="exampleModalLabel">
+          {{ tituloForm }} <img src="assets/img/comida.png" alt="" />
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body modal-with-padding">
+        <div class="common-width-container">
+          <form [formGroup]="ingredientesForm">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <div class="formmm">
+                  <div class="search-container">
+                    <label class="label">Buscar el nombre del plato:</label>
+                    <div class="search-box">
+                      <input type="text" class="form-control" list="list-timezone-plato"
+                        [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
+                      <datalist id="list-timezone-plato">
+                        <option *ngFor="let item of productosplato" [value]="item.descripcion"></option>
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Campo oculto para enviar los alimentos seleccionados -->
+            <input type="hidden" formControlName="id_alimentos" [value]="alimentosSeleccionados" />
+          </form>
+          
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <div class="formmm search-container container-centered">
+                <div class="search-box container-fluid">
+                  <div class="container-centered">
+                    <br><br>
+                    <div class="text-center">
+                      <h2 class="t">PRODUCTOS</h2>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="ml-auto" style="width: 170px;">
+                        <div class="input-group">
+                          <div style="display: flex; align-items: center; justify-content: flex-end;">
+                            <input type="search" class="form-control mb-2" placeholder="Buscar producto" [(ngModel)]="filtro" (input)="filtrarPlatos()">
+                            <i class="fa fa-search bm" aria-hidden="true" style="margin-left: 5px;"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="container-centered2 text-center">
+                      <table class="platos">
+                        <tr>
+                          <th  class="liu">Seleccionar</th>
+                          <th  class="liu">Ingrediente</th>
+                          
+                        </tr>
+                        <ng-container *ngFor="let alimentos of alimentosFiltrados; let i = index">
+                          <tr *ngIf="i >= pageIndex * pageSizecc && i < (pageIndex + 1) * pageSizecc">
+                            <td><input type="checkbox" [(ngModel)]="alimentos.selected" (change)="updateTotal(); updateFormValues()"  style="width: 20px; height: 20px;  cursor: pointer;" ></td>
+                            <td class="liu">{{ alimentos.nombre }}</td>
+                            
+                          
+                          </tr>
+                        </ng-container>
+                      </table>
+                    </div>
+                    <div class="pagination-container centered-horizontal d-flex justify-content-center">
+                      <div class="pagination">
+                        <button class="tamanoletra" (click)="prevPage()" [disabled]="pageIndex === 0">
+                          <i class="fa fa-arrow-left"></i> Anterior
+                        </button>
+                        <button class="tamanoletra" (click)="nextPage()" [disabled]="pageIndex === maxPageIndex()">
+                          Siguiente <i class="fa fa-arrow-right"></i>
+                        </button>
+                      </div>
+                      <br><br><br><br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer fixed-footer justify-content-center">
+        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()" (click)="closeModalAfterCancel()">
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="addIngredientes()" data-dismiss="modal">
+          {{ editandoIngredientes ? 'Modificar' : 'Registrar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

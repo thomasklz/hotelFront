@@ -40,12 +40,19 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { MatListModule } from '@angular/material/list';
 import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ComprasComponent } from 'app/compras/compras.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
 @NgModule({
   imports: [
     CommonModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
@@ -85,7 +92,8 @@ import { ListadoadministradoresComponent } from 'app/listadoadministradores/list
    ProductosplatoComponent,
    ReporteproductoComponent,
    ReporteingresosComponent,
-   ListadoadministradoresComponent
+   ListadoadministradoresComponent,
+   ComprasComponent
   ]
 })
 

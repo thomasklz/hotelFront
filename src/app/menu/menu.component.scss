@@ -148,7 +148,7 @@ th {
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  width: 800px;
+  width: 650px;
 }
 
 .search-box {
@@ -410,7 +410,11 @@ header {
   margin-left: 30px;
   width: 800px;
   }
-
+  .formmme {
+    margin-left: 30px;
+    width: 100%;
+    }
+  
 /* Centrar el título h5 */
 .modal-title {
   text-align: center !important;

@@ -25,6 +25,9 @@ import { ProductosplatoComponent } from 'app/productosplato/productosplato.compo
 import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
 import { ReporteingresosComponent } from 'app/reporteingresos/reporteingresos.component';
 import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
+import { PanelAdministradorComponent } from 'app/panel-administrador/panel-administrador.component';
+import { RecetarioComponent } from 'app/recetario/recetario.component';
+import { ComprasComponent } from 'app/compras/compras.component';
  
 
 
@@ -33,7 +36,7 @@ export const AdminLayoutRoutes: Routes = [
    
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'table-list',     component: TableListComponent },
+    { path: 'registrodecreditos',     component: TableListComponent },
     
 
     { path: 'typography',     component: TypographyComponent },
@@ -60,7 +63,12 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'reportedeproducto',        component: ReporteproductoComponent },
     { path: 'reportedeingresos',        component: ReporteingresosComponent },
     { path: 'listadodeadministradores',        component: ListadoadministradoresComponent },
+    { path: 'panelAdministrador',        component: PanelAdministradorComponent },
+    { path: 'compras',        component: ComprasComponent },
+    { path: 'recetario',        component: RecetarioComponent },
 
- 
+
+
+    
     
 ];

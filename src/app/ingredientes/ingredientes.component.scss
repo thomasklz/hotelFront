@@ -101,12 +101,7 @@ img {
     font-size: 21px;
   }
   
-  th {
-    color: rgb(182, 17, 17);
-    font-weight: bold;
-    font-size: 20px;
-  }
-  
+ 
   
   
   
@@ -322,9 +317,7 @@ img {
 
 
 
-  .formmm {
-    width: 910px;
-    }
+  
   
   .formmm2 {
     width: 500px;
@@ -335,6 +328,7 @@ img {
     border: none;
     box-shadow: none;
     outline: none;
+     
   }
   
   .labelversion2 {
@@ -483,3 +477,114 @@ cursor: pointer;  }
   color: #595757;
 }
 
+
+
+
+
+
+/* lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll*/
+
+
+
+
+
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.plato {
+  margin-bottom: 10px;
+}
+
+.total {
+  margin-top: 20px;
+}
+.tamanoletra{
+  font-size: 15px;
+}
+.platos th,
+.platos td {
+  padding: 8px; /* ajusta este valor según tu preferencia */
+}
+.liu {
+  cursor: pointer;
+  font-size: 1.2em; /* Ajusta el tamaño de la letra según lo necesites */
+ }
+.curr{
+  cursor: pointer;
+}
+.container-centered {
+  margin: 0 auto; /* Esto centra horizontalmente la div */
+  max-width: 800px; /* Establece un ancho máximo para la div */
+  padding: 0 15px; /* Agrega un poco de espacio en los lados */
+ 
+}
+
+.container-centered2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.centered-horizontal div {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+ 
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.common-width-container {
+  width: 100%; /* or any specific width you prefer */
+  max-width: 800px; /* example width */
+  margin: 0 auto;
+}
+
+.formmm {
+  width: 100%;
+  height: 100%;
+}
+.t{
+  font-size: 25px;
+  font-weight: bold;
+}
+.col{
+  color: #ffffff;
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
+.dropdown-menu{
+  cursor: pointer;
+}
+
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+.centered-horizontal  {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}

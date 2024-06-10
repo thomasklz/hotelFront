@@ -22,6 +22,12 @@ export class UsuarioService {
     
   }
 
+  crearPersonaCliente(data:any){
+    return this.http.post<any>('http://localhost:3000/api/crearPersonaCliente/', data);
+    
+  }
+  
+
   getusuario(){
     return this.http.get<any>('http://localhost:3000/api/mostrarusuario/');
   }

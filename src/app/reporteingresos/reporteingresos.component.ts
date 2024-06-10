@@ -12,6 +12,7 @@ import swal from "sweetalert";
 import { MenuService } from 'app/servicios/menu.service';
 import { CreditosService } from 'app/servicios/creditos.service';
 import { ImageService } from 'app/servicios/image.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-reporteingresos',
@@ -148,9 +149,9 @@ export class ReporteingresosComponent implements OnInit {
               content: [
                 headerTable,
                 '\n\n',
-                { text: 'INFORME DE INGRESOS DE PLATO POR DÍA', style: 'header', alignment: 'center' },
+                { text: 'INFORME DE INGRESOS DE MENÚ POR DÍA', style: 'header', alignment: 'center' },
                 ' \n',   ' \n',  
-                { text: 'Cantidad diaria de ingresos en plato', style: 'subheader', alignment: 'left' , bold: true },
+                { text: 'Cantidad diaria de ingresos en menú', style: 'subheader', alignment: 'left' , bold: true },
                 '\n',
                 {
                   // Contenedor externo para la tabla
@@ -162,7 +163,7 @@ export class ReporteingresosComponent implements OnInit {
                     // Alineación de la tabla en el centro
                     alignment: 'center',
                     body: [
-                      ['Plato', 'Fecha', 'Cantidad', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
+                      ['Menú', 'Fecha', 'Cantidad del menú', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
                         text: cell,
                         bold: true,
                         fillColor: '#D3D3D3',
@@ -197,19 +198,78 @@ export class ReporteingresosComponent implements OnInit {
         
 
 //---------------------
+ 
+
+
 descargarDatos() {
-  const datosParaDescargar = this.reportesss.map(item => ({
-    'Plato': item.plato,
-    'Fecha ': item.fecha,
-    'Cantidad ': item.cantidadPlato,
-    'Con créditos': item.conCreditos,
-    'Sin créditos': item.sinCreditos,
-  }));
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Reporte de Ingresos');
+  
+  // Organizar créditos por persona
+  const creditosPorPersona = {};
+  
+ 
+  
+  // Agregar encabezados de la tabla
+  const headers = [
+    'Menú',
+    'Fecha ',
+    'Cantidad del menú',
+    'Con créditos',
+    'Sin créditos',
+  ];
+  
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+  
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+  cell.alignment = { vertical: 'middle', horizontal: 'center' };
+  cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+  });
+  
+  // Agregar datos a la hoja de cálculo
+  this.reportesss.forEach((item, index) => {
+  const rowData = [
+     item.plato,
+     item.fecha,
+     item.cantidadPlato,
+     item.conCreditos,
+     item.sinCreditos,
+  ];
+  
+  worksheet.addRow(rowData);
+  });
+  
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.reportesss.length + 1; i <= worksheet.lastRow.number; i++) {
+  worksheet.getRow(i).eachCell(cell => {
+      cell.font = { bold: false }; // No negrita para datos
+      cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  });
+  }
+  
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
+  let maxLength = 0;
+  column.eachCell({ includeEmpty: true }, cell => {
+      const length = cell.value ? cell.value.toString().length : 10;
+      if (length > maxLength) {
+          maxLength = length;
+      }
+  });
+  column.width = maxLength < 10 ? 10 : maxLength;
+  });
+  
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+  saveAs(new Blob([buffer]), 'Reporte de Ingresos.xlsx');
+  });
+  }
 
-  const nombreHoja = 'data'; // Ajusta el nombre de la hoja según tus necesidades
-
-  this.descargarExcel(datosParaDescargar, nombreHoja);
-}
 
 descargarExcel(datos: any[], nombreHoja: string) {
   const workSheet = XLSX.utils.json_to_sheet(datos);
@@ -217,7 +277,7 @@ descargarExcel(datos: any[], nombreHoja: string) {
   const excelBuffer: any = XLSX.write(workBook, { bookType: 'xlsx', type: 'array' });
 
   const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  FileSaver.saveAs(blob, 'Reporte de ingresos de plato por dia .xlsx');
+  FileSaver.saveAs(blob, 'Reporte de ingresos de menú por dia .xlsx');
 }
 
 
@@ -275,9 +335,9 @@ descargarExcel(datos: any[], nombreHoja: string) {
               content: [
                 headerTable,
                 '\n\n',
-                { text: 'INFORME DE INGRESOS DE PLATO POR SEMANA', style: 'header', alignment: 'center' },
+                { text: 'INFORME DE INGRESOS DE MENÚ POR SEMANA', style: 'header', alignment: 'center' },
                 ' \n',   ' \n',  
-                { text: 'Cantidad semanal de ingresos en plato', style: 'subheader', alignment: 'left' , bold: true },
+                { text: 'Cantidad semanal de ingresos en menú', style: 'subheader', alignment: 'left' , bold: true },
                 '\n',
                 {
                   // Contenedor externo para la tabla
@@ -289,7 +349,7 @@ descargarExcel(datos: any[], nombreHoja: string) {
                     // Alineación de la tabla en el centro
                     alignment: 'center',
                     body: [
-                      ['Plato', 'Fecha inicio', 'Fecha fin','Cantidad', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
+                      ['Menú', 'Fecha inicio', 'Fecha fin','Cantidad del menú', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
                         text: cell,
                         bold: true,
                         fillColor: '#D3D3D3',
@@ -322,20 +382,84 @@ descargarExcel(datos: any[], nombreHoja: string) {
 
 
 //---------------------
+
+
+
 descargarDatosSemana() {
-  const datosParaDescargar = this.reportesss.map(item => ({
-    'Plato': item.plato,
-    'Fecha Inicio ': item.fechaInicio,
-    'Fecha Final ': item.fechaFin,
-    'Cantidad': item.cantidadPlato,
-    'Con créditos': item.conCreditos,
-    'Sin créditos': item.sinCreditos,
-  }));
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Reporte de Ingresos');
+  
+  // Organizar créditos por persona
+  const creditosPorPersona = {};
+  
+ 
+  
+  // Agregar encabezados de la tabla
+  const headers = [
+    'Menú',
+    'Fecha Inicio ',
+    'Fecha Final ',
+    'Cantidad del menú',
+    'Con créditos',
+    'Sin créditos',
 
-  const nombreHoja = 'data'; // Ajusta el nombre de la hoja según tus necesidades
+ 
+  ];
+  
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+  
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+  cell.alignment = { vertical: 'middle', horizontal: 'center' };
+  cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+  });
+  
+  // Agregar datos a la hoja de cálculo
+  this.reportesss.forEach((item, index) => {
+  const rowData = [
+    item.plato,
+    item.fechaInicio,
+   item.fechaFin,
+     item.cantidadPlato,
+     item.conCreditos,
+     item.sinCreditos,
+  ];
+  
+  worksheet.addRow(rowData);
+  });
+  
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.reportesss.length + 1; i <= worksheet.lastRow.number; i++) {
+  worksheet.getRow(i).eachCell(cell => {
+      cell.font = { bold: false }; // No negrita para datos
+      cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  });
+  }
+  
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
+  let maxLength = 0;
+  column.eachCell({ includeEmpty: true }, cell => {
+      const length = cell.value ? cell.value.toString().length : 10;
+      if (length > maxLength) {
+          maxLength = length;
+      }
+  });
+  column.width = maxLength < 10 ? 10 : maxLength;
+  });
+  
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+  saveAs(new Blob([buffer]), 'Reporte de Ingresos.xlsx');
+  });
+  }
 
-  this.descargarExcelsemana(datosParaDescargar, nombreHoja);
-}
+
+ 
 
 descargarExcelsemana(datos: any[], nombreHoja: string) {
   const workSheet = XLSX.utils.json_to_sheet(datos);
@@ -343,7 +467,7 @@ descargarExcelsemana(datos: any[], nombreHoja: string) {
   const excelBuffer: any = XLSX.write(workBook, { bookType: 'xlsx', type: 'array' });
 
   const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  FileSaver.saveAs(blob, 'Reporte de ingresos de plato por semana .xlsx');
+  FileSaver.saveAs(blob, 'Reporte de ingresos de menú por semana .xlsx');
 }
 
 
@@ -401,9 +525,9 @@ descargarExcelsemana(datos: any[], nombreHoja: string) {
         content: [
           headerTable,
           '\n\n',
-          { text: 'INFORME DE INGRESOS DE PLATO POR MES', style: 'header', alignment: 'center' },
+          { text: 'INFORME DE INGRESOS DE MENÚ POR MES', style: 'header', alignment: 'center' },
           ' \n',   ' \n',  
-          { text: 'Cantidad mensual de ingresos en plato', style: 'subheader', alignment: 'left' , bold: true },
+          { text: 'Cantidad mensual de ingresos en menú', style: 'subheader', alignment: 'left' , bold: true },
           '\n',
           {
             // Contenedor externo para la tabla
@@ -415,7 +539,7 @@ descargarExcelsemana(datos: any[], nombreHoja: string) {
               // Alineación de la tabla en el centro
               alignment: 'center',
               body: [
-                ['Plato', 'Mes','Cantidad', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
+                ['Menú', 'Mes','Cantidad del menú', 'Con créditos' , 'Sin créditos'].map((cell, index) => ({
                   text: cell,
                   bold: true,
                   fillColor: '#D3D3D3',
@@ -452,19 +576,76 @@ descargarExcelsemana(datos: any[], nombreHoja: string) {
   
 
 //---------------------
+
 descargarMesDatos() {
-  const datosParaDescargar = this.reportesss.map(item => ({
-    'Plato': item.plato,
-    'Mes':  this.meses[item.mes - 1],
-'Cantidad': item.cantidadPlato,
-    'Con créditos': item.conCreditos,
-    'Sin créditos': item.sinCreditos,
-  }));
-
-  const nombreHoja = 'data'; // Ajusta el nombre de la hoja según tus necesidades
-
-  this.descargarExcelMes(datosParaDescargar, nombreHoja);
-}
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Reporte de Ingresos');
+  
+  // Organizar créditos por persona
+  const creditosPorPersona = {};
+  
+ 
+  
+  // Agregar encabezados de la tabla
+  const headers = [
+    'Menú',
+    'Mes ',
+    'Cantidad del menú',
+    'Con créditos',
+    'Sin créditos',
+  ];
+  
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+  
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+  cell.alignment = { vertical: 'middle', horizontal: 'center' };
+  cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+  });
+  
+  // Agregar datos a la hoja de cálculo
+  this.reportesss.forEach((item, index) => {
+  const rowData = [
+     item.plato,
+     this.meses[item.mes - 1],
+     item.cantidadPlato,
+     item.conCreditos,
+     item.sinCreditos,
+  ];
+  
+  worksheet.addRow(rowData);
+  });
+  
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.reportesss.length + 1; i <= worksheet.lastRow.number; i++) {
+  worksheet.getRow(i).eachCell(cell => {
+      cell.font = { bold: false }; // No negrita para datos
+      cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  });
+  }
+  
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
+  let maxLength = 0;
+  column.eachCell({ includeEmpty: true }, cell => {
+      const length = cell.value ? cell.value.toString().length : 10;
+      if (length > maxLength) {
+          maxLength = length;
+      }
+  });
+  column.width = maxLength < 10 ? 10 : maxLength;
+  });
+  
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+  saveAs(new Blob([buffer]), 'Reporte de Ingresos.xlsx');
+  });
+  }
+ 
 
 descargarExcelMes(datos: any[], nombreHoja: string) {
   const workSheet = XLSX.utils.json_to_sheet(datos);
@@ -472,7 +653,7 @@ descargarExcelMes(datos: any[], nombreHoja: string) {
   const excelBuffer: any = XLSX.write(workBook, { bookType: 'xlsx', type: 'array' });
 
   const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  FileSaver.saveAs(blob, 'Reporte de ingresos de plato por mes .xlsx');
+  FileSaver.saveAs(blob, 'Reporte de ingresos de menú por mes .xlsx');
 }
 
 

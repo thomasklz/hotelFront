@@ -19,6 +19,33 @@ import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+
+
+
+
+
+
+
+declare const $: any;
+declare interface RouteInfo {
+    path: string;
+    title: string;
+    icon: string;
+    class: string;
+}
+
+export const ROUTES: RouteInfo[] = [
+ 
+  { path: '/editardatosperfil', title: ' Configuración y privacidad',  icon:'settings', class: '' },
+
+  
+ 
+   { path: '/login', title: ' Cerrar sesión',  icon:'exit_to_app', class: '' },
+     
+  
+  
+];
 @Component({
   selector: 'app-perfilcliente',
   templateUrl: './perfilcliente.component.html',
@@ -38,7 +65,9 @@ export class PerfilclienteComponent implements OnInit {
   private intervalSubscription: any;
 
 
+  menuItems: any[];
 
+  currentRoute: string;
 
    
     private listTitles: any[];
@@ -47,8 +76,9 @@ export class PerfilclienteComponent implements OnInit {
     private sidebarVisible: boolean;
    
 
-  constructor(location: Location,private UsuarioService: UsuarioService, private http: HttpClient, private router: Router, private formBuilder: FormBuilder) {
+  constructor(location: Location,private UsuarioService: UsuarioService,private element: ElementRef, private http: HttpClient, private router: Router, private formBuilder: FormBuilder) {
     this.idUsuario = +localStorage.getItem('idUsuario');
+    this.currentRoute = this.router.url;
 
     this.getAllusuario();
 
@@ -57,7 +87,8 @@ export class PerfilclienteComponent implements OnInit {
     this.usuario= localStorage.getItem('usuario');
     this.id= localStorage.getItem('idPersona'); 
     this.nombre= localStorage.getItem('nombre'); 
- 
+    this.menuItems = ROUTES.filter(menuItem => menuItem);
+
 
 
   }
@@ -69,6 +100,24 @@ export class PerfilclienteComponent implements OnInit {
       this.getAllusuario();
       
     }, 5000);
+
+
+
+
+
+
+  
+    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    const navbar: HTMLElement = this.element.nativeElement;
+    this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
+    this.router.events.subscribe((event) => {
+      this.sidebarClose();
+       var $layer: any = document.getElementsByClassName('close-layer')[0];
+       if ($layer) {
+         $layer.remove();
+         this.mobile_menu_visible = 0;
+       }
+   });
 
 
     this.usuarioForm = this.formBuilder.group({
@@ -213,6 +262,16 @@ export class PerfilclienteComponent implements OnInit {
   }
 
  
+  isMaps(path){
+    var titlee = this.location.prepareExternalUrl(this.location.path());
+    titlee = titlee.slice( 1 );
+    if(path == titlee){
+        return false;
+    }
+    else {
+        return true;
+    }
+}
   modalVisible: boolean = false;
   editarfoto(item: any) {
     this.modalVisible = true;
@@ -429,4 +488,95 @@ export class PerfilclienteComponent implements OnInit {
     });
   }
 
+
+
+
+
+
+
+
+  isMobileMenu() {
+    if ($(window).width() > 991) {
+        return false;
+    }
+    return true;
+};
+  
+  sidebarOpen() {
+    const toggleButton = this.toggleButton;
+    const body = document.getElementsByTagName('body')[0];
+    setTimeout(function(){
+        toggleButton.classList.add('toggled');
+    }, 500);
+
+    body.classList.add('nav-open');
+
+    this.sidebarVisible = true;
+};
+sidebarClose() {
+    const body = document.getElementsByTagName('body')[0];
+    this.toggleButton.classList.remove('toggled');
+    this.sidebarVisible = false;
+    body.classList.remove('nav-open');
+};
+
+
+  sidebarToggle() {
+    // const toggleButton = this.toggleButton;
+    // const body = document.getElementsByTagName('body')[0];
+    var $toggle = document.getElementsByClassName('navbar-toggler')[0];
+
+    if (this.sidebarVisible === false) {
+        this.sidebarOpen();
+    } else {
+        this.sidebarClose();
+    }
+    const body = document.getElementsByTagName('body')[0];
+
+    if (this.mobile_menu_visible == 1) {
+        // $('html').removeClass('nav-open');
+        body.classList.remove('nav-open');
+        if ($layer) {
+            $layer.remove();
+        }
+        setTimeout(function() {
+            $toggle.classList.remove('toggled');
+        }, 400);
+
+        this.mobile_menu_visible = 0;
+    } else {
+        setTimeout(function() {
+            $toggle.classList.add('toggled');
+        }, 430);
+
+        var $layer = document.createElement('div');
+        $layer.setAttribute('class', 'close-layer');
+
+
+        if (body.querySelectorAll('.main-panel')) {
+            document.getElementsByClassName('main-panel')[0].appendChild($layer);
+        }else if (body.classList.contains('off-canvas-sidebar')) {
+            document.getElementsByClassName('wrapper-full-page')[0].appendChild($layer);
+        }
+
+        setTimeout(function() {
+            $layer.classList.add('visible');
+        }, 100);
+
+        $layer.onclick = function() { //asign a function
+          body.classList.remove('nav-open');
+          this.mobile_menu_visible = 0;
+          $layer.classList.remove('visible');
+          setTimeout(function() {
+              $layer.remove();
+              $toggle.classList.remove('toggled');
+          }, 400);
+        }.bind(this);
+
+        body.classList.add('nav-open');
+        this.mobile_menu_visible = 1;
+
+    }
+}
+  
 }

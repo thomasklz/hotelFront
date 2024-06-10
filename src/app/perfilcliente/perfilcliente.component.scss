@@ -36,6 +36,8 @@
   .x {
     // width: 200px;
     height: 80px;
+    background-color: rgb(206, 25, 25);
+  //  background-color: brown;
     //margin-right: 20px;
     // margin-bottom: 0;
   }
@@ -86,10 +88,7 @@
     color: red;
   }
   
-  .heads {
-    background-color: rgb(206, 25, 25);
-  }
-  
+ 
   h5 {
     font-size: larger;
     color: rgb(255, 255, 255);
@@ -136,7 +135,7 @@
     /* Removemos todos los bordes */
     border-bottom: 1px solid #888888;
     /* Agregamos solo el borde inferior */
-    width: 400px;
+    width: auto;
     font-size: 18px;
   }
   
@@ -145,6 +144,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgb(206, 25, 25);
   }
   
   header {
@@ -221,11 +221,9 @@
   .report-table th {
     background-color: #f2f2f2;
   }
-  .logo {
-height: 60px; 
-//weight: ;
+ 
 
-}
+
 
 .btn-download {
     background-color: #28a745;
@@ -323,17 +321,12 @@ h2{
 
 
 .circular-image {
-  width: 40px; /* Ajusta el tamaño según sea necesario */
-  height: 40px; /* Ajusta el tamaño según sea necesario */
+  width: 100px; /* Ajusta este valor según el tamaño que necesites */
+  height: 100px; /* Debe ser igual al width para asegurar un círculo perfecto */
   border-radius: 50%;
-  overflow: hidden;
+  object-fit: cover;
 }
 
-.img-carnet2 {
-  width: 100%;
-  max-height: 100%; /* O el valor que desees */
-  height: auto;
-}
 
 
 
@@ -365,26 +358,42 @@ h2{
   height: 250px;
 
 }
-img {
+.mimg {
   max-width: 100%; /* Ensure the image does not exceed the container's width */
   max-height: 80px; /* Set the maximum height for the carnet size */
 }
-
+.yu{
+  height: 20px;
+  width: 30px;
+}
 
 /* Puedes ajustar el tamaño según tus preferencias */
 .img-carnet2 {
-  width: 100%;
-  max-height: 100%; /* O el valor que desees */
-  height: auto;
+  width: 200px; /* Ajusta este valor según el tamaño que necesites */
+  height: 200px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  border-radius: 50%;
+  object-fit: cover;
+}
+.circular-imagert {
+  width: 40px; /* Ajusta este valor según el tamaño que necesites */
+  height: 40px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  border-radius: 50%;
+  object-fit: cover;
 }
 
- 
+
+ .logonavbar{
+  width: auto; /* Ajusta este valor según el tamaño que necesites */
+  height: 70px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  
+  object-fit: cover;
+ }
 
 
  
 
 .img-carnet6 {
-  height: 300px; /* ajusta la altura según tus necesidades */
+  height: 100px; /* ajusta la altura según tus necesidades */
   width: 250px; /* ajusta el ancho según tus necesidades */
   object-fit: contain;
 }
@@ -392,3 +401,104 @@ img {
 .lt{
   font-family: 'Arial';
  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //{{{{{{{{{{{{{{{{{{{{{
+  section {
+    display: table;
+  }
+  
+  .example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+  }
+  
+  .example-button-row {
+    display: table-cell;
+    max-width: 600px;
+  }
+  
+  .example-button-row .mat-mdc-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  
+  .example-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+.icon-text {
+  font-size: 18px; /* Ajusta el tamaño según tus preferencias */
+  vertical-align: middle; /* Asegura la alineación vertical */
+  margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+  color: rgb(136, 135, 134)3, 133, 133;
+  }
+  .esp{
+  margin-top: 20px;
+  cursor: pointer;
+  color: rgb(214, 212, 208)3, 133, 133;
+  }
+  
+  
+  .cl {
+  color:rgb(145, 140, 140); /* Establece el color rojo para el icono */
+  }
+  
+  .icon-text {
+  color: rgb(145, 140, 140); /* Establece el color rojo para el texto */
+  font-size: 16px; /* Ajusta el tamaño según tus preferencias */
+  vertical-align: middle; /* Asegura la alineación vertical */
+  margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+  }
+  .logo{
+  height: 168px;
+  }
+  .letrausua{
+  font-size: 15px;
+  color: gray;
+  font-family: sans-serif;
+  }
+  

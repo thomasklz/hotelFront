@@ -27,6 +27,17 @@ export class CreditosService {
     }
     }
 
+  
+    modificarCredito(id_persona: any, pagado: boolean) {
+      return this.http.put<any>(`http://localhost:3000/api/editarcredito/${id_persona}`, { pagado });
+    }
+
+
+    crearcredito(data:any){
+      return this.http.post<any>('http://localhost:3000/api/crearcredito/', data);
+      
+    }
+
     getReporteUsuario( id:any){
       return this.http.get<any>('http://localhost:3000/api/obtenerreporteporusuario/'+id);
     }
