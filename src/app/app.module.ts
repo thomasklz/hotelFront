@@ -16,7 +16,9 @@ import { LoginComponent } from './login/login.component';
 import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 import { ReporteComponent } from './reporte/reporte.component';
 import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component';
- 
+import { PanelAdministradorComponent } from './panel-administrador/panel-administrador.component';
+import { RecetarioComponent } from './recetario/recetario.component';
+  
 
 @NgModule({
   imports: [
@@ -42,7 +44,9 @@ import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component'
     CrearAdministradorComponent,
     ReporteComponent,
     PerfilclienteComponent,
-     
+    PanelAdministradorComponent,
+    RecetarioComponent
+      
   
     
     

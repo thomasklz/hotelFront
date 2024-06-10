@@ -15,17 +15,20 @@
     <div class="row">
       <div class="col-md-5 mx-auto">
         <div class="example-full-width disabled text-center">
-          <div class="input-groupss">
+      
+          
+          <div class="input-groupss d-flex align-items-start">
             <div class="form-outliness" data-mdb-input-init>
-              <!-- Agrega el formulario y el campo de identificación aquí -->
-              <form [formGroup]="personaForm">
-                <input formControlName="identificacion" type="search" class="form-controlss" placeholder="Cédula:" >
-              </form>
+                <!-- Agrega el formulario y el campo de identificación aquí -->
+                <form [formGroup]="personaForm">
+                    <input formControlName="identificacion" type="search" class="form-controlss" placeholder="Cédula:">
+                </form>
             </div>
-            <button type="button" class="btn btn-primaryss btn-danger " data-mdb-ripple-init (click)="BuscarCedula()" >
-              <i class="fa fa-search" aria-hidden="true"></i>
+            <button type="button" class="btn btn-primaryss btn-danger" data-mdb-ripple-init (click)="BuscarCedula()">
+                <i class="fa fa-search" aria-hidden="true"></i>
             </button>
-          </div>
+        </div>
+        
         </div>
       </div>
     </div>

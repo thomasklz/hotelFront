@@ -65,11 +65,7 @@ body {
   .report-table th {
     background-color: #f2f2f2;
   }
-  .logo {
-height: 60px; 
-//weight: ;
-
-}
+ 
 
 .btn-download {
     background-color: #28a745;
@@ -90,11 +86,16 @@ height: 60px;
   }
   
   /* ---------------------------------------------------------------------------------------------------------------------------------------- */
-  
+  .curr{
+    cursor: pointer;
+  }
   .clsimg{
-    height: 55px;
+    height: 50%;
+    width: 50%;
+   
 
   }
+ 
 
 /* styles.css o sidebar.component.css */
 .red-bold-text {
@@ -152,12 +153,63 @@ h2{
   cursor: pointer;
 }
 
+.logonavbar{
+  width: auto; /* Ajusta este valor según el tamaño que necesites */
+  height: 70px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  
+  object-fit: cover;
+ }
+
+
 .circular-image {
-  width: 40px; /* Ajusta el tamaño según sea necesario */
-  height: 40px; /* Ajusta el tamaño según sea necesario */
+  width: 100px; /* Ajusta este valor según el tamaño que necesites */
+  height: 100px; /* Debe ser igual al width para asegurar un círculo perfecto */
   border-radius: 50%;
-  overflow: hidden;
+  object-fit: cover;
 }
+
 .lt{
   font-family: 'Arial';
+}
+
+
+
+
+
+
+
+
+
+
+
+.icon-text {
+  font-size: 18px; /* Ajusta el tamaño según tus preferencias */
+  vertical-align: middle; /* Asegura la alineación vertical */
+  margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+  color: rgb(136, 135, 134)3, 133, 133;
+}
+.esp{
+  margin-top: 20px;
+  cursor: pointer;
+  color: rgb(214, 212, 208)3, 133, 133;
+}
+
+
+.cl {
+  color:rgb(145, 140, 140); /* Establece el color rojo para el icono */
+}
+
+.icon-text {
+  color: rgb(145, 140, 140); /* Establece el color rojo para el texto */
+  font-size: 16px; /* Ajusta el tamaño según tus preferencias */
+  vertical-align: middle; /* Asegura la alineación vertical */
+  margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+}
+.logo{
+  height: 168px;
+}
+.letrausua{
+  font-size: 15px;
+  color: gray;
+  font-family: sans-serif;
 }

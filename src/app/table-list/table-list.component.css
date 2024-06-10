@@ -1,19 +1,70 @@
-img {
-  font-weight: bold;
-
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
 }
+
+.plato {
+  margin-bottom: 10px;
+}
+
+.total {
+  margin-top: 20px;
+}
+.platos th,
+.platos td {
+  padding: 8px; /* ajusta este valor según tu preferencia */
+}
+ 
+.container-centered {
+  margin: 0 auto; /* Esto centra horizontalmente la div */
+  max-width: 800px; /* Establece un ancho máximo para la div */
+  padding: 0 15px; /* Agrega un poco de espacio en los lados */
+}
+
+
+
+
+
+
+/* ---------------------------------------------------------------------------------------- */
+
 
 .texto-grueso {
   font-weight: bold;
   font-size: 22px;
-}
 
+}
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
 
 .btn1 {
   color: #ffffff;
+  
 }
 
 
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+.col{
+  color: #ffffff;
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.dropdown-menu{
+  cursor: pointer;
+}
 .editable-row {
   cursor: pointer;
 }
@@ -46,13 +97,17 @@ button2 {
 
 .heads {
   background-color: rgb(206, 25, 25);
+  justify-content: center;
+  align-items: center;
 }
 
-h5 {
+.h5 {
   font-size: larger;
   color: rgb(255, 255, 255);
-  text-align: center;
-}
+
+  margin: 0 auto; /* Esto centrará el h5 horizontalmente */
+ }
+
 
 .disabled {
   font-weight: bold;
@@ -60,9 +115,16 @@ h5 {
 }
 
 th {
-  color: rgb(182, 17, 17);
+  color: rgb(85, 83, 83);
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
+}
+.t{
+  font-size: 30px;
+  font-weight: bold;
+}
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
 }
 
 
@@ -71,9 +133,11 @@ th {
 
 
 
-
-
-
+.centered-horizontal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
 
 
 .select-gr {
@@ -86,6 +150,93 @@ th {
 }
 
 
+.centered-horizontal {
+  display: flex;
+  align-items: center;
+}
+
+.select-grr {
+  font-size: 18px;
+  color: rgb(85, 84, 84);
+  margin-right: 10px;
+}
+
+/* Estilos para el contenido dentro de la fila */
+.centered-horizontal  {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+.el{
+  font-weight: bold;
+  font-size: 25px;
+  margin-right: 10px;
+  color: rgb(85, 84, 84);
+}
+.centered-horizontal div {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+ 
+
+.estilosversion2 {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  width: 350px;
+  font-size: 18px;
+  
+}
+.estilosversion3 {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #ffffff;
+  /* Agregamos solo el borde inferior */
+  width: 350px;
+  font-size: 18px;
+  
+}
+.radio-checked i {
+  color: #007bff; /* Color deseado para el círculo cuando está seleccionado */
+}
+
+
+.pagination-containerrrr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+}
+
+.pagination {
+  /* Estilos adicionales para la paginación si es necesario */
+  /* ... */
+}
+/* Agrega estilos para quitar bordes a los botones de paginación */
+.pagination button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+.k{
+  font-weight: bold;
+}
+/* Estilo para los íconos dentro de los botones */
+.pagination button i {
+  margin-right: 5px; /* Puedes ajustar este valor según tu preferencia */
+}
+
+
 .estilos {
   content: "";
   margin-top: 10px;
@@ -94,25 +245,525 @@ th {
   /* Removemos todos los bordes */
   border-bottom: 1px solid #888888;
   /* Agregamos solo el borde inferior */
-  width: 400px;
+  width: 910px;
   font-size: 18px;
+  
 }
 
-.heads {
-  width: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.estilosss {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+  width: 400pxpx;
+  font-size: 18px;
+  
 }
+.estil {
+  content: "";
+  margin-top: 10px;
+  /* Espacio de 5 píxeles arriba de cada opción */
+  border: none;
+  /* Removemos todos los bordes */
+  border-bottom: 1px solid #888888;
+  /* Agregamos solo el borde inferior */
+
+  font-size: 18px;
+}
+/*----------------para la modal----------------------------------*/
+.tam{
+  width: 1000px;
+  
+}
+
+.tam1{
+  width: 1130px;
+  
+}
+.heads {
+  width: 1000px;
+  display: flex;
+   align-items: center;
+}
+
 
 header {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.modal-dialog {
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .x {
 
   height: 80px;
 
+}
+
+.btn1 {
+  margin-right: 20px;
+  /* Ajusta el valor según el espacio de separación deseado */
+}
+
+/* ... (your existing CSS) ... */
+
+
+
+
+
+.options-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+
+  background-color: #fff;
+  border: 2px solid #ccc;
+  max-height: 500px;
+  overflow-y: auto;
+  z-index: 1;
+
+  display: none;
+
+}
+
+
+
+.show-more-options .options-container {
+  display: block;
+  /* Agregar esta línea para mostrar las opciones cuando se haga clic */
+}
+
+
+.option {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.option:last-child {
+  border-bottom: none;
+}
+
+.show-more-options .options-container {
+  display: block;
+}
+
+/* ... (rest of your CSS) ... */
+
+
+
+/* ... (your existing CSS) ... */
+
+.custom-dropdown {
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 190px;
+}
+
+.selected-option {
+  padding: 8px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Add this to create space for the arrow */
+}
+
+
+.down-arrow {
+  width: 12px;
+  /* Adjust the width as needed */
+  height: 12px;
+  /* Adjust the height as needed */
+  margin-right: 5px;
+  /* Add some spacing between the text and the arrow */
+}
+
+/* ... (rest of your CSS) ... */
+/* Agregar color plomo cuando el cursor se encuentra sobre una fila */
+.editable-row:hover {
+  background-color: #c0c0c0;
+  /* Cambia el color a tu elección */
+}
+
+.labelversion2 {
+  display: block;
+  /* Esto hará que el label esté en una línea separada */
+  margin-bottom: 10px; /* Añade margen inferior para separación */
+}
+
+
+.modal-with-padding {
+  padding-left: 40px; /* Ajusta el valor según el espacio deseado */
+  padding-right: 30px; /* Ajusta el valor según el espacio deseado */
+
+}
+
+/* Estilo para centrar horizontalmente el título del modal */
+.text-center {
+  text-align: center;
+}
+
+
+.formmm {
+  width: 910px;
+  }
+.cursor{
+  cursor: pointer;
+}
+.formmm3 {
+  margin-left: 30px;
+  width: 600px;
+  }
+    .search-containerr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+     }
+    .containerversion2{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center; 
+      background-color: #ffffff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      width: 990px;
+    }
+
+    
+.formmm2 {
+  width: 500px;
+  }
+
+/* Estilo para quitar bordes y sombreado del input */
+.form-control {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+
+/* Estilo para hacer la letra más grande en el label */
+.label {
+  font-size: 18px; /* Ajusta el tamaño de la fuente según tus preferencias */
+  margin-right: 25px;
+  color: rgb(141, 130, 130);
+}
+/* Estilo para hacer el botón más largo */
+.btn-danger {
+  width: auto; /* Ancho automático para adaptarse al contenido */
+  display: inline-flex; /* Para colocar el icono al lado del texto */
+  align-items: center; /* Para alinear verticalmente el icono y el texto */
+}
+
+/* Estilo para el icono dentro del botón */
+.btn-danger i {
+  margin-left: 5px; /* Espacio entre el texto y el icono (ajusta según sea necesario) */
+}
+
+
+/* Estilos generales del contenedor de búsqueda */
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  
+}
+
+
+.search-container100 {
+  
+  
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  
+}
+
+/* Estilos para el cuadro de búsqueda */
+.search-box {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
+
+}
+
+/* Estilos para el botón de búsqueda */
+.btn-danger {
+  margin-left: 10px; /* Espacio entre el botón y el cuadro de búsqueda */
+}
+
+
+
+
+
+/* Centrar el título h5 */
+.modal-title {
+  text-align: center !important;
+}
+
+/* Centrar los botones "Cerrar" y "Guardar" */
+.modal-footer {
+  text-align: center !important;
+}
+
+/* Aplicar estilos solo a la modal con la clase "my-custom-modal" */
+.my-custom-modal .modal-title {
+  text-align: center;
+}
+
+.my-custom-modal .modal-footer {
+  text-align: center;
+}
+/* Estilo para centrar verticalmente el título h5 */
+.modal-header {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 15px; /* Ajusta este valor según sea necesario para centrar verticalmente */
+}
+
+/* Estilo para centrar horizontalmente los botones de la modal */
+.modal-footer {
+  justify-content: center;
+  padding-top: 15px; /* Ajusta este valor según sea necesario para centrar verticalmente */
+}
+
+/* Estilo para el botón Cerrar (X) en la modal */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+
+
+
+.custom-container3 {
+  border: 2px solid #ccc; /* Color del borde del contenedor */
+  border-radius: 8px; /* Ajusta según tus preferencias */
+  overflow: hidden; /* Para ocultar el borde del mat-form-field dentro del contenedor */
+   padding: 0 15px; /* Espaciado izquierda y derecha */
+  background-color:rgb(255, 255, 255);
+}
+.CLR{
+ color: #fff;
+ font-weight: bold;
+
+}
+.CLR, .mat-form-field .mat-select-value, .mat-form-field .mat-select-arrow {
+  color: #474646 !important;
+}
+ 
+
+
+
+
+
+
+
+
+
+
+.search-boxv2 {
+  flex: 1;
+  margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+  margin-right: 10px; 
+  width: 105px;
+
+
+  max-height: 35px; /* Puedes ajustar este valor según tus necesidades */
+  overflow: hidden;
+  font-weight: bold; /* Texto en negrita */
+  cursor: pointer;
+ }
+ .cursor{
+  cursor: pointer;
+ }
+
+.d {
+   font-weight: bold; /* Puedes agregar negrita u otros estilos según sea necesario */
+}
+
+
+.btn-danger i {
+  margin-left: 5px; /* Espacio entre el texto y el icono (ajusta según sea necesario) */
+}
+.formmmk{
+  width: 110px;
+  margin-right: 20px;
+  
+   }
+/* Estilo para cambiar el color del texto de las opciones desplegadas */
+ 
+ 
+ 
+#filtroSelect {
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: transparent; /* Elimina el fondo azul predeterminado */
+
+ 
+ }
+
+#filtroSelect option:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al pasar el cursor */
+}
+ 
+/* Cambia el color de la letra en las opciones del select */
+#filtroSelect option {
+  color: black; /* Puedes ajustar el color según tus preferencias */
+
+
+  width: 180px; /* Ajusta el ancho según tus necesidades */
+  font-size: 16px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  cursor: pointer;
+}
+
+   .search-containerv2 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #eb4747;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold; /* Texto en negrita */
+
+ 
+    max-height: 35px; /* Puedes ajustar este valor según tus necesidades */
+    overflow: hidden;
+    width: 110px;
+  }
+ 
+
+
+
+
+
+
+
+
+  /* Estilo para cambiar el color del texto de las opciones en el select */
+#filtroSelect option[value="Seleccionar"]:before {
+  content: 'AGREGAR +';
+  color: #ffffff; /* Color blanco */
+}
+
+#filtroSelect option:not([value="Seleccionar"]):before {
+  content: '\00a0'; /* Carácter de espacio no rompible para mantener el tamaño del espacio */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.plato {
+  margin-bottom: 10px;
+}
+
+.total {
+  margin-top: 20px;
+}
+.tamanoletra{
+  font-size: 15px;
+}
+.platos th,
+.platos td {
+  padding: 8px; /* ajusta este valor según tu preferencia */
+}
+ 
+.container-centered {
+  margin: 0 auto; /* Esto centra horizontalmente la div */
+  max-width: 800px; /* Establece un ancho máximo para la div */
+  padding: 0 15px; /* Agrega un poco de espacio en los lados */
+ 
+}
+
+.container-centered2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }

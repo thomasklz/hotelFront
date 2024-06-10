@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import {
   FormBuilder,
@@ -12,16 +12,24 @@ import { AlimentosService } from "app/servicios/alimentos.service";
 import swal from "sweetalert";
 import swal2 from "sweetalert";
 import Swal from "sweetalert2";
+import { saveAs } from 'file-saver';
+import { ImageService } from "app/servicios/image.service";
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: "app-alimentos",
   templateUrl: "./alimentos.component.html",
   styleUrls: ["./alimentos.component.scss"],
 })
 export class AlimentosComponent implements OnInit {
+  @ViewChild('ventanaForm') ventanaForm!: any;
+   @ViewChild('ventanaFormOtro') ventanaFormOtro!: ElementRef;
   dataSource = new MatTableDataSource<any>();
   id: string = "";
-  id_tipoalimento: string = "";
-  tipoalimentosss: any[] = [];
+  id_unidadMedida: string = "";
+  unidadMedidasss: any[] = [];
   alimentosss: any[] = [];
   tituloForm;
   titulo2Form;
@@ -34,74 +42,81 @@ export class AlimentosComponent implements OnInit {
   showIdTipoalimentoError = false; //evitando que se muestren los mensajes de campo requerido
   showPrecioError = false; //evitando que se muestren los mensajes de campo requerido
 
-  TipoalimentoForm!: FormGroup;
+  unidadMedidaForm!: FormGroup;
   showTipoError = false; //evitando que se muestren los mensajes de campo requerido
   editandoTipoAlimento: boolean = false; // Variable para indicar si se está editando un alimento existente
   idTipoAlimentoEditar: string = ""; // Variable para almacenar el ID del alimento en caso de edición
   alimentosssOriginal: any[] = [];
-
+  tituloFormOtro;
   constructor(
     private http: HttpClient,
     private AlimentosService: AlimentosService,
 
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private imageService: ImageService
   ) {
-    this.getAlltipoalimento();
+    this.getAllunidadMedida();
     this.getAllalimento();
   }
-  showMoreOptions: boolean = false;
-  selectedOption: any = null;
-
-  toggleShowMoreOptions() {
-    this.showMoreOptions = !this.showMoreOptions;
-  }
-  selectOption(item: any) {
-    this.selectedOption = item;
-    this.showMoreOptions = false;
-
-    // Update the form control with the selected option's ID
-    this.alimentoForm.get("id_tipoalimento")?.setValue(item.id);
-  }
-  getSelectedOptionLabel() {
-    return this.selectedOption ? this.selectedOption.tipo : "Seleccione  ";
-  }
-  //cargar los datos de la seleccion de la tabla  en la modal
-
+ 
+  
   ngOnInit() {
     this.getAllalimento();
+    this.getAllunidadMedida();
     this.loadPageData();
     this.alimentoForm = this.formBuilder.group({
       descripcion: new FormControl("", [
         Validators.required,
         Validators.minLength(3),
       ]),
-      equivalenteGramo: new FormControl("", [
-        Validators.required,
-        Validators.minLength(1),
-      ]),
-      cantidadPersona: new FormControl("", [
-        Validators.required,
-        Validators.pattern(/^[0-9]+$/), // Acepta solo números
-        Validators.minLength(1),
-      ]),
-
-      precio: new FormControl("", [
+     
+      id_unidadMedida: new FormControl("", [
         Validators.required,
         Validators.minLength(1),
       ]),
     });
-    // Escucha los cambios en el campo 'cantidadPersona' mientras el usuario escribe
-    this.alimentoForm.get("cantidadPersona")?.valueChanges.subscribe(() => {
-      this.showCantidadPersonaError =
-        this.alimentoForm.get("cantidadPersona")?.invalid;
-    });
+ 
 
-    this.getAlltipoalimento();
-    this.TipoalimentoForm = this.formBuilder.group({
-      tipo: new FormControl("", [Validators.required, Validators.minLength(3)]),
+    this.getAllunidadMedida();
+
+    this.unidadMedidaForm = this.formBuilder.group({
+      unidadMedida: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      valorMedida: new FormControl("", [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
     });
   }
+
+
+
+
+  showMoreOptions: boolean = false;
+  selectedOption: any = null;
+
+ 
+  toggleShowMoreOptions() {
+    this.showMoreOptions = !this.showMoreOptions;
+  }
+
+
+  selectOption(item: any) {
+    this.selectedOption = item;
+    this.showMoreOptions = false;
+
+    // Update the form control with the selected option's ID
+    this.alimentoForm.get('id_unidadMedida')?.setValue(item.id);
+  }
+
+  getSelectedOptionLabel() {
+    return this.selectedOption ? this.selectedOption.unidadMedida : 'Seleccione  ';
+  }
+
+  getSelectedOptionLabelotro() {
+    return this.selectedOption ? this.selectedOption.unidadMedida : 'Otro  ';
+  }
+
 
   //PAGINATOR------------------------------
   pageSize = 10; // Tamaño de la página
@@ -128,7 +143,7 @@ export class AlimentosComponent implements OnInit {
 
   loadPageData() {
     // Lógica para cargar datos de la página actual (no es necesario pasar parámetros a la API)
-    this.AlimentosService.getalimentos().subscribe({
+    this.AlimentosService.mostraralimentoss().subscribe({
       next: (res) => {
         this.alimentosss = res.alimentos;
         this.totalItems = res.alimentos.length; // Actualizar el total de elementos
@@ -139,6 +154,20 @@ export class AlimentosComponent implements OnInit {
       },
     });
   }
+
+    //obtener todos los alimentos
+    getAllalimento() {
+      this.AlimentosService.mostraralimentoss().subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.alimentos);
+          this.alimentosss = res.alimentos;
+          this.alimentosssOriginal = [...res.alimentos]; 
+        },
+        error: (err) => {
+          //alert("Error en la carga de datos");
+        },
+      });
+    }
 
   onPageChange(event: number) {
     this.currentPage = event;
@@ -161,6 +190,9 @@ export class AlimentosComponent implements OnInit {
      
     }
   }
+  nuevoCursoOtro(){
+    this.tituloFormOtro='Registro de unidad de medida'
+   }
   //Modal cuando los datos se agg Notificacion
   title = "sweetAlert";
   showModal() {
@@ -200,29 +232,29 @@ export class AlimentosComponent implements OnInit {
 
   showModalErrorConflict() {
     swal({
-      title: "Ya existe ese producto con sus mismos datos ",
+      title: "Ya existe ese producto  ",
       icon: "error",
     });
   }
 
 
   //registrar el id tipo alimento el nuevo que se selecciona y enviarlo a la data
-  getId_Tipoalimento() {
+  getId_unidadMedida() {
     this.http
       .get(
-        "http://localhost:3000/api/creartipo_alimento?=" + this.id_tipoalimento
+        "http://localhost:3000/api/crearunidadMedida?=" + this.id_unidadMedida
       )
       .subscribe((result: any) => {
-        this.tipoalimentosss = result.alimentos;
+        this.unidadMedidasss = result.nuevaUnidadMedida;
       });
   }
 
   //obtener todos los tipos alimentos
-  getAlltipoalimento() {
-    this.AlimentosService.gettipoalimento().subscribe({
+  getAllunidadMedida() {
+    this.AlimentosService.obtenerUnidadMedida().subscribe({
       next: (res) => {
-        this.dataSource = new MatTableDataSource(res.tipo_alimentos);
-        this.tipoalimentosss = res.tipo_alimentos;
+        this.dataSource = new MatTableDataSource(res.unidadesMedida);
+        this.unidadMedidasss = res.unidadesMedida;
       },
       error: (err) => {
         // alert("Error en la carga de datos");
@@ -230,120 +262,92 @@ export class AlimentosComponent implements OnInit {
     });
   }
 
-  //obtener todos los alimentos
-  getAllalimento() {
-    this.AlimentosService.getalimentos().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.alimentos);
-        this.alimentosss = res.alimentos;
-        this.alimentosssOriginal = [...res.alimentos]; 
-      },
-      error: (err) => {
-        //alert("Error en la carga de datos");
-      },
-    });
-  }
+
 
   //Para el registro de alimento usando modal
   nuevoCurso() {
-    this.tituloForm = "Registro de producto"; // cambio de nombre en el encabezado
+    this.tituloForm = "Registro de producto";
     this.alimentoForm.reset();
     this.editandoAlimento = false;
     this.idAlimentoEditar = "";
-
+  
     // Restablecer la opción seleccionada y borrar el valor del campo de formulario
     this.selectedOption = null;
-    this.alimentoForm.get("id_tipoalimento")?.setValue(null);
-
+    this.alimentoForm.get("id_unidadMedida")?.patchValue({}); // Establecer como un objeto vacío
+  
     // Establecer variables a false al editar
     this.showDescripcionError = false;
     this.showCantidadPersonaError = false;
     this.showEquivalenteGramoError = false;
-
     this.showIdTipoalimentoError = false;
     this.showPrecioError=false;
   }
-
+  
   //Para el registro de alimento usando modal
   nuevaModaltipoAlimento() {
     this.titulo2Form = "Registro de Tipo Alimento"; // cambio de nombre en el encabezado
-    this.TipoalimentoForm.reset();
+    this.unidadMedidaForm.reset();
     this.editandoTipoAlimento = false;
     this.idTipoAlimentoEditar = "";
 
     // Restablecer la opción seleccionada y borrar el valor del campo de formulario
     this.selectedOption = null;
-    this.TipoalimentoForm.get("id_tipoalimento")?.setValue(null);
+    
+    this.unidadMedidaForm.get("id_tipoalimento")?.setValue(null);
 
     // Establecer variables a false al editar
     this.showTipoError = false;
   }
 
-  //Para el editar de plato usando modal
-  editarAlimento(item: any) {
-    this.tituloForm = "Editar  producto"; //editando encabezado
-    //obteniendo los campos llenos segun su id
-    this.alimentoForm.patchValue({
-      descripcion: item.descripcion,
-      equivalenteGramo: item.equivalenteGramo,
-      cantidadPersona: item.cantidadPersona,
-      precio:item.precio
-    });
 
-    this.editandoAlimento = true;
-    this.idAlimentoEditar = item.id;
 
-    // Establecer variables a false al editar
-    this.showDescripcionError = false;
-    this.showIdTipoalimentoError = false;
-    this.showPrecioError=false;
-  }
 
-  // Registro de alimento...
-  addAlimento() {
-    if (this.alimentoForm.valid) {
+
+
+
+  
+
+  addUnidadMedida () {
+    if (this.unidadMedidaForm.valid) {
       this.showDescripcionError = false;
-      this.showCantidadPersonaError = false;
-      this.showEquivalenteGramoError = false;
-      this.showPrecioError=false;
-      const datos = {
-        descripcion: this.alimentoForm.value.descripcion,
-        equivalenteGramo: this.alimentoForm.value.equivalenteGramo,
-        cantidadPersona: this.alimentoForm.value.cantidadPersona,
-        precio: this.alimentoForm.value.precio,
+     
 
+      const datos = {
+        
+        unidadMedida: this.unidadMedidaForm.value.unidadMedida,
+        valorMedida: this.unidadMedidaForm.value.valorMedida
+
+       
       };
-      //Registrar Alimento ----------------------------
-      if (!this.editandoAlimento) {
-        this.AlimentosService.guardar(datos).subscribe(
-          (alimentos) => {
-            console.log(alimentos);
+
+      if (!this. editandoAlimento) {
+        this.AlimentosService.crearunidadMedida(datos).subscribe(
+          (tipo) => {
+            console.log(tipo);
             this.showModal();
-            this.getAllalimento();
+            this.getAllunidadMedida(); // Actualizar la tabla después de agregar un menú
             this.loadPageData();
-            // Actualizar la tabla después de agregar un alimento
-            this.alimentoForm.reset(); //Borre los campos del formulario después de un registro exitoso
-            this.selectedOption = null; //Restablezca la opción seleccionada a nula, configurando efectivamente el menú desplegable de nuevo en "Seleccionar"
+            this.unidadMedidaForm.reset(); // Restablecer los valores del formulario
           },
           (error) => {
             console.log(error);
         
             if (error.status === 409) {
-              this.showModalErrorConflict(); // Mostrar modal específico para conflicto
+              this.showModalErrorConflictotro(); // Mostrar modal específico para conflicto
             } else {
               this.showModalError(); // Mostrar modal genérico para otros errores
             }
           }
         );
       } else {
-        // Modificar Alimento -----------------------------
+        // m o d i f i c a r -----------------------------
         this.AlimentosService.guardar(datos, this.idAlimentoEditar).subscribe(
-          (alimento) => {
-            console.log(alimento);
+          (plato) => {
+            console.log(plato);
             this.showModalEdit();
             this.nuevoCurso(); // Restablecer el formulario después de editar
-            this.getAllalimento();
             this.loadPageData();
+            this.getAllalimento();
           },
           (error) => {
             console.log(error);
@@ -352,14 +356,138 @@ export class AlimentosComponent implements OnInit {
         );
       }
     } else {
-      this.showDescripcionError =
-        this.alimentoForm.controls.descripcion.invalid;
-      this.showCantidadPersonaError =
-        this.alimentoForm.controls.cantidadPersona.invalid;
-      this.showEquivalenteGramoError =
-        this.alimentoForm.controls.equivalenteGramo.invalid;
+      this.showDescripcionError = this.unidadMedidaForm.controls.descripcion.invalid;
+       this.showPrecioError =  this.unidadMedidaForm.controls.precio.invalid;
+
     }
   }
+
+  showModalErrorConflictotro() {
+    swal({
+      title: "Ya existe esa unidad de medida ",
+      icon: "error",
+    });
+  }
+
+  editarAlimento(item: any) {
+    this.tituloForm = "Editar producto";
+    
+    // Asignar los valores del alimento seleccionado al formulario de edición
+    this.alimentoForm.patchValue({
+      descripcion: item.descripcion,
+     
+      id_unidadMedida: item.unidadMedida.id // Asignar el ID de la unidad de medida
+    });
+    
+    // Establecer la opción seleccionada para la unidad de medida
+    this.selectedOption = { unidadMedida: item.unidadMedida.unidadMedida, id: item.unidadMedida.id };
+  
+    // Establecer el estado de edición y el ID del alimento
+    this.editandoAlimento = true;
+    this.idAlimentoEditar = item.id;
+  
+    // Restablecer las variables de error a false
+    this.showDescripcionError = false;
+   
+  }
+  
+  
+  // Método para guardar o actualizar el alimento
+  addAlimento() {
+    console.log('Editando alimento:', this.editandoAlimento);
+    console.log('ID del alimento a editar:', this.idAlimentoEditar);
+    console.log('Estado del formulario antes de la validación:', this.alimentoForm.value);
+    
+    if (this.alimentoForm.valid) {
+      console.log('El formulario es válido. Procediendo a guardar los datos...');
+  
+      const datos = {
+        descripcion: this.alimentoForm.value.descripcion,
+        id_unidadMedida: this.alimentoForm.get('id_unidadMedida')?.value,
+      };
+  
+      if (!this.editandoAlimento) {
+        this.AlimentosService.guardar(datos).subscribe(
+          (alimentos) => {
+            console.log(alimentos);
+            this.showModal(); // Método para mostrar modal de éxito
+            this.getAllalimento(); // Actualizar la lista de alimentos
+            this.loadPageData();
+            this.alimentoForm.reset(); // Reiniciar el formulario
+            this.selectedOption = null;
+          },
+          (error) => {
+            console.log(error);
+            if (error.status === 400) {
+              this.showModalErrorConflict(); // Mostrar modal de conflicto si ya existe el alimento
+            } else {
+              this.showModalError(); // Mostrar modal de error genérico
+            }
+          }
+        );
+      } else {
+        this.AlimentosService.guardar(datos, this.idAlimentoEditar).subscribe(
+          (alimentos) => {
+            console.log('Guardado exitoso:', alimentos);
+  
+            console.log(alimentos);
+            this.showModalEdit(); // Método para mostrar modal de éxito al editar
+            this.getAllalimento(); // Actualizar la lista de alimentos
+            this.loadPageData();
+            this.resetAlimentoForm(); // Reiniciar el formulario
+            this.selectedOption = null;
+            ($('#ventanaForm') as any).modal('hide'); // Cerrar la modal al editar
+          },
+          (error) => {
+            console.log('Error al guardar:', error);
+            console.log(error);
+            this.showModalErrorEdit(); // Mostrar modal de error al editar
+          }
+        );
+      }
+    } else {
+      console.log('El formulario NO es válido. No se pueden guardar los datos.');
+  
+      this.validateForm(); 
+    }
+  }
+  
+
+ 
+  // Método para restablecer el formulario de alimento
+  resetAlimentoForm() {
+    this.alimentoForm.reset();
+    this.editandoAlimento = false;
+    this.idAlimentoEditar = "";
+  }
+
+  // Método para validar el formulario de alimento y mostrar errores
+  validateForm() {
+    this.showDescripcionError = this.alimentoForm.get('descripcion')?.invalid;
+     this.showEquivalenteGramoError = this.alimentoForm.get('id_unidadMedida')?.invalid;
+   }
+
+
+
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
 
   //registro de tipo alimento
   
@@ -409,5 +537,259 @@ export class AlimentosComponent implements OnInit {
     this.alimentoForm.reset();
     this.editandoAlimento = false;
     this.idAlimentoEditar = "";
+    this.unidadMedidaForm.reset();
+    this.selectedOption = null;
+    this.ventanaForm.nativeElement.modal('hide');
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  descargarPDF() {
+    
+    const rows = this.alimentosss.map((item, index) => [
+      (index + 1).toString(), // Número
+      item.descripcion,
+      item.unidadMedida.unidadMedida,
+       
+      ]);
+    
+    
+     
+    
+      const anchoPagina = 595.28;
+      let columnWidths = [30, 115, 115, ];
+      const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+      let escala = 1;
+    
+      if (totalWidth > anchoPagina) {
+        escala = anchoPagina / totalWidth;
+        columnWidths = columnWidths.map(width => width * escala);
+      }
+    
+      // Obtener las representaciones en base64 de las imágenes
+      Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+        const headerTable = {
+          table: {
+            widths: [120, '*', 120],
+            body: [
+              [
+                { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+                { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+                { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+              ],
+              [
+                {},
+                { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+                {},
+              ],
+            ],
+          },
+          layout: 'noBorders',
+        };
+    
+        const documentoPDF = {
+          content: [
+            headerTable,
+            '\n\n',
+            { text: 'INFORME DE PRODUCTOS', style: 'header', alignment: 'center' },
+            ' \n',   ' \n',  
+            { text: 'Productos con su unidad de medida', style: 'subheader', alignment: 'left' , bold: true },
+            '\n',
+            {
+              // Contenedor externo para la tabla
+              alignment: 'center',
+              table: {
+                headerRows: 1,
+                // Ancho de la tabla
+                widths: ['*', '*', '*'],
+                // Alineación de la tabla en el centro
+                alignment: 'center',
+                body: [
+                  ['N°','Producto', 'Unidad de medida'].map((cell, index) => ({
+                    text: cell,
+                    bold: true,
+                    fillColor: '#D3D3D3',
+                    alignment: 'center',
+                  })),
+                  ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                ],
+              },
+            },
+          ],
+          styles: {
+            header: {
+              fontSize: 18,
+              font: 'Roboto',
+              bold: true,
+            },
+            subheader: {
+              fontSize: 14,
+              font: 'Roboto',
+            },
+          },
+        };
+        
+        
+    
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.createPdf(documentoPDF).download('INFORME DE PRODUCTOS.pdf');
+      });
+   
+   
+  }
+
+
+  
+  
+  
+  
+  
+
+
+//-----------------------
+
+
+  datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
+
+
+  //'''''''''''''''''''''''
+ 
+ 
+   
+
+  
+
+ 
+  
+  descargarDatos() {
+    const ExcelJS = require('exceljs');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Reporte de Productos');
+    
+    // Organizar créditos por persona
+    const creditosPorPersona = {};
+    
+   
+    
+    // Agregar encabezados de la tabla
+    const headers = [
+    'Nº',
+     'Productos' ,
+     'Unidad de medida' 
+    ];
+    
+    worksheet.addRow(headers);
+    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+    
+    // Establecer estilos para encabezados
+    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+    cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+    });
+    
+    // Agregar datos a la hoja de cálculo
+    this.alimentosss.forEach((item, index) => {
+    const rowData = [
+        index + 1,
+        item.descripcion,
+        item.unidadMedida.unidadMedida,
+      
+    ];
+    
+    worksheet.addRow(rowData);
+    });
+    
+    // Establecer estilos para datos
+    for (let i = worksheet.lastRow.number - this.alimentosss.length + 1; i <= worksheet.lastRow.number; i++) {
+    worksheet.getRow(i).eachCell(cell => {
+        cell.font = { bold: false }; // No negrita para datos
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    });
+    }
+    
+    // Establecer ancho de columnas
+    worksheet.columns.forEach(column => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, cell => {
+        const length = cell.value ? cell.value.toString().length : 10;
+        if (length > maxLength) {
+            maxLength = length;
+        }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength;
+    });
+    
+    // Guardar el libro de trabajo
+    workbook.xlsx.writeBuffer().then(buffer => {
+    saveAs(new Blob([buffer]), 'Reporte de Productos.xlsx');
+    });
+    }
+
+
+  
+    formatPrice(price: number): string {
+      if (price === null) return 'N/A';
+      if (price.toString().startsWith('0')) {
+        return `${this.truncateZeros(price)} ctvs`;
+      } else {
+        return `${price} $`;
+      }
+    }
+  
+    truncateZeros(value: number): string {
+      const stringValue = value.toFixed(4);
+      const parts = stringValue.split('.');
+      const integerPart = parts[0];
+      let decimalPart = parts[1];
+    
+      // Eliminar los ceros finales del decimalPart
+      decimalPart = decimalPart.replace(/0+$/, '');
+    
+      // Concatenar la parte entera y la parte decimal
+      return decimalPart.length > 0 ? `${integerPart}.${decimalPart}` : integerPart;
+    }
+  
+  
+  
+  
+
+
+  
+  // Función para convertir datos binarios en un array
+  s2ab(s: string): Uint8Array {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i !== s.length; ++i) {
+      view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return new Uint8Array(buf);
+  }
+  
+   
+
 }

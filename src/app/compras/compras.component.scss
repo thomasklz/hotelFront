@@ -1,0 +1,776 @@
+@import '~sweetalert2/dist/sweetalert2.min.css';
+
+img {
+    font-weight: bold;
+  
+  }
+  
+  .texto-grueso {
+    font-weight: bold;
+    font-size: 22px;
+  
+  }
+  .selected {
+    background-color: rgb(43, 255, 0);
+  }
+  
+  .fl{
+    width: 190px;
+    margin-left: 600px;
+  }
+  .btn1 {
+    color: #ffffff;
+  }
+  .bm{
+    color: #706f6f;
+  }
+  
+.pagination-containerrrr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+}
+
+.pagination {
+  /* Estilos adicionales para la paginación si es necesario */
+  /* ... */
+}
+/* Agrega estilos para quitar bordes a los botones de paginación */
+.pagination button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+.k{
+  font-weight: bold;
+}
+/* Estilo para los íconos dentro de los botones */
+.pagination button i {
+  margin-right: 5px; /* Puedes ajustar este valor según tu preferencia */
+}
+  .editable-row {
+    cursor: pointer;
+  }
+  
+  .sele {
+    color: black;
+  }
+  
+  .editable-row:hover {
+    background-color: #ffffff;
+  }
+  
+  .edit-mode {
+    background-color: #ffffff;
+  }
+  
+  
+  .marco-div {
+    border: 2px solid black;
+    padding: 10px;
+  }
+  
+  button1 {
+    color: blue;
+  }
+  
+  button2 {
+    color: red;
+  }
+  
+  .heads {
+    background-color: rgb(206, 25, 25);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  h5 {
+    font-size: larger;
+    color: rgb(255, 255, 255);
+   // width: 1115px;
+    margin: 0 auto; /* Esto centrará el h5 horizontalmente */
+   // text-align: center; /* Esto centrará el texto dentro del h5 */
+  }
+  
+  
+  .disabled {
+    font-weight: bold;
+    font-size: 21px;
+  }
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  .select-gr {
+    font-size: 18px;
+    /* Tamaño de letra grande */
+    color: rgb(158, 155, 155);
+    text-align: center;
+  
+  
+  }
+  
+  
+  .estilos {
+    content: "";
+    margin-top: 10px;
+    /* Espacio de 5 píxeles arriba de cada opción */
+    border: none;
+    /* Removemos todos los bordes */
+    border-bottom: 1px solid #888888;
+    /* Agregamos solo el borde inferior */
+    width: 910px;
+    font-size: 18px;
+    
+  }
+  
+  
+  .estilosss {
+    content: "";
+    margin-top: 10px;
+    /* Espacio de 5 píxeles arriba de cada opción */
+    border: none;
+    /* Removemos todos los bordes */
+    border-bottom: 1px solid #888888;
+    /* Agregamos solo el borde inferior */
+    width: 400pxpx;
+    font-size: 18px;
+    
+  }
+  .estil {
+    content: "";
+    margin-top: 10px;
+    /* Espacio de 5 píxeles arriba de cada opción */
+    border: none;
+    /* Removemos todos los bordes */
+    border-bottom: 1px solid #888888;
+    /* Agregamos solo el borde inferior */
+  
+    font-size: 18px;
+  }
+  /*----------------para la modal----------------------------------*/
+ 
+  
+  .tam{
+    width: 800px;
+  }
+ 
+  .heads {
+    width: auto;
+    display: flex;
+    //justify-content: center;
+    align-items: center;
+  }
+  
+  
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ /*  .modal-dialog {
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+
+
+  .modal-dialog {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .modal-content {
+    max-height: 89vh; /* Ajusta el valor según sea necesario */
+   
+  }
+  
+  .x {
+  
+    height: 80px;
+  
+  }
+  
+  .btn1 {
+    margin-right: 20px;
+    /* Ajusta el valor según el espacio de separación deseado */
+  }
+  
+  /* ... (your existing CSS) ... */
+  
+  
+  
+  
+  
+  .options-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+  
+    background-color: #fff;
+    border: 2px solid #ccc;
+    max-height: 500px;
+    overflow-y: auto;
+    z-index: 1;
+  
+    display: none;
+  
+  }
+  
+  
+  
+  .show-more-options .options-container {
+    display: block;
+    /* Agregar esta línea para mostrar las opciones cuando se haga clic */
+  }
+  
+  
+  .option {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .option:last-child {
+    border-bottom: none;
+  }
+  
+  .show-more-options .options-container {
+    display: block;
+  }
+  
+  /* ... (rest of your CSS) ... */
+  
+  
+  
+  /* ... (your existing CSS) ... */
+  
+  .custom-dropdown {
+    position: relative;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    width: 190px;
+  }
+  
+  .selected-option {
+    padding: 8px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Add this to create space for the arrow */
+  }
+  
+  
+  .down-arrow {
+    width: 12px;
+    /* Adjust the width as needed */
+    height: 12px;
+    /* Adjust the height as needed */
+    margin-right: 5px;
+    /* Add some spacing between the text and the arrow */
+  }
+  
+  /* ... (rest of your CSS) ... */
+  /* Agregar color plomo cuando el cursor se encuentra sobre una fila */
+  .editable-row:hover {
+    background-color: #c0c0c0;
+    /* Cambia el color a tu elección */
+  }
+  
+  
+  
+  .modal-with-padding {
+    padding-left: 40px; /* Ajusta el valor según el espacio deseado */
+    padding-right: 30px; /* Ajusta el valor según el espacio deseado */
+  
+  }
+  
+  /* Estilo para centrar horizontalmente el título del modal */
+  .text-center {
+    text-align: center;
+  }
+  
+  .formmmversion2 {
+    width: 300px;
+    }
+
+    .formmmversion3 {
+      width: 700px;
+      }
+
+
+
+  
+  
+  .formmm2 {
+    width: 500px;
+    }
+  
+  /* Estilo para quitar bordes y sombreado del input */
+  .form-control {
+    border: none;
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .labelversion2 {
+    font-size: 15px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    margin-right: 25px;
+    color: rgb(141, 130, 130);
+  }
+  /* Estilo para hacer la letra más grande en el label */
+  .label {
+    font-size: 18px; /* Ajusta el tamaño de la fuente según tus preferencias */
+    margin-right: 25px;
+    color: rgb(141, 130, 130);
+  }
+  /* Estilo para hacer el botón más largo */
+  .btn-danger {
+    width: auto; /* Ancho automático para adaptarse al contenido */
+    display: inline-flex; /* Para colocar el icono al lado del texto */
+    align-items: center; /* Para alinear verticalmente el icono y el texto */
+  }
+  
+  /* Estilo para el icono dentro del botón */
+  .btn-danger i {
+    margin-left: 5px; /* Espacio entre el texto y el icono (ajusta según sea necesario) */
+  }
+  
+  
+  /* Estilos generales del contenedor de búsqueda */
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    
+  }
+  
+  /* Estilos para el cuadro de búsqueda */
+  .search-box {
+    flex: 1;
+    margin-right: 10px; /* Espacio entre el cuadro de búsqueda y el botón */
+    margin-right: 10px; 
+  
+  }
+  
+  /* Estilos para el botón de búsqueda */
+  .btn-danger {
+    margin-left: 10px; /* Espacio entre el botón y el cuadro de búsqueda */
+  }
+  
+  
+  
+  
+  
+  /* Centrar el título h5 */
+  .modal-title {
+    text-align: center !important;
+  }
+  
+  /* Centrar los botones "Cerrar" y "Guardar" */
+  .modal-footer {
+    text-align: center !important;
+  }
+  
+  /* Aplicar estilos solo a la modal con la clase "my-custom-modal" */
+  .my-custom-modal .modal-title {
+    text-align: center;
+  }
+  
+  .my-custom-modal .modal-footer {
+    text-align: center;
+  }
+  /* Estilo para centrar verticalmente el título h5 */
+  .modal-header {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 15px; /* Ajusta este valor según sea necesario para centrar verticalmente */
+  }
+  
+  /* Estilo para centrar horizontalmente los botones de la modal */
+  .modal-footer {
+    justify-content: center;
+    padding-top: 15px; /* Ajusta este valor según sea necesario para centrar verticalmente */
+  }
+  
+  /* Estilo para el botón Cerrar (X) en la modal */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+
+
+
+  .selected {
+    font-weight: bold;
+    background-color: #dff0d8; /* Color de fondo de Bootstrap para éxito */
+  }.custom-select {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .option {
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+  
+  .nav-item {
+    list-style: none; /* Elimina el estilo de viñeta de la lista */
+    color: #ffffff;
+  }
+  .nav-link {
+    color: #ffffff;
+  }
+
+
+
+
+  .modal-body {
+    max-height: 70vh; /* Ajusta el valor según sea necesario */
+    overflow-y: auto;
+  }
+  .search-containerversion4 {
+    display: flex;
+  align-items: center;
+  }
+  
+  .label4 {
+    margin-right: 10px; /* Ajusta el margen derecho según sea necesario para el espacio deseado */
+  }
+  .table-bordered {
+    border: 1px solid #dee2e6; /* Cambia el color y el grosor según tus preferencias */
+    cursor: pointer;
+  }
+  .table-bordered .seleccionada {
+    background-color: #cf1f0067; /* Cambia el color según tus preferencias */
+  }
+  .form-check {
+cursor: pointer;  }
+.h3{
+  font-size: 15px;
+  color: #595757;
+}
+
+
+
+
+
+
+/* lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll*/
+
+
+
+
+
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.plato {
+  margin-bottom: 10px;
+}
+
+.total {
+  margin-top: 20px;
+}
+.tamanoletra{
+  font-size: 15px;
+}
+.platos th,
+.platos td {
+  padding: 8px; /* ajusta este valor según tu preferencia */
+}
+ 
+.container-centered {
+  margin: 0 auto; /* Esto centra horizontalmente la div */
+  max-width: 800px; /* Establece un ancho máximo para la div */
+  padding: 0 15px; /* Agrega un poco de espacio en los lados */
+ 
+}
+
+.container-centered2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+.centered-horizontal div {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+ 
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.common-width-container {
+  width: 100%; /* or any specific width you prefer */
+  max-width: 800px; /* example width */
+  margin: 0 auto;
+}
+
+.formmm {
+  width: 100%;
+  height: 100%;
+}
+.t{
+  font-size: 25px;
+  font-weight: bold;
+}
+.col{
+  color: #ffffff;
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
+.dropdown-menu{
+  cursor: pointer;
+}
+
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+.centered-horizontal  {
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.estilosversion2 {
+    content: "";
+    margin-top: 10px;
+    /* Espacio de 5 píxeles arriba de cada opción */
+    border: none;
+    /* Removemos todos los bordes */
+    border-bottom: 1px solid #888888;
+    /* Agregamos solo el borde inferior */
+    width: 265px;
+    font-size: 18px;
+    
+  }
+
+
+
+//filto
+
+
+.filtro-label {
+  background-color: #706f6f;
+  padding: 8px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+.r{
+  cursor: pointer;
+}
+ .filtro-labelvw {
+  width: 100px;
+  background-color: #706f6f;
+  padding: 8px;
+ border-radius: 4px;
+
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.filtro-icon {
+  margin-right: 5px;
+}
+
+.filtro-select {
+  position: relative;
+}
+
+.filtro {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 150px;
+  height: 35px;
+}
+
+.filtro2 {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 170px;
+  height: 35px;
+}
+
+.filtro option {
+  background-color: #f9f9f9;
+}
+
+.seleccionar-texto {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+}
+
+.seleccionar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+
+
+
+
+//spiner
+.spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7); /* Color de fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegura que el spinner esté en la parte superior */
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.3); /* Color del borde del spinner */
+  border-radius: 50%;
+  border-top: 8px solid #333; /* Color del borde superior del spinner */
+  width: 50px; /* Ancho del spinner */
+  height: 50px; /* Alto del spinner */
+  animation: spin 1s linear infinite; /* Animación de giro */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+
+.kio{
+  font-family: serif;
+  font-family: 30px;
+}
+
+
+
+ 
+
+
+
+ 
+/* Otros estilos que ya tienes */
+.ch{
+  border-radius: 6px;
+
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+
+}
+
+
+
+
+.filtros-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px; /* Disminuye el espacio entre los contenedores */
+}
+
+.filtros-container2 {
+  display: flex;
+  justify-content: flex-start; /* Alinea los contenedores a la izquierda */
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  height: 80px;
+
+}
+
+.filtro-container {
+  margin-right: 15px; /* Ajusta el espacio entre los contenedores */
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  border-color: #595757;
+  margin: 0 10px; 
+}

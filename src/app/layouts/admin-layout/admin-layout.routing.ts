@@ -25,6 +25,9 @@ import { ProductosplatoComponent } from 'app/productosplato/productosplato.compo
 import { ReporteproductoComponent } from 'app/reporteproducto/reporteproducto.component';
 import { ReporteingresosComponent } from 'app/reporteingresos/reporteingresos.component';
 import { ListadoadministradoresComponent } from 'app/listadoadministradores/listadoadministradores.component';
+import { PanelAdministradorComponent } from 'app/panel-administrador/panel-administrador.component';
+import { RecetarioComponent } from 'app/recetario/recetario.component';
+import { ComprasComponent } from 'app/compras/compras.component';
  
 
 
@@ -33,7 +36,7 @@ export const AdminLayoutRoutes: Routes = [
    
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'table-list',     component: TableListComponent },
+    { path: 'registrodecreditos',     component: TableListComponent },
     
 
     { path: 'typography',     component: TypographyComponent },
@@ -48,19 +51,24 @@ export const AdminLayoutRoutes: Routes = [
 
     { path: 'configuracionyprivacidad',        component: ConfiguracionPrivacidadComponent },
     { path: 'ayuda',        component: AyudaComponent },
-    { path: 'alimentos',        component: AlimentosComponent },
-    { path: 'ingredientes',        component: IngredientesComponent },
-    { path: 'platos',        component: PlatosComponent },
-    { path: 'menu',        component: MenuComponent },
+    { path: 'productos',        component: AlimentosComponent },
+    { path: 'recetadetallada',        component: IngredientesComponent },
+    { path: 'menus',        component: PlatosComponent },
+    { path: 'menusdiarios',        component: MenuComponent },
     { path: 'creditos',        component: CreditoComponent },
-    { path: 'tipoalimentos',        component: TipoalimentosComponent },
+    { path: 'menus_Diarios',        component: TipoalimentosComponent },
     { path: 'pesos',        component: PesosComponent },
     { path: 'cantidadplatos',        component: CantidadplatosComponent },
     { path: 'productosplato',        component: ProductosplatoComponent },
     { path: 'reportedeproducto',        component: ReporteproductoComponent },
     { path: 'reportedeingresos',        component: ReporteingresosComponent },
     { path: 'listadodeadministradores',        component: ListadoadministradoresComponent },
+    { path: 'panelAdministrador',        component: PanelAdministradorComponent },
+    { path: 'compras',        component: ComprasComponent },
+    { path: 'recetabasica',        component: RecetarioComponent },
 
- 
+
+
+    
     
 ];

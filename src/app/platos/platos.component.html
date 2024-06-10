@@ -12,7 +12,7 @@
     data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
     
     <div class="search-container col-md-10">
-      <label class="label" >Buscar el nombre del plato:</label>
+      <label class="label" >Buscar el nombre del menú:</label>
       <div class="search-box">
         <input type="text" 
         class="form-control"
@@ -38,7 +38,7 @@
 
         <div class="card text-center">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Platos</h4>
+            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Lista de Menús</h4>
 
           </div>
           <div class="card-body">
@@ -52,7 +52,7 @@
                     Tipo menú
                   </th>
                   <th>
-                    Plato
+                    Menú
                   </th>
                   <th>
                     Precio
@@ -92,6 +92,13 @@
 
 
             </div>
+
+
+            
+            <div *ngIf="!pagedMenus || pagedMenus.length === 0" class="text-center">
+              <img src="/assets/img/menu.png" class="edit" alt="" />
+            </div>
+    
        
           <!-- Contenedor para centrar la paginación -->
 <div class="pagination-containerrrr">
@@ -132,17 +139,25 @@
                 </div>
                 <div class="options-container">
                   <ng-container *ngFor="let item of tipomenusss">
-                    <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7"
-                      (click)="selectOption(item)">{{ item.tipo }}</div>
-                    <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{
-                      item.tipo }}</div>
+                    <div class="option example-full-width estilos" *ngIf="!showMoreOptions && index >= 7" (click)="selectOption(item)">{{ item.tipo }}</div>
+                    <div class="option estil editable-row" *ngIf="showMoreOptions" (click)="selectOption(item)">{{ item.tipo }}</div>
                     <div *ngIf="showIdTipomenuError" class="text-danger">Campo requerido</div>
                   </ng-container>
+
+                  
+                  <div class="selected-option     editable-row"  data-toggle="modal" data-target="#ventanaFormOtro" (click)="nuevoCursoOtro()">
+                    {{ getSelectedOptionLabelotro() }}
+                    <img src="assets/img/sumar.png" alt="" class="down-arrow">
+                  </div>
+                
+ 
+                
+                
                 </div>
               </div>
-
             </div>
           </div>
+          
 
           <div class="form-row">
             <div class="form-group col-md-8">
@@ -156,8 +171,10 @@
             <div class="form-group col-md-8">
               <label for="inputState" class="select-gr">Precio</label> <br>
               <input class="example-full-width estilos" type="text" formControlName="precio">
-              <div *ngIf="showPrecioError" class="text-danger">Campo requerido</div>
-              <div *ngIf="menuForm.get('precio')?.hasError('pattern')" class="text-danger">  El campo de precio solo permite números y hasta dos decimales, y se permite únicamente el uso del punto como separador decimal.
+              <div *ngIf="showPrecioError3" class="text-danger">
+                <span *ngIf="menuForm.get('precio')?.errors?.pattern">
+                  El campo de precio solo permite el punto como separador.
+                </span>
               </div>
             </div>
           </div>
@@ -170,6 +187,52 @@
         <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
         <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">
           {{ editandoPlato ? 'Modificar' : 'Registrar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="modal fade" id="ventanaFormOtro" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content d-flex align-items-center">
+      <div class=" heads x">
+        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloFormOtro}} <img src="assets/img/menuicono.png"
+            alt=""></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="TipomenuForm">
+
+        
+          
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputState" class="select-gr">Categoría</label> <br>
+              <input class="example-full-width estilos" type="text" formControlName="tipo">
+              <div *ngIf="showDescripcionError" class="text-danger">Campo requerido</div>
+            </div>
+          </div>
+ 
+
+          <input type="hidden" formControlName="funcion">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-danger" (click)="addTipodMenu()" data-dismiss="modal">
+          {{ editandoTipomenu ? 'Modificar' : 'Registrar' }}
         </button>
       </div>
     </div>

@@ -8,6 +8,9 @@ import swal from 'sweetalert';
 import swal2 from 'sweetalert';
 
 import Swal from 'sweetalert2';
+import { UsuarioService } from 'app/servicios/usuario.service';
+
+ 
 @Component({
   selector: 'app-platos',
   templateUrl: './platos.component.html',
@@ -23,8 +26,13 @@ export class PlatosComponent implements OnInit {
   tipomenusss: any[] = [];
   platosss: any[] = [];
   tituloForm;
+  tituloFormOtro;
   menuForm!: FormGroup;
+  TipomenuForm!: FormGroup;
+
   editandoPlato: boolean = false; // Variable para indicar si se está editando un plato existente
+  editandoTipomenu: boolean = false; // Variable para indicar si se está editando un plato existente
+
   idPlatoEditar: string = ''; // Variable para almacenar el ID del plato en caso de edición
 
 
@@ -54,9 +62,20 @@ export class PlatosComponent implements OnInit {
   getSelectedOptionLabel() {
     return this.selectedOption ? this.selectedOption.tipo : 'Seleccione  ';
   }
+
+  getSelectedOptionLabelotro() {
+    return this.selectedOption ? this.selectedOption.tipo : 'Otro  ';
+  }
+
+
+
+
+  
+
   constructor(
     private http: HttpClient,
     private MenuService: MenuService,
+   private UsuarioService:UsuarioService,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
@@ -70,20 +89,27 @@ export class PlatosComponent implements OnInit {
     this.getAllplato();
     this.loadPageData();
     this.aplicarFiltros();
-    this.menuForm = this.formBuilder.group({
+     this.menuForm = this.formBuilder.group({
       descripcion: new FormControl("", [Validators.required, Validators.minLength(3)]),
       id_tipomenu: new FormControl("", [Validators.required, Validators.maxLength(1)]),
-      precio: new FormControl("", [
-        Validators.required,
-        Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/), // Expresión regular para permitir números y hasta dos decimales
-        Validators.minLength(1)
-      ]),
+      precio: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{0,2})?$/)]],
+
     });
 
+    this.TipomenuForm = this.formBuilder.group({
+      tipo: new FormControl("", [Validators.required, Validators.minLength(3)]),
+      
+    });
+
+   
 
     this.menuForm.get('precio')?.valueChanges.subscribe(() => {
       this.showPrecioError = this.menuForm.get('precio')?.invalid;
     });
+  }
+  get showPrecioError3() {
+    const precioControl = this.menuForm.get('precio');
+    return precioControl.invalid && precioControl.dirty && !precioControl.errors?.required;
   }
  
   //--------------------------------------------------------------------------------------
@@ -127,6 +153,8 @@ export class PlatosComponent implements OnInit {
   onPageChange(event: number) {
     this.currentPage = event;
   }
+
+
   nombreplatoFiltro: string = '';
   filtroSeleccionado: string = ''; 
   //filtrado
@@ -227,9 +255,15 @@ export class PlatosComponent implements OnInit {
   }
 
 
+
+
+  nuevoCursoOtro(){
+    this.tituloFormOtro='Registro de categoría tipo menú'
+  }
+
   //Para el registro de plato usando modal
   nuevoCurso() {
-    this.tituloForm = 'Registro de plato'; //cambio de nombre en el encabezado
+    this.tituloForm = 'Registros de menús'; //cambio de nombre en el encabezado
     this.menuForm.reset();
     this.editandoPlato = false;
     this.idPlatoEditar = '';
@@ -247,7 +281,7 @@ export class PlatosComponent implements OnInit {
   // ...
 
   editarPlato(item: any) {
-    this.tituloForm = 'Editar  plato';
+    this.tituloForm = 'Editar  menú';
     this.menuForm.patchValue({
       descripcion: item.descripcion,
       id_tipomenu: item.tipo_menu.id,
@@ -270,6 +304,12 @@ export class PlatosComponent implements OnInit {
   showModalErrorConflict() {
     swal({
       title: "Ya existe ese nombre de plato ",
+      icon: "error",
+    });
+  }
+  showModalErrorConflictotro() {
+    swal({
+      title: "Ya existe esa categoría ",
       icon: "error",
     });
   }
@@ -331,8 +371,62 @@ export class PlatosComponent implements OnInit {
     }
   }
 
-  // ...
+ 
 
+  // ...----------------------TIPO MENU--------------------
+  addTipodMenu() {
+    if (this.TipomenuForm.valid) {
+      this.showDescripcionError = false;
+     
+
+      const datos = {
+        
+        tipo: this.TipomenuForm.value.tipo,
+       
+      };
+
+      if (!this. editandoTipomenu) {
+        this.MenuService.posttipomenu(datos).subscribe(
+          (tipo) => {
+            console.log(tipo);
+            this.showModal();
+            this.getAlltipomenu(); // Actualizar la tabla después de agregar un menú
+            this.loadPageData();
+            this.TipomenuForm.reset(); // Restablecer los valores del formulario
+          },
+          (error) => {
+            console.log(error);
+        
+            if (error.status === 409) {
+              this.showModalErrorConflictotro(); // Mostrar modal específico para conflicto
+            } else {
+              this.showModalError(); // Mostrar modal genérico para otros errores
+            }
+          }
+        );
+      } else {
+        // m o d i f i c a r -----------------------------
+        this.MenuService.guardar(datos, this.idPlatoEditar).subscribe(
+          (plato) => {
+            console.log(plato);
+            this.showModalEdit();
+            this.nuevoCurso(); // Restablecer el formulario después de editar
+            this.loadPageData();
+            this.getAlltipomenu();
+          },
+          (error) => {
+            console.log(error);
+            this.showModalErrorEdit();
+          }
+        );
+      }
+    } else {
+      this.showDescripcionError = this.menuForm.controls.descripcion.invalid;
+      this.showIdTipomenuError = this.menuForm.controls.id_tipomenu.invalid;
+      this.showPrecioError =  this.menuForm.controls.precio.invalid;
+
+    }
+  }
 
 
   // ...

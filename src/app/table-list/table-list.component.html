@@ -1,123 +1,306 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
-
-<div class="main-content">
+<div class="main-content" style="background-color: #ebebeb; padding: 20px;">
   <div class="container-fluid">
-
-
-    <div class="row">
-      <button mat-raised-button type="submit" class=" btn1 btn-danger pull-right card-title" data-toggle="modal"
-        data-target="#ventanaForm" (click)="nuevoCurso()">AGREGAR +</button>
-
+    
+    <div class="form-row">
       <div class="col-md-12">
 
-        <div class="card">
-          <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Menú</h4>
+    <!-- Pestañas asincrónicas -->
+    <div *ngIf="(asyncTabs | async) === null">
+     
+    </div>
 
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>
-                    ID
-                  </th>
-                  <th>
-                    Tipo Menú
-                  </th>
-                  <th>
-                    Plato
-                  </th>
+    
+    <mat-tab-group *ngIf="(asyncTabs | async) !== null">
+      <mat-tab *ngFor="let tab of asyncTabs | async">
+        <ng-template mat-tab-label>{{ tab.label }}</ng-template>
+        <!-- Contenido de la pestaña "Sin créditos" -->
+        <div *ngIf="tab.label === 'Con créditos'">
 
-                  <th>
-                    Acción
-                  </th>
-
-                </thead>
-                <tbody *ngFor="let item of platosss ;let i=index ">
-                  <tr>
-                    <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.tipo_menu.tipo}}
-                    </td>
-                    <td>
-                      {{item.descripcion}}
-                    </td>
-
-                    <td>
-                      <button1 color="primary" (click)="editarPlato(item)">
-                        <i class="material-icons editable-row" data-toggle="modal" data-target="#ventanaForm">edit</i>
-                      </button1>
+          <div class="search-container100">
 
 
-                      <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
-                      </button2>
-                    </td>
+          <form [formGroup]="creditosForm">
 
-                  </tr>
+          
+       
 
-                </tbody>
-              </table>
+            <div class="centered-horizontal"  style="margin-top: 30px;">
+               
+              <label for="inputState" class="select-grr el">Crédito a:</label>
+              <div *ngIf="nombreUsuarioInput">
+                <label class="el">{{ nombreUsuarioInput }} {{ nombre2UsuarioInput }} {{ apellido1UsuarioInput }} {{ apellido2UsuarioInput }}</label>
+              </div>
+            </div>
+           
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <div class="formmm container-centered">
+                  <div class="search-container" *ngIf="!editandoCreditos">
+                    <label class="label select-gr" for="input-datalist-usuario">Buscar cédula de usuario:</label>
+                    <div class="search-box">
+                      <input type="text" class="form-control" list="list-timezone-usuario" [value]="usuarioSeleccionado.Identificacion" (input)="updateUsuarioId($event)" />
+                      <datalist id="list-timezone-usuario">
+                        <option *ngFor="let item2 of personas" [value]="item2.Identificacion">{{ item2.Identificacion }}</option>
+                      </datalist>
+                    </div>
+                    <img class="cursor" src="/assets/img/buscando.png" alt="" (click)="BuscarCedula()">
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <input type="hidden" formControlName="id_ingreso" [value]="1" />
+
+            <input type="hidden" formControlName="id_plato" [value]="plato.id" *ngFor="let plato of platosSeleccionados" /> 
+            <input type="hidden" formControlName="precio" [value]="plato.precio" *ngFor="let plato of platosSeleccionados" />
+            <input type="hidden" formControlName="cantidad" [value]="plato.cantidad" *ngFor="let plato of platosSeleccionados" />
+            
+
+          
+           
+          
+            <input type="hidden" formControlName="funcion" />
+         
+          </form>
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <div class="formmm search-container container-centered">
+                <div class="search-box container-fluid">
+                  <div class="container-centered">
+                    <br><br>
+                    <div class="text-center ">
+                      <h2 class="t">Menús</h2>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="ml-auto" style="width: 170px;">
+                        <div class="input-group">
+                          
+                          
+
+                          <div style="display: flex; align-items: center; justify-content: flex-end;">
+                            <input type="search" class="form-control mb-2" placeholder="Buscar menú"   [(ngModel)]="filtro" (input)="filtrarPlatos()" >
+                            <i class="fa fa-search bm" aria-hidden="true" style="margin-left: 5px;"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+
+                    <div class="container-centered2">
+                      <table class="platos">
+                        <tr>
+                          <th>Seleccionar</th>
+                          <th>Nombre</th>
+                          <th>Disponibles</th>
+                          <th>Precio</th>
+                          <th>Cantidad</th>
+                        </tr>
+                        <ng-container *ngFor="let plato of platosFiltrados; let i = index">
+
+                          <tr *ngIf="i >= pageIndex * pageSize && i < (pageIndex + 1) * pageSize">
+                            <td><input type="checkbox" [(ngModel)]="plato.selected" (change)="updateTotal(); updateFormValues()" />
+
+                            
+                            <td>{{ plato.nombre }}</td>
+                            <td>{{ plato.cantidad2 }}</td>
+                            <td>{{ plato.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+                            <td>
+                              <input type="number" [(ngModel)]="plato.cantidad" (change)="updateTotal()" min="0" step="1" style="width: 60px;" />
+                              <input type="hidden" [(ngModel)]="plato.nombre" name="nombrePlato">
+                              <input type="hidden" [(ngModel)]="plato.precio" name="precioPlato">
+                              
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </table>
+                    </div>
+                    
+                    
+                    
+                    <div class="total">
+                      <h3>Total: {{ total | currency:'USD':'symbol':'1.2-2' }}</h3>
+                    </div>
+                    <div class="pagination-container centered-horizontal">
+                      <div class="pagination">
+                        <button  class="tamanoletra"  (click)="prevPage()" [disabled]="pageIndex === 0">
+                          <i class="fa fa-arrow-left"></i> Anterior
+                        </button>
+                        
+                        <button  class="tamanoletra" (click)="nextPage()" [disabled]="pageIndex === maxPageIndex()">
+                          Siguiente <i class="fa fa-arrow-right"></i>
+                        </button>
+                        
+                        
+                      </div>
+                      <br><br>  <br><br>
+                    </div>
 
 
 
+                 
+
+
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn" data-dismiss="modal" (click)="resetFormulario()" (click)="closeModalAfterCancel()">
+              Restaurar
+            </button>
+            <button type="button" class="btn btn-danger" (click)="addCredito()" data-dismiss="modal">
+              {{ editandoIngredientes ? 'Modificar' : 'Registrar' }}
+            </button>
+          </div>
+
+        
         </div>
-      </div>
+        </div>
 
-    </div>
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------->
+       
+        <!-- Contenido de la pestaña "Con Créditos" -->
+        <div *ngIf="tab.label === 'Sin Créditos'">
+
+
+          
+          <div class="search-container100">
+
+
+            <form [formGroup]="reporteIngresosForm">
+  
+           
+         
+  
+             
+            
+              <input type="hidden" formControlName="id_ingreso" [value]="2" />
+  
+              <input type="hidden" formControlName="id_plato" [value]="plato.id" *ngFor="let plato of platosSeleccionados" /> 
+
+              <input type="hidden" formControlName="cantidad" [value]="plato.cantidad" *ngFor="let plato of platosSeleccionados" />
+              
+  
+            
+             
+            
+              <input type="hidden" formControlName="funcion" />
+           
+            </form>
+  
+            <div class="form-row " >
+              <div class="form-group col-md-12">
+                <div class="formmm search-container container-centered" style="margin-top: 40px;">
+                  <div class="search-box container-fluid" >
+                    <div class="container-centered" >
+                      <br><br>
+                      <div class="text-center ">
+                        <h2 class="t">Menú</h2>
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="ml-auto" style="width: 170px;">
+                          <div class="input-group">
+                            <div style="display: flex; align-items: center; justify-content: flex-end;">
+                              <input type="search" class="form-control mb-2" placeholder="Buscar menú"   [(ngModel)]="filtro" (input)="filtrarPlatos()" >
+                              <i class="fa fa-search bm" aria-hidden="true" style="margin-left: 5px;"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      
+                      
+                      
+                      
+  
+                      <div class="container-centered2">
+                        <table class="platos">
+                          <tr>
+                            <th>Seleccionar</th>
+                            <th>Nombre</th>
+                            <th>Disponibles</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                          </tr>
+                          <ng-container *ngFor="let plato of platosFiltrados; let i = index">
+
+                            <tr *ngIf="i >= pageIndex * pageSize && i < (pageIndex + 1) * pageSize">
+                              <td><input type="checkbox" [(ngModel)]="plato.selected" (change)="updateTotal(); updateFormValues()" />
+  
+                              
+                              <td>{{ plato.nombre }}</td>
+                              <td>{{ plato.cantidad2 }}</td>
+                              <td>{{ plato.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+                              <td>
+                                <input type="number" [(ngModel)]="plato.cantidad" (change)="updateTotal()" min="0" step="1" style="width: 60px;" />
+                                <input type="hidden" [(ngModel)]="plato.nombre" name="nombrePlato">
+                                
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </table>
+                      </div>
+                      
+                      
+                      
+                      <div class="total">
+                        <h3>Total: {{ total | currency:'USD':'symbol':'1.2-2' }}</h3>
+                      </div>
+                      <div class="pagination-container centered-horizontal">
+                        <div class="pagination">
+                          <button  class="tamanoletra"  (click)="prevPage()" [disabled]="pageIndex === 0">
+                            <i class="fa fa-arrow-left"></i> Anterior
+                          </button>
+                          
+                          <button  class="tamanoletra" (click)="nextPage()" [disabled]="pageIndex === maxPageIndex()">
+                            Siguiente <i class="fa fa-arrow-right"></i>
+                          </button>
+                          
+                          
+                        </div>
+                        <br><br>  <br><br>
+                      </div>
+  
+  
+  
+                   
+  
+  
+  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button type="button" class="btn" data-dismiss="modal" (click)="resetFormulario()" (click)="closeModalAfterCancel()">
+                Restaurar
+              </button>
+              <button type="button" class="btn btn-danger" (click)="AddcrearreporteIngresos()" data-dismiss="modal">
+                {{ editandoIngredientes ? 'Modificar' : 'Cobrar' }}
+              </button>
+            </div>
+  
+          
+          </div>
+  
+  
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
+
+
 </div>
-
-<div class="modal fade" id="ventanaForm" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content d-flex align-items-center">
-      <div class=" heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">{{tituloForm}} <img src="assets/img/menuicono.png"
-            alt=""></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="menuForm">
-
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr text-center">Tipo Menú</label> <br>
-              <select id="inputState" class="example-full-width estilos" placeholder="Seleccione"
-                formControlName="id_tipomenu" (change)="getId_Tipomenu()">
-                <option selected disabled value="">Seleccione</option>
-                <option *ngFor="let item of tipomenusss" [value]="item.id">{{item.tipo}}</option>
-              </select>
-              <div *ngIf="showIdTipomenuError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputState" class="select-gr">Descripción</label> <br>
-              <input class="example-full-width estilos" type="text" formControlName="descripcion">
-              <div *ngIf="showDescripcionError" class="text-danger">Campo requerido</div>
-            </div>
-          </div>
-
-          <!-- ... -->
-
-
-          <!-- ... -->
-
-          <input type="hidden" formControlName="funcion">
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn " data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="addMenu()" data-dismiss="modal">Guardar</button>
-      </div>
-    </div>
-  </div>
+</div>
 </div>

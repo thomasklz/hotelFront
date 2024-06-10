@@ -12,15 +12,24 @@ export class AlimentosService {
 creartipoalimentos(data:any){
   return this.http.post<any>('http://localhost:3000/api/creartipo_alimento',data);
 }
-
+crearunidadMedida(data:any){
+  return this.http.post<any>('http://localhost:3000/api/crearunidadMedida',data);
+}
   //obtener tipos de alimentos
   gettipoalimento(){
     return this.http.get<any>('http://localhost:3000/api/mostrartipo_alimento/');
   }
 
-  mostraralimentomenu(){
-    return this.http.get<any>('http://localhost:3000/api/mostraralimentomenu/');
+  obtenerUnidadMedida(){
+    return this.http.get<any>('http://localhost:3000/api/obtenerUnidadMedida/');
   }
+
+
+  mostraralimentomenu(){
+    return this.http.get<any>('http://localhost:3000/api/mostraralimentomenuIngredient/');
+  }
+
+
 
   
 
@@ -28,16 +37,25 @@ creartipoalimentos(data:any){
   getalimentos(){
     return this.http.get<any>('http://localhost:3000/api/mostraralimento');
   }
+  getalimentosIngre(){
+    return this.http.get<any>('http://localhost:3000/api/getalimentos');
+  }
+
+  mostraralimentoss(){
+    return this.http.get<any>('http://localhost:3000/api/mostraralimentoss');
+  }
+  
 
   //Crear y Modificar Alimentos
-  guardar(data:any, id?){
-    if (id) {
-      return this.http.put<any>('http://localhost:3000/api/editaralimento/'+id,data);
-    }else{
-      return this.http.post<any>('http://localhost:3000/api/crearalimento', data);
-    }
-    }
-
+  
+    guardar(data:any, id?){
+      if (id) {
+        return this.http.put<any>('http://localhost:3000/api/editaralimento/'+id,data);
+      } else {
+        return this.http.post<any>('http://localhost:3000/api/crearalimento', data);
+      }
+  }
+  
     //eliminar Alimentos
     deletealimentos(id:number){
       return this.http.delete<any>('http://localhost:3000/api/eliminaralimento/'+id);

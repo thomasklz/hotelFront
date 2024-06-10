@@ -26,8 +26,10 @@ export class MenuService {
     return this.http.get<any>('http://localhost:3000/api/mostrarplatocredito');
   }
 
+  mostrartodoslosplatosMenu(){
+    return this.http.get<any>('http://localhost:3000/api/mostrartodoslosplatosMenu');
+  }
   
-
   obtenerplatos(){
     return this.http.get<any>('http://localhost:3000/api/mostrartodoslosplatos');
   }

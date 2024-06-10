@@ -10,6 +10,9 @@ import * as FileSaver from 'file-saver';
 import swal from "sweetalert";
 import { ImageService } from "app/servicios/image.service";
 
+
+import { saveAs } from 'file-saver';
+
 // Resto de tu código...
 
 @Component({
@@ -299,7 +302,7 @@ descargarPDFxDias() {
   const rows = this.ingredientesdiass.map((item, index) => [
     item.id_alimento,
       item.fecha,
-      item.totalCantidadFinal,
+      item.cantidadPersonaGramo.toFixed(4),
   ]);
 
 
@@ -354,7 +357,7 @@ descargarPDFxDias() {
             // Alineación de la tabla en el centro
             alignment: 'center',
             body: [
-              ['Ingrediente', 'Fecha', 'Total de libras/litros'].map((cell, index) => ({
+              ['Ingrediente', 'Fecha', 'Total de gramos/mililitros/unidades'].map((cell, index) => ({
                 text: cell,
                 bold: true,
                 fillColor: '#D3D3D3',
@@ -393,30 +396,81 @@ descargarPDFxDias() {
 
  
   datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
+ 
   descargarDatosxDias() {
-    const datosParaDescargar = this.ingredientesdiass.map(item => ({
-      'Ingrediente':  item.id_alimento,
-      'Fecha':  item.fecha,
-      'Total de libras/litros': item.totalCantidadFinal,
+    const ExcelJS = require('exceljs');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('INFORME DE INGREDIENTE POR DÍA');
+    
+    // Organizar créditos por persona
+    const creditosPorPersona = {};
+    
+   
+    
+    // Agregar encabezados de la tabla
+    const headers = [
+      'Producto',
+      'Fecha',
+      'Total de gramos/mililitros/unidades',
+    ];
+    
+    worksheet.addRow(headers);
+    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+    
+    // Establecer estilos para encabezados
+    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+    cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+    });
+    
+    // Agregar datos a la hoja de cálculo
+    this.ingredientesdiass.forEach((item, index) => {
+    const rowData = [
+      item.id_alimento,
+     item.fecha,
+       item.cantidadPersonaGramo.toFixed(4),
+    ];
+    
+    worksheet.addRow(rowData);
+    });
+    
+    // Establecer estilos para datos
+    for (let i = worksheet.lastRow.number - this.ingredientesdiass.length + 1; i <= worksheet.lastRow.number; i++) {
+    worksheet.getRow(i).eachCell(cell => {
+        cell.font = { bold: false }; // No negrita para datos
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    });
+    }
+    
+    // Establecer ancho de columnas
+    worksheet.columns.forEach(column => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, cell => {
+        const length = cell.value ? cell.value.toString().length : 10;
+        if (length > maxLength) {
+            maxLength = length;
+        }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength;
+    });
+    
+    // Guardar el libro de trabajo
+    workbook.xlsx.writeBuffer().then(buffer => {
+    saveAs(new Blob([buffer]), 'INFORME DE INGREDIENTE POR DÍA.xlsx');
+    });
+    }
 
-     
-     
-      
-     
-    }));
-  
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Reporte de Ingrediente por Día');
-    const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Reporte de Ingrediente por Día.xlsx';
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }  
+
+
+
+
+
+
+
+
+
   // Función para convertir datos binarios en un array
   s2ab(s: string): Uint8Array {
     const buf = new ArrayBuffer(s.length);
@@ -440,7 +494,7 @@ descargarPDFxDias() {
       item.id_alimento,
       item.fechaInicio,
       item.fechaFin,
-      item.totalCantidadFinal,
+      item.totalCantidadPersonaGramo.toFixed(4),
       ]);
     
     
@@ -495,7 +549,7 @@ descargarPDFxDias() {
                 // Alineación de la tabla en el centro
                 alignment: 'center',
                 body: [
-                  ['Ingrediente', 'Fecha Inicio', 'Fecha Fin', 'Total de libras/litros'].map((cell, index) => ({
+                  ['Ingrediente', 'Fecha Inicio', 'Fecha Fin', 'Total de gramos/mililitros/unidades'].map((cell, index) => ({
                     text: cell,
                     bold: true,
                     fillColor: '#D3D3D3',
@@ -524,22 +578,80 @@ descargarPDFxDias() {
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
         pdfMake.createPdf(documentoPDF).download('INFORME DE INGREDIENTE POR SEMANA.pdf');
       });
+   
     }
  
 
 //---------------------
+ 
+
 descargarDatosxSemana() {
-  const datosParaDescargar = this.ingredientesdiass.map(item => ({
-    'Ingrediente': item.id_alimento,
-    'Fecha Inicio': item.fechaInicio,
-    'Fecha Fin': item.fechaFin,
-    'Total de libras/litros': item.totalCantidadFinal,
-  }));
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('INFORME DE INGREDIENTE POR SEMANA');
+  
+  // Organizar créditos por persona
+  const creditosPorPersona = {};
+  
+ 
+  
+  // Agregar encabezados de la tabla
+  const headers = [
+    'Producto',
+    'Fecha Inicio',
+    'Fecha Fin',
+    'Total de gramos/mililitros/unidades',
+  ];
+  
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+  
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+  cell.alignment = { vertical: 'middle', horizontal: 'center' };
+  cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+  });
+  
+  // Agregar datos a la hoja de cálculo
+  this.ingredientesdiass.forEach((item, index) => {
+  const rowData = [
+    item.id_alimento,
+    item.fechaInicio,
+     item.fechaFin,
+     item.totalCantidadPersonaGramo.toFixed(4),
+  ];
+  
+  worksheet.addRow(rowData);
+  });
+  
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.ingredientesdiass.length + 1; i <= worksheet.lastRow.number; i++) {
+  worksheet.getRow(i).eachCell(cell => {
+      cell.font = { bold: false }; // No negrita para datos
+      cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  });
+  }
+  
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
+  let maxLength = 0;
+  column.eachCell({ includeEmpty: true }, cell => {
+      const length = cell.value ? cell.value.toString().length : 10;
+      if (length > maxLength) {
+          maxLength = length;
+      }
+  });
+  column.width = maxLength < 10 ? 10 : maxLength;
+  });
+  
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+  saveAs(new Blob([buffer]), 'INFORME DE INGREDIENTE POR SEMANA.xlsx');
+  });
+  }
 
-  const nombreHoja = 'data'; // Ajusta el nombre de la hoja según tus necesidades
-
-  this.descargarExcel(datosParaDescargar, nombreHoja);
-}
 
 descargarExcel(datos: any[], nombreHoja: string) {
   const workSheet = XLSX.utils.json_to_sheet(datos);
@@ -560,7 +672,7 @@ descargarExcel(datos: any[], nombreHoja: string) {
     const rows = this.ingredientesdiass.map((item, index) => [
       item.id_alimento,
       this.meses[item.mes - 1],
-      item.sumaCantidadFinal,
+      item.sumaCantidadPersonaGramo.toFixed(4),
     ]);
   
   
@@ -615,7 +727,7 @@ descargarExcel(datos: any[], nombreHoja: string) {
               // Alineación de la tabla en el centro
               alignment: 'center',
               body: [
-                ['Ingrediente', 'Mes', 'Total de libras/litros'].map((cell, index) => ({
+                ['Ingrediente', 'Mes', 'Total de gramos/mililitros/unidades'].map((cell, index) => ({
                   text: cell,
                   bold: true,
                   fillColor: '#D3D3D3',
@@ -649,49 +761,75 @@ descargarExcel(datos: any[], nombreHoja: string) {
  
 
 //---------------------
+ 
+
+
+
 descargarDatosxMes() {
-  const datosParaDescargar = this.ingredientesdiass.map(item => ({
-    'Ingrediente':  item.id_alimento,
-    'Mes':  this.meses[item.mes - 1],
-    'Total de libras/litros': item.sumaCantidadFinal,
-  }));
-
-  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaDescargar);
-
-  // Establecer estilos para la tabla
-  const range = XLSX.utils.decode_range(ws['!ref']);
-  for (let R = range.s.r; R <= range.e.r; ++R) {
-    for (let C = range.s.c; C <= range.e.c; ++C) {
-      const cell_address = { c: C, r: R };
-      const cell_ref = XLSX.utils.encode_cell(cell_address);
-
-      // Configurar color de fondo negro y bordes para todas las celdas
-      ws[cell_ref].s = {
-        fill: { fgColor: { rgb: '000000' } },
-        font: { color: { rgb: 'FFFFFF' } },
-        alignment: { horizontal: 'center', vertical: 'middle' },
-        border: {
-          top: { style: 'thin', color: { rgb: 'FFFFFF' } },
-          bottom: { style: 'thin', color: { rgb: 'FFFFFF' } },
-          left: { style: 'thin', color: { rgb: 'FFFFFF' } },
-          right: { style: 'thin', color: { rgb: 'FFFFFF' } },
-        },
-      };
-    }
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('INFORME DE INGREDIENTE POR MES');
+  
+  // Organizar créditos por persona
+  const creditosPorPersona = {};
+  
+ 
+  
+  // Agregar encabezados de la tabla
+  const headers = [
+    'Producto',
+    'Mes',
+    'Total de gramos/mililitros/unidades',
+  ];
+  
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+  
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+  cell.alignment = { vertical: 'middle', horizontal: 'center' };
+  cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+  });
+  
+  // Agregar datos a la hoja de cálculo
+  this.ingredientesdiass.forEach((item, index) => {
+  const rowData = [
+    item.id_alimento,
+     this.meses[item.mes - 1],
+     item.sumaCantidadPersonaGramo.toFixed(4),
+     
+  ];
+  
+  worksheet.addRow(rowData);
+  });
+  
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.ingredientesdiass.length + 1; i <= worksheet.lastRow.number; i++) {
+  worksheet.getRow(i).eachCell(cell => {
+      cell.font = { bold: false }; // No negrita para datos
+      cell.alignment = { vertical: 'middle', horizontal: 'left' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+  });
   }
-
-  const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Reporte de Ingrediente por Mes');
-  const excelArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  const blob = new Blob([new Uint8Array(excelArray)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'Reporte de Ingrediente por Mes.xlsx';
-  a.click();
-  window.URL.revokeObjectURL(url);
-}
-
+  
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
+  let maxLength = 0;
+  column.eachCell({ includeEmpty: true }, cell => {
+      const length = cell.value ? cell.value.toString().length : 10;
+      if (length > maxLength) {
+          maxLength = length;
+      }
+  });
+  column.width = maxLength < 10 ? 10 : maxLength;
+  });
+  
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+  saveAs(new Blob([buffer]), 'INFORME DE INGREDIENTE POR MES.xlsx');
+  });
+  }
 
 
 

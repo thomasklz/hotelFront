@@ -15,7 +15,12 @@ img{
   a{
     cursor: pointer;
   }
-
+  .circular-imagert {
+    width: 40px; /* Ajusta este valor según el tamaño que necesites */
+    height: 40px; /* Debe ser igual al width para asegurar un círculo perfecto */
+    border-radius: 50%;
+    object-fit: cover;
+  }
   /* Agrega estilos personalizados para el botón de confirmación */
 .my-confirm-button-class {
   border: none;
@@ -41,8 +46,8 @@ img{
 }
 
 .circular-image {
-  width: 40px; /* Ajusta el tamaño según sea necesario */
-  height: 40px; /* Ajusta el tamaño según sea necesario */
+  width: 40px; /* Ajusta este valor según el tamaño que necesites */
+  height: 40px; /* Debe ser igual al width para asegurar un círculo perfecto */
   border-radius: 50%;
-  overflow: hidden;
+  object-fit: cover;
 }

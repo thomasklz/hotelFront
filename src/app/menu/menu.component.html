@@ -47,9 +47,9 @@
         <div *ngIf="filtroSeleccionado === 'nombre'">
           <div class="form-row">
             <div class="form-group col-md-4">
-              <div class="formmm3">
+              <div class="formmme">
                 <div class="search-containerr">
-                  <label class="label" for="nombreFiltro">Buscar el nombre del plato :</label>
+                  <label class="label" for="nombreFiltro">Buscar el nombre del menú :</label>
                   <div class="search-box">
                     <input type="text" class="form-control" [(ngModel)]="nombreplatoFiltro" (input)="aplicarFiltros()" />
                   </div>
@@ -99,7 +99,7 @@
     
         <div class="card text-center">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Menú diario</h4>
+            <h4 class="card-title disabled"> <img src="/assets/img/mn.png" class="edit" alt=""> Menús diarios</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -112,10 +112,10 @@
                   Fecha
                 </th>
                 <th>
-                  Plato
+                    Menús
                 </th>
                 <th>
-                  Cantidad de plato
+                  Cantidades de menús
                 </th>
                 <th>
                   Ver en la web
@@ -157,6 +157,11 @@
                 </tbody>
               </table> 
             </div>
+
+
+            <div *ngIf="!pagedMenus || pagedMenus.length === 0" class="text-center">
+              <img src="/assets/img/almuerzo.png" class="edit" alt="" />
+            </div>
     
           <!-- Contenedor para centrar la paginación -->
 <div class="pagination-containerrrr">
@@ -196,22 +201,12 @@
             <div class="form-group col-md-8">
               <div class="formmm">
                 <div class="search-container">
-                  <label class="label" >Buscar el nombre del plato:</label>
+                  <label class="label" >Buscar el nombre del menú:</label>
                   <div class="search-box">
-                    <input
-                      type="text"
-                      class="form-control"
-                      list="list-timezone-plato"
-                     
-                      [value]="platoSeleccionado.descripcion"
-                      (input)="updatePlatoId($event)"
-                      formControlName="id_plato"
-                    
-                      aria-readonly="true"
-
-                    />
+                    <input type="text" class="form-control" list="list-timezone-plato"
+                      [value]="platoSeleccionado.descripcion" (input)="updatePlatoId($event)" formControlName="id_plato" />
                     <datalist id="list-timezone-plato">
-                      <option *ngFor="let item of platosss" [value]="item.descripcion"></option>
+                      <option *ngFor="let item of listaPlatos" [value]="item.descripcion"></option>
                     </datalist>
                   </div>
                 </div>
@@ -220,33 +215,24 @@
       </div>
          <br>
 
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="inputState" class="select-gr">Cantidad de plato</label>
-              <br />
-              <input class="example-full-width estilosversion2" type="number" formControlName="cantidad" />
-              <div *ngIf="showId_cantidadplatoError" class="text-danger">
-                Campo requerido
-              </div>
+         <div class="form-row justify-content-center">
+          <div class="form-group col-md-4 mx-auto">
+            <label for="inputState" class="select-gr">Cantidades de menús</label>
+            <br />
+            <input class="example-full-width estilosversion2" type="number" formControlName="cantidad" />
+            <div *ngIf="showId_cantidadplatoError" class="text-danger">
+              Campo requerido
             </div>
-
-            <div class="form-group col-md-4">
-              <label for="inputState" class="select-gr">Días</label> <br />
-              <input class="example-full-width estilosversion2" type="text" formControlName="numDias" />
-              <div *ngIf="showDiasError" class="text-danger">
-                Campo requerido
-              </div>
-            </div>
-
-            <div class="form-group col-md-4">
-              <label for="inputState" class="select-gr">Fecha</label> <br>
-              <input class="example-full-width estilosversion2" type="date" formControlName="fecha">
-              <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
-            </div>
-
-            
-          
           </div>
+        
+          <div class="form-group col-md-4 mx-auto">
+            <label for="inputState" class="select-gr">Fecha</label>
+            <br />
+            <input class="example-full-width estilosversion2" type="date" formControlName="fecha">
+            <div *ngIf="showFechaError" class="text-danger">Campo requerido</div>
+          </div>
+        </div>
+        
 <br>
           <div class="centered-horizontal ">
           <div class="form-row ">

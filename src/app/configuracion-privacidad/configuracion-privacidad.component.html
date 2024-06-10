@@ -62,10 +62,8 @@
             <!-- Columna para la foto en el lado derecho -->
             <div class="col-md-4 text-right">
               <div class="tim-typo table-row editable-row" data-toggle="modal" data-target="#ventanaFoto" (click)="editarfoto(usuariosss)">
-                <h4>
-                  <span class="tim-note"> </span>
-                </h4>
-                <!-- Muestra la imagen con la clase de tamaño carnet sin recorte -->
+                
+                <!-- Display the image with the class for the desired size -->
                 <img *ngIf="usuariosss.persona.foto" [src]="'http://localhost:3000/imagenes/' + usuariosss.persona.foto" alt="Foto de usuario" class="img-carnet2">
               </div>
             </div>
@@ -185,37 +183,50 @@
  
 
 <!-- Resto de tu código HTML para la modal -->
-<div class="modal fade" id="ventanaFoto"   data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <!-- ... Otras partes del código ... -->
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content d-flex align-items-center text-center">
-      <div class="heads x">
-        <h5 class="modal-title texto-grueso" id="exampleModalLabel">Editar Foto</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      <div class="modal-body">
-        <form>
-          <div class="form-group col-md-8 mx-auto">
-            <div class="custom-file d-flex justify-content-center">
-              <input type="file" class="custom-file-input" id="customFile" name="image" #fileInput (change)="onFileChange($event)" style="display:none;">
-              <img [src]="selectedImage" alt="" class="img-carnet letrita" (click)="fileInput.click()">
-           
-            </div>
-            <br>  
-          </div>
-        </form>
-      </div>
   
-      <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-danger" (click)="editarFoto()" data-dismiss="modal">Guardar</button>
+    <!-- Modal Foto -->
+    <div class="modal fade" id="ventanaFoto" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content d-flex align-items-center">
+
+
+
+       
+
+
+
+          <div class="modal-content d-flex align-items-center justify-content-center x">
+            <div class="mimg">
+              <h5 class="modal-title texto-grueso m-0 text-center " id="exampleModalLabel">Editar Foto <img src="assets/img/imagen.png" class="mimg"
+                alt=""></h5>
+            </div>
+            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  
+            </button>
+          </div>
+        
+
+
+
+          <div class="modal-body">
+            <form>
+              <div class="form-group col-md-8 mx-auto">
+                <div class="custom-file d-flex justify-content-center">
+                  <input type="file" class="custom-file-input" id="customFile" name="image" #fileInput (change)="onFileChange($event)" style="display:none;">
+                  <img [src]="selectedImage" alt="" class="img-carnet6 letrita" (click)="fileInput.click()">
+               
+                </div>
+                <br>  
+              </div>
+            </form>
+          </div>
+      
+          <div class="modal-footer">
+            <button type="button" class="btn" data-dismiss="modal" (click)="closeModal()">Cerrar</button>
+            <button type="button" class="btn btn-danger" (click)="editarFoto()" data-dismiss="modal">Guardar</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  
-  
-  
-
-</div>

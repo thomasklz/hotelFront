@@ -1,0 +1,65 @@
+ 
+h3{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.card{
+    cursor: pointer;
+}
+ 
+
+ .colorinfo{
+    color: rgb(4, 117, 117);
+    font-size: 60px;
+ }
+ .colorv2{
+    color: rgb(111, 0, 126);
+    font-size: 60px;
+ }
+ 
+ .colorv3{
+    color: rgb(24, 185, 2);
+    font-size: 60px;
+ }
+ 
+
+ .colorv7{
+    color: rgb(2, 66, 185);
+    font-size: 60px;
+ }
+
+ .colorv4{
+    color: rgb(187, 137, 30);
+    font-size: 60px;
+ }
+
+
+ .colorv8{
+    color: rgb(43, 40, 39);
+    font-size: 60px;
+ }
+ .colorv5{
+    color: rgb(185, 23, 2);
+    font-size: 60px;
+ }
+
+ .colorv6{
+    color: rgb(233, 229, 5);
+    font-size: 60px;
+ }
+
+
+ .card-header.tamano {
+    display: flex;
+    align-items: center;
+}
+
+.card-header-content {
+    display: flex;
+    align-items: center;
+}
+
+.card-icon {
+    margin-right: 10px; /* Espacio entre el icono y el título */
+}
