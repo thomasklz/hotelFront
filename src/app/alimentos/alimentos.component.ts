@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+=======
+import { Component, OnInit,ViewChild  } from "@angular/core";
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
 import { HttpClient } from "@angular/common/http";
 import {
   FormBuilder,
@@ -25,7 +29,10 @@ import * as XLSX from 'xlsx';
 })
 export class AlimentosComponent implements OnInit {
   @ViewChild('ventanaForm') ventanaForm!: any;
+<<<<<<< HEAD
    @ViewChild('ventanaFormOtro') ventanaFormOtro!: ElementRef;
+=======
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
   dataSource = new MatTableDataSource<any>();
   id: string = "";
   id_unidadMedida: string = "";
@@ -436,7 +443,10 @@ export class AlimentosComponent implements OnInit {
             this.loadPageData();
             this.resetAlimentoForm(); // Reiniciar el formulario
             this.selectedOption = null;
+<<<<<<< HEAD
             ($('#ventanaForm') as any).modal('hide'); // Cerrar la modal al editar
+=======
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
           },
           (error) => {
             console.log('Error al guardar:', error);

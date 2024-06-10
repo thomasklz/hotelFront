@@ -61,7 +61,11 @@
                     <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
                       <h4 class="card-title disabled">
                         <img src="/assets/img/alimentos.png" class="edit" alt="">
+<<<<<<< HEAD
                         Lista de compras de productos 
+=======
+                        Lista de productos 
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
                       </h4>
           
                 
@@ -95,6 +99,7 @@
                               Fecha 
                             </th>
                             <th>
+<<<<<<< HEAD
                               Productos 
                             </th>
                             <th>
@@ -111,6 +116,24 @@
                             </th>
                             <th>
                               Porciones
+=======
+                              Producto 
+                            </th>
+                            <th>
+                              Unidad de medida
+                            </th>
+                            <th>
+                              Cantidad de medida
+                            </th>
+                            <th>
+                              Precio unitario
+                            </th>
+                            <th>
+                              Precio
+                            </th>
+                            <th>
+                              Porción
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
                             </th>
                             <th>
                               Acción
@@ -218,6 +241,7 @@
 
           <div class="container-fluid">
 <br><br>
+<<<<<<< HEAD
           <div class="filtros-container2">
             <div class="filtro-container">
               <div class="filtro-label">
@@ -266,6 +290,54 @@
               <img src="/assets/img/ventas.png" class="edit" alt="" style="display: block; margin: 0 auto;" />
             </div>
           </div>
+=======
+            <div class="filtros-container2">
+              <div class="filtro-container"  >
+                <div class="filtro-label">
+                  Filtro <i class="fa fa-filter" aria-hidden="true"></i>
+                </div>
+                <div class="filtro-select" (click)="hideSelectText()">
+                  <select class="filtro" [(ngModel)]="filtro" (change)="onFilterChange()" [(ngModel)]="filtroSeleccionado2">
+                    <option value="todo" [selected]="filtro === 'todo'">Todos</option>
+                    <option value="conExistencia" [selected]="filtro === 'conExistencia'">Con existencia</option>
+                    <option value="sinExistencia" [selected]="filtro === 'sinExistencia'">Sin existencia</option>
+                  </select>
+                  <span class="seleccionar-texto" [class.hidden]="!mostrarSeleccionar">Seleccionar</span>
+                  <span class="seleccionar-icon" [class.hidden]="!mostrarSeleccionar">&#9660;</span>
+                </div>
+                <div class="spinner-container" [class.hidden]="!mostrarSpinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            
+              <div class="filtro-container r"  (click)="onFilterChange()" (click)="Actualizar()"  >
+                <div class="filtro-container" (click)="actualizarYMostrarImagen()">
+                  <div class="filtro-labelvw">
+                    Refrescar &nbsp;&nbsp; <!-- Agrega espacios entre el texto y el ícono -->
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                  </div>
+                
+                  <div class="spinner-container" [class.hidden]="!mostrarSpinner">
+                    <div class="spinner"></div>
+                  </div>
+                </div>
+                
+                
+                <div class="spinner-container" [class.hidden]="!mostrarSpinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+            <br><br>
+            
+
+            <div class="  col-md-12 text-center ch" *ngIf="!filtro" >
+              <div class="text-center" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                <img src="/assets/img/ventas.png" class="edit" alt="" style="display: block; margin: 0 auto;"/>
+              </div>
+
+            </div>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
             
             
             
@@ -290,7 +362,11 @@
                   <div class="card-header card-header-danger d-flex align-items-center justify-content-between ">
                     <h4 class="card-title disabled">
                       <img src="/assets/img/alimentos.png" class="edit" alt="">
+<<<<<<< HEAD
                       Lista de compras de productos todos
+=======
+                      Lista de productos 
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
                     </h4>
         
               
@@ -324,6 +400,7 @@
                             Fecha 
                           </th>
                           <th>
+<<<<<<< HEAD
                             Productos 
                           </th>
                           <th>
@@ -342,6 +419,28 @@
                             Porciones
                           </th>
                         
+=======
+                            Producto 
+                          </th>
+                          <th>
+                            Unidad de medida
+                          </th>
+                          <th>
+                            Cantidad de medida
+                          </th>
+                          <th>
+                            Precio unitario
+                          </th>
+                          <th>
+                            Precio
+                          </th>
+                          <th>
+                            Porción
+                          </th>
+                          <th>
+                            Acción
+                          </th>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         
                         </thead>
                         <tbody >
@@ -391,7 +490,14 @@
                               <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
                            
                             </td>
+<<<<<<< HEAD
                            
+=======
+                            <td>                  
+                              <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                              </button2>
+                            </td>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         
         
                           </tr>
@@ -444,7 +550,11 @@
                   <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
                     <h4 class="card-title disabled">
                       <img src="/assets/img/alimentos.png" class="edit" alt="">
+<<<<<<< HEAD
                       Lista de compras de productos con existencias
+=======
+                      Lista de productos 
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
                     </h4>
         
               
@@ -478,6 +588,7 @@
                             Fecha 
                           </th>
                           <th>
+<<<<<<< HEAD
                             Productos 
                           </th>
                           <th>
@@ -496,6 +607,28 @@
                             Porciones
                           </th>
                         
+=======
+                            Producto 
+                          </th>
+                          <th>
+                            Unidad de medida
+                          </th>
+                          <th>
+                            Cantidad de medida
+                          </th>
+                          <th>
+                            Precio unitario
+                          </th>
+                          <th>
+                            Precio
+                          </th>
+                          <th>
+                            Porción
+                          </th>
+                          <th>
+                            Acción
+                          </th>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         
                         </thead>
                         <tbody >
@@ -545,7 +678,14 @@
                               <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
                            
                             </td>
+<<<<<<< HEAD
                        
+=======
+                            <td>                  
+                              <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                              </button2>
+                            </td>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         
         
                           </tr>
@@ -597,7 +737,11 @@
                   <div class="card-header card-header-danger d-flex align-items-center justify-content-between">
                     <h4 class="card-title disabled">
                       <img src="/assets/img/alimentos.png" class="edit" alt="">
+<<<<<<< HEAD
                       Lista de compras de productos sin existencias
+=======
+                      Lista de productos 
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
                     </h4>
         
               
@@ -631,6 +775,7 @@
                             Fecha 
                           </th>
                           <th>
+<<<<<<< HEAD
                             Productos 
                           </th>
                           <th>
@@ -649,6 +794,28 @@
                             Porciones
                           </th>
                          
+=======
+                            Producto 
+                          </th>
+                          <th>
+                            Unidad de medida
+                          </th>
+                          <th>
+                            Cantidad de medida
+                          </th>
+                          <th>
+                            Precio unitario
+                          </th>
+                          <th>
+                            Precio
+                          </th>
+                          <th>
+                            Porción
+                          </th>
+                          <th>
+                            Acción
+                          </th>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         
                         </thead>
                         <tbody >
@@ -698,7 +865,15 @@
                               <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'cubeta'">(unidad)</span>
                            
                             </td>
+<<<<<<< HEAD
                        
+=======
+                            <td>                  
+                              <button2> <i class="material-icons editable-row" (click)="showModalEliminar(item.id)">delete</i>
+                              </button2>
+                            </td>
+        
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         
                           </tr>
         
@@ -735,6 +910,7 @@
 
 
 
+<<<<<<< HEAD
 
             <div class="row" *ngIf="(fechaSeleccionada || fechacomprasss?.length === 1) && !filtroSeleccionado2">
               <!-- Botones de agregar alimentos y el otro de tipo alimento por si llega a faltar algun alimento que no este en la lista -->
@@ -890,6 +1066,8 @@
 
 
 
+=======
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
           </div>
         
            
@@ -1022,6 +1200,7 @@
             <label for="inputState" class="select-gr">Precio</label>
             <br />
             <input class="example-full-width estilosversion2" type="text" formControlName="precio">
+<<<<<<< HEAD
             <div *ngIf="showPrecioError3" class="text-danger">
               <span *ngIf="ingredientesForm.get('precio')?.errors?.pattern">
                 El campo de precio solo permite el punto como separador.
@@ -1029,6 +1208,10 @@
             </div>
           </div>
           
+=======
+            <div *ngIf="showId_precioError" class="text-danger">Campo requerido</div>
+          </div>
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
         </div>
 
 

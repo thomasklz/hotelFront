@@ -93,7 +93,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
    ReporteproductoComponent,
    ReporteingresosComponent,
    ListadoadministradoresComponent,
+<<<<<<< HEAD
    ComprasComponent  ]
+=======
+   ComprasComponent
+  ]
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
 })
 
 export class AdminLayoutModule {}

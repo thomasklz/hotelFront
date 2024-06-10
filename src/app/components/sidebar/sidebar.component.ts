@@ -13,7 +13,11 @@ export const ROUTES: RouteInfo[] = [
   { path: '/panelAdministrador', title: ' Administrador',  icon:'admin_panel_settings', class: '' },
 
   
+<<<<<<< HEAD
    { path: '/menus_Diarios', title: ' Menús diarios',  icon:'content_paste', class: '' },
+=======
+   { path: '/menu', title: ' Menú diario',  icon:'content_paste', class: '' },
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
 
    { path: '/creditos', title: ' Créditos',  icon:'credit_card', class: '' },
   { path: '/reportePolitecnico', title: ' Reportes',  icon:'analytics', class: '' },

@@ -157,7 +157,11 @@ th {
 
 .select-grr {
   font-size: 18px;
+<<<<<<< HEAD
   color: rgb(85, 84, 84);
+=======
+  color: rgb(158, 155, 155);
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
   margin-right: 10px;
 }
 
@@ -171,7 +175,10 @@ th {
   font-weight: bold;
   font-size: 25px;
   margin-right: 10px;
+<<<<<<< HEAD
   color: rgb(85, 84, 84);
+=======
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
 }
 .centered-horizontal div {
   font-weight: bold;

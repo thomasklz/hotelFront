@@ -453,7 +453,11 @@ import { RecetarioService } from 'app/servicios/recetario.service';
     // Forzar la detección de cambios
     this.cdr.detectChanges();
     this.mostrarTabla = false;
+<<<<<<< HEAD
     this.tituloForm = "Registros de recetas detalladas ";
+=======
+    this.tituloForm = "Registro de receta ";
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
     this.cdr.detectChanges();
 
     this.ingredientesForm.reset();
@@ -477,11 +481,37 @@ import { RecetarioService } from 'app/servicios/recetario.service';
  
   
 
+<<<<<<< HEAD
 platoSeleccionado: { id: number | null; descripcion: string } = {
   id: null,
   descripcion: "",
 };
 
+alimentoSeleccionado: { id: number | null; descripcion: string } = {
+=======
+  
+
+platoSeleccionado: { id: number | null; descripcion: string } = {
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
+  id: null,
+  descripcion: "",
+};
+
+<<<<<<< HEAD
+updatePlatoId(event: any) {
+  const descripcion = event.target.value;
+  const platoSeleccionado = this.descripcplato.find(
+    (plato) => plato.descripcion === descripcion
+  );
+  this.platoSeleccionado = platoSeleccionado || {
+    id: null,
+    descripcion: descripcion,
+  };
+  this.ingredientesForm.get("id_plato")?.setValue(this.platoSeleccionado.id);
+  this.platoId = this.platoSeleccionado.descripcion;
+}
+
+=======
 alimentoSeleccionado: { id: number | null; descripcion: string } = {
   id: null,
   descripcion: "",
@@ -500,6 +530,7 @@ updatePlatoId(event: any) {
   this.platoId = this.platoSeleccionado.descripcion;
 }
 
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
   cantidadPersonaCome:any;
  
 
@@ -681,6 +712,7 @@ updatePlatoId(event: any) {
         item.unidadMedida.unidadMedida, // Unidad de medida
         item.cantidadPersonaCome,
         `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+<<<<<<< HEAD
         `${item.cantidadPersonaGramo * this.cantidad} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`,
         `${item.cantidadPersonaGramo * this.cantidad/item.unidadMedida.valorMedida} ` // Porción para n personas
 
@@ -688,6 +720,13 @@ updatePlatoId(event: any) {
     
       const anchoPagina = 595.28;
       let columnWidths = [30, 70, 70, 70, 70, 70,70]; // Ajusta según tus necesidades
+=======
+        `${item.cantidadPersonaGramo * this.cantidad} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}` // Porción para n personas
+      ]);
+    
+      const anchoPagina = 595.28;
+      let columnWidths = [30, 70, 70, 70, 70, 70]; // Ajusta según tus necesidades
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
       const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
       let escala = 1;
     
@@ -720,7 +759,11 @@ updatePlatoId(event: any) {
         // Encabezados adicionales
         const ingredientHeaders = {
           table: {
+<<<<<<< HEAD
             widths: ['*', '*', '*', '*', '*', '*'],
+=======
+            widths: ['*', '*', '*', '*', '*'],
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
             body: [
               [
                 { text: `Menú: ${this.ingredientedescripcionsss[0].plato.descripcion}`, bold: true, fillColor: '#D3D3D3', border: [true, true, true, true] },
@@ -740,7 +783,11 @@ updatePlatoId(event: any) {
           content: [
             headerTable,
             '\n\n',
+<<<<<<< HEAD
             { text: 'INFORME DE LISTA DE RECETAS DETALLADAS CON CÁLCULOS PARA N (MENÚ-PERSONAS)', style: 'header', alignment: 'center' },
+=======
+            { text: 'INFORME DE PRODUCTOS CON SU MENÚ', style: 'header', alignment: 'center' },
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
             '\n\n',
             { text: 'Cálculos para menú-persona', style: 'subheader', alignment: 'left', bold: true },
             '\n',
@@ -755,7 +802,11 @@ updatePlatoId(event: any) {
                 // Alineación de la tabla en el centro
                 alignment: 'center',
                 body: [
+<<<<<<< HEAD
                   ['Nº', 'Productos', 'Unidades de medidas', 'Cantidades personas que comen', 'Porciones por persona', `Porciones para ${n} personas`,'Cantidades en unidades de medidas'].map((cell, index) => ({
+=======
+                  ['Nº', 'Producto', 'Unidad de medida', 'Cantidad persona come', 'Porción por persona', `Porción para ${n} personas`].map((cell, index) => ({
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
                     text: cell,
                     bold: true,
                     fillColor: '#D3D3D3',
@@ -780,7 +831,11 @@ updatePlatoId(event: any) {
         };
     
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
+<<<<<<< HEAD
         pdfMake.createPdf(documentoPDF).download('Informe de lista de recetas detalladas con cálculos para n (menú-personas).pdf');
+=======
+        pdfMake.createPdf(documentoPDF).download('INFORME_DE_PRODUCTOS_CON_SU_MENÚ.pdf');
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
       });
     }
 
@@ -788,7 +843,11 @@ updatePlatoId(event: any) {
       const n = this.cantidad;
       const ExcelJS = require('exceljs');
       const workbook = new ExcelJS.Workbook();
+<<<<<<< HEAD
       const worksheet = workbook.addWorksheet('Informe de lista de recetas detalladas con cálculos para n (menú-personas)');
+=======
+      const worksheet = workbook.addWorksheet('Informe de productos con su menú');
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
       
       // Organizar créditos por persona
       const creditosPorPersona = {};
@@ -809,7 +868,11 @@ updatePlatoId(event: any) {
       
       // Agregar encabezados de la tabla
       const headers = [
+<<<<<<< HEAD
         'Nº', 'Productos', 'Unidades de medidas','Cantidades de personas que comen             ', 'Porciones por cantidad de persona',`Porciones para ${n} personas`  ,'Cantidades en unidades de medidas' ];
+=======
+        'Nº', 'Producto', 'Unidad de medida','Cantidad persona come             ', 'Porción por cantidad de persona',`Porción para ${n} personas`   ];
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
       
       worksheet.addRow(headers);
       worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
@@ -831,8 +894,12 @@ updatePlatoId(event: any) {
           item.cantidadPersonaCome,
           `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
           `${item.cantidadPersonaGramo * this.cantidad} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}` // Porción para n personas
+<<<<<<< HEAD
       ,   `${item.cantidadPersonaGramo * this.cantidad/item.unidadMedida.valorMedida} ` // Porción para n personas
 
+=======
+      
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
           
            
       ];
@@ -863,7 +930,11 @@ updatePlatoId(event: any) {
       
       // Guardar el libro de trabajo
       workbook.xlsx.writeBuffer().then(buffer => {
+<<<<<<< HEAD
       saveAs(new Blob([buffer]), 'Informe lista de recetas detalladas con cálculos para n (menú-personas).xlsx');
+=======
+      saveAs(new Blob([buffer]), 'Informe de productos con su menú.xlsx');
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
       });
       }
       

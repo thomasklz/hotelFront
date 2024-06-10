@@ -30,11 +30,14 @@ export class ComprasService {
     return this.http.get<any>('http://localhost:3000/api/mostrarCompraNoExistente');
   }
 
+<<<<<<< HEAD
   buscarFechaCompra(fecha: string) {
     // Corrección en la construcción de la URL
     return this.http.get<any>(`http://localhost:3000/api/buscarFechaCompra/${fecha}`);
   }
 
+=======
+>>>>>>> e6df002d2919446f51cf1ac3f2d5186f3bb16342
    deletealimentos(id:number){
     return this.http.delete<any>('http://localhost:3000/api/eliminaralimentoCompra/'+id);
   }
