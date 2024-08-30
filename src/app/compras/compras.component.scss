@@ -85,6 +85,10 @@ img {
     background-color: rgb(206, 25, 25);
     justify-content: center;
     align-items: center;
+    width: auto;
+    display: flex;
+    //justify-content: center;
+    align-items: center;
   }
   
   h5 {
@@ -167,12 +171,7 @@ img {
     width: 800px;
   }
  
-  .heads {
-    width: auto;
-    display: flex;
-    //justify-content: center;
-    align-items: center;
-  }
+ 
   
   
   header {

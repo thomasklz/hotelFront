@@ -1,144 +1,124 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+const BASE_URL = ' http://localhost:3000/api/';
+
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
 
-  constructor( private http:HttpClient) { }
-  postplato(data:any){
-    
-    return this.http.post<any>('http://localhost:3000/api/crearplato/', data);
-    
+  constructor(private http: HttpClient) { }
+
+  postplato(data: any) {
+    return this.http.post<any>(`${BASE_URL}crearplato/`, data);
   }
 
-  gettplato(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarplato');
-  }
-  mostrarplatomenu(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarplatomenu');
+  gettplato() {
+    return this.http.get<any>(`${BASE_URL}mostrarplato`);
   }
 
-
-  
-  mostrarplatocredito(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarplatocredito');
+  mostrarplatomenu() {
+    return this.http.get<any>(`${BASE_URL}mostrarplatomenu`);
   }
 
-  mostrartodoslosplatosMenu(){
-    return this.http.get<any>('http://localhost:3000/api/mostrartodoslosplatosMenu');
-  }
-  
-  obtenerplatos(){
-    return this.http.get<any>('http://localhost:3000/api/mostrartodoslosplatos');
+  mostrarplatocredito() {
+    return this.http.get<any>(`${BASE_URL}mostrarplatocredito`);
   }
 
-  obtenerplatosdeproductos(){
-    return this.http.get<any>('http://localhost:3000/api/obtenerplatosdeproductos');
+  mostrartodoslosplatosMenu() {
+    return this.http.get<any>(`${BASE_URL}mostrartodoslosplatosMenu`);
   }
 
-  
-
-  
-  gettplatoselect(){
-    return this.http.get<any>('http://localhost:3000/api/obtenerplato');
+  obtenerplatos() {
+    return this.http.get<any>(`${BASE_URL}mostrartodoslosplatos`);
   }
 
-putplato(data:any, id:number){
-  return this.http.put<any>('http://localhost:3000/api/editarplato/'+id,data);
-}
-id:number;
-
-guardar(data:any, id?){
-if (id) {
-  return this.http.put<any>('http://localhost:3000/api/editarplato/'+id,data);
-}else{
-  return this.http.post<any>(' http://localhost:3000/api/crearplato/', data);
-}
-}
-buscar( id){
-  return this.http.get<any>('http://localhost:3000/api/buscarplato/'+id);
-}
-deleteplato(id:number){
-  return this.http.delete<any>('http://localhost:3000/api/eliminarplato/'+id);
-}
-
-deletemenudiario(id:number){
-  return this.http.delete<any>('http://localhost:3000/api/eliminarmenu/'+id);
-}
-
-
-
-/*TIPO MENU------------------------------------------------------ */
-
-
-
-gettipomenu(){
-  return this.http.get<any>('http://localhost:3000/api/mostrartipo_menu/');
-}
-
-posttipomenu(data:any){
-    
-  return this.http.post<any>(' http://localhost:3000/api/creartipo_menu', data);
-  
-}
-
-
-/*CANTIDAD DE PLATOS------------------------------------------------------ */
-
-guardarCantidadPlato(data:any, id?){
-  if (id) {
-    return this.http.put<any>('http://localhost:3000/api/editarcantidadplato/'+id,data);
-  }else{
-    return this.http.post<any>('http://localhost:3000/api/crearcantidadplato/', data);
-  }
+  obtenerplatosdeproductos() {
+    return this.http.get<any>(`${BASE_URL}obtenerplatosdeproductos`);
   }
 
-  gettcantidadplatos(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarcantidadplato');
+  gettplatoselect() {
+    return this.http.get<any>(`${BASE_URL}obtenerplato`);
   }
 
-  obtenercantidadplatoselect(){
-    return this.http.get<any>('http://localhost:3000/api/obtenercantidadplatoselect');
+  putplato(data: any, id: number) {
+    return this.http.put<any>(`${BASE_URL}editarplato/${id}`, data);
   }
 
-  
-
-
-/* MENU------------------------------------------------------ */
-gettMenu(){
-  return this.http.get<any>('http://localhost:3000/api/mostrarmenu');
-}
-
-
-
-guardarMenu(data:any, id?){
-  if (id) {
-    return this.http.put<any>('http://localhost:3000/api/editarmenu/'+id,data);
-  }else{
-    return this.http.post<any>('http://localhost:3000/api/crearmenu/', data);
-  }
+  guardar(data: any, id?: any) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editarplato/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearplato/`, data);
+    }
   }
 
-
-
-  //Mostrar las fechas
-  gettfechaMenu(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarfechamenu');
+  buscar(id: any) {
+    return this.http.get<any>(`${BASE_URL}buscarplato/${id}`);
   }
-  
-  gettfechaMenuregistro(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarfechamenuregistro');
+
+  deleteplato(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminarplato/${id}`);
   }
-  
-  //BUSCAR FECHA
 
+  deletemenudiario(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminarmenu/${id}`);
+  }
 
+  /* TIPO MENU ------------------------------------------------------ */
 
+  gettipomenu() {
+    return this.http.get<any>(`${BASE_URL}mostrartipo_menu/`);
+  }
+
+  posttipomenu(data: any) {
+    return this.http.post<any>(`${BASE_URL}creartipo_menu`, data);
+  }
+
+  /* CANTIDAD DE PLATOS ------------------------------------------------------ */
+
+  guardarCantidadPlato(data: any, id?: any) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editarcantidadplato/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearcantidadplato/`, data);
+    }
+  }
+
+  gettcantidadplatos() {
+    return this.http.get<any>(`${BASE_URL}mostrarcantidadplato`);
+  }
+
+  obtenercantidadplatoselect() {
+    return this.http.get<any>(`${BASE_URL}obtenercantidadplatoselect`);
+  }
+
+  /* MENU ------------------------------------------------------ */
+
+  gettMenu() {
+    return this.http.get<any>(`${BASE_URL}mostrarmenu`);
+  }
+
+  guardarMenu(data: any, id?: any) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editarmenu/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearmenu/`, data);
+    }
+  }
+
+  // Mostrar las fechas
+  gettfechaMenu() {
+    return this.http.get<any>(`${BASE_URL}mostrarfechamenu`);
+  }
+
+  gettfechaMenuregistro() {
+    return this.http.get<any>(`${BASE_URL}mostrarfechamenuregistro`);
+  }
+
+  // BUSCAR FECHA
   buscarmenuporfecha(fecha: string) {
-    return this.http.get<any>(`http://localhost:3000/api/obtenerMenuPorFecha/${fecha}`);
+    return this.http.get<any>(`${BASE_URL}obtenerMenuPorFecha/${fecha}`);
   }
-  
-
 }

@@ -157,11 +157,10 @@ formControlName="fecha"
 
                   <th>Poducto</th>
                   <th>Unidad de medida</th>
-                  <th>Cantidad persona come</th>
-                  <th>Porción por cantidad de persona</th>
+                   <th>Porción por cantidad de persona</th>
                    <th>Precio unidad</th>
                    <th>Costeo una persona</th>
-                   <th>Porción para n personas</th>
+                   <th>Porción para {{ personas }} personas</th>
                   <th>Costo por cantidad de persona</th>
 
                  
@@ -180,8 +179,7 @@ formControlName="fecha"
                     <td>
                       {{item.unidadMedida.unidadMedida}}
                     </td>
-                   <td>{{item.cantidadPersonaCome}} </td>
-                       
+                        
                    <td>
                     {{ item.cantidadPersonaGramo }}
                     <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
@@ -281,8 +279,9 @@ formControlName="fecha"
           <div class="pagination">
            <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
             <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
-           <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
-               </div>
+            <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages">
+              Siguiente <i class="fa fa-arrow-right"></i>
+            </button>               </div>
             </div>
           </div>
 

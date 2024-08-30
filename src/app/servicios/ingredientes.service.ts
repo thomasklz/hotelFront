@@ -1,104 +1,87 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+const BASE_URL = ' http://localhost:3000/api/';
+
 @Injectable({
   providedIn: 'root'
 })
 export class IngredientesService {
 
-  constructor( private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-
-  //obtener ingredientes
-  
-
-  //obtener ingredientes
-  getingrediente(){
-    return this.http.get<any>('http://localhost:3000/api/mostraringredientes');
+  // Obtener ingredientes
+  getingrediente() {
+    return this.http.get<any>(`${BASE_URL}mostraringredientes`);
   }
 
-
-  obtenerplatosdeingredientes(){
-    return this.http.get<any>('http://localhost:3000/api/obtenerplatosdeingredientes');
+  obtenerplatosdeingredientes() {
+    return this.http.get<any>(`${BASE_URL}obtenerplatosdeingredientes`);
   }
 
-  
+  // Obtener ingredientes por id
+  getingredienteporid(id?: any) {
+    return this.http.get<any>(`${BASE_URL}obtenerIngredientesPorPlato/${id}`);
+  }
 
+  getobtenerDescripcionPlato(id?: any) {
+    return this.http.get<any>(`${BASE_URL}obtenerDescripcionPlato/${id}`);
+  }
 
+  getobtenerDescripcionPlatoPrecio(id?: any) {
+    return this.http.get<any>(`${BASE_URL}obtenerDescripcionPlatoyprecio/${id}`);
+  }
 
- //obtener ingredientes
- getingredienteporid( id?){
-  return this.http.get<any>('http://localhost:3000/api/obtenerIngredientesPorPlato/'+id);
-}
-
-
-
-getobtenerDescripcionPlato( id?){
-  return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlato/'+id);
-}
-
-getobtenerDescripcionPlatoPrecio( id?){
-  return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlatoyprecio/'+id);
-}
-
-  //Crear y Modificar ingredientes
-  guardar(data:any, id?){
+  // Crear y modificar ingredientes
+  guardar(data: any, id?: any) {
     if (id) {
-      return this.http.put<any>('http://localhost:3000/api/editaringredientes/'+id,data);
-    }else{
-      return this.http.post<any>('http://localhost:3000/api/crearingredientes', data);
+      return this.http.put<any>(`${BASE_URL}editaringredientes/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearingredientes`, data);
     }
-    }
-
-
-    crearingredientesconsuplato(data:any, id?){
-      if (id) {
-        return this.http.put<any>('http://localhost:3000/api/editaringredientes/'+id,data);
-      }else{
-        return this.http.post<any>('http://localhost:3000/api/crearingredientesconsuplato', data);
-      }
-      }
-  
-    
-
-    //eliminar ingredientes
-    deleteingrediente(id:number){
-      return this.http.delete<any>('http://localhost:3000/api/eliminaringredientes/'+id);
-    }
-    deleteingredientescreados(id:number){
-      return this.http.delete<any>('http://localhost:3000/api/eliminaringredientescreados/'+id);
-    }
-    
-
-       //eliminar ingredientes con su plato
-       deleteproductoPlato(id:number){
-        return this.http.delete<any>('http://localhost:3000/api/eliminarproductoPlato/'+id);
-      }
-  
-    
-
-
- //Crear y Modificar productos para su plato
- guardarproductosconsuplato(data:any, id?){
-  if (id) {
-    return this.http.put<any>('http://localhost:3000/api/editaringredientes/'+id,data);
-  }else{
-    return this.http.post<any>('http://localhost:3000/api/crearingredientesconsuplato', data);
-  }
   }
 
-  getproductosporid( id?){
-    return this.http.get<any>('http://localhost:3000/api/obtenerproductosplatos_PorPlato/'+id);
+  crearingredientesconsuplato(data: any, id?: any) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editaringredientes/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearingredientesconsuplato`, data);
+    }
   }
-  getobtenerDescripcionPlatoproductos( id?){
-    return this.http.get<any>('http://localhost:3000/api/obtenerDescripcionPlatoproductos/'+id);
+
+  // Eliminar ingredientes
+  deleteingrediente(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminaringredientes/${id}`);
   }
 
-//buscar ingrediente fecha y plato
+  deleteingredientescreados(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminaringredientescreados/${id}`);
+  }
 
-buscarFechaYPlato(id: number, fecha: string) {
-  return this.http.get<any>(`http://localhost:3000/api/buscarPorFecha/${id}/${fecha}`);
-}
+  // Eliminar ingredientes con su plato
+  deleteproductoPlato(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminarproductoPlato/${id}`);
+  }
 
-   
+  // Crear y modificar productos para su plato
+  guardarproductosconsuplato(data: any, id?: any) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editaringredientes/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearingredientesconsuplato`, data);
+    }
+  }
+
+  getproductosporid(id?: any) {
+    return this.http.get<any>(`${BASE_URL}obtenerproductosplatos_PorPlato/${id}`);
+  }
+
+  getobtenerDescripcionPlatoproductos(id?: any) {
+    return this.http.get<any>(`${BASE_URL}obtenerDescripcionPlatoproductos/${id}`);
+  }
+
+  // Buscar ingrediente por fecha y plato
+  buscarFechaYPlato(id: number, fecha: string) {
+    return this.http.get<any>(`${BASE_URL}buscarPorFecha/${id}/${fecha}`);
+  }
 }

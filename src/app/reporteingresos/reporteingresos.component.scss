@@ -174,3 +174,38 @@
     font-weight: bold;
   
 }
+
+
+
+
+
+.pagination-containerrrr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; /* Ajusta el margen superior según sea necesario */
+}
+
+.pagination {
+  /* Estilos adicionales para la paginación si es necesario */
+  /* ... */
+}
+/* Agrega estilos para quitar bordes a los botones de paginación */
+.pagination button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+}
+.k{
+  font-weight: bold;
+}
+/* Estilo para los íconos dentro de los botones */
+.pagination button i {
+  margin-right: 5px; /* Puedes ajustar este valor según tu preferencia */
+}
+
+.editable-row {
+  cursor: pointer;
+}

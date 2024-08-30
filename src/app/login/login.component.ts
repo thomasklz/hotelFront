@@ -116,14 +116,19 @@ export class LoginComponent implements OnInit {
           // Reiniciar el formulario
           this.loginForm.reset();
   
-          // Redireccionar según el tipo de usuario
-          if (res.id_tipousuario === 1) {
-            // Redireccionar a las rutas específicas para id_tipousuario igual a 1
-            this.router.navigate(['/dashboard']);
-          } else {
-            // Redireccionar a las rutas generales para otros tipos de usuarios
-            this.router.navigate(['/reporte']);
-          }
+         // Redireccionar según el tipo de usuario
+if (res.id_tipousuario === 1) {
+  // Redireccionar a las rutas específicas para id_tipousuario igual a 1
+  this.router.navigate(['/dashboard']);
+} else if (res.id_tipousuario === 3) {
+  // Redireccionar a la ruta para id_tipousuario igual a 3
+  this.router.navigate(['/perfilcajero']);
+} else {
+  // Redireccionar a las rutas generales para otros tipos de usuarios
+  this.router.navigate(['/reporte']);
+}
+
+
         },
         error: (error) => {
           this.showModalError();

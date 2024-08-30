@@ -169,8 +169,9 @@
   <div class="pagination">
     <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"><i  class="fa fa-arrow-left  "></i> Anterior</button>
     <span class="k">Página {{ currentPage }} de {{ totalPages }}</span>
-    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente <i  class="fa fa-arrow-right"></i></button>
-  </div>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage >= totalPages">
+      Siguiente <i class="fa fa-arrow-right"></i>
+    </button>   </div>
 </div>
 
           </div>

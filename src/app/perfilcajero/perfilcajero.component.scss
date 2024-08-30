@@ -1,0 +1,284 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .header {
+    background-color: rgb(255, 255, 255); /* Color rojo para el header */
+    padding: 20px;
+    color: rgb(61, 60, 60);
+    height: 90px;
+    border-color: rgb(125, 125, 125);
+
+
+    
+  }
+
+  .fondo{
+    background: url('/assets/img/menudesayunoo.jpeg') center center/cover no-repeat;
+
+  }
+  .xx{
+    cursor: pointer;
+  }
+  .header-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .user-name {
+    font-size: 20px;
+  }
+  
+  .content {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ocupar toda la página verticalmente */
+
+    
+  }
+  
+  .report-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .report-table th,
+  .report-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .report-table th {
+    background-color: #f2f2f2;
+  }
+ 
+
+.btn-download {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Tu código actual */
+
+/* Agregamos el siguiente código para alinear las imágenes */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alineación horizontal */
+  }
+  
+  /* ---------------------------------------------------------------------------------------------------------------------------------------- */
+  .curr{
+    cursor: pointer;
+  }
+  .clsimg{
+    height: 50%;
+    width: 50%;
+   
+
+  }
+ 
+
+/* styles.css o sidebar.component.css */
+.red-bold-text {
+  color: rgb(187, 52, 52) !important;
+  font-weight: bold !important;
+}
+th{
+  color: rgb(187, 52, 52) !important;
+  font-weight: bold !important;
+}
+h2{
+  color: #00831f;
+}
+
+.disabled {
+  font-weight: bold;
+  font-size: 21px;
+}
+
+//--------------------------------------------descarga
+.tamimg{
+  height: 25px;
+  width: 25px;
+}
+
+.custom-dropdown {
+  position: relative;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  width: 190px;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #ea3f2c; /* Cambia el color de fondo al que desees */
+}
+
+.nav-item {
+  list-style: none; /* Elimina el estilo de viñeta de la lista */
+}
+
+.label2 {
+  display: inline-flex;
+  align-items: center;
+  
+  font-family:  sans-serif;
+  font-size: small;
+  font-size: 18px;
+  font-weight: bold; 
+}
+.col{
+  color: #ffffff;
+}
+
+.dropdown-menu{
+  cursor: pointer;
+}
+
+.logonavbar{
+  width: auto; /* Ajusta este valor según el tamaño que necesites */
+  height: 70px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  
+  object-fit: cover;
+ }
+
+
+.circular-image {
+  width: 100px; /* Ajusta este valor según el tamaño que necesites */
+  height: 100px; /* Debe ser igual al width para asegurar un círculo perfecto */
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.lt{
+  font-family: 'Arial';
+}
+
+
+
+
+
+
+
+
+
+
+
+.icon-text {
+  font-size: 18px; /* Ajusta el tamaño según tus preferencias */
+  vertical-align: middle; /* Asegura la alineación vertical */
+  margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+  color: rgb(136, 135, 134)3, 133, 133;
+}
+.esp{
+  margin-top: 20px;
+  cursor: pointer;
+  color: rgb(214, 212, 208)3, 133, 133;
+}
+
+
+.cl {
+  color:rgb(145, 140, 140); /* Establece el color rojo para el icono */
+}
+
+.icon-text {
+  color: rgb(145, 140, 140); /* Establece el color rojo para el texto */
+  font-size: 16px; /* Ajusta el tamaño según tus preferencias */
+  vertical-align: middle; /* Asegura la alineación vertical */
+  margin-left: 5px; /* Ajusta el espacio entre el icono y el texto si es necesario */
+}
+.logo{
+  height: 168px;
+}
+.letrausua{
+  font-size: 15px;
+  color: gray;
+  font-family: sans-serif;
+}
+
+
+
+
+ 
+h3{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.card{
+    cursor: pointer;
+}
+ 
+
+ .colorinfo{
+    color: rgb(4, 117, 117);
+    font-size: 60px;
+ }
+ .colorv2{
+    color: rgb(111, 0, 126);
+    font-size: 60px;
+ }
+ 
+ .colorv3{
+    color: rgb(24, 185, 2);
+    font-size: 60px;
+ }
+ 
+
+ .colorv7{
+    color: rgb(2, 66, 185);
+    font-size: 60px;
+ }
+
+ .colorv4{
+    color: rgb(187, 137, 30);
+    font-size: 60px;
+ }
+
+
+ .colorv8{
+    color: rgb(43, 40, 39);
+    font-size: 60px;
+ }
+ .colorv5{
+    color: rgb(185, 23, 2);
+    font-size: 60px;
+ }
+
+ .colorv6{
+    color: rgb(233, 229, 5);
+    font-size: 60px;
+ }
+
+
+ .card-header.tamano {
+    display: flex;
+    align-items: center;
+}
+
+.card-header-content {
+    display: flex;
+    align-items: center;
+}
+
+.card-icon {
+    margin-right: 10px; /* Espacio entre el icono y el título */
+}

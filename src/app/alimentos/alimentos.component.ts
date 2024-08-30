@@ -1,4 +1,4 @@
- import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+ import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from "@angular/core";
   import { HttpClient } from "@angular/common/http";
 import {
   FormBuilder,
@@ -6,6 +6,8 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
+import { MatDialog } from '@angular/material/dialog';
+
 import { Router } from "@angular/router";
 import { MatTableDataSource } from "@angular/material/table";
 import { AlimentosService } from "app/servicios/alimentos.service";
@@ -17,6 +19,14 @@ import { ImageService } from "app/servicios/image.service";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import * as XLSX from 'xlsx';
+import { Observable, Observer } from "rxjs";
+import { ExampleTab } from "app/table-list/table-list.component";
+import { ComprasService } from 'app/servicios/compras.service';
+
+
+
+ import * as FileSaver from 'file-saver';
+ declare var $: any;
 
 @Component({
   selector: "app-alimentos",
@@ -54,7 +64,14 @@ export class AlimentosComponent implements OnInit {
 
     private router: Router,
     private formBuilder: FormBuilder,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private ComprasService: ComprasService,
+    private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    private dialog: MatDialog,
+
+
+
   ) {
     this.getAllunidadMedida();
     this.getAllalimento();
@@ -65,6 +82,12 @@ export class AlimentosComponent implements OnInit {
     this.getAllalimento();
     this.getAllunidadMedida();
     this.loadPageData();
+    this.loadAsyncTabs();
+    this.mostrarCompra();
+
+    
+    this.fechaControl.setValue(this.getCurrentDate());
+
     this.alimentoForm = this.formBuilder.group({
       descripcion: new FormControl("", [
         Validators.required,
@@ -77,6 +100,12 @@ export class AlimentosComponent implements OnInit {
       ]),
     });
  
+    this.ingredientesForm = this.formBuilder.group({
+      id_alimento: ["", Validators.required],
+      cantidadmedidaUnidad: ["", Validators.required],
+      precio: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{0,2})?$/)]],
+      fecha: [this.getCurrentDate(), Validators.required]
+    });
 
     this.getAllunidadMedida();
 
@@ -90,7 +119,18 @@ export class AlimentosComponent implements OnInit {
   }
 
 
+  hideSelectText() {}
 
+  asyncTabs: Observable<ExampleTab[]>;
+
+  loadAsyncTabs() {
+    this.asyncTabs = new Observable((observer: Observer<ExampleTab[]>) => {
+      observer.next([
+        { label: 'Registro de producto', content: 'Content 1' },
+        { label: 'Registro de compra', content: 'Content 2' },
+      ]);
+    });
+  }
 
   showMoreOptions: boolean = false;
   selectedOption: any = null;
@@ -117,6 +157,243 @@ export class AlimentosComponent implements OnInit {
     return this.selectedOption ? this.selectedOption.unidadMedida : 'Otro  ';
   }
 
+
+
+
+  //CPMPRA---------------
+
+
+
+  
+  totalItemsv2 = 0;
+  pageSizev2 = 10; // Tamaño de la página
+  currentPagev2 = 1; // Página actual
+ 
+  get totalPagesv2(): number {
+    return Math.ceil(this.totalItemsv2 / this.pageSizev2);
+  }
+
+  get startIndexv2(): number {
+    return (this.currentPagev2 - 1) * this.pageSizev2;
+  }
+
+  get endIndexv2(): number {
+    return Math.min(this.startIndexv2 + this.pageSizev2 - 1, this.totalItemsv2 - 1);
+  }
+  
+  get pagedMenusv2(): any[] {
+    return this.comprasss2.slice(this.startIndexv2, this.endIndexv2 + 1);
+  }
+  
+
+  onPageChangev2(event: number) {
+    this.currentPagev2 = event;
+  }
+
+
+  nombreproductoFiltro2: string = '';
+  filtroSeleccionado2: string = '';
+  comprasss2: any[] = [];
+  alimentosssOriginal2: any[] = [];
+
+  aplicarFiltros2() {
+    // Aplica los filtros aquí según el valor de filtroSeleccionado
+    if (this.filtroSeleccionado2 === 'nombre') {
+      // Aplica el filtro por nombre
+      if (this.nombreproductoFiltro) {
+        this.comprasss2 = this.alimentosssOriginal2.filter(item => item.persona.nombre.includes(this.nombreproductoFiltro2));
+      } else {
+        this.comprasss2 = [...this.alimentosssOriginal2];
+      }
+      // Limpia el filtro de fecha
+    }
+  }
+
+  mostrarCompra() {
+    this.ComprasService.mostrarCompra().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.compras);
+        this.comprasss2 = res.compras;
+        this.totalItemsv2 = res.compras.length;
+        console.log("estasss", this.comprasss2);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  get pagedMenus2(): any[] {
+    return this.comprasss2.slice(this.startIndex, this.endIndex + 1);
+  }
+  ingredientesForm!: FormGroup;
+  mostrarTabla: boolean = false;
+  tituloFormV2;
+  editandoIngredientes: boolean = false;
+  idIngredientesEditar: string = "";
+  selectedOptionalimento: any = null;
+  showIdalimentoError = false;
+  showAlimentoError = false;
+  ingredientesSeleccionados: any[] = [];
+
+  nuevoCursoV2() {
+    this.ingredientesForm.reset();
+    this.ingredientesForm.patchValue({ fecha: this.getCurrentDate() });
+    this.mostrarTabla = false;
+    this.tituloFormV2 = "Registros de compras de productos";
+    this.cdr.detectChanges();
+
+    this.editandoIngredientes = false;
+    this.idIngredientesEditar = "";
+
+    this.selectedOptionalimento = null;
+    this.ingredientesForm.get("id_alimento")?.setValue(null);
+
+    this.showIdalimentoError = false;
+    this.showAlimentoError = false;
+    this.showCantidadPersonaError = false;
+    this.getAllalimento();
+    this.ingredientesSeleccionados = [];
+  }
+  addCompras() {
+    console.log("Datos a enviar:", this.alimentosSeleccionados); // Para depuración
+
+    // Obtener la fecha seleccionada del formulario
+    const fecha = this.ingredientesForm.get('fecha').value;
+    const precio = this.ingredientesForm.get('precio').value;
+    const cantidadmedidaUnidad = this.ingredientesForm.get('cantidadmedidaUnidad').value;
+    console.log("Fecha de la compra:", fecha); // Para depuración
+
+    if (this.alimentoSeleccionado.id && fecha && precio && cantidadmedidaUnidad) {
+      // Datos a enviar
+      const data = {
+        id_alimento: this.alimentoSeleccionado.id,
+        cantidadmedidaUnidad: cantidadmedidaUnidad,
+        precio: precio,
+        fecha: fecha
+      };
+
+      console.log("Datos a enviar:", data); // Para depuración
+
+      // Llamar al servicio para guardar los datos de compra
+      this.ComprasService.gestionarAlimento(data).subscribe(
+        (result: any) => {
+          this.getAllalimento();
+          this.mostrarCompra();
+           
+          this.resetFormulario();
+          this.showModal();
+          this.fechaControl.setValue(this.getCurrentDate());
+          this.ingredientesForm.patchValue({ fecha: this.getCurrentDate() });
+
+          // Manejar respuesta exitosa
+          console.log("Respuesta del servidor:", result); // Para depuración
+        },
+        (error) => {
+          console.error("Error al guardar compra:", error);
+          this.showModalErrorV2(error.error); // Mostrar mensaje de error
+        }
+      );
+    } else {
+      this.showModalErrorCamposFaltantes();
+    }
+  }
+  showModalErrorCamposFaltantes() {
+    swal({
+      title: "Campos requeridos faltantes",
+      text: "Asegúrate de seleccionar alimentos y el plato válido.",
+      icon: "error",
+    });
+  }
+
+  showModalErrorV2(error: any) {
+    let errorMessage = "Error de registro de datos";
+    if (error && error.errores && error.errores.length > 0) {
+      errorMessage = error.errores[0].message;
+    }
+    swal({
+      title: "Error de registro de datos",
+      text: errorMessage,
+      icon: "error",
+    });
+  }
+  total: number = 0;
+  filtro: string = '';
+
+  alimentosFiltrados: any[] = []; // Variable para almacenar platos filtrados
+  showId_cantidadplatoError = false;
+  closeModalAfterCancel() {
+    this.resetForm();
+    this.ventanaForm.nativeElement.modal('hide');
+    $(this.elementRef.nativeElement).find('.modal').modal('hide');
+  }
+  resetFormulario() {
+    this.alimentosSeleccionados = [];
+    this.ingredientesForm.reset(); // Restablecer los valores del formulario
+
+    this.filtro = ""; // Limpiar el filtro de búsqueda de platos
+    this.total = 0; // Restablecer el total a cero
+
+    this.ingredientesForm.reset(); // Restablecer los valores del formulario
+    const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
+    if (filtroSelect) {
+      filtroSelect.value = "Seleccionar";
+    }
+    this.alimentosFiltrados.forEach(alimentos => {
+      alimentos.selected = false;
+    });
+  }
+
+  get showPrecioError3() {
+    const precioControl = this.ingredientesForm.get('precio');
+    return precioControl.invalid && precioControl.dirty && !precioControl.errors?.required;
+  }
+  fechaControl = new FormControl(this.getCurrentDate());
+
+  getCurrentDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  resetForm() {
+    this.ingredientesForm.reset();
+    this.editandoIngredientes = false;
+    this.idIngredientesEditar = "";
+    this.ingredientesSeleccionados = [];
+
+    this.alimentoSeleccionado = { id: null, descripcion: "" };
+
+    this.showPrecioError = false;
+    this.showIdalimentoError = false;
+    this.showCantidadPersonaError = false;
+  }
+  alimentosSeleccionados: any[] = [];
+
+  updateAlimentoId(event: any) {
+    const descripcion = event.target.value;
+    const alimentos = this.alimentosss.find(p => p.descripcion === descripcion);
+    if (alimentos) {
+      this.alimentoSeleccionado = alimentos;
+      this.ingredientesForm.get('id_alimento').setValue(alimentos.id);
+      this.alimentosSeleccionados.push({
+        id: alimentos.id,
+        cantidadmedidaUnidad: this.ingredientesForm.get('cantidadmedidaUnidad').value,
+        precio: this.ingredientesForm.get('precio').value,
+        fecha: this.ingredientesForm.get('fecha').value,
+      });
+    }
+  }
+  alimentoSeleccionado: { id: number | null; descripcion: string } = {
+    id: null,
+    descripcion: "",
+  };
+
+
+
+  //----------------------
 
   //PAGINATOR------------------------------
   pageSize = 10; // Tamaño de la página
@@ -190,6 +467,8 @@ export class AlimentosComponent implements OnInit {
      
     }
   }
+
+
   nuevoCursoOtro(){
     this.tituloFormOtro='Registro de unidad de medida'
    }
@@ -541,7 +820,13 @@ export class AlimentosComponent implements OnInit {
     this.selectedOption = null;
     this.ventanaForm.nativeElement.modal('hide');
   }
-
+  closeModal2() {
+    this.dialog.closeAll();
+    this.ingredientesForm.reset();
+    this.editandoIngredientes = false;
+    this.idIngredientesEditar = "";
+    $(this.elementRef.nativeElement).find('.modal').modal('hide');
+  }
 
 
 
@@ -664,6 +949,93 @@ export class AlimentosComponent implements OnInit {
 
   
   
+  descargarPDFCompra() {
+    const rows = this.comprasss2.map((item, index) => [
+      (index + 1).toString(), // Número
+      item.alimento.descripcion, // Producto
+      item.unidadMedida.unidadMedida, // Unidad de medida
+      item.cantidadmedidaUnidad,
+      this.formatPrice(item.preciounidad),
+      this.formatPrice(item.precio),
+      `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+    ]);
+
+    const anchoPagina = 595.28;
+    let columnWidths = [23, 75, 60, 65, 80, 80, 70];
+    const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
+    let escala = 1;
+
+    if (totalWidth > anchoPagina) {
+      escala = anchoPagina / totalWidth;
+      columnWidths = columnWidths.map(width => width * escala);
+    }
+
+    // Obtener las representaciones en base64 de las imágenes
+    Promise.all([this.imageService.getBase64Image(), this.imageService.getBase65Image()]).then(([base64ImageLeft, base65ImageRight]) => {
+      const headerTable = {
+        table: {
+          widths: [120, '*', 120],
+          body: [
+            [
+              { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+              { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+              { image: base65ImageRight, width: 80, height: 80, alignment: 'right' },
+            ],
+            [
+              {},
+              { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+              {},
+            ],
+          ],
+        },
+        layout: 'noBorders',
+      };
+
+      const documentoPDF = {
+        content: [
+          headerTable,
+          '\n\n',
+          { text: 'INFORME DE COMPRA DE PRODUCTOS ', style: 'header', alignment: 'center' },
+          '\n',
+          {
+            // Contenedor externo para la tabla
+            alignment: 'center',
+            table: {
+              headerRows: 1,
+              // Ancho de la tabla
+              widths: columnWidths,
+              // Alineación de la tabla en el centro
+              alignment: 'center',
+              body: [
+                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'].map((cell, index) => ({
+                  text: cell,
+                  bold: true,
+                  fillColor: '#D3D3D3',
+                  alignment: 'center',
+                })),
+                ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+              ],
+            },
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            font: 'Roboto',
+            bold: true,
+          },
+          subheader: {
+            fontSize: 14,
+            font: 'Roboto',
+          },
+        },
+      };
+
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      pdfMake.createPdf(documentoPDF).download('INFORME DE COMPRA  PRODUCTOS.pdf');
+    });
+  }
+
   
   
   
@@ -791,5 +1163,97 @@ export class AlimentosComponent implements OnInit {
   }
   
    
+
+
+
+
+  descargarExcelCompra() {
+    const ExcelJS = require('exceljs');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('INFORME DE COMPRA PRODUCTOS');
+
+    // Organizar créditos por persona
+    const creditosPorPersona = {};
+
+    // Agregar encabezados de la tabla
+    const headers = [
+      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'
+    ];
+
+    worksheet.addRow(headers);
+    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+
+    // Establecer estilos para encabezados
+    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+    });
+
+    // Agregar datos a la hoja de cálculo
+    this.comprasss2.forEach((item, index) => {
+      const rowData = [
+        index + 1,
+        item.alimento.descripcion, // Producto
+        item.unidadMedida.unidadMedida, // Unidad de medida
+        item.cantidadmedidaUnidad,
+        this.formatPrice(item.preciounidad),
+        this.formatPrice(item.precio),
+        `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+      ];
+
+      worksheet.addRow(rowData);
+    });
+
+    // Establecer estilos para datos
+    for (let i = worksheet.lastRow.number - this.comprasss2.length + 1; i <= worksheet.lastRow.number; i++) {
+      worksheet.getRow(i).eachCell(cell => {
+        cell.font = { bold: false }; // No negrita para datos
+        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      });
+    }
+
+    // Establecer ancho de columnas
+    worksheet.columns.forEach(column => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, cell => {
+        const length = cell.value ? cell.value.toString().length : 10;
+        if (length > maxLength) {
+          maxLength = length;
+        }
+      });
+      column.width = maxLength < 10 ? 10 : maxLength;
+    });
+
+    // Guardar el libro de trabajo
+    workbook.xlsx.writeBuffer().then(buffer => {
+      saveAs(new Blob([buffer]), 'INFORME DE COMPRA DE PRODUCTOS.xlsx');
+    });
+  }
+
+  getUnidadMedida(unidad: string): string {
+    switch (unidad) {
+      case 'libra':
+      case 'kilo':
+      case 'onza':
+      case 'atado':
+      case 'medio atado':
+      case '1/2 atado':
+      case 'cucharada':
+      case 'taza':
+        return 'gramos';
+      case 'litro':
+      case 'vaso':
+      case 'cucharadita':
+        return 'mililitros';
+      case 'pieza':
+      case 'unidad':
+      case 'cubeta':
+        return 'unidad';
+      default:
+        return '';
+    }
+  }
 
 }

@@ -18,6 +18,8 @@ import { ReporteComponent } from './reporte/reporte.component';
 import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component';
 import { PanelAdministradorComponent } from './panel-administrador/panel-administrador.component';
 import { RecetarioComponent } from './recetario/recetario.component';
+import { PerfilcajeroComponent } from './perfilcajero/perfilcajero.component';
+import { EditarperfilcajeroComponent } from './editarperfilcajero/editarperfilcajero.component';
   
 
 @NgModule({
@@ -45,7 +47,9 @@ import { RecetarioComponent } from './recetario/recetario.component';
     ReporteComponent,
     PerfilclienteComponent,
     PanelAdministradorComponent,
-    RecetarioComponent
+    RecetarioComponent,
+    PerfilcajeroComponent,
+    EditarperfilcajeroComponent
       
   
     

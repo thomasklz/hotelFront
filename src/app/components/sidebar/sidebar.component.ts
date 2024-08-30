@@ -6,17 +6,15 @@ declare interface RouteInfo {
     path: string;
     title: string;
     icon: string;
-    class: string;
+    class: string;   
 }
 export const ROUTES: RouteInfo[] = [
  
   { path: '/panelAdministrador', title: ' Administrador',  icon:'admin_panel_settings', class: '' },
 
   
-    { path: '/menus_Diarios', title: ' Menús diarios',  icon:'content_paste', class: '' },
-
-   { path: '/creditos', title: ' Créditos',  icon:'credit_card', class: '' },
-  { path: '/reportePolitecnico', title: ' Reportes',  icon:'analytics', class: '' },
+ 
+   { path: '/reportePolitecnico', title: ' Reportes',  icon:'analytics', class: '' },
     
   
   

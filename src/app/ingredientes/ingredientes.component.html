@@ -74,6 +74,14 @@
                   <th>Menú: {{ item.plato.descripcion }}</th>
                   <th>Cantidad: <input type="text" list="list-timezone3" [(ngModel)]="cantidad" style="width: 100px; border: 1px solid #918d8d;">
                   </th>
+
+                  <th>   
+                    <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title"  
+          (click)="showModalEliminarrectario(item.plato.id)">
+          Eliminar receta
+        </button>
+                  
+                  </th>
                 </thead>
                 
                 <thead class="text-primary">
@@ -81,8 +89,7 @@
 
                   <th>Ingredientes</th>
                   <th>Unidades de medidas</th>
-                  <th>Cantidades de personas que comen</th>
-                  <th>Porciones por persona</th>
+                   <th>Porciones por persona</th>
                   <th>Porciones por {{ cantidad }} personas</th> 
                   <th>Cantidades en unidades de medidas</th>
 
@@ -93,8 +100,7 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ item.alimento.descripcion }}</td>
                     <td>{{ item.unidadMedida.unidadMedida }}</td>
-                    <td>{{ item.cantidadPersonaCome }}</td>
-                    <td>
+                     <td>
 
                       {{ item.cantidadPersonaGramo }}   {{ getUnidadMedida(item) }}
 

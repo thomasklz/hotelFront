@@ -538,6 +538,7 @@ updatePlatoId(event: any) {
           this.resetFormulario();
           this.resetForm();
           this.showModal();
+          this.closeModal();
           this.ingredientId = null;
           this.ingredientesForm.reset();
           // Manejar respuesta exitosa
@@ -590,6 +591,7 @@ updatePlatoId(event: any) {
   }
   
   resetFormulario() {
+    this.alimentosFiltrados = [];  // Resetear a un array vacío
     this.ingredientesForm.reset(); // Restablecer los valores del formulario
     this.ingredientesForm.reset(); // Restablecer los valores del formulario
     const filtroSelect = document.getElementById("filtroSelect") as HTMLSelectElement;
@@ -599,6 +601,67 @@ updatePlatoId(event: any) {
   
   }  
   
+
+  showModalEliminarrectario(id: any){
+    Swal.fire({
+      title: "¿Estás seguro que deseas eliminar el recetario?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#bf0d0d",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.eliminarRecetariodetallado(id);
+      }
+    });
+  }
+  eliminarRecetariodetallado(id: number) {
+    this.RecetarioService.eliminarRecetariodetallado(id).subscribe({
+      next: (res) => {
+        Swal.fire({
+          title: "Datos eliminados exitosamente",
+          icon: "success",
+        }).then(() => {
+          this.ress();
+        });
+      },
+      error: () => {
+        this.showModalErrorEliminarRecetario();
+      },
+    });
+  }
+
+  ress() {
+    this.productosplatosss = [];
+
+    if (this.ingredientId) {
+      this.RecetarioService.getproductosporid(this.ingredientId).subscribe({
+        next: (res: any) => {
+          if (res.productosplato.length === 0) {
+         
+          } else {
+            this.productosplatosss = res.productosplato;
+             this.mostrarTabla = true;
+          }
+        },
+        error: (err) => {
+          
+        },
+      });
+
+      this.buscarDescripcionporId();
+    } else {
+      this.ingredientedescripcionsss = [];
+    }
+  }
+
+  showModalErrorEliminarRecetario() {
+    Swal.fire({
+      title: "Error al eliminar el recetario detallado",
+      icon: "error",
+    });
+  }
 
   showModalEliminar(id: any) {
     Swal.fire({
@@ -628,7 +691,7 @@ updatePlatoId(event: any) {
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
     this.idIngredientesEditar = "";
-
+    this.alimentosFiltrados = [];  // Resetear a un array vacío
     this.datosRecetariosss.forEach(alimento => {
       alimento.selected = false;
        
@@ -641,6 +704,7 @@ updatePlatoId(event: any) {
   
   
   resetForm() {
+    this.alimentosFiltrados = [];  // Resetear a un array vacío
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
     this.idIngredientesEditar = "";
@@ -685,8 +749,7 @@ updatePlatoId(event: any) {
         (index + 1).toString(), // Número
         item.alimento.descripcion, // Producto
         item.unidadMedida.unidadMedida, // Unidad de medida
-        item.cantidadPersonaCome,
-        `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+         `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
 
         `${item.cantidadPersonaGramo * this.cantidad} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`,
         `${item.cantidadPersonaGramo * this.cantidad/item.unidadMedida.valorMedida} ` // Porción para n personas
@@ -694,7 +757,7 @@ updatePlatoId(event: any) {
       ]);
     
       const anchoPagina = 595.28;
-      let columnWidths = [30, 70, 70, 70, 70, 70,70]; // Ajusta según tus necesidades
+      let columnWidths = [30, 130, 70, 70, 70, 90]; // Ajusta según tus necesidades
 
       const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
       let escala = 1;
@@ -768,7 +831,7 @@ updatePlatoId(event: any) {
                 alignment: 'center',
                 body: [
 
-                  ['Nº', 'Productos', 'Unidades de medidas', 'Cantidades personas que comen', 'Porciones por persona', `Porciones para ${n} personas`,'Cantidades en unidades de medidas'].map((cell, index) => ({
+                  ['Nº', 'Productos', 'Unidades de medidas', 'Porciones por persona', `Porciones para ${n} personas`,'Cantidades en unidades de medidas'].map((cell, index) => ({
     text: cell,
                     bold: true,
                     fillColor: '#D3D3D3',
@@ -826,7 +889,7 @@ updatePlatoId(event: any) {
       // Agregar encabezados de la tabla
       const headers = [
 
-        'Nº', 'Productos', 'Unidades de medidas','Cantidades de personas que comen             ', 'Porciones por cantidad de persona',`Porciones para ${n} personas`  ,'Cantidades en unidades de medidas' ];
+        'Nº', 'Productos',  'Unidades de medidas	', 'Porciones por cantidad de persona',`Porciones para ${n} personas`  ,'Cantidades en unidades de medidas' ];
 
       
       worksheet.addRow(headers);
@@ -846,8 +909,7 @@ updatePlatoId(event: any) {
           
           item.alimento.descripcion, // Producto
           item.unidadMedida.unidadMedida, // Unidad de medida
-          item.cantidadPersonaCome,
-          `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+           `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
           `${item.cantidadPersonaGramo * this.cantidad} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}` // Porción para n personas
 
           

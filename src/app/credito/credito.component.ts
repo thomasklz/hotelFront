@@ -20,6 +20,47 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ImageService } from "app/servicios/image.service";
 
+
+
+
+
+
+
+
+
+
+
+ import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+ 
+import { NavigationEnd } from '@angular/router';
+
+ 
+
+
+
+
+declare const $: any;
+declare interface RouteInfo {
+    path: string;
+    title: string;
+    icon: string;
+    class: string;
+}
+
+export const ROUTES: RouteInfo[] = [
+ 
+  { path: '/editarperfilcajero', title: ' Configuración y privacidad',  icon:'settings', class: '' },
+
+  
+ 
+   { path: '/login', title: ' Cerrar sesión',  icon:'exit_to_app', class: '' },
+     
+  
+  
+];
 @Component({
   selector: "app-credito",
   templateUrl: "./credito.component.html",
@@ -29,7 +70,7 @@ export class CreditoComponent implements OnInit {
   @ViewChild("inputDatalist") inputDatalist: ElementRef;
   selected = 'option2';
   dataSource = new MatTableDataSource<any>();
-  id: string = "";
+  
   id_persona: string = "";
   id_plato: string = "";
   personasss: any[] = [];
@@ -65,6 +106,7 @@ export class CreditoComponent implements OnInit {
   creditosssOriginal: any[] = [];
 
   constructor(
+    location: Location, private element: ElementRef,
     private http: HttpClient,
     private MenuService: MenuService,
     private router: Router,
@@ -78,7 +120,22 @@ export class CreditoComponent implements OnInit {
   ) {
      this.getAllpersonas();
     this.getAllcreditos();
+    this.currentRoute = this.router.url;
+    this.getAllusuario();
+    this.location = location;
+   
+  this.usuario= localStorage.getItem('usuario');
+  this.id= localStorage.getItem('idPersona'); 
   }
+
+
+
+
+
+  fecha: Date = new Date();
+
+
+
 
   nombrePersonaABuscar: string = '';
 
@@ -86,6 +143,49 @@ export class CreditoComponent implements OnInit {
   idIngreso: number = 1;
   //cargar los datos de la seleccion de la tabla  en la modal
   ngOnInit() {
+
+    this.getAllusuario();
+    setInterval(() => {
+      this.getAllusuario();
+      
+    }, 5000);
+    this.getAllcreditos();
+    this.fecha = new Date();
+
+
+
+    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    const navbar: HTMLElement = this.element.nativeElement;
+    this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
+    this.router.events.subscribe((event) => {
+      this.sidebarClose();
+       var $layer: any = document.getElementsByClassName('close-layer')[0];
+       if ($layer) {
+         $layer.remove();
+         this.mobile_menu_visible = 0;
+       }
+   });
+
+
+
+
+  
+
+    ///
+    this.menuItems = ROUTES.filter(menuItem => menuItem);
+
+      
+    this.router.events.subscribe(event => {
+          
+     
+      if (event instanceof NavigationEnd) {
+              
+             
+      
+       
+      this.currentRoute = this.router.url;
+            }
+          });
     this.idIngreso = 1;
   console.log(this.idIngreso);
     console.log("Valor de ingredientId:", this.ingredientId);
@@ -132,6 +232,8 @@ export class CreditoComponent implements OnInit {
   }
 
 
+  
+ 
   pageSize = 10;  // Tamaño de la página
   currentPage = 1;  // Página actual
   totalItems = 0;  // Total de elementos
@@ -647,4 +749,236 @@ filtroSeleccionado: string = 'nombre';
        filtroSelect.value = "Seleccionar";
      }
 
+
+
+
+
+
+
+
+
+
+
+     
+//-------------------------------------------PER
+location: Location;
+   usuario:any;
+ 
+
+
+
+   usuariosss: any[] = [];
+    private listTitles: any[];
+       mobile_menu_visible: any = 0;
+    private toggleButton: any;
+    private sidebarVisible: boolean;
+    idPersona: number;
+
+
+    id:any;
+
+
+    //obtener el usuario 
+    getAllusuario() {
+      this.UsuarioService.buscarUsuario(this.id).subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.usuario);
+          this.usuariosss = res.usuario;
+  
+        },
+        error: (err) => {
+          // Maneja el error de carga de datos aquí
+        },
+      });
+    }
+
+  
+
+
+  showModalcerrar() {
+    Swal.fire({
+      title: '¿Estás seguro que deseas cerrar sesión?',
+      icon: 'warning',
+      showCancelButton: true,
+     
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#bf0d0d',
+      
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.logout();
+      }
+    });
+  }
+logout() {
+    localStorage.removeItem('idPersona');
+    localStorage.removeItem('idUsuario');
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
+  }
+
+
+
+
+  //-----------------------
+
+ 
+
+
+  isMaps(path){
+    var titlee = this.location.prepareExternalUrl(this.location.path());
+    titlee = titlee.slice( 1 );
+    if(path == titlee){
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+ 
+ 
+
+  navigateToRoute(path: string) {
+    this.router.navigate([path]);
+  }
+
+ 
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  menuItems: any[];
+  currentRoute: string;
+ 
+  
+  
+  isMobileMenu() {
+      if ($(window).width() > 991) {
+          return false;
+      }
+      return true;
+  };
+
+  // Function to check if a route is the current active route
+  
+ 
+isActiveRoute(route: string): boolean {
+    
+    
+return this.currentRoute === route;
+  }
+  
+
+
+
+  
+  sidebarOpen() {
+    const toggleButton = this.toggleButton;
+    const body = document.getElementsByTagName('body')[0];
+    setTimeout(function(){
+        toggleButton.classList.add('toggled');
+    }, 500);
+
+    body.classList.add('nav-open');
+
+    this.sidebarVisible = true;
+};
+sidebarClose() {
+    const body = document.getElementsByTagName('body')[0];
+    this.toggleButton.classList.remove('toggled');
+    this.sidebarVisible = false;
+    body.classList.remove('nav-open');
+};
+
+
+  sidebarToggle() {
+    // const toggleButton = this.toggleButton;
+    // const body = document.getElementsByTagName('body')[0];
+    var $toggle = document.getElementsByClassName('navbar-toggler')[0];
+
+    if (this.sidebarVisible === false) {
+        this.sidebarOpen();
+    } else {
+        this.sidebarClose();
+    }
+    const body = document.getElementsByTagName('body')[0];
+
+    if (this.mobile_menu_visible == 1) {
+        // $('html').removeClass('nav-open');
+        body.classList.remove('nav-open');
+        if ($layer) {
+            $layer.remove();
+        }
+        setTimeout(function() {
+            $toggle.classList.remove('toggled');
+        }, 400);
+
+        this.mobile_menu_visible = 0;
+    } else {
+        setTimeout(function() {
+            $toggle.classList.add('toggled');
+        }, 430);
+
+        var $layer = document.createElement('div');
+        $layer.setAttribute('class', 'close-layer');
+
+
+        if (body.querySelectorAll('.main-panel')) {
+            document.getElementsByClassName('main-panel')[0].appendChild($layer);
+        }else if (body.classList.contains('off-canvas-sidebar')) {
+            document.getElementsByClassName('wrapper-full-page')[0].appendChild($layer);
+        }
+
+        setTimeout(function() {
+            $layer.classList.add('visible');
+        }, 100);
+
+        $layer.onclick = function() { //asign a function
+          body.classList.remove('nav-open');
+          this.mobile_menu_visible = 0;
+          $layer.classList.remove('visible');
+          setTimeout(function() {
+              $layer.remove();
+              $toggle.classList.remove('toggled');
+          }, 400);
+        }.bind(this);
+
+        body.classList.add('nav-open');
+        this.mobile_menu_visible = 1;
+
+    }
+}
   }

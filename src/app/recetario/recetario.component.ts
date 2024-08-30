@@ -267,6 +267,32 @@ export class RecetarioComponent implements OnInit {
     }
   }
 
+
+  ress() {
+    this.productosplatosss = [];
+
+    if (this.ingredientId) {
+      this.RecetarioService.getproductosporid(this.ingredientId).subscribe({
+        next: (res: any) => {
+          if (res.productosplato.length === 0) {
+         
+          } else {
+            this.productosplatosss = res.productosplato;
+            this.totalPrecio = this.calculateTotalPrice(this.productosplatosss);
+            this.mostrarTabla = true;
+          }
+        },
+        error: (err) => {
+          
+        },
+      });
+
+      this.buscarDescripcionporId();
+    } else {
+      this.ingredientedescripcionsss = [];
+    }
+  }
+
   calculateTotalPrice(items: any[]): number {
     const total = items.reduce((acc, item) => acc + item.costeo, 0);
     return parseFloat(total.toFixed(2)); // Redondea el total a 2 decimales
@@ -403,20 +429,7 @@ export class RecetarioComponent implements OnInit {
 
   ingredientesSeleccionados: any[] = [];
 
-  // ... tu código existente
-
-/*   seleccionarIngrediente(ingrediente: any) {
-    // Verificar si el ingrediente ya está seleccionado
-    const index = this.ingredientesSeleccionados.findIndex(i => i.descripcion === ingrediente.descripcion);
-    ingrediente.seleccionado = !ingrediente.seleccionado;
-    if (index === -1) {
-      // Si no está seleccionado, agregarlo a la lista de seleccionados
-      this.ingredientesSeleccionados.push(ingrediente);
-    } else {
-      // Si ya está seleccionado, quitarlo de la lista de seleccionados
-      this.ingredientesSeleccionados.splice(index, 1);
-    }
-  } */
+ 
  
   
 
@@ -630,15 +643,15 @@ map(i => ({ descripcion: i.descripcion }));
 
  
   addIngredientes() {
-    console.log("Datos a enviar:", this.alimentosSeleccionados); // Para depuración
+    console.log("Datos a enviar:", this.selectedPlatos); // Para depuración
   
     // Obtener el ID del plato seleccionado del formulario
     const idPlato = this.ingredientesForm.get('id_plato').value;
     console.log("ID del plato:", idPlato); // Para depuración
   
-    if (this.alimentosSeleccionados.length > 0 && idPlato) {
+    if (this.selectedPlatos.length > 0 && idPlato) {
       // Construir el array de id_alimentos
-      const idAlimentos = this.alimentosSeleccionados.map(alimento => ({
+      const idAlimentos = this.selectedPlatos.map(alimento => ({
         id_alimento: alimento.id
       }));
   
@@ -657,13 +670,16 @@ map(i => ({ descripcion: i.descripcion }));
           this.showModal();
           // Manejar respuesta exitosa
           console.log("Respuesta del servidor:", result); // Para depuración
+          this.selectedPlatos = [];
         },
         (error) => {
           console.error("Error al guardar crédito:", error);
           if (error.status === 400 && error.error && error.error.message === 'Este plato ya existe') {
+            this.selectedPlatos = [];
             this.showModalErrorPlatoExistente();
           } else {
             this.showModalError(error.error); // Mostrar mensaje de error
+            this.selectedPlatos = [];
           }
         }
       );
@@ -671,6 +687,7 @@ map(i => ({ descripcion: i.descripcion }));
       this.showModalErrorCamposFaltantes();
     }
   }
+  
   
   showModalErrorPlatoExistente() {
     swal({
@@ -730,6 +747,25 @@ map(i => ({ descripcion: i.descripcion }));
   
   
 
+
+  showModalEliminarrectario(id: any){
+    Swal.fire({
+      title: "¿Estás seguro que deseas eliminar el recetario?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#bf0d0d",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.eliminarRecetariobasico(id);
+      }
+    });
+  }
+
+
+
+
   showModalEliminar(id: any) {
     Swal.fire({
       title: "¿Estás seguro que deseas eliminar el ingrediente?",
@@ -752,6 +788,14 @@ map(i => ({ descripcion: i.descripcion }));
     });
   }
 
+  showModalErrorEliminarRecetario() {
+    Swal.fire({
+      title: "Error al eliminar el recetario básico",
+      icon: "error",
+    });
+  }
+
+
   eliminarIngrediente(id: number) {
     this.RecetarioService.deleteproductoPlato(id).subscribe({
       next: (res) => {
@@ -767,10 +811,30 @@ map(i => ({ descripcion: i.descripcion }));
       },
     });
   }
+
+  eliminarRecetariobasico(id: number) {
+    this.RecetarioService.eliminarRecetariobasico(id).subscribe({
+      next: (res) => {
+        Swal.fire({
+          title: "Datos eliminados exitosamente",
+          icon: "success",
+        }).then(() => {
+          this.ress();
+        });
+      },
+      error: () => {
+        this.showModalErrorEliminarRecetario();
+      },
+    });
+  }
+
+
   closeModal() {
     this.ingredientesForm.reset();
     this.editandoIngredientes = false;
     this.idIngredientesEditar = "";
+    this.selectedPlatos = [];
+    console.log("selectedPlatos después de limpiar:", this.selectedPlatos);
   }
 
   resetForm() {
@@ -779,7 +843,7 @@ map(i => ({ descripcion: i.descripcion }));
     this.idIngredientesEditar = "";
     this.ingredientesSeleccionados = [];
 
-
+    this.selectedPlatos = [];
     this.platoSeleccionado = { id: null, descripcion: "" };
     this.alimentoSeleccionado = { id: null, descripcion: "" };
 
@@ -872,20 +936,51 @@ map(i => ({ descripcion: i.descripcion }));
         // Asegúrate de que platoSeleccionado sea una lista
         alimentosSeleccionados: any[] = [];
       
+    // Añade un array para almacenar los platos seleccionados
+selectedPlatos: any[] = [];
+
+ 
+
+      
+    
+      
+           
+      filtro: string = '';
+
+      
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+      
+
+
       updateTotal() {
-       
+        // Clear the selectedPlatos array and repopulate it based on current selections
+        this.selectedPlatos = this.dataSource.data.filter(alimentos => alimentos.selected);
       
-        // Obtener todos los platos seleccionados
-        this.alimentosSeleccionados = this.alimentosFiltrados.filter(alimentos => alimentos.selected);
-      
-        // Verificar si se encontraron platos seleccionados
-        if (this.alimentosSeleccionados.length > 0) {
-          console.log("Platos seleccionados:", this.alimentosSeleccionados);
+        // Verify if there are any selected items
+        if (this.selectedPlatos.length > 0) {
+          console.log("Platos seleccionados:", this.selectedPlatos);
         } else {
           console.log("Ningún plato seleccionado");
         }
       
-        // Actualizar los valores en el formulario después de cada cambio
+        // Update form values after each change
         this.updateFormValues();
       }
       
@@ -893,33 +988,26 @@ map(i => ({ descripcion: i.descripcion }));
       updateFormValues() {
         // Actualizar los valores de platos seleccionados en el formulario
         this.ingredientesForm.patchValue({
-          descripcion: this.alimentosSeleccionados.map(alimentos => alimentos.descripcion),
-           unidadMedida: this.alimentosSeleccionados.map(alimentos => alimentos.unidadMedida),
-        
-
-
-         
-         
-         
-          
+          descripcion: this.selectedPlatos.map(alimentos => alimentos.descripcion),
+          unidadMedida: this.selectedPlatos.map(alimentos => alimentos.unidadMedida),
         });
       }
       
-      
-           
-      filtro: string = '';
-
-      
+    
       filtrarPlatos() {
-        // Convertir el texto de búsqueda y el nombre de los platos a minúsculas
+        // Convert search text and plate names to lowercase
         const textoBusqueda = this.filtro.toLowerCase();
         this.alimentosFiltrados = this.dataSource.data.filter(alimentos => {
-          // Convertir el nombre del plato a minúsculas y eliminar espacios en blanco alrededor
+          // Convert the plate name to lowercase and trim whitespace
           const nombrePlato = alimentos.nombre.toLowerCase().trim();
-          // Verificar si el nombre del plato contiene el texto de búsqueda
+          // Check if the plate name contains the search text
           return nombrePlato.includes(textoBusqueda);
         });
       }
+      
+
+      
+      
       
       total: number = 0;
       pageSizecc: number = 5;
@@ -929,6 +1017,8 @@ map(i => ({ descripcion: i.descripcion }));
           if (this.pageIndex > 0) {
             this.pageIndex--;
           }
+         
+
         }
       
         nextPage() {
@@ -936,10 +1026,14 @@ map(i => ({ descripcion: i.descripcion }));
           if (this.pageIndex < maxPageIndex) {
             this.pageIndex++;
           }
+          
+
         }
       
         maxPageIndex(): number {
           return Math.max(0, Math.ceil(this.alimentosFiltrados.length / this.pageSizecc) - 1);
+        
+
         }
       
       

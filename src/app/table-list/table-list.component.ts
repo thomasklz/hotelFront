@@ -21,7 +21,43 @@ export interface ExampleTab {
 }
 
 
+ import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 
+
+ import { NavigationEnd } from '@angular/router';
+
+ import * as XLSX from 'xlsx';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+ import { ImageService } from 'app/servicios/image.service';
+import { saveAs } from 'file-saver';
+
+
+
+
+
+declare const $: any;
+declare interface RouteInfo {
+    path: string;
+    title: string;
+    icon: string;
+    class: string;
+}
+
+export const ROUTES: RouteInfo[] = [
+ 
+  { path: '/editarperfilcajero', title: ' Configuración y privacidad',  icon:'settings', class: '' },
+
+  
+ 
+   { path: '/login', title: ' Cerrar sesión',  icon:'exit_to_app', class: '' },
+     
+  
+  
+];
 
 
 @Component({
@@ -48,6 +84,7 @@ export class TableListComponent implements OnInit {
   pageIndex: number = 0;
 
   constructor(
+    location: Location,private imageService:ImageService ,private element: ElementRef,
     private http: HttpClient, private MenuService: MenuService, private router: Router,  private formBuilder: FormBuilder,
     private CreditosService: CreditosService, private zone: NgZone, private changeDetector: ChangeDetectorRef, private UsuarioService: UsuarioService,
     private IngredientesService: IngredientesService,
@@ -56,10 +93,61 @@ export class TableListComponent implements OnInit {
      this.getAllpersonas();
     this.getAllcreditos();
     this.getAllplato();
+
+
+    this.currentRoute = this.router.url;
+    this.getAllusuario();
+    this.location = location;
+   
+  this.usuario= localStorage.getItem('usuario');
+  this.id= localStorage.getItem('idPersona'); 
     
   }
 
   ngOnInit() {
+
+    this.getAllusuario();
+    setInterval(() => {
+      this.getAllusuario();
+      
+    }, 5000);
+    this.getAllcreditos();
+    this.fecha = new Date();
+
+
+
+    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    const navbar: HTMLElement = this.element.nativeElement;
+    this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
+    this.router.events.subscribe((event) => {
+      this.sidebarClose();
+       var $layer: any = document.getElementsByClassName('close-layer')[0];
+       if ($layer) {
+         $layer.remove();
+         this.mobile_menu_visible = 0;
+       }
+   });
+
+
+
+
+  
+
+    ///
+    this.menuItems = ROUTES.filter(menuItem => menuItem);
+
+      
+    this.router.events.subscribe(event => {
+          
+     
+      if (event instanceof NavigationEnd) {
+              
+             
+      
+       
+      this.currentRoute = this.router.url;
+            }
+          });
     this.idIngreso = 1;
   console.log(this.idIngreso);
     console.log("Valor de ingredientId:", this.ingredientId);
@@ -117,6 +205,16 @@ export class TableListComponent implements OnInit {
   }
 
   
+
+
+
+
+
+
+ 
+  fecha: Date = new Date();
+  
+
   loadAsyncTabs() {
     this.asyncTabs = new Observable((observer: Observer<ExampleTab[]>) => {
       observer.next([
@@ -158,29 +256,22 @@ export class TableListComponent implements OnInit {
   // Asegúrate de que platoSeleccionado sea una lista
 platosSeleccionados: any[] = [];
 
+ 
 updateTotal() {
-  // Calcular el total de los platos seleccionados
-  this.total = this.platosFiltrados
-    .filter(plato => plato.selected)
-    .reduce((total, plato) => total + (plato.cantidad * plato.precio), 0);
+  // Calcula el total basado en todos los platos seleccionados
+  this.total = this.platosSeleccionados.reduce((total, plato) => total + (plato.cantidad * plato.precio), 0);
 
-  // Obtener todos los platos seleccionados
-  this.platosSeleccionados = this.platosFiltrados.filter(plato => plato.selected);
-
-  // Verificar si se encontraron platos seleccionados
   if (this.platosSeleccionados.length > 0) {
     console.log("Platos seleccionados:", this.platosSeleccionados);
+    console.log("Total:", this.total);
   } else {
     console.log("Ningún plato seleccionado");
   }
 
-  // Actualizar los valores en el formulario después de cada cambio
   this.updateFormValues();
 }
 
-
 updateFormValues() {
-  // Actualizar los valores de platos seleccionados en el formulario
   this.creditosForm.patchValue({
     id_plato: this.platosSeleccionados.map(plato => plato.id),
     precio: this.platosSeleccionados.map(plato => plato.precio),
@@ -188,24 +279,30 @@ updateFormValues() {
   });
 }
 
-
-
-platos: any[] = []; // Aquí defines la propiedad platos como un array vacío o según tu tipo de datos
- 
-
-
 filtrarPlatos() {
-  // Convertir el texto de búsqueda y el nombre de los platos a minúsculas
   const textoBusqueda = this.filtro.toLowerCase();
   this.platosFiltrados = this.dataSource.data.filter(plato => {
-    // Convertir el nombre del plato a minúsculas y eliminar espacios en blanco alrededor
     const nombrePlato = plato.nombre.toLowerCase().trim();
-    // Verificar si el nombre del plato contiene el texto de búsqueda
     return nombrePlato.includes(textoBusqueda);
   });
+  // No actualices platosSeleccionados en el filtro, solo en la selección/deselección
 }
 
-  
+// Función para manejar la selección de platos
+onPlatoSelectionChange(plato: any) {
+  if (plato.selected) {
+    // Agrega el plato a la lista de seleccionados si no está ya en la lista
+    if (!this.platosSeleccionados.find(item => item.id === plato.id)) {
+      this.platosSeleccionados.push(plato);
+    }
+  } else {
+    // Elimina el plato de la lista de seleccionados si está seleccionado
+    this.platosSeleccionados = this.platosSeleccionados.filter(item => item.id !== plato.id);
+  }
+
+  this.updateTotal(); // Actualiza el total después de la selección
+}
+
 
   prevPage() {
     if (this.pageIndex > 0) {
@@ -243,8 +340,7 @@ filtrarPlatos() {
   @ViewChild("inputDatalist") inputDatalist: ElementRef;
  
   selected = 'option2';
-   id: string = "";
-  id_persona: string = "";
+   id_persona: string = "";
   id_plato: string = "";
   personasss: any[] = [];
   personas: any[] = [];
@@ -775,45 +871,52 @@ this.creditosForm.get("id_persona")?.setValue(this.id_persona);
  
 
   AddcrearreporteIngresos() {
-    if (this.platosSeleccionados.length > 0) {
-       const idIngreso = 2; // Obtener el valor del campo id_ingreso
-
-      const data = {
-        platos: this.platosSeleccionados.map(plato => ({
-          cantidad: plato.cantidad,
-            id_plato: plato.id,
-          id_ingreso: idIngreso // Incluir el valor de id_ingreso aquí
-        }))
-      };
-      console.log("Datos a enviar:", data); // Para depuración
-      this.CreditosService.crearreporteIngresos(data).subscribe(
-        (result: any) => {
-          this.resetFormulario();
-          this.showModal();
-          // Manejar respuesta exitosa
-          console.log("Respuesta del servidor:", result); // Para depuración
-        },
-        (error) => {
-          console.error("Error al guardar crédito:", error);
-          this.showModalError();
-          if (error.status === 400) {
-            console.error("Campos requeridos faltantes:", error.error); // Detalles del error
-          } else {
-            this.showModalError();
-          }
-        }
-      );
-    } else {
-      console.error("No se han seleccionado platos."); // Manejar caso cuando no hay platos seleccionados
+    if (this.platosSeleccionados.length === 0) {
+      console.error("No se han seleccionado platos.");
+      return; // Salir del método si no hay platos seleccionados
     }
+  
+    const idIngreso = 2; // Obtener el valor del campo id_ingreso según sea necesario
+    
+    const data = {
+      platos: this.platosSeleccionados.map(plato => ({
+        cantidad: plato.cantidad,
+        id_plato: plato.id,
+        id_ingreso: idIngreso
+      }))
+    };
+  
+    console.log("Datos a enviar:", data); // Para depuración
+  
+    this.CreditosService.crearreporteIngresos(data).subscribe(
+      (result: any) => {
+        this.resetFormulario();
+        this.showModal();
+        this.getAllplato();
+        console.log("Respuesta del servidor:", result); // Para depuración
+      },
+      (error) => {
+        console.error("Error al guardar crédito:", error);
+  
+        // Mostrar un modal de error genérico
+        this.showModalError();
+  
+        if (error.status === 400) {
+          // Manejar el error con mensaje específico
+          console.error("Campos requeridos faltantes:", error.error); // Detalles del error
+          // Extraer y mostrar el mensaje del error en el modal de error
+          this.showModalError2(error.error.message || "Error en la solicitud.");
+        } else {
+          // Para otros errores
+          this.showModalError2("Ocurrió un error inesperado. Inténtalo de nuevo más tarde.");
+        }
+      }
+    );
   }
-
+  
 
  
-
-
-
-  
+ 
 
   addCredito() {
     if (this.platosSeleccionados.length > 0) {
@@ -834,6 +937,7 @@ this.creditosForm.get("id_persona")?.setValue(this.id_persona);
         (result: any) => {
           this.resetFormulario();
           this.showModal();
+          this.getAllplato();
           // Manejar respuesta exitosa
           console.log("Respuesta del servidor:", result); // Para depuración
         },
@@ -929,6 +1033,232 @@ showModalError2(errorMessage) {
  
   
 
+//refa
+location: Location;
+   usuario:any;
+  id:any;
+  
 
+
+   usuariosss: any[] = [];
+    private listTitles: any[];
+       mobile_menu_visible: any = 0;
+    private toggleButton: any;
+    private sidebarVisible: boolean;
+    idPersona: number;
+
+
+
+    //obtener el usuario 
+    getAllusuario() {
+      this.UsuarioService.buscarUsuario(this.id).subscribe({
+        next: (res) => {
+          this.dataSource = new MatTableDataSource(res.usuario);
+          this.usuariosss = res.usuario;
+  
+        },
+        error: (err) => {
+          // Maneja el error de carga de datos aquí
+        },
+      });
+    }
+
+ 
+ 
+
+
+  showModalcerrar() {
+    Swal.fire({
+      title: '¿Estás seguro que deseas cerrar sesión?',
+      icon: 'warning',
+      showCancelButton: true,
+     
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#bf0d0d',
+      
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.logout();
+      }
+    });
+  }
+logout() {
+    localStorage.removeItem('idPersona');
+    localStorage.removeItem('idUsuario');
+    localStorage.removeItem('usuario');
+    this.router.navigate(['/login']);
+  }
+
+
+
+
+  //-----------------------
+
+ 
+
+
+  isMaps(path){
+    var titlee = this.location.prepareExternalUrl(this.location.path());
+    titlee = titlee.slice( 1 );
+    if(path == titlee){
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+  
+//-----------------------
+
+
+  datosParaDescargar: any[] = []; // Variable para almacenar los datos a descargar
+
+
+ 
+
+  navigateToRoute(path: string) {
+    this.router.navigate([path]);
+  }
+
+ 
+  
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  menuItems: any[];
+  currentRoute: string;
+ 
+  
+  
+  isMobileMenu() {
+      if ($(window).width() > 991) {
+          return false;
+      }
+      return true;
+  };
+
+  // Function to check if a route is the current active route
+  
+ 
+isActiveRoute(route: string): boolean {
+    
+    
+return this.currentRoute === route;
+  }
+  
+
+
+
+  
+  sidebarOpen() {
+    const toggleButton = this.toggleButton;
+    const body = document.getElementsByTagName('body')[0];
+    setTimeout(function(){
+        toggleButton.classList.add('toggled');
+    }, 500);
+
+    body.classList.add('nav-open');
+
+    this.sidebarVisible = true;
+};
+sidebarClose() {
+    const body = document.getElementsByTagName('body')[0];
+    this.toggleButton.classList.remove('toggled');
+    this.sidebarVisible = false;
+    body.classList.remove('nav-open');
+};
+
+
+  sidebarToggle() {
+    // const toggleButton = this.toggleButton;
+    // const body = document.getElementsByTagName('body')[0];
+    var $toggle = document.getElementsByClassName('navbar-toggler')[0];
+
+    if (this.sidebarVisible === false) {
+        this.sidebarOpen();
+    } else {
+        this.sidebarClose();
+    }
+    const body = document.getElementsByTagName('body')[0];
+
+    if (this.mobile_menu_visible == 1) {
+        // $('html').removeClass('nav-open');
+        body.classList.remove('nav-open');
+        if ($layer) {
+            $layer.remove();
+        }
+        setTimeout(function() {
+            $toggle.classList.remove('toggled');
+        }, 400);
+
+        this.mobile_menu_visible = 0;
+    } else {
+        setTimeout(function() {
+            $toggle.classList.add('toggled');
+        }, 430);
+
+        var $layer = document.createElement('div');
+        $layer.setAttribute('class', 'close-layer');
+
+
+        if (body.querySelectorAll('.main-panel')) {
+            document.getElementsByClassName('main-panel')[0].appendChild($layer);
+        }else if (body.classList.contains('off-canvas-sidebar')) {
+            document.getElementsByClassName('wrapper-full-page')[0].appendChild($layer);
+        }
+
+        setTimeout(function() {
+            $layer.classList.add('visible');
+        }, 100);
+
+        $layer.onclick = function() { //asign a function
+          body.classList.remove('nav-open');
+          this.mobile_menu_visible = 0;
+          $layer.classList.remove('visible');
+          setTimeout(function() {
+              $layer.remove();
+              $toggle.classList.remove('toggled');
+          }, 400);
+        }.bind(this);
+
+        body.classList.add('nav-open');
+        this.mobile_menu_visible = 1;
+
+    }
+}
 
 }

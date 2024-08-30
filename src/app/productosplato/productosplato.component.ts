@@ -792,8 +792,7 @@ descargarPDF() {
     (index + 1).toString(), // Número
     item.alimento.descripcion, // Producto
     item.unidadMedida.unidadMedida, // Unidad de medida
-    item.cantidadPersonaCome,
-    `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+     `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
 
     
      
@@ -806,7 +805,7 @@ descargarPDF() {
   ]);
 
   const anchoPagina = 595.28;
-  let columnWidths = [30, 55, 45, 50, 50,40,60,60,50 ];
+  let columnWidths = [30, 90, 45,  50,40,60,60,65 ];
   const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
   let escala = 1;
 
@@ -877,7 +876,7 @@ descargarPDF() {
             // Alineación de la tabla en el centro
             alignment: 'center',
             body: [
-              [  'Nº', 'Producto', 'Unidad de medida','Cantidad persona come	       			', 'Porción por cantidad de persona','	Precio unidad','Costeo una persona',`Porción para  ${this.personas} personas`, 'Costo por cantidad de persona'
+              [  'Nº', 'Producto', 'Unidad de medida' , 'Porción por cantidad de persona','	Precio unidad','Costeo una persona',`Porción para  ${this.personas} personas`, 'Costo por cantidad de persona'
             ].map((cell, index) => ({
                 text: cell,
                 bold: true,
@@ -924,7 +923,7 @@ const platoDescripcion = `Menú: ${item.plato.descripcion}`;
 const precioMenu = `Precio del Menú: ${this.formatPrice(item.plato.precio)}`;
 const costeoMenu = `Costeo del Menú: ${this.formatPrice(this.totalPrecio)}`;
 const cantidadpersona = `Cantidad de personas: ${this.personas}`;
-const fecha = `Costeo del Menú: ${this.fechaFormateada}`;
+const fecha = `Fecha: ${this.fechaFormateada}`;
 
 const row = worksheet.addRow([platoDescripcion, precioMenu, costeoMenu,cantidadpersona,fecha]);
 
@@ -938,7 +937,7 @@ row.eachCell(cell => {
 
 // Agregar encabezados de la tabla
 const headers = [
-  'Nº', 'Producto', 'Unidad de medida','Cantidad persona come	       			', 'Porción por cantidad de persona','	Precio unidad','Costeo una persona',`Porción para  ${this.personas} personas`, 'Costo por cantidad de persona'
+  'Nº', 'Producto', 'Unidad de medida',  'Porción por cantidad de persona','	Precio unidad','Costeo una persona',`Porción para  ${this.personas} personas`, 'Costo por cantidad de persona'
 ];
 
 worksheet.addRow(headers);
@@ -958,8 +957,7 @@ const rowData = [
     index + 1,
     item.alimento.descripcion, // Producto
     item.unidadMedida.unidadMedida, // Unidad de medida
-    item.cantidadPersonaCome,
-    `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
+     `${item.cantidadPersonaGramo} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
 
     
      this.formatPrice(item.preciounidad),

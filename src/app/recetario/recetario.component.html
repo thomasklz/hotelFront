@@ -32,7 +32,7 @@
             <h4 class="card-title disabled">
               <img src="/assets/img/receta.png" class="edit" alt="" />
 
-             Lista de recatas básicas
+             Lista de recetas básicas
 
             </h4>
 
@@ -71,21 +71,27 @@
               <table class="table" *ngIf="productosplatosss && productosplatosss.length > 0">
                 <thead class="text-primary" *ngFor="let item of ingredientedescripcionsss">
                   <th>Menú: {{ item.plato.descripcion }}</th>
-                 
+                 <th>   
+                <button mat-raised-button type="submit" class="btn1 btn-danger pull-right card-title"  
+      (click)="showModalEliminarrectario(item.plato.id)">
+      Eliminar receta
+    </button>
+              
+              </th>
 
                 
 
 
 
                  </thead>
-              
-                <thead class="text-primary">
+                 <br><br>
+                <thead class="text-primary"> 
                   <th>Nº</th>
                   <th>Ingredientes</th>
 
                 
                    
-                  <th>Acciones</th>
+                  <th>Acción</th>
                 </thead>
                 <tbody *ngFor="let item of productosplatosss; let i = index">
                   <tr>
@@ -208,18 +214,16 @@
                     <div class="container-centered2 text-center">
                       <table class="platos">
                         <tr>
-                          <th  class="liu">Seleccionar</th>
-
-                          <th  class="liu">Ingredientes</th>
-
-                          
+                          <th class="liu">Seleccionar</th>
+                          <th class="liu">Ingredientes</th>
                         </tr>
                         <ng-container *ngFor="let alimentos of alimentosFiltrados; let i = index">
                           <tr *ngIf="i >= pageIndex * pageSizecc && i < (pageIndex + 1) * pageSizecc">
-                            <td><input type="checkbox" [(ngModel)]="alimentos.selected" (change)="updateTotal(); updateFormValues()"  style="width: 20px; height: 20px;  cursor: pointer;" ></td>
-                            <td class="liu">{{ alimentos.nombre }}</td>
-                            
+                            <td>
+                              <input type="checkbox" [(ngModel)]="alimentos.selected" (change)="updateTotal(); updateFormValues()" style="width: 20px; height: 20px; cursor: pointer;">
                           
+                            </td>
+                            <td class="liu">{{ alimentos.nombre }}</td>
                           </tr>
                         </ng-container>
                       </table>
@@ -240,6 +244,7 @@
               </div>
             </div>
           </div>
+          
         </div>
       </div>
 

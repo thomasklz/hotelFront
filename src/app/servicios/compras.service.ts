@@ -1,43 +1,41 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+const BASE_URL = ' http://localhost:3000/api/';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ComprasService {
 
-  constructor( private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  gestionarAlimento (data:any){
-    
-    return this.http.post<any>('http://localhost:3000/api/gestionarAlimento', data);
-  
-  }
-  mostrarCompra(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarCompra');
+  gestionarAlimento(data: any) {
+    return this.http.post<any>(`${BASE_URL}gestionarAlimento`, data);
   }
 
-  mostrarCompraAlimmentosReportes(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarCompraAlimmentosReportes');
+  mostrarCompra() {
+    return this.http.get<any>(`${BASE_URL}mostrarCompra`);
   }
 
-
-  mostrarCompraExistente(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarCompraExistente');
+  mostrarCompraAlimmentosReportes() {
+    return this.http.get<any>(`${BASE_URL}mostrarCompraAlimmentosReportes`);
   }
 
-  mostrarNoCompraExistente(){
-    return this.http.get<any>('http://localhost:3000/api/mostrarCompraNoExistente');
+  mostrarCompraExistente() {
+    return this.http.get<any>(`${BASE_URL}mostrarCompraExistente`);
   }
 
-   buscarFechaCompra(fecha: string) {
-    // Corrección en la construcción de la URL
-    return this.http.get<any>(`http://localhost:3000/api/buscarFechaCompra/${fecha}`);
+  mostrarNoCompraExistente() {
+    return this.http.get<any>(`${BASE_URL}mostrarCompraNoExistente`);
   }
 
-     deletealimentos(id:number){
-    return this.http.delete<any>('http://localhost:3000/api/eliminaralimentoCompra/'+id);
+  buscarFechaCompra(fecha: string) {
+    return this.http.get<any>(`${BASE_URL}buscarFechaCompra/${fecha}`);
   }
 
-  
+  deletealimentos(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminaralimentoCompra/${id}`);
+  }
+
 }

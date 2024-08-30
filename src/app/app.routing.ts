@@ -11,7 +11,12 @@ import { PerfilclienteComponent } from './perfilcliente/perfilcliente.component'
 import { LoginGuard } from './guard/login.guard';
 import { LogoutGuard } from './guard/logout.guard';
 import { CrearAdminGuard } from './guard/crear-admin.guard';
-
+import { PerfilcajeroComponent } from './perfilcajero/perfilcajero.component';
+import { TipoalimentosComponent } from './tipoalimentos/tipoalimentos.component';
+import { CreditoComponent } from './credito/credito.component';
+import { TableListComponent } from './table-list/table-list.component';
+ 
+import { EditarperfilcajeroComponent } from './editarperfilcajero/editarperfilcajero.component';
 
  
   const routes: Routes = [
@@ -20,6 +25,15 @@ import { CrearAdminGuard } from './guard/crear-admin.guard';
     { path: 'crearAdministrador', component: CrearAdministradorComponent, canActivate: [CrearAdminGuard] },
     { path: 'reporte', component: ReporteComponent, canActivate: [LoginGuard] },
     { path: 'editardatosperfil', component: PerfilclienteComponent, canActivate: [LoginGuard] },
+    { path: 'perfilcajero', component: PerfilcajeroComponent, canActivate: [LoginGuard] },
+
+    { path: 'menus_Diarios',        component: TipoalimentosComponent,canActivate: [LoginGuard] },
+    { path: 'creditos',        component: CreditoComponent ,canActivate: [LoginGuard] },
+    { path: 'registrodecreditos',        component: TableListComponent ,canActivate: [LoginGuard] },
+    { path: 'editarperfilcajero',        component: EditarperfilcajeroComponent ,canActivate: [LoginGuard] },
+
+    
+
     {
       path: '',
       component: AdminLayoutComponent,

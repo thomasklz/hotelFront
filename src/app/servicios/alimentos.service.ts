@@ -1,122 +1,110 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+const BASE_URL = ' http://localhost:3000/api/';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AlimentosService {
 
-  constructor( private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-//crear tipo alimentos
-creartipoalimentos(data:any){
-  return this.http.post<any>('http://localhost:3000/api/creartipo_alimento',data);
-}
-crearunidadMedida(data:any){
-  return this.http.post<any>('http://localhost:3000/api/crearunidadMedida',data);
-}
-  //obtener tipos de alimentos
-  gettipoalimento(){
-    return this.http.get<any>('http://localhost:3000/api/mostrartipo_alimento/');
+  // Crear tipo alimentos
+  creartipoalimentos(data: any) {
+    return this.http.post<any>(`${BASE_URL}creartipo_alimento`, data);
   }
 
-  obtenerUnidadMedida(){
-    return this.http.get<any>('http://localhost:3000/api/obtenerUnidadMedida/');
+  // Crear unidad de medida
+  crearunidadMedida(data: any) {
+    return this.http.post<any>(`${BASE_URL}crearunidadMedida`, data);
   }
 
-
-  mostraralimentomenu(){
-    return this.http.get<any>('http://localhost:3000/api/mostraralimentomenuIngredient/');
+  // Obtener tipos de alimentos
+  gettipoalimento() {
+    return this.http.get<any>(`${BASE_URL}mostrartipo_alimento/`);
   }
 
-
-
-  
-
-  //obtener alimentos
-  getalimentos(){
-    return this.http.get<any>('http://localhost:3000/api/mostraralimento');
-  }
-  getalimentosIngre(){
-    return this.http.get<any>('http://localhost:3000/api/getalimentos');
+  // Obtener unidad de medida
+  obtenerUnidadMedida() {
+    return this.http.get<any>(`${BASE_URL}obtenerUnidadMedida/`);
   }
 
-  mostraralimentoss(){
-    return this.http.get<any>('http://localhost:3000/api/mostraralimentoss');
+  // Mostrar alimentos para menú
+  mostraralimentomenu() {
+    return this.http.get<any>(`${BASE_URL}mostraralimentomenuIngredient/`);
   }
-  
 
-  //Crear y Modificar Alimentos
-  
-    guardar(data:any, id?){
-      if (id) {
-        return this.http.put<any>('http://localhost:3000/api/editaralimento/'+id,data);
-      } else {
-        return this.http.post<any>('http://localhost:3000/api/crearalimento', data);
-      }
+  // Obtener todos los alimentos
+  getalimentos() {
+    return this.http.get<any>(`${BASE_URL}mostraralimento`);
   }
-  
-    //eliminar Alimentos
-    deletealimentos(id:number){
-      return this.http.delete<any>('http://localhost:3000/api/eliminaralimento/'+id);
+
+  // Obtener alimentos para ingredientes
+  getalimentosIngre() {
+    return this.http.get<any>(`${BASE_URL}getalimentos`);
+  }
+
+  // Mostrar alimentos con s
+  mostraralimentoss() {
+    return this.http.get<any>(`${BASE_URL}mostraralimentoss`);
+  }
+
+  // Crear y Modificar Alimentos
+  guardar(data: any, id?) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editaralimento/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}crearalimento`, data);
     }
-
-
-
-
-     //Crear y Modificar Tipos Alimentos
-     guardartiposalimentos(data:any, id?){
-      if (id) {
-        return this.http.put<any>('http://localhost:3000/api/editartipo_alimento/'+id,data);
-      }else{
-        return this.http.post<any>('http://localhost:3000/api/creartipo_alimento', data);
-      }
-      }
- //eliminar Tipo Alimentos
- deletetipoalimentos(id:number){
-  return this.http.delete<any>('http://localhost:3000/api/eliminartipo_alimento/'+id);
-}
-
-
-
-//-------------------------------------------------------------------------------------------
-
-// Servicio AlimentosService
-obtenerfiltropordias(fecha: string, id?: string) {
-  // Formatea la URL adecuadamente con los parámetros
-  let url = `http://localhost:3000/api/obtenerfiltropordias/${fecha}`;
-  
-  if (id) {
-    url += `/${id}`;
   }
 
-  return this.http.get<any>(url);
-}
 
 
-obtenerfiltropormes( id: string, mes?: string) {
-  // Formatea la URL adecuadamente con los parámetros
-  let url = `http://localhost:3000/api/obtenerfiltropormes/${id}`;
-  
-  if (mes) {
-    url += `/${mes}`;
+  // Eliminar Alimentos
+  deletealimentos(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminaralimento/${id}`);
   }
 
-  return this.http.get<any>(url);
-}
-
-obtenerFiltroPorSemanas(id: string, fechainicio?: string, fechafinal?: string) {
-  // Formatea la URL adecuadamente con los parámetros
-  let url = `http://localhost:3000/api/obtenerfiltroporsemanas/${id}`;
-  
-  if (fechainicio && fechafinal) {
-    // Asegúrate de que las fechas estén en el formato correcto y sean válidas
-    url += `/${fechainicio}/${fechafinal}`;
+  // Crear y Modificar Tipos Alimentos
+  guardartiposalimentos(data: any, id?: number) {
+    if (id) {
+      return this.http.put<any>(`${BASE_URL}editartipo_alimento/${id}`, data);
+    } else {
+      return this.http.post<any>(`${BASE_URL}creartipo_alimento`, data);
+    }
   }
 
-  return this.http.get<any>(url);
-}
+  // Eliminar Tipo Alimentos
+  deletetipoalimentos(id: number) {
+    return this.http.delete<any>(`${BASE_URL}eliminartipo_alimento/${id}`);
+  }
 
+  // Obtener filtro por días
+  obtenerfiltropordias(fecha: string, id?: string) {
+    let url = `${BASE_URL}obtenerfiltropordias/${fecha}`;
+    if (id) {
+      url += `/${id}`;
+    }
+    return this.http.get<any>(url);
+  }
 
+  // Obtener filtro por mes
+  obtenerfiltropormes(id: string, mes?: string) {
+    let url = `${BASE_URL}obtenerfiltropormes/${id}`;
+    if (mes) {
+      url += `/${mes}`;
+    }
+    return this.http.get<any>(url);
+  }
+
+  // Obtener filtro por semanas
+  obtenerFiltroPorSemanas(id: string, fechainicio?: string, fechafinal?: string) {
+    let url = `${BASE_URL}obtenerfiltroporsemanas/${id}`;
+    if (fechainicio && fechafinal) {
+      url += `/${fechainicio}/${fechafinal}`;
+    }
+    return this.http.get<any>(url);
+  }
 
 }

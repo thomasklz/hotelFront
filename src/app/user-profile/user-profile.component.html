@@ -209,7 +209,7 @@
 
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title disabled"> Clientes</h4>
+            <h4 class="card-title disabled"> Usuarios</h4>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -218,9 +218,15 @@
                   <th>
                     No
                   </th>
+                 
+                  <th>
+                    Tipo usuario
+                  </th>
+
                   <th>
                     Usuario
                   </th>
+                  
                   <th>
                     Apellido1
                   </th>
@@ -245,41 +251,25 @@
 
 
                 </thead>
-                <tbody *ngFor="let item of pagedMenus;let i=index ">
+                <tbody *ngFor="let item of pagedMenus; let i = index">
                   <tr>
-                    <td>
-                      {{i+1}}
-                    </td>
-                    <td>
-                      {{item.Identificacion}}
-                    </td>
-                    <td>
-                      {{item.persona.Apellido1}}
-                    </td>
-                    <td>
-                      {{item.persona.Apellido2}}
-                    </td>
-                    <td>
-                      {{item.persona.Nombre1}}
-                    </td>
-                    <td>
-                      {{item.persona.Nombre2}}
-                    </td>
-                    <td>
-                      {{item.persona.EmailInstitucional}}
-                    </td>
-                    <td>
-                      {{item.persona.TelefonoC}}
-                    </td>
-                    <td>
-                      <img *ngIf="item.persona.foto" [src]="'http://localhost:3000/imagenes/' + item.persona.foto" alt="Foto de usuario" class="circular-image">
+                    <td>{{i + 1}}</td>
+                  
 
+                    <td>{{item.tipo_usuario.tipo}}</td>
+                    <td>{{item.Identificacion}}</td>
+                    <td>{{item.persona?.Apellido1}}</td>
+                    <td>{{item.persona?.Apellido2}}</td>
+                    <td>{{item.persona?.Nombre1}}</td>
+                    <td>{{item.persona?.Nombre2}}</td>
+                    <td>{{item.persona?.EmailInstitucional}}</td>
+                    <td>{{item.persona?.TelefonoC}}</td>
+                    <td>
+                      <img *ngIf="item.persona?.foto" [src]="'http://localhost:3000/imagenes/' + item.persona.foto" alt="Foto de usuario" class="circular-image">
                     </td>
-
-
                   </tr>
-
                 </tbody>
+                
               </table>
 
 

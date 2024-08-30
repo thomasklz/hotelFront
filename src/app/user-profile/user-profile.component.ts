@@ -98,7 +98,8 @@ selectOption(item: any) {
 
   ngOnInit() {
     this.getAlltipousuarios();
-    this.loadPageData();
+    this.getAllusuarios();
+    
 
     this.personaForm = this.formBuilder.group({
        
@@ -196,12 +197,9 @@ isIdTipousuarioInvalid(): boolean {
   
 
 
-
-
-
-  pageSize = 10;  // Tamaño de la página
-  currentPage = 1;  // Página actual
-  totalItems = 0;  // Total de elementos
+  pageSize = 10; // Tamaño de la página
+  currentPage = 1; // Página actual
+  totalItems = 0; // Total de elementos
 
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.pageSize);
@@ -219,26 +217,31 @@ isIdTipousuarioInvalid(): boolean {
     return this.usuariosss.slice(this.startIndex, this.endIndex + 1);
   }
 
-  // ... otras funciones del componente
-
-  loadPageData() {
-    // Lógica para cargar datos de la página actual (no es necesario pasar parámetros a la API)
-    this.UsuarioService.getusuario().subscribe({
-      next: (res) => {
-        this.usuariosss = res.usuarios;
-        this.totalItems = res.usuarios.length;  // Actualizar el total de elementos
-      
-      },
-      error: (err) => {
-        console.error(err);
-        // Manejo de errores si la llamada a la API falla
-      },
-    });
-  }
-
+  
   onPageChange(event: number) {
     this.currentPage = event;
   }
+  // ... otras funciones del componente
+
+ 
+  usuariosssOriginal: any[] = [];
+
+  getAllusuarios() {
+    this.UsuarioService.listados().subscribe({
+      next: (res) => {
+        this.dataSource = new MatTableDataSource(res.usuarios);
+        this.usuariosss = res.usuarios;
+        this.usuariosssOriginal = [...res.usuarios]; 
+        this.totalItems = res.usuarios.length; 
+      },
+      error: (err) => {
+        // alert("Error en la carga de datos");
+      },
+    });
+  }
+  
+
+ 
   showPassword: boolean = false;
 
   getId_Tipomenu() {
@@ -291,19 +294,9 @@ isIdTipousuarioInvalid(): boolean {
     }
   }
   
-  
-  getAllusuarios() {
-    this.UsuarioService.getusuario().subscribe({
-      next: (res) => {
-        this.dataSource = new MatTableDataSource(res.persona);
-        this.usuariosss = res.usuarios;
-        this.totalItems = res.usuarios.length;  
-      },
-      error: (err) => {
-        // alert("Error en la carga de datos");
-      },
-    });
-  }
+
+
+
   getAlltipousuarios() {
     this.UsuarioService.gettipousuario().subscribe({
       next: (res) => {

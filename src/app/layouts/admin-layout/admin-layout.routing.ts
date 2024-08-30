@@ -36,8 +36,7 @@ export const AdminLayoutRoutes: Routes = [
    
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'registrodecreditos',     component: TableListComponent },
-    
+     
 
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },
@@ -55,8 +54,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'recetadetallada',        component: IngredientesComponent },
     { path: 'menus',        component: PlatosComponent },
     { path: 'menusdiarios',        component: MenuComponent },
-    { path: 'creditos',        component: CreditoComponent },
-    { path: 'menus_Diarios',        component: TipoalimentosComponent },
     { path: 'pesos',        component: PesosComponent },
     { path: 'cantidadplatos',        component: CantidadplatosComponent },
     { path: 'productosplato',        component: ProductosplatoComponent },
