@@ -961,13 +961,13 @@ export class ComprasComponent implements OnInit {
       item.alimento.descripcion, // Producto
       item.unidadMedida.unidadMedida, // Unidad de medida
       item.cantidadmedidaUnidad,
-      this.formatPrice(item.preciounidad),
-      this.formatPrice(item.precio),
+      
       `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
     ]);
 
     const anchoPagina = 595.28;
-    let columnWidths = [23, 75, 60, 65, 80, 80, 70];
+    let columnWidths = [30, 195, 80, 80, 80];
+    
     const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
     let escala = 1;
 
@@ -1013,7 +1013,7 @@ export class ComprasComponent implements OnInit {
               // Alineación de la tabla en el centro
               alignment: 'center',
               body: [
-                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'].map((cell, index) => ({
+                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', 'Porción'].map((cell, index) => ({
                   text: cell,
                   bold: true,
                   fillColor: '#D3D3D3',
@@ -1052,7 +1052,7 @@ export class ComprasComponent implements OnInit {
 
     // Agregar encabezados de la tabla
     const headers = [
-      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'
+      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', 'Porción'
     ];
 
     worksheet.addRow(headers);
@@ -1072,8 +1072,7 @@ export class ComprasComponent implements OnInit {
         item.alimento.descripcion, // Producto
         item.unidadMedida.unidadMedida, // Unidad de medida
         item.cantidadmedidaUnidad,
-        this.formatPrice(item.preciounidad),
-        this.formatPrice(item.precio),
+       
         `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
       ];
 
@@ -1113,13 +1112,12 @@ export class ComprasComponent implements OnInit {
       item.alimento.descripcion, // Producto
       item.unidadMedida.unidadMedida, // Unidad de medida
       item.cantidadmedidaUnidad,
-      this.formatPrice(item.preciounidad),
-      this.formatPrice(item.precio),
+     
       `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
     ]);
 
     const anchoPagina = 595.28;
-    let columnWidths = [23, 75, 60, 65, 80, 80, 70];
+    let columnWidths = [30, 195, 80, 80, 80];
     const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
     let escala = 1;
 
@@ -1165,7 +1163,7 @@ export class ComprasComponent implements OnInit {
               // Alineación de la tabla en el centro
               alignment: 'center',
               body: [
-                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'].map((cell, index) => ({
+                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida',   'Porción'].map((cell, index) => ({
                   text: cell,
                   bold: true,
                   fillColor: '#D3D3D3',
@@ -1204,7 +1202,7 @@ export class ComprasComponent implements OnInit {
 
     // Agregar encabezados de la tabla
     const headers = [
-      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'
+      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', 'Porción'
     ];
 
     worksheet.addRow(headers);
@@ -1224,8 +1222,7 @@ export class ComprasComponent implements OnInit {
         item.alimento.descripcion, // Producto
         item.unidadMedida.unidadMedida, // Unidad de medida
         item.cantidadmedidaUnidad,
-        this.formatPrice(item.preciounidad),
-        this.formatPrice(item.precio),
+      
         `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
       ];
 
@@ -1265,13 +1262,12 @@ export class ComprasComponent implements OnInit {
       item.alimento.descripcion, // Producto
       item.unidadMedida.unidadMedida, // Unidad de medida
       item.cantidadmedidaUnidad,
-      this.formatPrice(item.preciounidad),
-      this.formatPrice(item.precio),
+      
       `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
     ]);
 
     const anchoPagina = 595.28;
-    let columnWidths = [23, 75, 60, 65, 80, 80, 70];
+    let columnWidths = [30, 195, 80, 80, 80];
     const totalWidth = columnWidths.reduce((total, width) => total + width, 0);
     let escala = 1;
 
@@ -1317,7 +1313,7 @@ export class ComprasComponent implements OnInit {
               // Alineación de la tabla en el centro
               alignment: 'center',
               body: [
-                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'].map((cell, index) => ({
+                ['Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', 'Porción'].map((cell, index) => ({
                   text: cell,
                   bold: true,
                   fillColor: '#D3D3D3',
@@ -1356,7 +1352,7 @@ export class ComprasComponent implements OnInit {
 
     // Agregar encabezados de la tabla
     const headers = [
-      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida', '   Precio unitario', 'Precio', 'Porción'
+      'Nº', 'Producto', 'Unidad de medida', '  Cantidad de medida',  'Porción'
     ];
 
     worksheet.addRow(headers);
@@ -1376,8 +1372,7 @@ export class ComprasComponent implements OnInit {
         item.alimento.descripcion, // Producto
         item.unidadMedida.unidadMedida, // Unidad de medida
         item.cantidadmedidaUnidad,
-        this.formatPrice(item.preciounidad),
-        this.formatPrice(item.precio),
+        
         `${item.porcion} ${this.getUnidadMedida(item.unidadMedida.unidadMedida.toLowerCase())}`, // Porción por persona
       ];
 

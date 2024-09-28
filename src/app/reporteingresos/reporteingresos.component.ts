@@ -154,10 +154,11 @@ formatCurrencyq(value: number): string {
   totalPages: number = 0;
   
  
-  
+  totalSum:any;
 
   ReporteingresosDiasplatosV2() {
     this.reportesssV2 = [];
+    this.totalSum = 0; // Inicializar la variable para almacenar la suma total
   
     if (this.fechaSeleccionadaV2) {
       const fecha = this.fechaSeleccionadaV2;
@@ -172,6 +173,13 @@ formatCurrencyq(value: number): string {
             this.mostrarTablaV2 = true;
             this.mostrarTablallenaV2 = true;
             console.log('Datos asignados a reportesssV2:', this.reportesssV2);
+  
+            // Sumar los valores de la columna 'total'
+            this.totalSum = this.reportesssV2.reduce((acc, item) => {
+              return acc + parseFloat(item.total);
+            }, 0);
+  
+            console.log('Suma total:', this.totalSum);
           } else {
             console.log("No se encontraron datos para esta fecha y plato.");
             this.mostrarTablaV2 = false;
@@ -187,6 +195,7 @@ formatCurrencyq(value: number): string {
       this.showModalErrors("El idplato o la fecha no están definidos.");
     }
   }
+  
 
   updatePagedData() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -306,7 +315,7 @@ formatCurrencyq(value: number): string {
           });
         }
 
-        descargarPDFV2() {
+        descargarPDFV2kkkkkkkkkkk() {
           // Formatear los valores monetarios en el formato deseado
           const rows = this.reportesssV2.map((item) => [
             item.descripcion,
@@ -354,6 +363,7 @@ formatCurrencyq(value: number): string {
                 {
                   alignment: 'center',
                   table: {
+                    
                     headerRows: 1,
                     widths: columnWidths,
                     body: [
@@ -385,7 +395,90 @@ formatCurrencyq(value: number): string {
             pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS DIARIO.pdf');
           });
         }
-
+        descargarPDFV2() {
+          // Formatear los valores monetarios en el formato deseado
+          const rows = this.reportesssV2.map((item) => [
+            item.descripcion,
+            item.fecha,
+            item.cantidadPlato,
+            item.conCreditos,
+            item.sinCreditos,
+            this.formatCurrency(item.precio),
+            this.formatCurrency(item.totalConCreditos),
+            this.formatCurrency(item.totalSinCreditos),
+            this.formatCurrency(item.total),
+          ]);
+        
+          const columnWidths = [90, 60, 46, 40, 40, 40, 40, 40, 40];
+          
+          // Obtener las representaciones en base64 de las imágenes
+          Promise.all([this.imageService.getBase64Image(), this.imageService.getBase64Image()]).then(([base64ImageLeft, base64ImageRight]) => {
+            const headerTable = {
+              table: {
+                widths: [120, '*', 120],
+                body: [
+                  [
+                    { image: base64ImageLeft, width: 80, height: 80, alignment: 'left' },
+                    { text: 'ESCUELA SUPERIOR POLITÉCNICA AGROPECUARIA DE MANABÍ MANUEL FÉLIX LÓPEZ', style: 'header', alignment: 'center', fontSize: 16 },
+                    { image: base64ImageRight, width: 80, height: 80, alignment: 'right' },
+                  ],
+                  [
+                    {},
+                    { text: 'Hotel Higuerón', style: 'subheader', alignment: 'center' },
+                    {},
+                  ],
+                ],
+              },
+              layout: 'noBorders',
+            };
+        
+            const documentoPDF = {
+              content: [
+                headerTable,
+                '\n\n',
+                { text: 'INFORME DE INGRESOS DE MENÚS DIARIOS', style: 'header', alignment: 'center' },
+                '\n', '\n',
+                { text: 'Cantidad diaria de ingresos en menú', style: 'subheader', alignment: 'left', bold: true },
+                '\n',
+                {
+                  alignment: 'center',
+                  table: {
+                    headerRows: 1,
+                    widths: columnWidths,
+                    body: [
+                      ['Menú', 'Fecha', 'Cantidad del menú', 'Con créditos', 'Sin créditos', 'Precio del menú', 'Precio total con créditos', 'Precio total sin créditos', 'Total'].map((cell) => ({
+                        text: cell,
+                        bold: true,
+                        fillColor: '#D3D3D3',
+                        alignment: 'center',
+                      })),
+                      ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                      [
+                        { text: `Total de venta diaria: ${this.formatCurrency(this.totalSum)}`, bold: true, fillColor: '#D3D3D3', colSpan: 9, alignment: 'right', border: [true, true, true, true] },
+                        {}, {}, {}, {}, {}, {}, {}, {}
+                      ],
+                    ],
+                  },
+                },
+              ],
+              styles: {
+                header: {
+                  fontSize: 18,
+                  font: 'Roboto',
+                  bold: true,
+                },
+                subheader: {
+                  fontSize: 14,
+                  font: 'Roboto',
+                },
+              },
+            };
+        
+            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS DIARIO.pdf');
+          });
+        }
+        
 
 
 
@@ -431,7 +524,7 @@ formatCurrencyq(value: number): string {
                 headerTable,
                 '\n\n',
                 { text: 'INFORME DE INGRESOS DE MENÚ POR MES', style: 'header', alignment: 'center' },
-                ' \n', ' \n',
+                '\n', '\n',
                 { text: 'Cantidades mensuales de ingresos en menús', style: 'subheader', alignment: 'left', bold: true },
                 '\n',
                 {
@@ -447,6 +540,10 @@ formatCurrencyq(value: number): string {
                         alignment: 'center',
                       })),
                       ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                      [
+                        { text: `Total de venta mensual: ${this.formatCurrency(this.totalSum)}`, bold: true, fillColor: '#D3D3D3', colSpan: 9, alignment: 'right', border: [true, true, true, true] },
+                        {}, {}, {}, {}, {}, {}, {}, {}
+                      ],
                     ],
                   },
                 },
@@ -468,6 +565,7 @@ formatCurrencyq(value: number): string {
             pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS MENSUAL.pdf');
           });
         }
+        
 
 
        
@@ -582,144 +680,151 @@ descargarDatos() {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Reporte de Ingresos');
     
-    // Organizar créditos por persona
-    const creditosPorPersona = {};
-    
-   
-    
-    // Agregar encabezados de la tabla
+    // Encabezados de la tabla
     const headers = [
-      'Menú',
-      'Fecha ',
-      'Cantidad del menú',
-      'Con créditos',
-      'Sin créditos',
-      'Precio del menú','Precio total con créditos','Precio total Sin créditos', 'Total'
-    ];
-    
-    worksheet.addRow(headers);
-    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
-    
-    // Establecer estilos para encabezados
-    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
-    cell.alignment = { vertical: 'middle', horizontal: 'center' };
-    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
-    });
-    
-    // Agregar datos a la hoja de cálculo
-    this.reportesssV2.forEach((item, index) => {
-    const rowData = [
-       item.descripcion,
-       item.fecha,
-       item.cantidadPlato,
-       item.conCreditos,
-       item.sinCreditos,
-  
-      
-     
-     this.formatCurrency(item.precio),
-     this.formatCurrency(item.totalConCreditos),
-     this.formatCurrency(item.totalSinCreditos),
-     this.formatCurrency(item.total),
-             
-    ];
-    
-    worksheet.addRow(rowData);
-    });
-    
-    // Establecer estilos para datos
-    for (let i = worksheet.lastRow.number - this.reportesssV2.length + 1; i <= worksheet.lastRow.number; i++) {
-    worksheet.getRow(i).eachCell(cell => {
-        cell.font = { bold: false }; // No negrita para datos
-        cell.alignment = { vertical: 'middle', horizontal: 'left' };
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-    });
-    }
-    
-    // Establecer ancho de columnas
-    worksheet.columns.forEach(column => {
-    let maxLength = 0;
-    column.eachCell({ includeEmpty: true }, cell => {
-        const length = cell.value ? cell.value.toString().length : 10;
-        if (length > maxLength) {
-            maxLength = length;
-        }
-    });
-    column.width = maxLength < 10 ? 10 : maxLength;
-    });
-    
-    // Guardar el libro de trabajo
-    workbook.xlsx.writeBuffer().then(buffer => {
-    saveAs(new Blob([buffer]), 'Reporte de Ingresos.xlsx');
-    });
-    }
-
-
-    descargarDatosSemanaV2() {
-      const ExcelJS = require('exceljs');
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Reporte de Ingresos semanal');
-      
-      // Organizar créditos por persona
-      const creditosPorPersona = {};
-      
-     
-      
-      // Agregar encabezados de la tabla
-      const headers = [
         'Menú',
-        'Fecha Inicio ',
-        'Fecha Fin ',
+        'Fecha',
         'Cantidad del menú',
         'Con créditos',
         'Sin créditos',
-        'Precio del menú','Precio total con créditos','Precio total Sin créditos', 'Total'
-      ];
-      
-      worksheet.addRow(headers);
-      worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
-      
-      // Establecer estilos para encabezados
-      worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+        'Precio del menú',
+        'Precio total con créditos',
+        'Precio total sin créditos',
+        'Total'
+    ];
+
+    worksheet.addRow(headers);
+    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+
+    // Establecer estilos para encabezados
+    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+    });
+
+    // Agregar datos a la hoja de cálculo
+    this.reportesssV2.forEach((item) => {
+        const rowData = [
+            item.descripcion,
+            item.fecha,
+            item.cantidadPlato,
+            item.conCreditos,
+            item.sinCreditos,
+            this.formatCurrency(item.precio),
+            this.formatCurrency(item.totalConCreditos),
+            this.formatCurrency(item.totalSinCreditos),
+            this.formatCurrency(item.total),
+        ];
+
+        worksheet.addRow(rowData);
+    });
+
+    // Establecer estilos para datos
+    for (let i = worksheet.lastRow.number - this.reportesssV2.length + 1; i <= worksheet.lastRow.number; i++) {
+        worksheet.getRow(i).eachCell(cell => {
+            cell.font = { bold: false }; // No negrita para datos
+            cell.alignment = { vertical: 'middle', horizontal: 'left' };
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        });
+    }
+
+    // Agregar fila con el total de ventas
+    const totalSumRow = worksheet.addRow(['', '', '', '', '', '', '', 'Total de venta:', this.formatCurrency(this.totalSum)]);
+    totalSumRow.font = { bold: true }; // Negrita para la fila total
+    totalSumRow.eachCell((cell, colNumber) => {
+        if (colNumber > 7) { // Aplicar estilos solo a las últimas dos celdas
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+        }
+    });
+
+    // Establecer ancho de columnas
+    worksheet.columns.forEach(column => {
+        let maxLength = 0;
+        column.eachCell({ includeEmpty: true }, cell => {
+            const length = cell.value ? cell.value.toString().length : 10;
+            if (length > maxLength) {
+                maxLength = length;
+            }
+        });
+        column.width = maxLength < 10 ? 10 : maxLength;
+    });
+
+    // Guardar el libro de trabajo
+    workbook.xlsx.writeBuffer().then(buffer => {
+        saveAs(new Blob([buffer]), 'Reporte de Ingresos.xlsx');
+    });
+}
+
+descargarMesDatosV2() {
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Reporte de Ingresos mensual');
+  
+  // Encabezados de la tabla
+  const headers = [
+      'Menú',
+      'Mes',
+      'Cantidad del menú',
+      'Con créditos',
+      'Sin créditos',
+      'Precio del menú',
+      'Precio total con créditos',
+      'Precio total sin créditos',
+      'Total'
+  ];
+
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
       cell.alignment = { vertical: 'middle', horizontal: 'center' };
       cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
       cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
-      });
-      
-      // Agregar datos a la hoja de cálculo
-      this.reportesssV2.forEach((item, index) => {
+  });
+
+  // Agregar datos a la hoja de cálculo
+  this.reportesssV2.forEach((item) => {
       const rowData = [
-         item.descripcion,
-         item.fechaInicio,
-         item.fechaFin,
-         item.cantidadPlato,
-         item.conCreditos,
-         item.sinCreditos,
-    
-        
-       
-       this.formatCurrency(item.precio),
-       this.formatCurrency(item.totalConCreditos),
-       this.formatCurrency(item.totalSinCreditos),
-       this.formatCurrency(item.total),
-               
+          item.descripcion,
+          item.fecha,
+          item.cantidadPlato,
+          item.conCreditos,
+          item.sinCreditos,
+          this.formatCurrency(item.precio),
+          this.formatCurrency(item.totalConCreditos),
+          this.formatCurrency(item.totalSinCreditos),
+          this.formatCurrency(item.total),
       ];
-      
+
       worksheet.addRow(rowData);
-      });
-      
-      // Establecer estilos para datos
-      for (let i = worksheet.lastRow.number - this.reportesssV2.length + 1; i <= worksheet.lastRow.number; i++) {
+  });
+
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.reportesssV2.length + 1; i <= worksheet.lastRow.number; i++) {
       worksheet.getRow(i).eachCell(cell => {
           cell.font = { bold: false }; // No negrita para datos
           cell.alignment = { vertical: 'middle', horizontal: 'left' };
           cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
       });
+  }
+
+  // Agregar fila con el total de ventas
+  const totalSumRow = worksheet.addRow(['', '', '', '', '', '', '', 'Total de venta:', this.formatCurrency(this.totalSum)]);
+  totalSumRow.font = { bold: true }; // Negrita para la fila total
+  totalSumRow.eachCell((cell, colNumber) => {
+      if (colNumber > 7) { // Aplicar estilos solo a las últimas dos celdas
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
       }
-      
-      // Establecer ancho de columnas
-      worksheet.columns.forEach(column => {
+  });
+
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
       let maxLength = 0;
       column.eachCell({ includeEmpty: true }, cell => {
           const length = cell.value ? cell.value.toString().length : 10;
@@ -728,13 +833,109 @@ descargarDatos() {
           }
       });
       column.width = maxLength < 10 ? 10 : maxLength;
+  });
+
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+      saveAs(new Blob([buffer]), 'Reporte de Ingresos Mensual.xlsx');
+  });
+}
+
+
+
+
+
+
+ 
+
+
+
+
+descargarDatosSemanaV2() {
+  const ExcelJS = require('exceljs');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Reporte de Ingresos semanal');
+  
+  // Encabezados de la tabla
+  const headers = [
+      'Menú',
+      'Fecha Inicio',
+      'Fecha Fin',
+      'Cantidad del menú',
+      'Con créditos',
+      'Sin créditos',
+      'Precio del menú',
+      'Precio total con créditos',
+      'Precio total sin créditos',
+      'Total'
+  ];
+
+  worksheet.addRow(headers);
+  worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
+
+  // Establecer estilos para encabezados
+  worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
+  });
+
+  // Agregar datos a la hoja de cálculo
+  this.reportesssV2.forEach((item) => {
+      const rowData = [
+          item.descripcion,
+          item.fechaInicio,
+          item.fechaFin,
+          item.cantidadPlato,
+          item.conCreditos,
+          item.sinCreditos,
+          this.formatCurrency(item.precio),
+          this.formatCurrency(item.totalConCreditos),
+          this.formatCurrency(item.totalSinCreditos),
+          this.formatCurrency(item.total),
+      ];
+
+      worksheet.addRow(rowData);
+  });
+
+  // Establecer estilos para datos
+  for (let i = worksheet.lastRow.number - this.reportesssV2.length + 1; i <= worksheet.lastRow.number; i++) {
+      worksheet.getRow(i).eachCell(cell => {
+          cell.font = { bold: false }; // No negrita para datos
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
       });
-      
-      // Guardar el libro de trabajo
-      workbook.xlsx.writeBuffer().then(buffer => {
-      saveAs(new Blob([buffer]), 'Reporte de Ingresos semanal.xlsx');
-      });
+  }
+
+  // Agregar fila con el total de ventas
+  const totalSumRow = worksheet.addRow(['', '', '', '', '', '', '', '', 'Total de venta:', this.formatCurrency(this.totalSum)]);
+  totalSumRow.font = { bold: true }; // Negrita para la fila total
+  totalSumRow.eachCell((cell, colNumber) => {
+      if (colNumber > 8) { // Aplicar estilos solo a las últimas dos celdas
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
       }
+  });
+
+  // Establecer ancho de columnas
+  worksheet.columns.forEach(column => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, cell => {
+          const length = cell.value ? cell.value.toString().length : 10;
+          if (length > maxLength) {
+              maxLength = length;
+          }
+      });
+      column.width = maxLength < 10 ? 10 : maxLength;
+  });
+
+  // Guardar el libro de trabajo
+  workbook.xlsx.writeBuffer().then(buffer => {
+      saveAs(new Blob([buffer]), 'Reporte de Ingresos semanal.xlsx');
+  });
+}
+
 
 
 descargarExcel(datos: any[], nombreHoja: string) {
@@ -1305,48 +1506,7 @@ semanaSeleccionadofinV2: string | null = null;
 
 
 
-
-  
-  ReporteingresosSemanasplatosV2jjj  () {
-     
-    this.reportesssV2 = [];
-  
-    // Asegúrate de que tanto idAlimento como fechaSeleccionada estén definidos antes de hacer la llamada
-    if ( this.fechaSeleccionadaV2) {
-      const fecha = this.fechaSeleccionadaV2;
-      const fechafinal= this.fechafinalSeleccionadaV2;
-        this.CreditosService.buscarPorSemana(  fecha,fechafinal ).subscribe({
-          next: (res: any) => {
-            if (res && res.reporte) {
-              if (res.reporte.length === 0) {
-              
-                console.log("No se encontraron datos para esta fecha y plato.");
-                this.mostrarTablasemanaV2 = false;
-              } else {
-              
-              // Asigna los datos al arreglo ingredientesdiass
-                this.reportesssV2 = [res.reporte];
-                this.mostrarTablasemanaV2 = true;
-              }
-            } else {
-              console.log("La respuesta no contiene datos.");
-            }
-          },
-          error: (err) => {
-          
-            this.showModalError();
-          },
-        });
-
-    } else {
-      console.log("El idplato o la fecha no están definidos.");
-    }
-    
-  
-
-    
-  }
-
+ 
   ReporteingresosSemanasplatosV2() {
     this.reportesssV2 = [];
   
@@ -1365,7 +1525,10 @@ semanaSeleccionadofinV2: string | null = null;
             this.mostrarTablasemanaV2 = true;
           
             this.mostrarTablasemanallenaV2 = true;
-
+ // Sumar los valores de la columna 'total'
+ this.totalSum = this.reportesssV2.reduce((acc, item) => {
+  return acc + parseFloat(item.total);
+}, 0);
             console.log('Datos asignados a reportesssV2:', this.reportesssV2);
           } else {
             console.log("No se encontraron datos para esta fecha y plato.");
@@ -1400,6 +1563,10 @@ semanaSeleccionadofinV2: string | null = null;
             this.updatePagedData();
             this.mostrarTablamesV2 = true;
             this.mostrarTablamesllenaV2 = true;
+             // Sumar los valores de la columna 'total'
+             this.totalSum = this.reportesssV2.reduce((acc, item) => {
+              return acc + parseFloat(item.total);
+            }, 0);
             console.log('Datos asignados a reportesssV2:', this.reportesssV2);
           } else {
             console.log("No se encontraron datos para esta fecha y plato.");
@@ -1733,8 +1900,8 @@ descargarExcelV2(datos: any[], nombreHoja: string) {
                 headerTable,
                 '\n\n',
                 { text: 'INFORME DE INGRESOS DE MENÚS SEMANAL', style: 'header', alignment: 'center' },
-                ' \n', ' \n',
-                { text: 'Cantidad mensual de ingresos en menú', style: 'subheader', alignment: 'left', bold: true },
+                '\n', '\n',
+                { text: 'Cantidades semanales de ingresos en menús', style: 'subheader', alignment: 'left', bold: true },
                 '\n',
                 {
                   alignment: 'center',
@@ -1742,13 +1909,17 @@ descargarExcelV2(datos: any[], nombreHoja: string) {
                     headerRows: 1,
                     widths: columnWidths,
                     body: [
-                      ['Menú', 'Fecha Inicio', 'Fecha Fin','Cantidad del menú', 'Con créditos', 'Sin créditos', 'Precio del menú', 'Precio total con créditos', 'Precio total sin créditos', 'Total'].map((cell) => ({
+                      ['Menú', 'Fecha Inicio', 'Fecha Fin', 'Cantidad del menú', 'Con créditos', 'Sin créditos', 'Precio del menú', 'Precio total con créditos', 'Precio total sin créditos', 'Total'].map((cell) => ({
                         text: cell,
                         bold: true,
                         fillColor: '#D3D3D3',
                         alignment: 'center',
                       })),
                       ...rows.map(row => row.map(cell => ({ text: cell, alignment: 'center' }))),
+                      [
+                        { text: `Total de venta semanal: ${this.formatCurrency(this.totalSum)}`, bold: true, fillColor: '#D3D3D3', colSpan: 10, alignment: 'right', border: [true, true, true, true] },
+                        {}, {}, {}, {}, {}, {}, {}, {}, {}
+                      ],
                     ],
                   },
                 },
@@ -1767,9 +1938,10 @@ descargarExcelV2(datos: any[], nombreHoja: string) {
             };
         
             pdfMake.vfs = pdfFonts.pdfMake.vfs;
-            pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS MENSUAL.pdf');
+            pdfMake.createPdf(documentoPDF).download('INFORME DE INGRESOS SEMANAL.pdf');
           });
         }
+        
 
 //---------------------
 
@@ -1808,84 +1980,7 @@ descargarExcelsemanaV2(datos: any[], nombreHoja: string) {
 //---------------------
 
  
-  descargarMesDatosV2() {
-    const ExcelJS = require('exceljs');
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Reporte de Ingresos');
-    
-    // Organizar créditos por persona
-    const creditosPorPersona = {};
-    
-   
-    
-    // Agregar encabezados de la tabla
-    const headers = [
-      'Menú',
-      'Mes ',
-      'Cantidad del menú',
-      'Con créditos',
-      'Sin créditos',
-      'Precio del menú','Precio total con créditos','Precio total Sin créditos', 'Total'
-    ];
-    
-    worksheet.addRow(headers);
-    worksheet.getRow(worksheet.lastRow.number).font = { bold: true }; // Negrita para encabezado
-    
-    // Establecer estilos para encabezados
-    worksheet.getRow(worksheet.lastRow.number).eachCell(cell => {
-    cell.alignment = { vertical: 'middle', horizontal: 'center' };
-    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } }; // Fondo gris (plomo)
-    });
-    
-    // Agregar datos a la hoja de cálculo
-    this.reportesssV2.forEach((item, index) => {
-    const rowData = [
-       item.descripcion,
-       item.fecha,
-       item.cantidadPlato,
-       item.conCreditos,
-       item.sinCreditos,
-  
-      
-     
-     this.formatCurrency(item.precio),
-     this.formatCurrency(item.totalConCreditos),
-     this.formatCurrency(item.totalSinCreditos),
-     this.formatCurrency(item.total),
-             
-    ];
-    
-    worksheet.addRow(rowData);
-    });
-    
-    // Establecer estilos para datos
-    for (let i = worksheet.lastRow.number - this.reportesssV2.length + 1; i <= worksheet.lastRow.number; i++) {
-    worksheet.getRow(i).eachCell(cell => {
-        cell.font = { bold: false }; // No negrita para datos
-        cell.alignment = { vertical: 'middle', horizontal: 'left' };
-        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-    });
-    }
-    
-    // Establecer ancho de columnas
-    worksheet.columns.forEach(column => {
-    let maxLength = 0;
-    column.eachCell({ includeEmpty: true }, cell => {
-        const length = cell.value ? cell.value.toString().length : 10;
-        if (length > maxLength) {
-            maxLength = length;
-        }
-    });
-    column.width = maxLength < 10 ? 10 : maxLength;
-    });
-    
-    // Guardar el libro de trabajo
-    workbook.xlsx.writeBuffer().then(buffer => {
-    saveAs(new Blob([buffer]), 'Reporte de Ingresos Mes.xlsx');
-    });
-    }
- 
+
 
 descargarExcelMesV2(datos: any[], nombreHoja: string) {
   const workSheet = XLSX.utils.json_to_sheet(datos);

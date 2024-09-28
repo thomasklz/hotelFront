@@ -125,12 +125,7 @@
                                     <th>
                                       Cantidades de medidas
                                     </th>
-                                    <th>
-                                      Precios unitarios
-                                    </th>
-                                    <th>
-                                      Precios
-                                    </th>
+                                    
                                     <th>
                                       Porciones
                                     </th>
@@ -146,26 +141,9 @@
                                        <td>{{item.alimento.descripcion}}</td>
                                       <td>{{item.unidadMedida.unidadMedida }} </td>
                                       <td>{{item.cantidadmedidaUnidad }}</td>
-                                      <td> 
-                                        <ng-container *ngIf="item.preciounidad !== null">
-                                          <span *ngIf="item.preciounidad.toString().startsWith('0')">
-                                            {{ truncateZeros(item.preciounidad) }} ctvs
-                                          </span>
-                                          <span *ngIf="!item.preciounidad.toString().startsWith('0')">
-                                            {{ item.preciounidad }} $
-                                          </span>
-                                        </ng-container>
-                                      </td>        
-                                      <td>
-                                        <ng-container *ngIf="item.precio !== null">
-                                          <span *ngIf="item.precio.toString().startsWith('0')">
-                                            {{ truncateZeros(item.precio) }} ctvs
-                                          </span>
-                                          <span *ngIf="!item.precio.toString().startsWith('0')">
-                                            {{ item.precio }} $
-                                          </span>
-                                        </ng-container>
-                                      </td>
+                                            
+                                     
+                                      
                                       <td>{{item.porcion }}
                                         <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
                                         <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
@@ -277,12 +255,7 @@
                                     <th>
                                       Cantidades de medidas
                                     </th>
-                                    <th>
-                                      Precios unitarios
-                                    </th>
-                                    <th>
-                                      Precios
-                                    </th>
+                                    
                                     <th>
                                       Porciones
                                     </th>
@@ -298,26 +271,9 @@
                                        <td>{{item.alimento.descripcion}}</td>
                                       <td>{{item.unidadMedida.unidadMedida }} </td>
                                       <td>{{item.cantidadmedidaUnidad }}</td>
-                                      <td> 
-                                        <ng-container *ngIf="item.preciounidad !== null">
-                                          <span *ngIf="item.preciounidad.toString().startsWith('0')">
-                                            {{ truncateZeros(item.preciounidad) }} ctvs
-                                          </span>
-                                          <span *ngIf="!item.preciounidad.toString().startsWith('0')">
-                                            {{ item.preciounidad }} $
-                                          </span>
-                                        </ng-container>
-                                      </td>        
-                                      <td>
-                                        <ng-container *ngIf="item.precio !== null">
-                                          <span *ngIf="item.precio.toString().startsWith('0')">
-                                            {{ truncateZeros(item.precio) }} ctvs
-                                          </span>
-                                          <span *ngIf="!item.precio.toString().startsWith('0')">
-                                            {{ item.precio }} $
-                                          </span>
-                                        </ng-container>
-                                      </td>
+                                    
+                                            
+                                     
                                       <td>{{item.porcion }}
                                         <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
                                         <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
@@ -428,12 +384,7 @@
                                     <th>
                                       Cantidades de medidas
                                     </th>
-                                    <th>
-                                      Precios unitarios
-                                    </th>
-                                    <th>
-                                      Precios
-                                    </th>
+                                    
                                     <th>
                                       Porciones
                                     </th>
@@ -449,26 +400,7 @@
                                        <td>{{item.alimento.descripcion}}</td>
                                       <td>{{item.unidadMedida.unidadMedida }} </td>
                                       <td>{{item.cantidadmedidaUnidad }}</td>
-                                      <td> 
-                                        <ng-container *ngIf="item.preciounidad !== null">
-                                          <span *ngIf="item.preciounidad.toString().startsWith('0')">
-                                            {{ truncateZeros(item.preciounidad) }} ctvs
-                                          </span>
-                                          <span *ngIf="!item.preciounidad.toString().startsWith('0')">
-                                            {{ item.preciounidad }} $
-                                          </span>
-                                        </ng-container>
-                                      </td>        
-                                      <td>
-                                        <ng-container *ngIf="item.precio !== null">
-                                          <span *ngIf="item.precio.toString().startsWith('0')">
-                                            {{ truncateZeros(item.precio) }} ctvs
-                                          </span>
-                                          <span *ngIf="!item.precio.toString().startsWith('0')">
-                                            {{ item.precio }} $
-                                          </span>
-                                        </ng-container>
-                                      </td>
+                                     
                                       <td>{{item.porcion }}
                                         <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
                                         <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>

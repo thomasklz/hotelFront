@@ -6,6 +6,7 @@
 
 
 
+
 <link href="https://fonts.google.com/icons?selected=Material+Symbols+Outlined:quick_reference:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=INFORMA&icon.size=24&icon.color=%235f6368&icon.platform=android" rel="stylesheet" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
@@ -259,12 +260,7 @@
                           <th>
                             Cantidades de medidas
                           </th>
-                          <th>
-                            Precios unitarios
-                          </th>
-                          <th>
-                            Precios
-                          </th>
+                         
                           <th>
                             Porciones
                           </th>
@@ -283,26 +279,7 @@
                             <td>{{item.alimento.descripcion}}</td>
                             <td>{{item.unidadMedida.unidadMedida }} </td>
                             <td>{{item.cantidadmedidaUnidad }}</td>
-                            <td> 
-                              <ng-container *ngIf="item.preciounidad !== null">
-                                <span *ngIf="item.preciounidad.toString().startsWith('0')">
-                                  {{ truncateZeros(item.preciounidad) }} ctvs
-                                </span>
-                                <span *ngIf="!item.preciounidad.toString().startsWith('0')">
-                                  {{ item.preciounidad }} $
-                                </span>
-                              </ng-container>
-                            </td>        
-                            <td>
-                              <ng-container *ngIf="item.precio !== null">
-                                <span *ngIf="item.precio.toString().startsWith('0')">
-                                  {{ truncateZeros(item.precio) }} ctvs
-                                </span>
-                                <span *ngIf="!item.precio.toString().startsWith('0')">
-                                  {{ item.precio }} $
-                                </span>
-                              </ng-container>
-                            </td>
+                           
                             <td>{{item.porcion }}
                               <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'libra'">(gramos)</span>
                               <span *ngIf="item.unidadMedida.unidadMedida.toLowerCase() === 'litro'">(mililitros)</span>
